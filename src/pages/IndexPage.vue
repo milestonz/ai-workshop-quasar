@@ -5,24 +5,12 @@
       <div class="col-12 col-md-8">
         <div class="q-pa-md">
           <q-card class="slide-viewer">
-            <q-card-section class="text-center q-pa-xl slide-content">
-              <!-- 현재 슬라이드 제목 -->
-              <div
-                v-if="currentLessonData?.slideTitles && currentLessonData.slideTitles[currentSlide]"
-                class="q-mb-lg"
-              >
-                <q-chip color="primary" text-color="white" class="q-mb-md"> 현재 슬라이드 </q-chip>
-                <div class="text-h5 text-primary q-mb-md">
-                  {{ currentLessonData.slideTitles[currentSlide] }}
-                </div>
-              </div>
-
-              <!-- 슬라이드 내용 -->
-              <div class="text-body1 text-grey-8">
-                <p>이 슬라이드의 내용을 준비 중입니다.</p>
-                <p class="text-caption">다른 슬라이드를 선택하거나 나중에 다시 확인해주세요.</p>
-              </div>
-            </q-card-section>
+            <!-- SlideViewer 컴포넌트 사용 -->
+            <SlideViewer
+              v-if="currentLessonData"
+              :lesson="currentLessonData"
+              :slide-index="currentSlide"
+            />
 
             <!-- 슬라이드 컨트롤 -->
             <q-card-actions align="center" class="q-pa-md slide-controls">
@@ -104,17 +92,19 @@
                   </div>
 
                   <!-- 새 댓글 입력 -->
-                  <q-input
-                    v-model="newComment"
-                    filled
-                    dense
-                    placeholder="댓글을 입력하세요..."
-                    @keyup.enter="addComment"
-                  >
-                    <template v-slot:append>
-                      <q-btn round dense flat icon="send" @click="addComment" />
-                    </template>
-                  </q-input>
+                  <div class="q-mt-md">
+                    <q-input
+                      v-model="newComment"
+                      outlined
+                      dense
+                      placeholder="댓글을 입력하세요..."
+                      @keyup.enter="addComment"
+                    >
+                      <template v-slot:append>
+                        <q-btn flat round dense icon="send" @click="addComment" />
+                      </template>
+                    </q-input>
+                  </div>
                 </q-card-section>
               </div>
             </q-slide-transition>
@@ -125,17 +115,16 @@
             <q-card-section>
               <div class="text-h6">나의 메모</div>
             </q-card-section>
-
             <q-card-section class="q-pt-none">
               <q-input
                 v-model="notes"
                 type="textarea"
-                filled
-                rows="6"
+                outlined
+                rows="8"
                 placeholder="강의 내용에 대한 메모를 작성하세요..."
-                @update:model-value="updateNotes"
+                @update:model-value="(value) => updateNotes(value as string)"
               />
-              <div class="row items-center justify-between q-mt-sm">
+              <div class="row justify-between items-center q-mt-sm">
                 <span class="text-caption">{{ notes.length }}자 / 1000자</span>
                 <div>
                   <q-btn flat color="primary" label="저장" @click="saveNotes" />
@@ -151,41 +140,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useCourseStore } from 'src/stores/course';
+import { useCourseStore } from '../stores/course';
+import SlideViewer from '../components/SlideViewer.vue';
 
 const courseStore = useCourseStore();
 
-// Computed properties
-const currentLessonData = computed(() => courseStore.currentLessonData);
-const currentSlide = computed(() => courseStore.currentSlide);
-const isPlaying = computed(() => courseStore.isPlaying);
-const showComments = computed(() => courseStore.showComments);
-const comments = computed(() => courseStore.comments);
-const newComment = computed({
-  get: () => courseStore.newComment,
-  set: (value) => (courseStore.newComment = value),
-});
-const notes = computed({
-  get: () => courseStore.notes,
-  set: (value) => (courseStore.notes = value),
-});
-const slideProgress = computed(() => courseStore.slideProgress);
-
-// Methods
-const prevSlide = () => courseStore.prevSlide();
-const nextSlide = () => courseStore.nextSlide();
-const togglePlaying = () => courseStore.togglePlaying();
-const toggleComments = () => courseStore.toggleComments();
-const addComment = () => courseStore.addComment();
-const updateNotes = (value: string | number | null) => {
-  if (typeof value === 'string') {
-    courseStore.updateNotes(value);
-  }
-};
-const saveNotes = () => courseStore.saveNotes();
-const clearNotes = () => courseStore.clearNotes();
-const toggleCommentLike = (commentId: number) => courseStore.toggleCommentLike(commentId);
+// Store에서 필요한 상태와 액션들을 구조분해할당
+const {
+  currentSlide,
+  isPlaying,
+  showComments,
+  newComment,
+  notes,
+  comments,
+  currentLessonData,
+  slideProgress,
+  nextSlide,
+  prevSlide,
+  togglePlaying,
+  toggleComments,
+  addComment,
+  updateNotes,
+  saveNotes,
+  clearNotes,
+  toggleCommentLike,
+} = courseStore;
 </script>
 
 <style scoped>
@@ -194,14 +173,6 @@ const toggleCommentLike = (commentId: number) => courseStore.toggleCommentLike(c
   height: 70vh;
   display: flex;
   flex-direction: column;
-}
-
-.slide-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .slide-controls {
