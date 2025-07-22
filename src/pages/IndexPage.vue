@@ -26,6 +26,8 @@
                 color="primary"
                 :icon="isPlaying ? 'pause' : 'play_arrow'"
                 size="lg"
+                :disable="!hasVideo"
+                :class="{ 'video-disabled': !hasVideo }"
                 @click="togglePlaying"
               />
               <q-btn
@@ -164,6 +166,7 @@ const {
   saveNotes,
   clearNotes,
   toggleCommentLike,
+  hasVideo,
 } = courseStore;
 </script>
 
@@ -183,5 +186,14 @@ const {
 .slide-progress {
   flex-shrink: 0;
   border-top: 1px solid #e0e0e0;
+}
+
+.video-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.video-disabled:hover {
+  opacity: 0.5;
 }
 </style>
