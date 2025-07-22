@@ -41,3 +41,4 @@ quasar build
 ### Customize the configuration
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+# Azure Static Web Apps 배포 설정 완료
