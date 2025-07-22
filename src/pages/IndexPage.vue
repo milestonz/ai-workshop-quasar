@@ -5,7 +5,7 @@
       <div class="col-12 col-md-8">
         <div class="q-pa-md">
           <q-card class="slide-viewer">
-            <q-card-section class="text-center q-pa-xl">
+            <q-card-section class="text-center q-pa-xl slide-content">
               <!-- 현재 슬라이드 제목 -->
               <div
                 v-if="currentLessonData?.slideTitles && currentLessonData.slideTitles[currentSlide]"
@@ -25,7 +25,7 @@
             </q-card-section>
 
             <!-- 슬라이드 컨트롤 -->
-            <q-card-actions align="center" class="q-pa-md">
+            <q-card-actions align="center" class="q-pa-md slide-controls">
               <q-btn
                 round
                 color="primary"
@@ -50,7 +50,7 @@
             </q-card-actions>
 
             <!-- 진행률 -->
-            <q-card-section class="q-pt-none">
+            <q-card-section class="q-pt-none slide-progress">
               <div class="row items-center justify-between q-mb-sm">
                 <span class="text-caption"
                   >슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}</span
@@ -192,5 +192,25 @@ const toggleCommentLike = (commentId: number) => courseStore.toggleCommentLike(c
 .slide-viewer {
   min-height: 600px;
   height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide-controls {
+  flex-shrink: 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.slide-progress {
+  flex-shrink: 0;
+  border-top: 1px solid #e0e0e0;
 }
 </style>
