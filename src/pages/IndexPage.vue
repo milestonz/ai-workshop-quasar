@@ -190,6 +190,7 @@ const toggleCommentLike = (commentId: number) => courseStore.toggleCommentLike(c
 
 <style scoped>
 .slide-viewer {
-  min-height: 400px;
+  min-height: 600px;
+  height: 70vh;
 }
 </style>
