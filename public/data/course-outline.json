@@ -1,0 +1,129 @@
+{
+  "title": "생성형AI 워크샵",
+  "description": "목회자를 위한 AI 활용 워크샵",
+  "lessons": [
+    {
+      "title": "0. INTRO",
+      "slides": 2,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": ["워크샵 소개", "오늘의 여정"],
+      "slideData": [
+        {
+          "title": "워크샵 소개",
+          "hasVideo": false
+        },
+        {
+          "title": "오늘의 여정",
+          "hasVideo": false
+        }
+      ]
+    },
+    {
+      "title": "1. WHY",
+      "slides": 4,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": [
+        "생성형AI란?",
+        "AI 시대의 도전과 기회",
+        "목회자의 AI 활용 사례",
+        "AI가 바꾸는 목회 패러다임"
+      ],
+      "slideData": [
+        {
+          "title": "생성형AI란?",
+          "hasVideo": false
+        },
+        {
+          "title": "AI 시대의 도전과 기회",
+          "hasVideo": false
+        },
+        {
+          "title": "목회자의 AI 활용 사례",
+          "hasVideo": false
+        },
+        {
+          "title": "AI가 바꾸는 목회 패러다임",
+          "hasVideo": false
+        }
+      ]
+    },
+    {
+      "title": "2. WHAT",
+      "slides": 3,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": ["생성형AI란?", "AI의 핵심 기술", "AI의 한계와 윤리"],
+      "slideData": [
+        {
+          "title": "생성형AI란?",
+          "hasVideo": false
+        },
+        {
+          "title": "AI의 핵심 기술",
+          "hasVideo": false
+        },
+        {
+          "title": "AI의 한계와 윤리",
+          "hasVideo": false
+        }
+      ]
+    },
+    {
+      "title": "3. HOW",
+      "slides": 3,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": ["ChatGPT 시작하기", "프롬프트 엔지니어링", "목회 현장 AI 활용법"],
+      "slideData": [
+        {
+          "title": "ChatGPT 시작하기",
+          "hasVideo": false
+        },
+        {
+          "title": "프롬프트 엔지니어링",
+          "hasVideo": false
+        },
+        {
+          "title": "목회 현장 AI 활용법",
+          "hasVideo": false
+        }
+      ]
+    },
+    {
+      "title": "4. PRACTICE",
+      "slides": 2,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": ["실습: 설교 준비하기", "실습: 목회 상담하기"],
+      "slideData": [
+        {
+          "title": "실습: 설교 준비하기",
+          "hasVideo": false
+        },
+        {
+          "title": "실습: 목회 상담하기",
+          "hasVideo": false
+        }
+      ]
+    },
+    {
+      "title": "5. CONCLUSION",
+      "slides": 2,
+      "completed": false,
+      "videoUrl": null,
+      "slideTitles": ["AI 시대의 목회자 역할", "다음 단계와 리소스"],
+      "slideData": [
+        {
+          "title": "AI 시대의 목회자 역할",
+          "hasVideo": false
+        },
+        {
+          "title": "다음 단계와 리소스",
+          "hasVideo": false
+        }
+      ]
+    }
+  ]
+}
