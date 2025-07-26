@@ -203,7 +203,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { marked } from 'marked';
+import { convertMarkdownToHTML } from '../utils/markdown';
 import { useQuasar } from 'quasar';
 
 interface Props {
@@ -255,7 +255,7 @@ const youtubeHeight = ref<number | null>(null);
 // 계산된 속성
 const renderedContent = computed(() => {
   try {
-    return marked(content.value);
+    return convertMarkdownToHTML(content.value);
   } catch (error) {
     console.error('Markdown 렌더링 오류:', error);
     return content.value;
@@ -497,6 +497,13 @@ const scheduleAutoUpdate = () => {
   // 실시간 뷰어 업데이트만 수행 (파일 저장은 하지 않음)
   updateTimeout.value = setTimeout(() => {
     if (autoUpdateEnabled.value) {
+      console.log('🔍 [MarkdownEditor] 자동 업데이트');
+      console.log('🔍 [MarkdownEditor] 업데이트 내용 길이:', content.value.length);
+      console.log(
+        '🔍 [MarkdownEditor] 업데이트 내용 끝부분:',
+        JSON.stringify(content.value.substring(content.value.length - 20)),
+      );
+
       console.log('🎯 실시간 뷰어 업데이트:', props.slideId, '내용길이:', content.value.length);
       emit('autoUpdate', content.value, props.slideId);
     }
@@ -506,6 +513,13 @@ const scheduleAutoUpdate = () => {
 const saveContent = async () => {
   saving.value = true;
   try {
+    console.log('🔍 [MarkdownEditor] 저장 시작');
+    console.log('🔍 [MarkdownEditor] 저장할 내용 길이:', content.value.length);
+    console.log(
+      '🔍 [MarkdownEditor] 저장할 내용 끝부분:',
+      JSON.stringify(content.value.substring(content.value.length - 20)),
+    );
+
     // 부모 컴포넌트에 저장 요청 (덮어쓰기 포함)
     emit('save', content.value, props.slideId);
 

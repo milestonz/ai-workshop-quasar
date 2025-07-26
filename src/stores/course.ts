@@ -1,34 +1,7 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { azureBlobService } from 'src/services/azureBlobService';
-
-export interface SlideData {
-  title: string;
-  videoUrl?: string | null;
-  hasVideo?: boolean;
-}
-
-export interface Lesson {
-  title: string;
-  slides: number;
-  completed: boolean;
-  videoUrl: string | null;
-  content?: string;
-  slideTitles?: string[];
-  slideData?: SlideData[];
-  slideContents?: { [key: number]: string };
-  locked?: boolean; // Chapter 잠금 상태
-  lockedSlides?: { [key: number]: boolean }; // 개별 슬라이드 잠금 상태
-}
-
-export interface Comment {
-  id: number;
-  user: string;
-  time: string;
-  text: string;
-  likes: number;
-  liked?: boolean;
-}
+import type { SlideData, Lesson, Comment } from '../types/slide';
 
 export const useCourseStore = defineStore('course', () => {
   // 상태
@@ -41,7 +14,7 @@ export const useCourseStore = defineStore('course', () => {
   const progress = ref(15);
   const newComment = ref('');
   const notes = ref('');
-  const isPresentationMode = ref(false);
+  const isPresentationMode = ref(true); // 기본값을 true로 변경
 
   // 강의 데이터 - MD 파일 기반으로 동적 생성
   const lessons = ref<Lesson[]>([]);
@@ -626,7 +599,7 @@ export const useCourseStore = defineStore('course', () => {
   };
 
   // MD 파일에 슬라이드 내용을 저장하는 함수 (다운로드)
-  const saveSlideContentToMD = async (componentKey: string, content: string) => {
+  const saveSlideContentToMD = async (componentKey: string, content: string): Promise<boolean> => {
     try {
       // 현재 슬라이드 정보 가져오기
       const lesson = lessons.value[currentLesson.value];
@@ -635,13 +608,10 @@ export const useCourseStore = defineStore('course', () => {
 
       // MD 파일 내용 생성
       const mdContent = `# ${slideTitle}
-
 ${content}
-
 ---
 *생성일: ${new Date().toLocaleString('ko-KR')}*
-*파일명: slide-${componentKey}.md*
-`;
+*파일명: slide-${componentKey}.md*`;
 
       const filename = `slide-${componentKey}.md`;
       const blob = new Blob([mdContent], { type: 'text/markdown' });
@@ -655,8 +625,10 @@ ${content}
       URL.revokeObjectURL(url);
 
       console.log('✅ MD 파일 저장 완료:', filename);
+      return true;
     } catch (error) {
       console.error('❌ MD 파일 저장 오류:', error);
+      return false;
     }
   };
 
@@ -664,6 +636,8 @@ ${content}
   const overwriteSlideContentToMD = async (componentKey: string, content: string) => {
     try {
       console.log('📝 MD 파일 덮어쓰기 시작:', componentKey);
+      console.log('📝 저장할 내용 길이:', content.length);
+      console.log('📝 저장할 내용 끝부분:', content.substring(content.length - 50));
 
       const response = await fetch(`/slides/${componentKey}.md`, {
         method: 'PUT',
@@ -821,6 +795,37 @@ ${content}
       console.log('🔒 Azure Blob Storage 잠금 상태 초기화 완료');
     } catch (error) {
       console.error('❌ Azure Blob Storage 잠금 상태 초기화 오류:', error);
+    }
+  };
+
+  // files.json 업데이트 함수
+  const updateFilesJson = async () => {
+    try {
+      console.log('📁 files.json 업데이트 시작...');
+
+      // 현재 슬라이드 목록 가져오기
+      const currentFiles = await generateCourseOutlineFromMD();
+      const fileList: string[] = [];
+
+      currentFiles.forEach((lesson) => {
+        for (let i = 0; i < lesson.slides; i++) {
+          fileList.push(`slide-${lesson.title.match(/^(\d+)\./)?.[1] || '0'}-${i}.md`);
+        }
+      });
+
+      // files.json 업데이트
+      const filesJson = {
+        files: fileList,
+      };
+
+      // Azure Blob Storage에 저장
+      await azureBlobService.saveData('files.json', filesJson);
+
+      console.log('✅ files.json 업데이트 완료:', fileList.length, '개 파일');
+      return true;
+    } catch (error) {
+      console.error('❌ files.json 업데이트 실패:', error);
+      return false;
     }
   };
 
@@ -1428,5 +1433,8 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     saveLockStatus,
     loadLockStatus,
     clearLockStatus,
+
+    // files.json 업데이트 함수
+    updateFilesJson,
   };
 });

@@ -82,7 +82,7 @@ import { ref, computed } from 'vue';
 
 interface Props {
   markdownContent: string;
-  cssContent: string;
+  cssContent?: string;
   htmlContent: string;
   currentLesson: number;
   currentSlide: number;
@@ -160,7 +160,7 @@ const exportMarkdown = async () => {
 
 // CSS 파일 내보내기
 const exportCSS = async () => {
-  if (!props.cssContent.trim()) {
+  if (!props.cssContent?.trim()) {
     emit('export-error', 'css', 'CSS 내용이 없습니다.');
     return;
   }
@@ -211,7 +211,7 @@ const exportHTML = async () => {
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        ${props.cssContent}
+        ${props.cssContent || ''}
     </style>
 </head>
 <body>
@@ -241,7 +241,7 @@ const exportAllFiles = async () => {
       promises.push(exportMarkdown());
     }
 
-    if (exportOptions.value.css && props.cssContent.trim()) {
+    if (exportOptions.value.css && props.cssContent && props.cssContent.trim()) {
       promises.push(exportCSS());
     }
 

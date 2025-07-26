@@ -19,19 +19,17 @@
           <q-tooltip>수강생과 공유</q-tooltip>
         </q-btn>
 
-        <!-- 프리젠테이션 모드 버튼 -->
+        <!-- 편집기 모드 버튼 (프리젠테이션 모드 해제) -->
         <q-btn
           flat
           round
           dense
-          icon="slideshow"
-          :color="isPresentationMode ? 'orange' : 'white'"
+          icon="edit"
+          :color="isPresentationMode ? 'white' : 'orange'"
           @click="togglePresentationMode"
           class="q-mr-xs"
         >
-          <q-tooltip>{{
-            isPresentationMode ? '프리젠테이션 모드 해제' : '프리젠테이션 모드'
-          }}</q-tooltip>
+          <q-tooltip>{{ isPresentationMode ? '편집기 모드' : '프리젠테이션 모드' }}</q-tooltip>
         </q-btn>
 
         <!-- 전체화면 버튼 -->
@@ -86,6 +84,20 @@
           <q-tooltip>이메일 전송</q-tooltip>
         </q-btn>
 
+        <!-- 저장 버튼 -->
+        <q-btn
+          flat
+          round
+          dense
+          icon="save"
+          :color="isSaving ? 'orange' : 'white'"
+          @click="handleSaveAll"
+          :loading="isSaving"
+          class="q-mr-xs"
+        >
+          <q-tooltip>전체 저장</q-tooltip>
+        </q-btn>
+
         <div class="text-caption q-mr-md">
           슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}
         </div>
@@ -118,22 +130,24 @@
                   round
                   dense
                   size="sm"
+                  icon="refresh"
+                  color="blue"
+                  class="q-mr-xs"
+                  @click="updateCourseOutline"
+                  :disable="isUpdating"
+                  :loading="isUpdating"
+                  title="목차 UPDATE"
+                />
+                <q-btn
+                  flat
+                  round
+                  dense
+                  size="sm"
                   icon="add"
                   color="primary"
                   class="q-mr-xs"
                   @click="createChapterFile"
                   title="Chapter 컴포넌트 파일 생성"
-                />
-
-                <q-btn
-                  flat
-                  dense
-                  size="sm"
-                  icon="refresh"
-                  color="blue"
-                  label="클리어"
-                  @click="clearLocalStorage"
-                  title="Local Storage 클리어"
                 />
               </div>
             </div>
@@ -235,22 +249,6 @@
           <div class="text-caption text-grey-7">
             슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}
           </div>
-
-          <!-- 목차 UPDATE 버튼 -->
-          <q-separator class="q-my-md" />
-          <div class="text-center">
-            <q-btn
-              color="primary"
-              icon="refresh"
-              label="목차 UPDATE"
-              @click="updateCourseOutline"
-              class="full-width"
-              :disable="isUpdating"
-              :loading="isUpdating"
-            >
-              <q-tooltip>MD 파일을 기반으로 목차를 새롭게 생성합니다</q-tooltip>
-            </q-btn>
-          </div>
         </div>
       </q-scroll-area>
     </q-drawer>
@@ -328,7 +326,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted } from 'vue';
+import { computed, ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useCourseStore } from 'src/stores/course';
 import html2canvas from 'html2canvas';
 
@@ -415,11 +413,13 @@ const selectSlide = async (lessonIndex: number, slideIndex: number) => {
   const lesson = lessons.value[lessonIndex];
   const lessonTitle = lesson?.title;
 
-  console.log('🎯 슬라이드 선택:', {
+  console.log('🎯 슬라이드 선택 시작:', {
     강의인덱스: lessonIndex,
     슬라이드인덱스: slideIndex,
     강의제목: lessonTitle,
     슬라이드제목: lesson?.slideTitles?.[slideIndex],
+    현재강의: courseStore.currentLesson,
+    현재슬라이드: courseStore.currentSlide,
   });
 
   // 잠긴 슬라이드인지 확인
@@ -431,11 +431,19 @@ const selectSlide = async (lessonIndex: number, slideIndex: number) => {
 
   // 현재 슬라이드 설정
   console.log('🔄 Store 업데이트 시작...');
+  const oldLesson = courseStore.currentLesson;
+  const oldSlide = courseStore.currentSlide;
+
   courseStore.setCurrentLesson(lessonIndex);
   courseStore.setCurrentSlide(slideIndex);
+
   console.log('✅ Store 업데이트 완료:', {
-    currentLesson: courseStore.currentLesson,
-    currentSlide: courseStore.currentSlide,
+    이전강의: oldLesson,
+    이전슬라이드: oldSlide,
+    현재강의: courseStore.currentLesson,
+    현재슬라이드: courseStore.currentSlide,
+    강의변경: oldLesson !== lessonIndex,
+    슬라이드변경: oldSlide !== slideIndex,
   });
 
   // MD 파일 내용 로드 (store에만 저장, 편집기는 watch에서 처리)
@@ -643,12 +651,6 @@ const createChapterFile = () => {
   courseStore.createChapterFile(currentLesson.value);
 };
 
-const clearLocalStorage = async () => {
-  await courseStore.clearLocalStorage();
-  await courseStore.clearLockStatus();
-  window.location.reload();
-};
-
 // MD 파일에서 슬라이드 제목을 읽어오는 함수
 const getSlideTitleFromMD = async (lessonIndex: number, slideIndex: number): Promise<string> => {
   try {
@@ -750,9 +752,94 @@ const loadAllSlideTitles = async () => {
   }
 };
 
-// 컴포넌트 마운트 시 제목 로드
+// 저장 관련 상태
+const isSaving = ref(false);
+
+// 전체 저장 함수
+const handleSaveAll = async () => {
+  try {
+    isSaving.value = true;
+    console.log('💾 전체 저장 시작...');
+
+    // 1. 목차 데이터 저장
+    console.log('📋 목차 데이터 저장 중...');
+    await courseStore.saveToLocalStorage();
+
+    // 2. 잠금 상태 저장
+    console.log('🔒 잠금 상태 저장 중...');
+    await courseStore.saveLockStatus();
+
+    // 3. files.json 업데이트 (새로 추가된 슬라이드가 있는 경우)
+    console.log('📁 files.json 업데이트 중...');
+    try {
+      await courseStore.updateFilesJson();
+      console.log('✅ files.json 업데이트 완료');
+    } catch (error) {
+      console.warn('⚠️ files.json 업데이트 중 오류 (무시됨):', error);
+    }
+
+    // 4. 성공 메시지 표시
+    console.log('✅ 전체 저장 완료');
+
+    // 성공 알림 표시
+    alert('💾 전체 저장이 완료되었습니다!');
+  } catch (error) {
+    console.error('❌ 전체 저장 실패:', error);
+
+    // 오류 알림 표시
+    alert('❌ 저장 중 오류가 발생했습니다.');
+  } finally {
+    isSaving.value = false;
+  }
+};
+
+// 자동 저장 인터벌
+let autoSaveInterval: NodeJS.Timeout | null = null;
+
+// 컴포넌트 마운트 시 제목 로드 및 자동 저장 시작
 onMounted(() => {
   loadAllSlideTitles();
+
+  // 5분마다 자동 저장
+  autoSaveInterval = setInterval(
+    async () => {
+      if (!isSaving.value) {
+        console.log('⏰ 자동 저장 실행...');
+        try {
+          await courseStore.saveToLocalStorage();
+          await courseStore.saveLockStatus();
+          console.log('✅ 자동 저장 완료');
+        } catch (error) {
+          console.warn('⚠️ 자동 저장 실패:', error);
+        }
+      }
+    },
+    5 * 60 * 1000,
+  ); // 5분
+});
+
+// 브라우저를 닫기 전에 자동 저장
+onBeforeUnmount(() => {
+  console.log('🔄 브라우저 종료 전 자동 저장...');
+
+  // 자동 저장 인터벌 정리
+  if (autoSaveInterval) {
+    clearInterval(autoSaveInterval);
+  }
+
+  // 마지막 저장 실행
+  handleSaveAll();
+});
+
+// 페이지를 떠나기 전에 저장 확인
+window.addEventListener('beforeunload', (event) => {
+  console.log('🔄 페이지 이탈 전 자동 저장...');
+
+  // 동기적으로 저장 상태 확인
+  if (isSaving.value) {
+    event.preventDefault();
+    event.returnValue = '저장 중입니다. 잠시만 기다려주세요.';
+  }
 });
 </script>
 

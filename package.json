@@ -16,7 +16,8 @@
     "build": "quasar build",
     "postinstall": "quasar prepare",
     "deploy:azure": "npm run build && swa start dist --api-location \"\"",
-    "deploy:azure:local": "AZURE_STATIC_WEB_APPS_API_TOKEN=\"d81ad71520c1bf911b738f1bda2664599bf43a7667b99cc084650ea1a30b60f501-d6213ac8-279b-44ac-97b3-ce915cf3020700f0520030744f0f\" swa start dist --api-location \"\""
+    "deploy:azure:local": "AZURE_STATIC_WEB_APPS_API_TOKEN=\"d81ad71520c1bf911b738f1bda2664599bf43a7667b99cc084650ea1a30b60f501-d6213ac8-279b-44ac-97b3-ce915cf3020700f0520030744f0f\" swa start dist --api-location \"\"",
+    "update-files": "node scripts/update-files-json.cjs"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.28.0",
@@ -25,6 +26,7 @@
     "marked": "^16.1.1",
     "pinia": "^3.0.3",
     "quasar": "^2.16.0",
+    "reveal.js": "^5.2.1",
     "vue": "^3.4.18",
     "vue-router": "^4.0.12"
   },
@@ -33,6 +35,7 @@
     "@playwright/test": "^1.54.1",
     "@quasar/app-vite": "^2.1.0",
     "@types/node": "^20.5.9",
+    "@types/reveal.js": "^5.2.0",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^14.4.0",
     "autoprefixer": "^10.4.2",
