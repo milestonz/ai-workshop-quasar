@@ -125,7 +125,7 @@ app.post('/api/email/learning-completion', async (req, res) => {
     console.log('📧 학습 완료 이메일 전송 요청:', { recipientEmail, studentName, courseName });
 
     // 이메일 서비스 초기화 및 전송
-    const emailService = require('./src/services/emailService');
+    const emailService = require('./src/services/emailService.cjs');
     await emailService.sendLearningCompletionEmail(recipientEmail, studentName, courseName);
 
     res.json({
