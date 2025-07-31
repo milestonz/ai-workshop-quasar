@@ -105,7 +105,7 @@ jobs:
         # Deploy using new Azure CLI command
         az webapp deploy \
           --resource-group ai-seminar-rg \
-          --name slide-view-app \
+          --name slide-view-app-new \
           --src-path deployment.zip \
           --type zip
 
