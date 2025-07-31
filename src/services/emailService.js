@@ -1,190 +1,135 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.emailService = void 0;
-const nodemailer_1 = __importDefault(require("nodemailer"));
-// 이메일 서비스 클래스
+const nodemailer = require('nodemailer');
+
 class EmailService {
-    constructor() {
-        this.transporter = null;
-        this.config = null;
-        this.initialized = false;
-    }
-    // 이메일 설정 초기화
-    initialize(config) {
-        this.config = config;
-        this.transporter = nodemailer_1.default.createTransport(config);
-        this.initialized = true;
-        console.log('📧 이메일 서비스 초기화 완료');
-    }
-    // 초기화 상태 확인
-    isInitialized() {
-        return this.initialized && this.transporter !== null;
-    }
-    // 이메일 전송
-    async sendEmail(options) {
-        if (!this.transporter) {
-            throw new Error('이메일 서비스가 초기화되지 않았습니다.');
-        }
-        try {
-            const info = await this.transporter.sendMail(options);
-            console.log('✅ 이메일 전송 성공:', info.messageId);
-            return true;
-        }
-        catch (error) {
-            console.error('❌ 이메일 전송 실패:', error);
-            throw error;
-        }
-    }
-    // 학습 완료 알림 이메일
-    async sendLearningCompletionEmail(studentEmail, studentName, courseName, completionDate) {
-        const subject = `🎓 ${courseName} 학습 완료 축하드립니다!`;
-        const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <h1 style="margin: 0; font-size: 28px;">🎓 학습 완료 축하드립니다!</h1>
-          <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">AI Workshop 강의를 성공적으로 완료하셨습니다.</p>
-        </div>
+  constructor() {
+    this.transporter = null;
+    this.isInitializedFlag = false;
+  }
 
-        <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
-          <h2 style="color: #333; margin-top: 0;">안녕하세요, ${studentName}님!</h2>
+  initialize(config) {
+    this.transporter = nodemailer.createTransport(config);
+    this.isInitializedFlag = true;
+    console.log('📧 이메일 서비스가 초기화되었습니다.');
+  }
 
-          <p style="color: #666; line-height: 1.6;">
-            <strong>${courseName}</strong> 강의를 성공적으로 완료하셨습니다.
-            열심히 학습하신 노력에 진심으로 축하드립니다! 🎉
-          </p>
+  isInitialized() {
+    return this.isInitializedFlag && this.transporter;
+  }
 
-          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
-            <h3 style="color: #333; margin-top: 0;">📋 학습 완료 정보</h3>
-            <ul style="color: #666; line-height: 1.8;">
-              <li><strong>강의명:</strong> ${courseName}</li>
-              <li><strong>완료일:</strong> ${completionDate}</li>
-              <li><strong>학습자:</strong> ${studentName}</li>
+  async sendLearningCompletionEmail(recipientEmail, studentName, courseName) {
+    if (!this.isInitialized()) {
+      throw new Error('이메일 서비스가 초기화되지 않았습니다.');
+    }
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: `🎉 ${courseName} 학습 완료 축하드립니다!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2c3e50;">🎉 학습 완료를 축하드립니다!</h2>
+          <p>안녕하세요, <strong>${studentName}</strong>님!</p>
+          <p><strong>${courseName}</strong> 과정을 성공적으로 완료하셨습니다.</p>
+          <div style="background-color: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #27ae60; margin-top: 0;">📚 학습 내용 요약</h3>
+            <ul>
+              <li>AI 워크샵 기본 개념</li>
+              <li>실습 및 프로젝트</li>
+              <li>최신 AI 기술 동향</li>
             </ul>
           </div>
-
-          <p style="color: #666; line-height: 1.6;">
-            앞으로도 계속해서 새로운 지식을 습득하고 성장하시기를 바랍니다.
-            언제든지 추가 질문이나 도움이 필요하시면 연락해 주세요!
-          </p>
-
-          <div style="text-align: center; margin-top: 30px;">
-            <a href="http://localhost:9001" style="background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold;">
-              🏠 홈으로 돌아가기
-            </a>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
-          <p>이 이메일은 AI Workshop 학습 관리 시스템에서 자동으로 발송되었습니다.</p>
-        </div>
-      </div>
-    `;
-        return this.sendEmail({
-            from: this.config?.auth.user || 'noreply@aiworkshop.com',
-            to: studentEmail,
-            subject,
-            html,
-        });
-    }
-    // 강의 공유 이메일
-    async sendCourseShareEmail(recipientEmail, recipientName, senderName, courseName, shareUrl) {
-        const subject = `📚 ${senderName}님이 ${courseName} 강의를 공유했습니다`;
-        const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <h1 style="margin: 0; font-size: 28px;">📚 강의 공유</h1>
-          <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">${senderName}님이 강의를 공유했습니다.</p>
-        </div>
-
-        <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
-          <h2 style="color: #333; margin-top: 0;">안녕하세요, ${recipientName}님!</h2>
-
-          <p style="color: #666; line-height: 1.6;">
-            <strong>${senderName}</strong>님이 <strong>${courseName}</strong> 강의를 공유했습니다.
-            아래 링크를 클릭하여 강의를 수강하실 수 있습니다.
-          </p>
-
-          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea;">
-            <h3 style="color: #333; margin-top: 0;">📋 강의 정보</h3>
-            <ul style="color: #666; line-height: 1.8;">
-              <li><strong>강의명:</strong> ${courseName}</li>
-              <li><strong>공유자:</strong> ${senderName}</li>
-              <li><strong>공유일:</strong> ${new Date().toLocaleDateString('ko-KR')}</li>
-            </ul>
-          </div>
-
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${shareUrl}" style="background: #667eea; color: white; padding: 15px 40px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold; font-size: 16px;">
-              🎓 강의 수강하기
-            </a>
-          </div>
-
-          <p style="color: #666; line-height: 1.6; font-size: 14px;">
-            <strong>참고사항:</strong><br>
-            • 위 링크는 학생 모드로 접속됩니다.<br>
-            • 강의는 언제든지 중단하고 나중에 이어서 수강할 수 있습니다.<br>
-            • 질문이나 도움이 필요하시면 언제든지 연락해 주세요.
+          <p>앞으로도 지속적인 학습과 성장을 응원합니다!</p>
+          <p style="color: #7f8c8d; font-size: 14px;">
+            이 이메일은 자동으로 발송되었습니다.
           </p>
         </div>
+      `,
+    };
 
-        <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
-          <p>이 이메일은 AI Workshop 학습 관리 시스템에서 발송되었습니다.</p>
-        </div>
-      </div>
-    `;
-        return this.sendEmail({
-            from: this.config?.auth.user || 'noreply@aiworkshop.com',
-            to: recipientEmail,
-            subject,
-            html,
-        });
+    const result = await this.transporter.sendMail(mailOptions);
+    console.log('📧 학습 완료 이메일 전송 성공:', result.messageId);
+    return result;
+  }
+
+  async sendCourseShareEmail(recipientEmail, recipientName, senderName, courseName, shareUrl) {
+    if (!this.isInitialized()) {
+      throw new Error('이메일 서비스가 초기화되지 않았습니다.');
     }
-    // 시스템 알림 이메일
-    async sendSystemNotificationEmail(recipientEmail, subject, message, notificationType = 'info') {
-        const iconMap = {
-            info: 'ℹ️',
-            warning: '⚠️',
-            error: '❌',
-        };
-        const colorMap = {
-            info: '#667eea',
-            warning: '#ff9800',
-            error: '#f44336',
-        };
-        const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <div style="background: linear-gradient(135deg, ${colorMap[notificationType]} 0%, ${colorMap[notificationType]}dd 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-          <h1 style="margin: 0; font-size: 28px;">${iconMap[notificationType]} 시스템 알림</h1>
-          <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">${subject}</p>
-        </div>
 
-        <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px;">
-          <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid ${colorMap[notificationType]};">
-            <p style="color: #666; line-height: 1.6; margin: 0;">${message}</p>
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: `📚 ${courseName} 강의 공유`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2c3e50;">📚 강의 공유</h2>
+          <p>안녕하세요, <strong>${recipientName}</strong>님!</p>
+          <p><strong>${senderName}</strong>님이 <strong>${courseName}</strong> 강의를 공유해주셨습니다.</p>
+          <div style="background-color: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #3498db; margin-top: 0;">🔗 강의 링크</h3>
+            <p><a href="${shareUrl}" style="color: #3498db; text-decoration: none;">${shareUrl}</a></p>
           </div>
-
-          <div style="text-align: center; margin-top: 30px;">
-            <a href="http://localhost:9001" style="background: ${colorMap[notificationType]}; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; display: inline-block; font-weight: bold;">
-              🏠 홈으로 돌아가기
-            </a>
-          </div>
+          <p>링크를 클릭하여 강의에 참여하실 수 있습니다.</p>
+          <p style="color: #7f8c8d; font-size: 14px;">
+            이 이메일은 자동으로 발송되었습니다.
+          </p>
         </div>
+      `,
+    };
 
-        <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
-          <p>이 이메일은 AI Workshop 학습 관리 시스템에서 자동으로 발송되었습니다.</p>
-        </div>
-      </div>
-    `;
-        return this.sendEmail({
-            from: this.config?.auth.user || 'noreply@aiworkshop.com',
-            to: recipientEmail,
-            subject: `${iconMap[notificationType]} ${subject}`,
-            html,
-        });
+    const result = await this.transporter.sendMail(mailOptions);
+    console.log('📧 강의 공유 이메일 전송 성공:', result.messageId);
+    return result;
+  }
+
+  async sendSystemNotificationEmail(recipientEmail, subject, message) {
+    if (!this.isInitialized()) {
+      throw new Error('이메일 서비스가 초기화되지 않았습니다.');
     }
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: recipientEmail,
+      subject: `🔔 ${subject}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #2c3e50;">🔔 시스템 알림</h2>
+          <div style="background-color: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0;">${message}</p>
+          </div>
+          <p style="color: #7f8c8d; font-size: 14px;">
+            이 이메일은 자동으로 발송되었습니다.
+          </p>
+        </div>
+      `,
+    };
+
+    const result = await this.transporter.sendMail(mailOptions);
+    console.log('📧 시스템 알림 이메일 전송 성공:', result.messageId);
+    return result;
+  }
 }
-// 싱글톤 인스턴스 생성
-exports.emailService = new EmailService();
+
+const emailService = new EmailService();
+
+// 환경 변수에서 이메일 설정 로드
+const emailConfig = {
+  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.EMAIL_PORT || '587'),
+  secure: process.env.EMAIL_SECURE === 'true',
+  auth: {
+    user: process.env.EMAIL_USER || '',
+    pass: process.env.EMAIL_PASS || '',
+  },
+};
+
+// 이메일 설정이 있으면 초기화
+if (emailConfig.auth.user && emailConfig.auth.pass) {
+  emailService.initialize(emailConfig);
+  console.log('📧 이메일 서비스 초기화 완료');
+} else {
+  console.log('⚠️ 이메일 설정이 없어 이메일 기능이 비활성화됩니다.');
+  console.log('📧 이메일 설정 방법: .env 파일에 EMAIL_USER와 EMAIL_PASS를 추가하세요.');
+}
+
+module.exports = emailService;

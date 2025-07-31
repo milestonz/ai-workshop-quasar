@@ -32,8 +32,8 @@
     "batch-convert": "node scripts/slide-converter/batch-convert.js",
     "test-converter": "node scripts/slide-converter/test-converter.js",
     "test-template-converter": "node scripts/slide-converter/test-template-converter.js",
-    "server": "tsx server.ts",
-    "start": "tsx server.ts"
+    "server": "node server.js",
+    "start": "node server.js"
   },
   "dependencies": {
     "@azure/functions": "^4.7.2",
