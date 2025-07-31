@@ -97,12 +97,6 @@ jobs:
 
     - name: Deploy to Azure App Service
       run: |
-        # Deploy using Azure CLI
-        az webapp deployment source config-zip \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-          --name ${{ secrets.AZURE_WEBAPP_NAME }} \
-          --src deployment.zip
-        
         # Create zip file
         cd deployment
         zip -r ../deployment.zip .
@@ -110,8 +104,8 @@ jobs:
         
         # Deploy the zip file
         az webapp deployment source config-zip \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-          --name ${{ secrets.AZURE_WEBAPP_NAME }} \
+          --resource-group ai-seminar-rg \
+          --name slide-view-app \
           --src deployment.zip
 
   close_pull_request:
