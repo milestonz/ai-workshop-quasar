@@ -73,6 +73,14 @@ export default defineConfig((/* ctx */) => {
           { server: false },
         ],
       ],
+      
+      // Azure Functions 파일들을 빌드에서 제외
+      rollupOptions: {
+        external: ['@azure/functions'],
+      },
+      
+      // Azure Functions 디렉토리를 빌드에서 제외
+      ignorePublicFolder: false,
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver

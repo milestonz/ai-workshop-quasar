@@ -47,3 +47,8 @@ test-*
 
 # PDF files (too large for deployment)
 *.pdf
+
+# Azure Functions files (not part of frontend build)
+api/
+host.json
+local.settings.json
