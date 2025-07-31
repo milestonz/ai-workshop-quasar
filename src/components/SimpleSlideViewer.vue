@@ -36,13 +36,20 @@ const loadSlideHTML = async (slideNumber: string) => {
   htmlContent.value = '';
 
   try {
-    const htmlPath = `/generated/slides/slide-${slideNumber}.html`;
-    console.log(`📂 SimpleSlideViewer - 요청 경로: ${htmlPath}`);
+    // 먼저 정적 파일에서 찾기 시도
+    const staticPath = `/generated/slides/slide-${slideNumber}.html`;
+    console.log(`📂 SimpleSlideViewer - 정적 파일 시도: ${staticPath}`);
 
-    const response = await fetch(htmlPath);
-
+    let response = await fetch(staticPath);
+    
+    // 정적 파일이 없으면 동적 변환 API 사용
     if (!response.ok) {
-      throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}.html`);
+      console.log(`📂 SimpleSlideViewer - 동적 변환 API 사용: /api/slide/${slideNumber}`);
+      response = await fetch(`/api/slide/${slideNumber}`);
+      
+      if (!response.ok) {
+        throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}.html`);
+      }
     }
 
     const html = await response.text();

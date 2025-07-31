@@ -770,13 +770,64 @@ function buildSlides(inputDir, outputDir) {
 // 명령행 인자 처리
 const args = process.argv.slice(2);
 
-if (args.length !== 2) {
-  console.log('사용법: node build-slides.js <입력디렉토리> <출력디렉토리>');
+if (args.length < 2) {
+  console.log('사용법: node build-slides.js <입력디렉토리> <출력디렉토리> [특정슬라이드번호]');
   console.log('예시: node build-slides.js ../public/slides ../public/generated/slides');
+  console.log('예시: node build-slides.js ../public/slides ../public/generated/slides 0-0');
   process.exit(1);
 }
 
-const [inputDir, outputDir] = args;
+const [inputDir, outputDir, specificSlide] = args;
 
-// 빌드 실행
-buildSlides(inputDir, outputDir);
+// 특정 슬라이드만 변환하는 경우
+if (specificSlide) {
+  console.log(`🎯 특정 슬라이드 변환: ${specificSlide}`);
+  const inputPath = path.join(inputDir, `slide-${specificSlide}.md`);
+  const outputPath = path.join(outputDir, `slide-${specificSlide}.html`);
+  
+  if (!fs.existsSync(inputPath)) {
+    console.error(`❌ 파일을 찾을 수 없습니다: ${inputPath}`);
+    process.exit(1);
+  }
+  
+  try {
+    // 출력 디렉토리가 없으면 생성
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+    
+    // 마크다운 파일 읽기
+    const content = fs.readFileSync(inputPath, 'utf8');
+    
+    // 슬라이드 타입 감지
+    const type = detectSlideType(content);
+    
+    // 제목 추출 (첫 번째 # 제목)
+    const titleMatch = content.match(/^# (.+)$/m);
+    const title = titleMatch ? titleMatch[1] : '목회자를 위한 AI 활용 시나리오';
+    
+    // @ 타입 표시 제거
+    const cleanContent = content.replace(/^@\w+\s*\n?/gm, '');
+    
+    // HTML 생성
+    const slideData = {
+      fileName: `slide-${specificSlide}.md`,
+      type: type,
+      content: cleanContent,
+      title: title,
+    };
+    
+    const html = generateCompleteHTML(slideData);
+    
+    // HTML 파일 저장
+    fs.writeFileSync(outputPath, html, 'utf8');
+    
+    console.log(`✅ slide-${specificSlide}.md → slide-${specificSlide}.html (${type})`);
+  } catch (error) {
+    console.error(`❌ slide-${specificSlide}.md 변환 실패:`, error.message);
+    process.exit(1);
+  }
+} else {
+  // 모든 슬라이드 변환
+  buildSlides(inputDir, outputDir);
+}

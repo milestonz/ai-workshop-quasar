@@ -18,6 +18,61 @@ app.use(express.json());
 // 정적 파일 서빙
 app.use(express.static('public'));
 
+// 동적 슬라이드 변환 API
+app.get('/api/slide/:slideNumber', (req, res) => {
+  const { slideNumber } = req.params;
+  console.log(`🔄 슬라이드 변환 요청: ${slideNumber}`);
+
+  const mdPath = path.join(process.cwd(), 'public', 'slides', `slide-${slideNumber}.md`);
+  const htmlPath = path.join(process.cwd(), 'public', 'generated', 'slides', `slide-${slideNumber}.html`);
+
+  // HTML 파일이 이미 존재하는지 확인
+  if (fs.existsSync(htmlPath)) {
+    console.log(`✅ 기존 HTML 파일 사용: slide-${slideNumber}.html`);
+    return res.sendFile(htmlPath);
+  }
+
+  // 마크다운 파일이 존재하는지 확인
+  if (!fs.existsSync(mdPath)) {
+    return res.status(404).json({
+      success: false,
+      message: `슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}.md`
+    });
+  }
+
+  // 필요한 디렉토리 생성
+  const generatedDir = path.dirname(htmlPath);
+  if (!fs.existsSync(generatedDir)) {
+    fs.mkdirSync(generatedDir, { recursive: true });
+  }
+
+  // 개별 슬라이드 변환
+  const buildCommand = `node scripts/build-slides.cjs public/slides public/generated/slides ${slideNumber}`;
+
+  exec(buildCommand, { cwd: process.cwd() }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`❌ 슬라이드 변환 실패: ${slideNumber}`, error);
+      return res.status(500).json({
+        success: false,
+        message: `슬라이드 변환 중 오류가 발생했습니다: ${slideNumber}`,
+        error: error.message
+      });
+    }
+
+    console.log(`✅ 슬라이드 변환 완료: ${slideNumber}`);
+
+    // 변환된 HTML 파일 확인
+    if (fs.existsSync(htmlPath)) {
+      res.sendFile(htmlPath);
+    } else {
+      res.status(500).json({
+        success: false,
+        message: `변환된 HTML 파일을 찾을 수 없습니다: slide-${slideNumber}.html`
+      });
+    }
+  });
+});
+
 // HTML 변환 API 엔드포인트
 app.post('/api/convert-slides', (req, res) => {
   console.log('🔄 HTML 변환 요청 받음');

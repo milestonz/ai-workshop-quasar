@@ -52,12 +52,6 @@ jobs:
         # Remove large HTML files
         find dist/ -name "*.html" -size +100k -delete
         
-        # Keep only essential slides (first 10)
-        mkdir -p dist/generated/slides-essential
-        find dist/generated/slides -name "slide-*.html" | head -10 | xargs -I {} cp {} dist/generated/slides-essential/
-        rm -rf dist/generated/slides
-        mv dist/generated/slides-essential dist/generated/slides
-        
         # Remove any remaining large files
         find dist/ -type f -size +1M -delete
         
