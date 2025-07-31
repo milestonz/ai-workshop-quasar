@@ -31,3 +31,16 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+
+# AI presentation template files
+ai-presentation-template/
+ai-presentation-template.pdf
+ai-presentation-template.zip
+
+# Large generated files
+public/generated/template-based-converter-cjs-generated/
+public/generated/slides-sidebar/
+
+# Test files
+test-*
+*.test.*
