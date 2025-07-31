@@ -1,9 +1,11 @@
-# DISABLED: Using Azure CLI deployment instead
-name: Deploy to Azure App Service (DISABLED)
+name: Deploy to Azure App Service (CLI)
 
 on:
-  # Disabled - no triggers
-  workflow_dispatch: # Manual trigger only
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [master]
 
 jobs:
   build_and_deploy:
@@ -88,12 +90,29 @@ jobs:
         echo "Deployment package created:"
         du -sh deployment/
 
-    - name: Deploy to Azure App Service
-      uses: azure/webapps-deploy@v3
+    - name: Login to Azure
+      uses: azure/login@v1
       with:
-        app-name: 'ai-workshop-quasar-app'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ./deployment
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure App Service
+      run: |
+        # Deploy using Azure CLI
+        az webapp deployment source config-zip \
+          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --name ${{ secrets.AZURE_WEBAPP_NAME }} \
+          --src deployment.zip
+        
+        # Create zip file
+        cd deployment
+        zip -r ../deployment.zip .
+        cd ..
+        
+        # Deploy the zip file
+        az webapp deployment source config-zip \
+          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --name ${{ secrets.AZURE_WEBAPP_NAME }} \
+          --src deployment.zip
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
