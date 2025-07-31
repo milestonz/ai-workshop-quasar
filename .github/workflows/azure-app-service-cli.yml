@@ -102,11 +102,12 @@ jobs:
         zip -r ../deployment.zip .
         cd ..
         
-        # Deploy using Azure CLI
-        az webapp deployment source config-zip \
+        # Deploy using new Azure CLI command
+        az webapp deploy \
           --resource-group ai-seminar-rg \
           --name slide-view-app \
-          --src deployment.zip
+          --src-path deployment.zip \
+          --type zip
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
