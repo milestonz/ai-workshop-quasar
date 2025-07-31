@@ -44,3 +44,6 @@ public/generated/slides-sidebar/
 # Test files
 test-*
 *.test.*
+
+# PDF files (too large for deployment)
+*.pdf

@@ -41,31 +41,59 @@ jobs:
       - name: Clean up unnecessary files
         run: |
           echo "Cleaning up unnecessary files to reduce deployment size..."
+
+          # Remove all PDF files (they are too large)
+          find dist/ -name "*.pdf" -delete
+          echo "Removed PDF files"
+
           # Remove large image files that are not essential
           find dist/images -name "*.png" -size +500k -delete
+          echo "Removed large PNG files"
+
           # Remove test files
           rm -rf dist/test-*
+          echo "Removed test files"
+
           # Remove development files
           rm -rf dist/.DS_Store
+          echo "Removed .DS_Store files"
+
           # Remove unnecessary generated files
           rm -rf dist/generated/template-based-converter-cjs-generated
           rm -rf dist/generated/slides-sidebar
+          echo "Removed unnecessary generated files"
+
           # Remove AI presentation template files
           rm -rf dist/ai-presentation-template
-          # Remove AI presentation template files from root
           rm -rf ai-presentation-template
           rm -f ai-presentation-template.pdf
           rm -f ai-presentation-template.zip
+          echo "Removed AI presentation template files"
+
           # Remove large files from public
           rm -rf public/generated/template-based-converter-cjs-generated
           rm -rf public/generated/slides-sidebar
-          # Keep only essential slides (first 50)
+          echo "Removed large public files"
+
+          # Remove large HTML files
+          find dist/ -name "*.html" -size +100k -delete
+          echo "Removed large HTML files"
+
+          # Keep only essential slides (first 30 to be safe)
           mkdir -p dist/generated/slides-essential
-          find dist/generated/slides -name "slide-*.html" | head -50 | xargs -I {} cp {} dist/generated/slides-essential/
+          find dist/generated/slides -name "slide-*.html" | head -30 | xargs -I {} cp {} dist/generated/slides-essential/
           rm -rf dist/generated/slides
           mv dist/generated/slides-essential dist/generated/slides
+          echo "Kept only essential slides"
+
+          # Remove any remaining large files
+          find dist/ -type f -size +1M -delete
+          echo "Removed remaining large files"
+
           echo "Cleanup completed. Current dist size:"
           du -sh dist/
+          echo "Largest files remaining:"
+          find dist/ -type f -exec du -h {} + | sort -hr | head -10
 
       - name: Verify build output
         run: |
