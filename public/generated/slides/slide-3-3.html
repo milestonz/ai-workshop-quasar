@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>① 명확하고 구체적 질문 - 기본 중의 기본</title>
+  <style>
+      
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+          color: #333;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          position: relative;
+      }
+
+      .slide-container {
+          backdrop-filter: blur(15px);
+          border-radius: 25px;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+          padding: 60px;
+          max-width: 1000px;
+          width: 100%;
+          position: relative;
+          z-index: 10;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      /* 기본 텍스트 스타일 */
+      p {
+          font-size: 20px;
+          line-height: 1.6;
+          margin-bottom: 10px;
+      }
+
+      li {
+          font-size: 20px;
+          line-height: 1.6;
+          margin-bottom: 8px;
+      }
+
+      h1, h2, h3, h4 {
+          margin-bottom: 5px;
+      }
+
+      h4 {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 1.4;
+      }
+
+      /* 코드 블록 스타일 */
+.code-block-wrapper {
+    position: relative;
+    margin: 16px 0;
+}
+
+pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px;
+    padding-right: 48px; /* 복사 버튼을 위한 여백 */
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 0;
+    border: 1px solid #334155;
+}
+
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #2563eb;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.copy-button:hover {
+    background: #1d4ed8;
+}
+
+.copy-button:active {
+    background: #1e40af;
+}
+
+.copy-button.copied {
+    background: #059669;
+}
+
+      code {
+          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          font-size: 14px;
+          line-height: 1.5;
+      }
+
+      p code {
+          background: #f1f5f9;
+          color: #1e293b;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 0.9em;
+      }
+
+      /* 투표 옵션 스타일 */
+      .poll-option {
+          font-size: 20px;
+          padding: 15px 20px;
+          margin: 10px 0;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid transparent;
+      }
+
+      .poll-option:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+      }
+
+      .poll-option.selected {
+          background: rgba(59, 130, 246, 0.3);
+          border-color: #3b82f6;
+      }
+
+
+  
+      
+          body {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          }
+
+          .slide-container {
+              background: rgba(255, 255, 255, 0.95);
+          }
+
+          h1 {
+              font-size: 3rem;
+              color: #1e40af;
+              margin-bottom: 10px;
+              font-weight: 700;
+              text-align: center;
+          }
+
+          h2 {
+              font-size: 2.5rem;
+              color: #2563eb;
+              margin-bottom: 25px;
+              font-weight: 600;
+          }
+
+          h3 {
+              font-size: 1.8rem;
+              color: #3730a3;
+              margin-bottom: 20px;
+              font-weight: 500;
+          }
+      
+
+      /* 반응형 추가 스타일 */
+      @media (max-width: 768px) {
+          h1 { font-size: 2.2rem; }
+          h2 { font-size: 1.8rem; }
+          h3 { font-size: 1.4rem; }
+          .slide-container { padding: 40px 25px; }
+      }
+
+      @media (max-width: 480px) {
+          h1 { font-size: 1.8rem; }
+          h2 { font-size: 1.4rem; }
+          h3 { font-size: 1.2rem; }
+          .slide-container { padding: 30px 20px; }
+      }
+
+      /* 접근성 */
+      .slide-container:focus {
+          outline: 3px solid #3b82f6;
+          outline-offset: 5px;
+      }
+
+      /* 애니메이션 */
+      @keyframes slideIn {
+          from {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      .slide-container > * {
+          animation: slideIn 0.6s ease forwards;
+      }
+  </style>
+</head>
+<body class="general-slide">
+  <div class="slide-container" tabindex="0">
+      <h1>① 명확하고 구체적 질문 - 기본 중의 기본</h1>
+
+<p>AI에게 모호하게 질문하면, 모호한 답변이 돌아옵니다.</p>
+<p>원하는 결과물을 얻기 위해 6하 원칙을 떠올리며 명확하고 구체적으로 질문하는 것이 가장 중요합니다.</p>
+
+<h4>❌ 나쁜 예</h4>
+
+
+                <div class="code-block-wrapper">
+                  <pre><code>설교 준비 도와줘.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
+
+<h4>✅ 좋은 예</h4>
+
+
+                <div class="code-block-wrapper">
+                  <pre><code>이번 주일 설교 본문인 요한복음 3장 16절에 대한 3가지 핵심 주제와 각 주제에 맞는 현대적인 예화 1개씩 제안해 줘.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
+
+<h4>💡 핵심 고려사항</h4>
+
+<p>'누가, 언제, 어디서, 무엇을, 어떻게, 왜'를 생각하며 질문을 구체화하면 AI가 훨씬 정확하게 의도를 파악합니다.</p>
+
+      </div>
+
+    <script>
+      // 키보드 네비게이션
+      document.addEventListener('keydown', function(e) {
+          switch(e.key) {
+              case 'ArrowRight':
+              case ' ':
+                  window.location.href = 'slide-3-4.html';
+                  break;
+              case 'ArrowLeft':
+                  window.location.href = 'slide-3-2.html';
+                  break;
+              case 'Home':
+                  window.location.href = 'slide-0-0.html';
+                  break;
+              case 'End':
+                  window.location.href = 'slide-9-7.html';
+                  break;
+          }
+      });
+
+      // 클릭으로 다음 슬라이드 (투표 슬라이드가 아닌 경우)
+      
+      document.querySelector('.slide-container').addEventListener('click', function(e) {
+          // 코드 블록 복사 버튼이나 코드 블록 자체를 클릭한 경우 슬라이드 이동 방지
+          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) {
+              return;
+          }
+          window.location.href = 'slide-3-4.html';
+      });
+      
+
+      // 로드 애니메이션
+      window.addEventListener('load', function() {
+          document.body.style.opacity = '0';
+          document.body.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => {
+              document.body.style.opacity = '1';
+          }, 100);
+      });
+
+            // 코드 복사 기능
+                  function copyCode(button) {
+          
+      }
+
+      
+    </script>
+</body>
+</html>

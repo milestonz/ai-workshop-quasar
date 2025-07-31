@@ -1,0 +1,42 @@
+export const generateHTMLTemplate = (
+  htmlContent: string,
+  type: string,
+  background: string,
+): string => {
+  const template = [
+    '<!DOCTYPE html>',
+    '<html lang="ko">',
+    '<head>',
+    '    <meta charset="UTF-8">',
+    '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    '    <title>슬라이드</title>',
+    '    <link rel="stylesheet" href="common-styles.css">',
+    '    <style>',
+    '        .slide-' + type + ' {',
+    '            background: ' + background + ';',
+    '        }',
+    '    </style>',
+    '</head>',
+    '<body>',
+    '    <div class="slide-container">',
+    '        <div class="slide slide-' + type + '">',
+    '            <div class="content">',
+    '                ' + htmlContent,
+    '            </div>',
+    '        </div>',
+    '    </div>',
+    '    <script>',
+    '        function copyCode(codeContent) {',
+    '            navigator.clipboard.writeText(codeContent).then(() => {',
+    '                console.log("코드가 복사되었습니다.");',
+    '            }).catch(err => {',
+    '                console.error("복사 실패:", err);',
+    '            });',
+    '        }',
+    '    </script>',
+    '</body>',
+    '</html>',
+  ].join('\n');
+
+  return template;
+};

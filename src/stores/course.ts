@@ -22,7 +22,36 @@ export const useCourseStore = defineStore('course', () => {
   // MD 파일에서 목차를 동적으로 생성하는 함수
   const generateCourseOutlineFromMD = async (): Promise<Lesson[]> => {
     try {
-      // JSON 파일에서 MD 파일 목록 읽기
+      // 1. 캐시 무효화 확인
+      try {
+        const cacheResponse = await fetch('/slides/toc-cache-invalidation.json');
+        if (cacheResponse.ok) {
+          const cacheData = await cacheResponse.json();
+          console.log(`🔄 캐시 무효화 감지: ${cacheData.lastBuild}`);
+        }
+      } catch (error) {
+        console.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
+      }
+
+      // 2. 통합 사이드바 데이터 가져오기 (우선 시도)
+      let sidebarData = null;
+      try {
+        const sidebarResponse = await fetch('/slides/sidebar-data.json');
+        if (sidebarResponse.ok) {
+          sidebarData = await sidebarResponse.json();
+          console.log(
+            '✅ 통합 사이드바 데이터 로드 완료:',
+            sidebarData.slides.length,
+            '개 슬라이드,',
+            Object.keys(sidebarData.chapters).length,
+            '개 챕터',
+          );
+        }
+      } catch (error) {
+        console.warn('⚠️ 통합 사이드바 데이터 로드 실패:', error);
+      }
+
+      // 3. 파일 목록 가져오기
       let mdFiles: string[] = [];
       try {
         const response = await fetch('/slides/files.json');
@@ -40,16 +69,39 @@ export const useCourseStore = defineStore('course', () => {
           'slide-0-0.md',
           'slide-0-1.md',
           'slide-0-2.md',
+          'slide-0-3.md',
+          'slide-0-4.md',
+          'slide-0-5.md',
+          'slide-0-6.md',
           'slide-1-0.md',
           'slide-1-1.md',
           'slide-1-2.md',
           'slide-1-3.md',
           'slide-1-4.md',
+          'slide-1-5.md',
+          'slide-1-6.md',
+          'slide-1-7.md',
+          'slide-1-8.md',
+          'slide-1-9.md',
+          'slide-1-10.md',
+          'slide-1-11.md',
+          'slide-1-12.md',
+          'slide-1-13.md',
+          'slide-1-14.md',
           'slide-2-0.md',
           'slide-2-1.md',
           'slide-2-2.md',
           'slide-2-3.md',
           'slide-2-4.md',
+          'slide-2-5.md',
+          'slide-2-6.md',
+          'slide-2-7.md',
+          'slide-2-8.md',
+          'slide-2-9.md',
+          'slide-2-10.md',
+          'slide-2-11.md',
+          'slide-2-12.md',
+          'slide-2-13.md',
           'slide-3-0.md',
           'slide-3-1.md',
           'slide-3-2.md',
@@ -62,8 +114,40 @@ export const useCourseStore = defineStore('course', () => {
           'slide-4-0.md',
           'slide-4-1.md',
           'slide-4-2.md',
+          'slide-4-3.md',
           'slide-5-0.md',
           'slide-5-1.md',
+          'slide-6-0.md',
+          'slide-6-1.md',
+          'slide-6-2.md',
+          'slide-6-3.md',
+          'slide-6-4.md',
+          'slide-6-5.md',
+          'slide-6-6.md',
+          'slide-6-7.md',
+          'slide-7-0.md',
+          'slide-7-1.md',
+          'slide-7-2.md',
+          'slide-7-3.md',
+          'slide-7-4.md',
+          'slide-7-5.md',
+          'slide-7-6.md',
+          'slide-7-7.md',
+          'slide-7-8.md',
+          'slide-7-9.md',
+          'slide-7-10.md',
+          'slide-7-11.md',
+          'slide-7-12.md',
+          'slide-7-13.md',
+          'slide-7-14.md',
+          'slide-7-15.md',
+          'slide-8-0.md',
+          'slide-8-1.md',
+          'slide-8-2.md',
+          'slide-8-3.md',
+          'slide-8-4.md',
+          'slide-8-5.md',
+          'slide-8-6.md',
         ];
       }
 
@@ -102,13 +186,48 @@ export const useCourseStore = defineStore('course', () => {
         let chapterTitle = `${chapterNum}. Chapter ${chapterNum}`;
         try {
           const firstSlideContent = await getSlideContentFromMD(`${chapterNum}-0`);
-          // ### 로 시작하는 제목을 우선적으로 찾기
-          const titleMatch = firstSlideContent.match(/^###\s*(.+)$/m);
-          if (titleMatch && titleMatch[1]) {
-            const extractedTitle = titleMatch[1].trim();
-            if (extractedTitle.length > 0) {
-              chapterTitle = `${chapterNum}. ${extractedTitle}`;
+
+          // Chapter 제목 추출 로직 - HTML 제목 태그 우선
+          let extractedTitle = '';
+
+          // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
+          const htmlTitleMatch = firstSlideContent.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
+          if (htmlTitleMatch && htmlTitleMatch[1]) {
+            extractedTitle = htmlTitleMatch[1].trim();
+            console.log(`📝 Chapter 제목 추출 (HTML): ${extractedTitle}`);
+          }
+
+          // 2. HTML 제목이 없으면 마크다운 제목 찾기
+          if (!extractedTitle) {
+            // ### 로 시작하는 제목을 우선적으로 찾기
+            const titleMatch = firstSlideContent.match(/^###\s*(.+)$/m);
+            if (titleMatch && titleMatch[1]) {
+              extractedTitle = titleMatch[1].trim();
+              console.log(`📝 Chapter 제목 추출 (###): ${extractedTitle}`);
             }
+          }
+
+          // 3. ### 제목이 없으면 ## 제목 찾기
+          if (!extractedTitle) {
+            const h2Match = firstSlideContent.match(/^##\s*(.+)$/m);
+            if (h2Match && h2Match[1]) {
+              extractedTitle = h2Match[1].trim();
+              console.log(`📝 Chapter 제목 추출 (##): ${extractedTitle}`);
+            }
+          }
+
+          // 4. ## 제목도 없으면 # 제목 찾기
+          if (!extractedTitle) {
+            const h1Match = firstSlideContent.match(/^#\s*(.+)$/m);
+            if (h1Match && h1Match[1]) {
+              extractedTitle = h1Match[1].trim();
+              console.log(`📝 Chapter 제목 추출 (#): ${extractedTitle}`);
+            }
+          }
+
+          if (extractedTitle.length > 0) {
+            chapterTitle = `${chapterNum}. ${extractedTitle}`;
+            console.log(`📝 Chapter ${chapterNum} 제목 설정: ${chapterTitle}`);
           }
         } catch (error) {
           console.warn(`Chapter ${chapterNum} 제목을 가져올 수 없습니다:`, error);
@@ -129,17 +248,55 @@ export const useCourseStore = defineStore('course', () => {
               : file.replace('.md', '');
 
             const content = await getSlideContentFromMD(componentKey);
-            // ### 로 시작하는 제목을 우선적으로 찾기
-            const titleMatch = content.match(/^###\s*(.+)$/m);
-            let title = titleMatch && titleMatch[1] ? titleMatch[1].trim() : '';
 
-            // ### 제목이 없으면 파일명에서 슬라이드 번호 추출 (예: slide-3-3.md -> 3-3)
+            // 제목 추출 로직 - HTML 제목 태그 우선
+            let title = '';
+
+            // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
+            const htmlTitleMatch = content.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
+            if (htmlTitleMatch && htmlTitleMatch[1]) {
+              title = htmlTitleMatch[1].trim();
+              console.log(`📝 제목 추출 (HTML): ${title}`);
+            }
+
+            // 2. HTML 제목이 없으면 마크다운 제목 찾기
+            if (!title) {
+              // ### 로 시작하는 제목을 우선적으로 찾기 (첫 번째 줄)
+              const titleMatch = content.match(/^###\s*(.+)$/m);
+              if (titleMatch && titleMatch[1]) {
+                title = titleMatch[1].trim();
+                console.log(`📝 제목 추출 (###): ${title}`);
+              }
+            }
+
+            // 3. ### 제목이 없으면 ## 제목 찾기
+            if (!title) {
+              const h2Match = content.match(/^##\s*(.+)$/m);
+              if (h2Match && h2Match[1]) {
+                title = h2Match[1].trim();
+                console.log(`📝 제목 추출 (##): ${title}`);
+              }
+            }
+
+            // 4. ## 제목도 없으면 # 제목 찾기
+            if (!title) {
+              const h1Match = content.match(/^#\s*(.+)$/m);
+              if (h1Match && h1Match[1]) {
+                title = h1Match[1].trim();
+                console.log(`📝 제목 추출 (#): ${title}`);
+              }
+            }
+
+            // 5. 마크다운 제목이 없으면 파일명에서 슬라이드 번호 추출
             if (!title) {
               const slideMatch = file.match(/slide-(\d+)-(\d+)\.md/);
               if (slideMatch && slideMatch[1] && slideMatch[2]) {
-                title = `${slideMatch[1]}-${slideMatch[2]}`;
+                // 배열 인덱스를 사용하여 슬라이드 번호 표시
+                title = `${slideMatch[1]}-${i}`;
+                console.log(`📝 제목 추출 (파일명): ${title}`);
               } else {
                 title = `슬라이드 ${i + 1}`;
+                console.log(`📝 제목 추출 (기본): ${title}`);
               }
             }
 
@@ -160,7 +317,8 @@ export const useCourseStore = defineStore('course', () => {
             const slideMatch = file.match(/slide-(\d+)-(\d+)\.md/);
             let fallbackTitle = `슬라이드 ${i + 1}`;
             if (slideMatch && slideMatch[1] && slideMatch[2]) {
-              fallbackTitle = `${slideMatch[1]}-${slideMatch[2]}`;
+              // 배열 인덱스를 사용하여 슬라이드 번호 표시
+              fallbackTitle = `${slideMatch[1]}-${i}`;
             }
             slideTitles.push(fallbackTitle);
             slideData.push({
@@ -193,14 +351,258 @@ export const useCourseStore = defineStore('course', () => {
     return [
       {
         title: '0. INTRO',
-        slides: 3,
+        slides: 7,
         completed: false,
         videoUrl: null,
-        slideTitles: ['워크샵 소개', '오늘의 여정', '워크샵 구성'],
+        slideTitles: [
+          '워크샵 소개',
+          '오늘의 여정',
+          '워크샵 구성',
+          'AI 시대의 도전과 기회',
+          '목회자의 AI 활용 사례',
+          'AI가 바꾸는 목회 패러다임',
+          '생성형AI 이론',
+        ],
         slideData: [
           { title: '워크샵 소개', videoUrl: null, hasVideo: false },
           { title: '오늘의 여정', videoUrl: null, hasVideo: false },
           { title: '워크샵 구성', videoUrl: null, hasVideo: false },
+          { title: 'AI 시대의 도전과 기회', videoUrl: null, hasVideo: false },
+          { title: '목회자의 AI 활용 사례', videoUrl: null, hasVideo: false },
+          { title: 'AI가 바꾸는 목회 패러다임', videoUrl: null, hasVideo: false },
+          { title: '생성형AI 이론', videoUrl: null, hasVideo: false },
+        ],
+      },
+      {
+        title: '1. WHY',
+        slides: 15,
+        completed: false,
+        videoUrl: null,
+        slideTitles: [
+          '생성형AI란?',
+          'AI 시대의 도전과 기회',
+          '목회자의 AI 활용 사례',
+          'AI가 바꾸는 목회 패러다임',
+          '1단계: 성경 전체를 읽히기 (데이터 수집)',
+          '2단계: 단어 연결 패턴 배우기',
+          '3단계: 다음 단어 맞추기 학습',
+          '4단계: 문맥 이해하기',
+          '5단계: 다양한 번역본으로 학습',
+          '6단계: 질문-답변 패턴 학습',
+          '7단계: 실제 적용 예시',
+          '중요한 깨달음',
+          '결론',
+          'UX 시나리오를 기반으로 AI 활용법',
+          '시나리오: 주일 설교 준비',
+        ],
+        slideData: [
+          { title: '생성형AI란?', videoUrl: null, hasVideo: false },
+          { title: 'AI 시대의 도전과 기회', videoUrl: null, hasVideo: false },
+          { title: '목회자의 AI 활용 사례', videoUrl: null, hasVideo: false },
+          { title: 'AI가 바꾸는 목회 패러다임', videoUrl: null, hasVideo: false },
+          { title: '1단계: 성경 전체를 읽히기 (데이터 수집)', videoUrl: null, hasVideo: false },
+          { title: '2단계: 단어 연결 패턴 배우기', videoUrl: null, hasVideo: false },
+          { title: '3단계: 다음 단어 맞추기 학습', videoUrl: null, hasVideo: false },
+          { title: '4단계: 문맥 이해하기', videoUrl: null, hasVideo: false },
+          { title: '5단계: 다양한 번역본으로 학습', videoUrl: null, hasVideo: false },
+          { title: '6단계: 질문-답변 패턴 학습', videoUrl: null, hasVideo: false },
+          { title: '7단계: 실제 적용 예시', videoUrl: null, hasVideo: false },
+          { title: '중요한 깨달음', videoUrl: null, hasVideo: false },
+          { title: '결론', videoUrl: null, hasVideo: false },
+          { title: 'UX 시나리오를 기반으로 AI 활용법', videoUrl: null, hasVideo: false },
+          { title: '시나리오: 주일 설교 준비', videoUrl: null, hasVideo: false },
+        ],
+      },
+      {
+        title: '2. WHAT',
+        slides: 14,
+        completed: false,
+        videoUrl: null,
+        slideTitles: [
+          'AI 시대, 목회자를 위한 프롬프팅 10가지 비법',
+          '1. 명확하고 구체적 질문 - 기본 중의 기본',
+          '2. 역할 부여 - "당신은 ○○ 전문가입니다"',
+          '3. 대상과 맥락 설명 - 청중과 상황 설정',
+          '4. 열린 질문 - 창의적 답변 유도',
+          '5. 예시 제공 - Few-shot Prompting',
+          '6. 어조와 스타일 - 목적에 맞는 톤',
+          '7. 원칙 또는 제약 - 경계선 설정',
+          '8. 시나리오 활용 - 가상 상황 설정',
+          '9. 구조화된 지시 - 단계별 명령',
+          '10. 비교하기 - 옵션 분석 요청',
+          '마무리',
+          '추가 슬라이드',
+        ],
+        slideData: [
+          { title: 'AI 시대, 목회자를 위한 프롬프팅 10가지 비법', videoUrl: null, hasVideo: false },
+          { title: '1. 명확하고 구체적 질문 - 기본 중의 기본', videoUrl: null, hasVideo: false },
+          { title: '2. 역할 부여 - "당신은 ○○ 전문가입니다"', videoUrl: null, hasVideo: false },
+          { title: '3. 대상과 맥락 설명 - 청중과 상황 설정', videoUrl: null, hasVideo: false },
+          { title: '4. 열린 질문 - 창의적 답변 유도', videoUrl: null, hasVideo: false },
+          { title: '5. 예시 제공 - Few-shot Prompting', videoUrl: null, hasVideo: false },
+          { title: '6. 어조와 스타일 - 목적에 맞는 톤', videoUrl: null, hasVideo: false },
+          { title: '7. 원칙 또는 제약 - 경계선 설정', videoUrl: null, hasVideo: false },
+          { title: '8. 시나리오 활용 - 가상 상황 설정', videoUrl: null, hasVideo: false },
+          { title: '9. 구조화된 지시 - 단계별 명령', videoUrl: null, hasVideo: false },
+          { title: '10. 비교하기 - 옵션 분석 요청', videoUrl: null, hasVideo: false },
+          { title: '마무리', videoUrl: null, hasVideo: false },
+          { title: '추가 슬라이드', videoUrl: null, hasVideo: false },
+        ],
+      },
+      {
+        title: '3. HOW',
+        slides: 9,
+        completed: false,
+        videoUrl: null,
+        slideTitles: Array.from({ length: 9 }, (_, i) => `슬라이드 ${i + 1}`),
+        slideData: Array.from({ length: 9 }, (_, i) => ({
+          title: `슬라이드 ${i + 1}`,
+          videoUrl: null,
+          hasVideo: false,
+        })),
+      },
+      {
+        title: '4. TOOLS',
+        slides: 4,
+        completed: false,
+        videoUrl: null,
+        slideTitles: Array.from({ length: 4 }, (_, i) => `슬라이드 ${i + 1}`),
+        slideData: Array.from({ length: 4 }, (_, i) => ({
+          title: `슬라이드 ${i + 1}`,
+          videoUrl: null,
+          hasVideo: false,
+        })),
+      },
+      {
+        title: '5. PRACTICE',
+        slides: 2,
+        completed: false,
+        videoUrl: null,
+        slideTitles: Array.from({ length: 2 }, (_, i) => `슬라이드 ${i + 1}`),
+        slideData: Array.from({ length: 2 }, (_, i) => ({
+          title: `슬라이드 ${i + 1}`,
+          videoUrl: null,
+          hasVideo: false,
+        })),
+      },
+      {
+        title: '6. UX 시나리오',
+        slides: 8,
+        completed: false,
+        videoUrl: null,
+        slideTitles: [
+          'UX 시나리오를 기반으로 AI 활용법',
+          '시나리오: 주일 설교 준비',
+          'Bad Example: AI에게 모든 것을 떠넘기는 방식',
+          "Good Example: 구체적으로 '요청'하는 방식",
+          "Best Example: AI와 '대화'하며 생각을 증폭시키는 방식",
+          'Best Example: 프롬프트 예시',
+          'Best Example: 무엇이 최고인가?',
+          '한눈에 보는 비교표',
+        ],
+        slideData: [
+          { title: 'UX 시나리오를 기반으로 AI 활용법', videoUrl: null, hasVideo: false },
+          { title: '시나리오: 주일 설교 준비', videoUrl: null, hasVideo: false },
+          { title: 'Bad Example: AI에게 모든 것을 떠넘기는 방식', videoUrl: null, hasVideo: false },
+          { title: "Good Example: 구체적으로 '요청'하는 방식", videoUrl: null, hasVideo: false },
+          {
+            title: "Best Example: AI와 '대화'하며 생각을 증폭시키는 방식",
+            videoUrl: null,
+            hasVideo: false,
+          },
+          { title: 'Best Example: 프롬프트 예시', videoUrl: null, hasVideo: false },
+          { title: 'Best Example: 무엇이 최고인가?', videoUrl: null, hasVideo: false },
+          { title: '한눈에 보는 비교표', videoUrl: null, hasVideo: false },
+        ],
+      },
+      {
+        title: '7. AI 툴 복합 적용 시연/실습 (12가지 시나리오)',
+        slides: 16,
+        completed: false,
+        videoUrl: null,
+        slideTitles: [
+          'AI 툴 복합 적용 시연/실습 (12가지 시나리오)',
+          'LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)',
+          '1. 이준호 목사: 주일설교 주제 선정',
+          '2. 김은혜 목사: 설교문 구조화',
+          '3. 김 목사(58세): 기존 설교 리프레시',
+          'LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)',
+          '4. 박성민 목사: 성경공부 교재 제작',
+          '5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)',
+          '6. 류 목사(51세): 성도 위로 메시지 & 기도 배경음악',
+          '7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화',
+          '8. 신혜숙 목사: 상담 준비',
+          'LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)',
+          '9. 정태영 목사: 새신자 환영 시스템 구축',
+          '10. 윤석진 목사: 교회 행사 기획',
+          '11. 이미영 목사: 어린이 교육 커리큘럼',
+          '12. 김도현 목사: 온라인 목양 & 미래 조망',
+        ],
+        slideData: [
+          { title: 'AI 툴 복합 적용 시연/실습 (12가지 시나리오)', videoUrl: null, hasVideo: false },
+          {
+            title: 'LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          { title: '1. 이준호 목사: 주일설교 주제 선정', videoUrl: null, hasVideo: false },
+          { title: '2. 김은혜 목사: 설교문 구조화', videoUrl: null, hasVideo: false },
+          { title: '3. 김 목사(58세): 기존 설교 리프레시', videoUrl: null, hasVideo: false },
+          {
+            title: 'LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          { title: '4. 박성민 목사: 성경공부 교재 제작', videoUrl: null, hasVideo: false },
+          {
+            title: '5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          {
+            title: '6. 류 목사(51세): 성도 위로 메시지 & 기도 배경음악',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          {
+            title: '7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          { title: '8. 신혜숙 목사: 상담 준비', videoUrl: null, hasVideo: false },
+          {
+            title: 'LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)',
+            videoUrl: null,
+            hasVideo: false,
+          },
+          { title: '9. 정태영 목사: 새신자 환영 시스템 구축', videoUrl: null, hasVideo: false },
+          { title: '10. 윤석진 목사: 교회 행사 기획', videoUrl: null, hasVideo: false },
+          { title: '11. 이미영 목사: 어린이 교육 커리큘럼', videoUrl: null, hasVideo: false },
+          { title: '12. 김도현 목사: 온라인 목양 & 미래 조망', videoUrl: null, hasVideo: false },
+        ],
+      },
+      {
+        title: '8. 실전 AI 활용 워크숍: 청년 수련회 기획',
+        slides: 7,
+        completed: false,
+        videoUrl: null,
+        slideTitles: [
+          '실전 AI 활용 워크숍: 청년 수련회 기획',
+          '1️⃣ ChatGPT 창의적 기획',
+          '2️⃣ Perplexity 실시간 정보 수집',
+          '3️⃣ 멀티미디어 홍보 패키지',
+          '3️⃣ 멀티미디어 홍보 패키지 (계속)',
+          '4️⃣ 예산 최적화 계획',
+          '8-6. 수련회 예산 계획 결과',
+        ],
+        slideData: [
+          { title: '실전 AI 활용 워크숍: 청년 수련회 기획', videoUrl: null, hasVideo: false },
+          { title: '1️⃣ ChatGPT 창의적 기획', videoUrl: null, hasVideo: false },
+          { title: '2️⃣ Perplexity 실시간 정보 수집', videoUrl: null, hasVideo: false },
+          { title: '3️⃣ 멀티미디어 홍보 패키지', videoUrl: null, hasVideo: false },
+          { title: '3️⃣ 멀티미디어 홍보 패키지 (계속)', videoUrl: null, hasVideo: false },
+          { title: '4️⃣ 예산 최적화 계획', videoUrl: null, hasVideo: false },
+          { title: '8-6. 수련회 예산 계획 결과', videoUrl: null, hasVideo: false },
         ],
       },
     ];
@@ -210,8 +612,13 @@ export const useCourseStore = defineStore('course', () => {
   const initializeCourseOutline = async () => {
     try {
       const generatedLessons = await generateCourseOutlineFromMD();
-      lessons.value = generatedLessons;
-      console.log('✅ MD 파일 기반 목차 생성 완료:', generatedLessons);
+      if (generatedLessons && generatedLessons.length > 0) {
+        lessons.value = generatedLessons;
+        console.log('✅ MD 파일 기반 목차 생성 완료:', generatedLessons);
+      } else {
+        console.warn('⚠️ MD 파일에서 목차를 생성할 수 없어 기본 목차를 사용합니다.');
+        lessons.value = generateDefaultLessons();
+      }
     } catch (error) {
       console.error('❌ 목차 초기화 실패:', error);
       lessons.value = generateDefaultLessons();
@@ -1224,7 +1631,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     { deep: true },
   );
 
-  // MD 파일에서 첫 번째 줄을 읽어와서 제목 추출
+  // MD 파일에서 제목 추출 - HTML 제목 태그 우선
   const getSlideTitleFromMD = async (componentKey: string): Promise<string> => {
     try {
       const response = await fetch(`/slides/slide-${componentKey}.md`);
@@ -1233,15 +1640,30 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
       }
 
       const content = await response.text();
-      const lines = content.split('\n');
 
-      // 첫 번째 줄에서 # 제거하고 제목 추출
-      const firstLine = lines[0]?.trim();
-      if (firstLine && firstLine.startsWith('#')) {
-        return firstLine.replace(/^#+\s*/, '').trim();
+      // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
+      const htmlTitleMatch = content.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
+      if (htmlTitleMatch && htmlTitleMatch[1]) {
+        return htmlTitleMatch[1].trim();
       }
 
-      // #이 없으면 첫 번째 줄 그대로 사용
+      // 2. HTML 제목이 없으면 마크다운 제목 찾기
+      const lines = content.split('\n');
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('### ')) {
+          return trimmedLine.replace(/^###\s*/, '').trim();
+        }
+        if (trimmedLine.startsWith('## ')) {
+          return trimmedLine.replace(/^##\s*/, '').trim();
+        }
+        if (trimmedLine.startsWith('# ')) {
+          return trimmedLine.replace(/^#\s*/, '').trim();
+        }
+      }
+
+      // 3. 제목이 없으면 첫 번째 줄 사용
+      const firstLine = lines[0]?.trim();
       return firstLine || '[제목없음]';
     } catch (error) {
       console.error('MD 파일 읽기 실패:', error);
@@ -1249,7 +1671,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     }
   };
 
-  // Chapter 제목을 MD 파일에서 읽어오는 함수
+  // Chapter 제목을 MD 파일에서 읽어오는 함수 - HTML 제목 태그 우선
   const getChapterTitleFromMD = async (lessonIndex: number): Promise<string> => {
     try {
       const lesson = lessons.value[lessonIndex];
@@ -1264,9 +1686,16 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
       }
 
       const content = await response.text();
-      const lines = content.split('\n');
 
-      // 첫 번째 # 제목을 찾아서 Chapter 제목으로 사용 (## 제목 우선)
+      // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
+      const htmlTitleMatch = content.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
+      if (htmlTitleMatch && htmlTitleMatch[1]) {
+        const title = htmlTitleMatch[1].trim();
+        return `${lessonIndex}. ${title}`;
+      }
+
+      // 2. HTML 제목이 없으면 마크다운 제목 찾기
+      const lines = content.split('\n');
       for (const line of lines) {
         const trimmedLine = line.trim();
         if (trimmedLine.startsWith('## ')) {
@@ -1279,7 +1708,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
         }
       }
 
-      // 위 조건에 맞지 않으면 첫 번째 # 제목에서 번호 부분을 제거
+      // 3. 위 조건에 맞지 않으면 첫 번째 # 제목에서 번호 부분을 제거
       const firstLine = lines[0]?.trim();
       if (firstLine && firstLine.startsWith('#')) {
         const title = firstLine.replace(/^#+\s*/, '').trim();
@@ -1291,7 +1720,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
         return `${lessonIndex}. ${title}`;
       }
 
-      // 아무것도 없으면 기존 제목 사용
+      // 4. 아무것도 없으면 기존 제목 사용
       return lesson.title || '[제목없음]';
     } catch (error) {
       console.error('Chapter 제목 읽기 실패:', error);
@@ -1344,6 +1773,29 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     }
   };
 
+  // 스마트 목차 지원을 위한 추가 함수들
+  const navigateToSlide = (lessonIndex: number, slideIndex: number) => {
+    setCurrentLesson(lessonIndex);
+    setCurrentSlide(slideIndex);
+  };
+
+  const getCurrentSlideId = (): string => {
+    return `${currentLesson.value}-${currentSlide.value}`;
+  };
+
+  const isFirstSlide = computed(() => {
+    return currentLesson.value === 0 && currentSlide.value === 0;
+  });
+
+  const isLastSlide = computed(() => {
+    const lastLessonIndex = lessons.value.length - 1;
+    const lastLesson = lessons.value[lastLessonIndex];
+    return (
+      currentLesson.value === lastLessonIndex &&
+      currentSlide.value === (lastLesson?.slides || 0) - 1
+    );
+  });
+
   return {
     // 상태
     currentLesson,
@@ -1364,6 +1816,8 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     currentSlideData,
     hasVideo,
     slideProgress,
+    isFirstSlide,
+    isLastSlide,
 
     // 액션
     setCurrentLesson,
@@ -1371,6 +1825,8 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     addSlideToLesson,
     nextSlide,
     prevSlide,
+    navigateToSlide,
+    getCurrentSlideId,
     togglePlaying,
     toggleSidebar,
     togglePresentationMode,

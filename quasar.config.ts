@@ -2,6 +2,7 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers';
+import type { UserConfig } from 'vite';
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -80,6 +81,12 @@ export default defineConfig((/* ctx */) => {
       open: true, // opens browser window automatically
     },
 
+    // Vite 설정 확장 (현재는 사용하지 않음)
+    extendViteConf(viteConf: UserConfig) {
+      // API 미들웨어는 제거됨 - 파일 시스템 접근은 Tauri 환경에서만 가능
+      console.log('🔧 Vite 설정 확장 완료');
+    },
+
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {},
@@ -95,7 +102,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations

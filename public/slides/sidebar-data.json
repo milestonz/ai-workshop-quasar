@@ -1,0 +1,1767 @@
+{
+  "slides": [
+    {
+      "fileName": "slide-0-0.md",
+      "chapter": 0,
+      "slide": 0,
+      "id": "0-0",
+      "title": "1부 : 09:30 ~ 11:50",
+      "path": "/slides/slide-0-0.md",
+      "htmlPath": "/generated/slides/slide-0-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-0-1.md",
+      "chapter": 0,
+      "slide": 1,
+      "id": "0-1",
+      "title": "📋 목차",
+      "path": "/slides/slide-0-1.md",
+      "htmlPath": "/generated/slides/slide-0-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-0-2.md",
+      "chapter": 0,
+      "slide": 2,
+      "id": "0-2",
+      "title": "(주) 유니시스 부사장 | 플랫폼사업본부",
+      "path": "/slides/slide-0-2.md",
+      "htmlPath": "/generated/slides/slide-0-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-0-3.md",
+      "chapter": 0,
+      "slide": 3,
+      "id": "0-3",
+      "title": "질문1 : 목회 사역에 AI(챗GPT 등)를 어느 정도 활용하고 계신가요?",
+      "path": "/slides/slide-0-3.md",
+      "htmlPath": "/generated/slides/slide-0-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-0-4.md",
+      "chapter": 0,
+      "slide": 4,
+      "id": "0-4",
+      "title": "질문2 : 목회 사역에 AI(챗GPT 등)를 어느 정도 활용하고 계신가요?",
+      "path": "/slides/slide-0-4.md",
+      "htmlPath": "/generated/slides/slide-0-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-0-5.md",
+      "chapter": 0,
+      "slide": 5,
+      "id": "0-5",
+      "title": "질문3 : AI를 목회 사역에 도입하는 것에 대해 어떻게 생각하시나요?",
+      "path": "/slides/slide-0-5.md",
+      "htmlPath": "/generated/slides/slide-0-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-0-6.md",
+      "chapter": 0,
+      "slide": 6,
+      "id": "0-6",
+      "title": "질문4 : 만약 AI 목회 비서가 생긴다면, 가장 먼저 맡기고 싶은 업무는?",
+      "path": "/slides/slide-0-6.md",
+      "htmlPath": "/generated/slides/slide-0-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-1-0.md",
+      "chapter": 1,
+      "slide": 0,
+      "id": "1-0",
+      "title": "Why?",
+      "path": "/slides/slide-1-0.md",
+      "htmlPath": "/generated/slides/slide-1-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-1-1.md",
+      "chapter": 1,
+      "slide": 1,
+      "id": "1-1",
+      "title": "최근에 감탄하신 적이 있으신가요?",
+      "path": "/slides/slide-1-1.md",
+      "htmlPath": "/generated/slides/slide-1-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-1-2.md",
+      "chapter": 1,
+      "slide": 2,
+      "id": "1-2",
+      "title": "- AI 사용 경험 목회자 비율 : **47%**",
+      "path": "/slides/slide-1-2.md",
+      "htmlPath": "/generated/slides/slide-1-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-1-3.md",
+      "chapter": 1,
+      "slide": 3,
+      "id": "1-3",
+      "title": "AI의 의미",
+      "path": "/slides/slide-1-3.md",
+      "htmlPath": "/generated/slides/slide-1-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-1-4.md",
+      "chapter": 1,
+      "slide": 4,
+      "id": "1-4",
+      "title": "**구글에서 검색 : '챗지피티', 'ChatGPT'**",
+      "path": "/slides/slide-1-4.md",
+      "htmlPath": "/generated/slides/slide-1-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-0.md",
+      "chapter": 2,
+      "slide": 0,
+      "id": "2-0",
+      "title": "생성형AI 이론",
+      "path": "/slides/slide-2-0.md",
+      "htmlPath": "/generated/slides/slide-2-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-2-1.md",
+      "chapter": 2,
+      "slide": 1,
+      "id": "2-1",
+      "title": "1단계: 성경 전체를 읽히기 (데이터 수집)",
+      "path": "/slides/slide-2-1.md",
+      "htmlPath": "/generated/slides/slide-2-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-2-2.md",
+      "chapter": 2,
+      "slide": 2,
+      "id": "2-2",
+      "title": "2단계: 단어 연결 패턴 배우기",
+      "path": "/slides/slide-2-2.md",
+      "htmlPath": "/generated/slides/slide-2-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-3.md",
+      "chapter": 2,
+      "slide": 3,
+      "id": "2-3",
+      "title": "3단계: 다음 단어 맞추기 학습",
+      "path": "/slides/slide-2-3.md",
+      "htmlPath": "/generated/slides/slide-2-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-4.md",
+      "chapter": 2,
+      "slide": 4,
+      "id": "2-4",
+      "title": "4단계: 문맥 이해하기",
+      "path": "/slides/slide-2-4.md",
+      "htmlPath": "/generated/slides/slide-2-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-5.md",
+      "chapter": 2,
+      "slide": 5,
+      "id": "2-5",
+      "title": "요한복음 3:16",
+      "path": "/slides/slide-2-5.md",
+      "htmlPath": "/generated/slides/slide-2-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-6.md",
+      "chapter": 2,
+      "slide": 6,
+      "id": "2-6",
+      "title": "로마서 8:31",
+      "path": "/slides/slide-2-6.md",
+      "htmlPath": "/generated/slides/slide-2-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-7.md",
+      "chapter": 2,
+      "slide": 7,
+      "id": "2-7",
+      "title": "질문: 성경에서 사랑에 대해 가장 유명한 구절은?",
+      "path": "/slides/slide-2-7.md",
+      "htmlPath": "/generated/slides/slide-2-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-8.md",
+      "chapter": 2,
+      "slide": 8,
+      "id": "2-8",
+      "title": "LLM의 한계:",
+      "path": "/slides/slide-2-8.md",
+      "htmlPath": "/generated/slides/slide-2-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-2-9.md",
+      "chapter": 2,
+      "slide": 9,
+      "id": "2-9",
+      "title": "결론",
+      "path": "/slides/slide-2-9.md",
+      "htmlPath": "/generated/slides/slide-2-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-0.md",
+      "chapter": 3,
+      "slide": 0,
+      "id": "3-0",
+      "title": "세션 목표",
+      "path": "/slides/slide-3-0.md",
+      "htmlPath": "/generated/slides/slide-3-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-3-1.md",
+      "chapter": 3,
+      "slide": 1,
+      "id": "3-1",
+      "title": "💬 사전 질문",
+      "path": "/slides/slide-3-1.md",
+      "htmlPath": "/generated/slides/slide-3-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-3-2.md",
+      "chapter": 3,
+      "slide": 2,
+      "id": "3-2",
+      "title": "학습 목표",
+      "path": "/slides/slide-3-2.md",
+      "htmlPath": "/generated/slides/slide-3-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-3.md",
+      "chapter": 3,
+      "slide": 3,
+      "id": "3-3",
+      "title": "# ❌ 나쁜 예",
+      "path": "/slides/slide-3-3.md",
+      "htmlPath": "/generated/slides/slide-3-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-4.md",
+      "chapter": 3,
+      "slide": 4,
+      "id": "3-4",
+      "title": "# ❌ 나쁜 예",
+      "path": "/slides/slide-3-4.md",
+      "htmlPath": "/generated/slides/slide-3-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-5.md",
+      "chapter": 3,
+      "slide": 5,
+      "id": "3-5",
+      "title": "# ❌ 나쁜 예",
+      "path": "/slides/slide-3-5.md",
+      "htmlPath": "/generated/slides/slide-3-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-6.md",
+      "chapter": 3,
+      "slide": 6,
+      "id": "3-6",
+      "title": "# ❌ 나쁜 예",
+      "path": "/slides/slide-3-6.md",
+      "htmlPath": "/generated/slides/slide-3-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-7.md",
+      "chapter": 3,
+      "slide": 7,
+      "id": "3-7",
+      "title": "➄ 예시 제공",
+      "path": "/slides/slide-3-7.md",
+      "htmlPath": "/generated/slides/slide-3-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-8.md",
+      "chapter": 3,
+      "slide": 8,
+      "id": "3-8",
+      "title": "⑥ 어조와 스타일",
+      "path": "/slides/slide-3-8.md",
+      "htmlPath": "/generated/slides/slide-3-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-9.md",
+      "chapter": 3,
+      "slide": 9,
+      "id": "3-9",
+      "title": "⑦ 원칙 또는 제약",
+      "path": "/slides/slide-3-9.md",
+      "htmlPath": "/generated/slides/slide-3-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-10.md",
+      "chapter": 3,
+      "slide": 10,
+      "id": "3-10",
+      "title": "⑧ 시나리오 활용",
+      "path": "/slides/slide-3-10.md",
+      "htmlPath": "/generated/slides/slide-3-10.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-11.md",
+      "chapter": 3,
+      "slide": 11,
+      "id": "3-11",
+      "title": "⑨ 구조화된 지시",
+      "path": "/slides/slide-3-11.md",
+      "htmlPath": "/generated/slides/slide-3-11.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-12.md",
+      "chapter": 3,
+      "slide": 12,
+      "id": "3-12",
+      "title": "⑩ 비교하기 - 옵션 분석 요청",
+      "path": "/slides/slide-3-12.md",
+      "htmlPath": "/generated/slides/slide-3-12.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-3-13.md",
+      "chapter": 3,
+      "slide": 13,
+      "id": "3-13",
+      "title": "마무리",
+      "path": "/slides/slide-3-13.md",
+      "htmlPath": "/generated/slides/slide-3-13.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-0.md",
+      "chapter": 4,
+      "slide": 0,
+      "id": "4-0",
+      "title": "GPT 챗봇 만들기 실습",
+      "path": "/slides/slide-4-0.md",
+      "htmlPath": "/generated/slides/slide-4-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-4-1.md",
+      "chapter": 4,
+      "slide": 1,
+      "id": "4-1",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-1.md",
+      "htmlPath": "/generated/slides/slide-4-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-4-2.md",
+      "chapter": 4,
+      "slide": 2,
+      "id": "4-2",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-2.md",
+      "htmlPath": "/generated/slides/slide-4-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-3.md",
+      "chapter": 4,
+      "slide": 3,
+      "id": "4-3",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-3.md",
+      "htmlPath": "/generated/slides/slide-4-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-4.md",
+      "chapter": 4,
+      "slide": 4,
+      "id": "4-4",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-4.md",
+      "htmlPath": "/generated/slides/slide-4-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-5.md",
+      "chapter": 4,
+      "slide": 5,
+      "id": "4-5",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-5.md",
+      "htmlPath": "/generated/slides/slide-4-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-6.md",
+      "chapter": 4,
+      "slide": 6,
+      "id": "4-6",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-6.md",
+      "htmlPath": "/generated/slides/slide-4-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-7.md",
+      "chapter": 4,
+      "slide": 7,
+      "id": "4-7",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-7.md",
+      "htmlPath": "/generated/slides/slide-4-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-4-8.md",
+      "chapter": 4,
+      "slide": 8,
+      "id": "4-8",
+      "title": "입력 (Input)",
+      "path": "/slides/slide-4-8.md",
+      "htmlPath": "/generated/slides/slide-4-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-0.md",
+      "chapter": 5,
+      "slide": 0,
+      "id": "5-0",
+      "title": "HOW",
+      "path": "/slides/slide-5-0.md",
+      "htmlPath": "/generated/slides/slide-5-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-5-1.md",
+      "chapter": 5,
+      "slide": 1,
+      "id": "5-1",
+      "title": "설교 준비 어떻게 하시나요?",
+      "path": "/slides/slide-5-1.md",
+      "htmlPath": "/generated/slides/slide-5-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-5-2.md",
+      "chapter": 5,
+      "slide": 2,
+      "id": "5-2",
+      "title": "설교 준비 프로세스",
+      "path": "/slides/slide-5-2.md",
+      "htmlPath": "/generated/slides/slide-5-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-3.md",
+      "chapter": 5,
+      "slide": 3,
+      "id": "5-3",
+      "title": "1.1 웨슬리안 신학의 4중 기둥",
+      "path": "/slides/slide-5-3.md",
+      "htmlPath": "/generated/slides/slide-5-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-4.md",
+      "chapter": 5,
+      "slide": 4,
+      "id": "5-4",
+      "title": "1.2 3대 교회 원칙",
+      "path": "/slides/slide-5-4.md",
+      "htmlPath": "/generated/slides/slide-5-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-5.md",
+      "chapter": 5,
+      "slide": 5,
+      "id": "5-5",
+      "title": "2.1 『강단과 목회』의 전통",
+      "path": "/slides/slide-5-5.md",
+      "htmlPath": "/generated/slides/slide-5-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-6.md",
+      "chapter": 5,
+      "slide": 6,
+      "id": "5-6",
+      "title": "3.1 웨슬리 표준설교 연구",
+      "path": "/slides/slide-5-6.md",
+      "htmlPath": "/generated/slides/slide-5-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-7.md",
+      "chapter": 5,
+      "slide": 7,
+      "id": "5-7",
+      "title": "4.1 본문 선택과 기도",
+      "path": "/slides/slide-5-7.md",
+      "htmlPath": "/generated/slides/slide-5-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-8.md",
+      "chapter": 5,
+      "slide": 8,
+      "id": "5-8",
+      "title": "5.1 준회원 설교 훈련",
+      "path": "/slides/slide-5-8.md",
+      "htmlPath": "/generated/slides/slide-5-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-9.md",
+      "chapter": 5,
+      "slide": 9,
+      "id": "5-9",
+      "title": "6.1 『강단과 목회』 활용",
+      "path": "/slides/slide-5-9.md",
+      "htmlPath": "/generated/slides/slide-5-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-10.md",
+      "chapter": 5,
+      "slide": 10,
+      "id": "5-10",
+      "title": "7.1 설교 시간과 준비",
+      "path": "/slides/slide-5-10.md",
+      "htmlPath": "/generated/slides/slide-5-10.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-11.md",
+      "chapter": 5,
+      "slide": 11,
+      "id": "5-11",
+      "title": "8. 감리교회 설교의 특징",
+      "path": "/slides/slide-5-11.md",
+      "htmlPath": "/generated/slides/slide-5-11.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-5-12.md",
+      "chapter": 5,
+      "slide": 12,
+      "id": "5-12",
+      "title": "9. 현대적 적용과 과제",
+      "path": "/slides/slide-5-12.md",
+      "htmlPath": "/generated/slides/slide-5-12.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-0.md",
+      "chapter": 6,
+      "slide": 0,
+      "id": "6-0",
+      "title": "# 연간 목회계획 프로세스 가이드",
+      "path": "/slides/slide-6-0.md",
+      "htmlPath": "/generated/slides/slide-6-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-6-1.md",
+      "chapter": 6,
+      "slide": 1,
+      "id": "6-1",
+      "title": "# 거시적 목회 철학 확립",
+      "path": "/slides/slide-6-1.md",
+      "htmlPath": "/generated/slides/slide-6-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-6-2.md",
+      "chapter": 6,
+      "slide": 2,
+      "id": "6-2",
+      "title": "# 전년도 사역 평가",
+      "path": "/slides/slide-6-2.md",
+      "htmlPath": "/generated/slides/slide-6-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-3.md",
+      "chapter": 6,
+      "slide": 3,
+      "id": "6-3",
+      "title": "# 연간 목회 전략 수립",
+      "path": "/slides/slide-6-3.md",
+      "htmlPath": "/generated/slides/slide-6-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-4.md",
+      "chapter": 6,
+      "slide": 4,
+      "id": "6-4",
+      "title": "# 월별/분기별 세부 계획",
+      "path": "/slides/slide-6-4.md",
+      "htmlPath": "/generated/slides/slide-6-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-5.md",
+      "chapter": 6,
+      "slide": 5,
+      "id": "6-5",
+      "title": "# 당회 승인 과정",
+      "path": "/slides/slide-6-5.md",
+      "htmlPath": "/generated/slides/slide-6-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-6.md",
+      "chapter": 6,
+      "slide": 6,
+      "id": "6-6",
+      "title": "분기별 점검 시스템",
+      "path": "/slides/slide-6-6.md",
+      "htmlPath": "/generated/slides/slide-6-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-7.md",
+      "chapter": 6,
+      "slide": 7,
+      "id": "6-7",
+      "title": "# 기도와 영성",
+      "path": "/slides/slide-6-7.md",
+      "htmlPath": "/generated/slides/slide-6-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-8.md",
+      "chapter": 6,
+      "slide": 8,
+      "id": "6-8",
+      "title": "예배 사역",
+      "path": "/slides/slide-6-8.md",
+      "htmlPath": "/generated/slides/slide-6-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-6-9.md",
+      "chapter": 6,
+      "slide": 9,
+      "id": "6-9",
+      "title": "평가 기준",
+      "path": "/slides/slide-6-9.md",
+      "htmlPath": "/generated/slides/slide-6-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-7-0.md",
+      "chapter": 7,
+      "slide": 0,
+      "id": "7-0",
+      "title": "목회 시나리오",
+      "path": "/slides/slide-7-0.md",
+      "htmlPath": "/generated/slides/slide-7-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-7-1.md",
+      "chapter": 7,
+      "slide": 1,
+      "id": "7-1",
+      "title": "시나리오: 주일 설교 준비",
+      "path": "/slides/slide-7-1.md",
+      "htmlPath": "/generated/slides/slide-7-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-7-2.md",
+      "chapter": 7,
+      "slide": 2,
+      "id": "7-2",
+      "title": "Bad Example: AI에게 모든 것을 떠넘기는 방식",
+      "path": "/slides/slide-7-2.md",
+      "htmlPath": "/generated/slides/slide-7-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-7-3.md",
+      "chapter": 7,
+      "slide": 3,
+      "id": "7-3",
+      "title": "# **👍 Good Example: 구체적으로 '요청'하는 방식**",
+      "path": "/slides/slide-7-3.md",
+      "htmlPath": "/generated/slides/slide-7-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-7-4.md",
+      "chapter": 7,
+      "slide": 4,
+      "id": "7-4",
+      "title": "# **🏆 Best Example: AI와 '대화'하며 생각을 증폭시키는 방식(Thought Partner)**",
+      "path": "/slides/slide-7-4.md",
+      "htmlPath": "/generated/slides/slide-7-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-7-5.md",
+      "chapter": 7,
+      "slide": 5,
+      "id": "7-5",
+      "title": "Best Example: 프롬프트 예시",
+      "path": "/slides/slide-7-5.md",
+      "htmlPath": "/generated/slides/slide-7-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-7-6.md",
+      "chapter": 7,
+      "slide": 6,
+      "id": "7-6",
+      "title": "Best Example: 무엇이 최고인가?",
+      "path": "/slides/slide-7-6.md",
+      "htmlPath": "/generated/slides/slide-7-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-0.md",
+      "chapter": 8,
+      "slide": 0,
+      "id": "8-0",
+      "title": "AI 12가지 활용 시나리오",
+      "path": "/slides/slide-8-0.md",
+      "htmlPath": "/generated/slides/slide-8-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-8-1.md",
+      "chapter": 8,
+      "slide": 1,
+      "id": "8-1",
+      "title": "LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)",
+      "path": "/slides/slide-8-1.md",
+      "htmlPath": "/generated/slides/slide-8-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-8-2.md",
+      "chapter": 8,
+      "slide": 2,
+      "id": "8-2",
+      "title": "1. 이준호 목사: 주일설교 주제 선정",
+      "path": "/slides/slide-8-2.md",
+      "htmlPath": "/generated/slides/slide-8-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-3.md",
+      "chapter": 8,
+      "slide": 3,
+      "id": "8-3",
+      "title": "2. 김은혜 목사: 설교문 구조화",
+      "path": "/slides/slide-8-3.md",
+      "htmlPath": "/generated/slides/slide-8-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-4.md",
+      "chapter": 8,
+      "slide": 4,
+      "id": "8-4",
+      "title": "3. 김 목사(58세): 기존 설교 리프레시",
+      "path": "/slides/slide-8-4.md",
+      "htmlPath": "/generated/slides/slide-8-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-5.md",
+      "chapter": 8,
+      "slide": 5,
+      "id": "8-5",
+      "title": "LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)",
+      "path": "/slides/slide-8-5.md",
+      "htmlPath": "/generated/slides/slide-8-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-6.md",
+      "chapter": 8,
+      "slide": 6,
+      "id": "8-6",
+      "title": "4. 박성민 목사: 성경공부 교재 제작",
+      "path": "/slides/slide-8-6.md",
+      "htmlPath": "/generated/slides/slide-8-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-7.md",
+      "chapter": 8,
+      "slide": 7,
+      "id": "8-7",
+      "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+      "path": "/slides/slide-8-7.md",
+      "htmlPath": "/generated/slides/slide-8-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-8.md",
+      "chapter": 8,
+      "slide": 8,
+      "id": "8-8",
+      "title": "6. 류 목사(51세): 성도 위로 메시지 & 기도 배경음악",
+      "path": "/slides/slide-8-8.md",
+      "htmlPath": "/generated/slides/slide-8-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-9.md",
+      "chapter": 8,
+      "slide": 9,
+      "id": "8-9",
+      "title": "7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+      "path": "/slides/slide-8-9.md",
+      "htmlPath": "/generated/slides/slide-8-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-10.md",
+      "chapter": 8,
+      "slide": 10,
+      "id": "8-10",
+      "title": "8. 신혜숙 목사: 상담 준비",
+      "path": "/slides/slide-8-10.md",
+      "htmlPath": "/generated/slides/slide-8-10.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-11.md",
+      "chapter": 8,
+      "slide": 11,
+      "id": "8-11",
+      "title": "LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)",
+      "path": "/slides/slide-8-11.md",
+      "htmlPath": "/generated/slides/slide-8-11.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-12.md",
+      "chapter": 8,
+      "slide": 12,
+      "id": "8-12",
+      "title": "9. 정태영 목사: 새신자 환영 시스템 구축",
+      "path": "/slides/slide-8-12.md",
+      "htmlPath": "/generated/slides/slide-8-12.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-13.md",
+      "chapter": 8,
+      "slide": 13,
+      "id": "8-13",
+      "title": "10. 윤석진 목사: 교회 행사 기획",
+      "path": "/slides/slide-8-13.md",
+      "htmlPath": "/generated/slides/slide-8-13.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-14.md",
+      "chapter": 8,
+      "slide": 14,
+      "id": "8-14",
+      "title": "11. 이미영 목사: 어린이 교육 커리큘럼",
+      "path": "/slides/slide-8-14.md",
+      "htmlPath": "/generated/slides/slide-8-14.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-8-15.md",
+      "chapter": 8,
+      "slide": 15,
+      "id": "8-15",
+      "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
+      "path": "/slides/slide-8-15.md",
+      "htmlPath": "/generated/slides/slide-8-15.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-0.md",
+      "chapter": 9,
+      "slide": 0,
+      "id": "9-0",
+      "title": "8. 실전 AI 복합 활용 시나리오 : 청년 수련회 기획",
+      "path": "/slides/slide-9-0.md",
+      "htmlPath": "/generated/slides/slide-9-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-9-1.md",
+      "chapter": 9,
+      "slide": 1,
+      "id": "9-1",
+      "title": "1. ChatGPT 창의적 기획",
+      "path": "/slides/slide-9-1.md",
+      "htmlPath": "/generated/slides/slide-9-1.html",
+      "type": "index"
+    },
+    {
+      "fileName": "slide-9-2.md",
+      "chapter": 9,
+      "slide": 2,
+      "id": "9-2",
+      "title": "2. Perplexity 실시간 정보 수집",
+      "path": "/slides/slide-9-2.md",
+      "htmlPath": "/generated/slides/slide-9-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-3.md",
+      "chapter": 9,
+      "slide": 3,
+      "id": "9-3",
+      "title": "3. 멀티미디어 홍보 패키지",
+      "path": "/slides/slide-9-3.md",
+      "htmlPath": "/generated/slides/slide-9-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-4.md",
+      "chapter": 9,
+      "slide": 4,
+      "id": "9-4",
+      "title": "3. 멀티미디어 홍보 패키지 (계속)",
+      "path": "/slides/slide-9-4.md",
+      "htmlPath": "/generated/slides/slide-9-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-5.md",
+      "chapter": 9,
+      "slide": 5,
+      "id": "9-5",
+      "title": "4️⃣ 예산 최적화 계획",
+      "path": "/slides/slide-9-5.md",
+      "htmlPath": "/generated/slides/slide-9-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-6.md",
+      "chapter": 9,
+      "slide": 6,
+      "id": "9-6",
+      "title": "8-6. 수련회 예산 계획 결과",
+      "path": "/slides/slide-9-6.md",
+      "htmlPath": "/generated/slides/slide-9-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-9-7.md",
+      "chapter": 9,
+      "slide": 7,
+      "id": "9-7",
+      "title": "Share Link",
+      "path": "/slides/slide-9-7.md",
+      "htmlPath": "/generated/slides/slide-9-7.html",
+      "type": "general"
+    }
+  ],
+  "chapters": {
+    "0": {
+      "chapter": 0,
+      "title": "Chapter 0",
+      "slides": [
+        {
+          "fileName": "slide-0-0.md",
+          "slide": 0,
+          "id": "0-0",
+          "title": "1부 : 09:30 ~ 11:50",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-0-1.md",
+          "slide": 1,
+          "id": "0-1",
+          "title": "📋 목차",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-0-2.md",
+          "slide": 2,
+          "id": "0-2",
+          "title": "(주) 유니시스 부사장 | 플랫폼사업본부",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-0-3.md",
+          "slide": 3,
+          "id": "0-3",
+          "title": "질문1 : 목회 사역에 AI(챗GPT 등)를 어느 정도 활용하고 계신가요?",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-0-4.md",
+          "slide": 4,
+          "id": "0-4",
+          "title": "질문2 : 목회 사역에 AI(챗GPT 등)를 어느 정도 활용하고 계신가요?",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-0-5.md",
+          "slide": 5,
+          "id": "0-5",
+          "title": "질문3 : AI를 목회 사역에 도입하는 것에 대해 어떻게 생각하시나요?",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-0-6.md",
+          "slide": 6,
+          "id": "0-6",
+          "title": "질문4 : 만약 AI 목회 비서가 생긴다면, 가장 먼저 맡기고 싶은 업무는?",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 7
+    },
+    "1": {
+      "chapter": 1,
+      "title": "Chapter 1",
+      "slides": [
+        {
+          "fileName": "slide-1-0.md",
+          "slide": 0,
+          "id": "1-0",
+          "title": "Why?",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-1-1.md",
+          "slide": 1,
+          "id": "1-1",
+          "title": "최근에 감탄하신 적이 있으신가요?",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-1-2.md",
+          "slide": 2,
+          "id": "1-2",
+          "title": "- AI 사용 경험 목회자 비율 : **47%**",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-1-3.md",
+          "slide": 3,
+          "id": "1-3",
+          "title": "AI의 의미",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-1-4.md",
+          "slide": 4,
+          "id": "1-4",
+          "title": "**구글에서 검색 : '챗지피티', 'ChatGPT'**",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 5
+    },
+    "2": {
+      "chapter": 2,
+      "title": "Chapter 2",
+      "slides": [
+        {
+          "fileName": "slide-2-0.md",
+          "slide": 0,
+          "id": "2-0",
+          "title": "생성형AI 이론",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-2-1.md",
+          "slide": 1,
+          "id": "2-1",
+          "title": "1단계: 성경 전체를 읽히기 (데이터 수집)",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-2-2.md",
+          "slide": 2,
+          "id": "2-2",
+          "title": "2단계: 단어 연결 패턴 배우기",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-3.md",
+          "slide": 3,
+          "id": "2-3",
+          "title": "3단계: 다음 단어 맞추기 학습",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-4.md",
+          "slide": 4,
+          "id": "2-4",
+          "title": "4단계: 문맥 이해하기",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-5.md",
+          "slide": 5,
+          "id": "2-5",
+          "title": "요한복음 3:16",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-6.md",
+          "slide": 6,
+          "id": "2-6",
+          "title": "로마서 8:31",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-7.md",
+          "slide": 7,
+          "id": "2-7",
+          "title": "질문: 성경에서 사랑에 대해 가장 유명한 구절은?",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-8.md",
+          "slide": 8,
+          "id": "2-8",
+          "title": "LLM의 한계:",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-2-9.md",
+          "slide": 9,
+          "id": "2-9",
+          "title": "결론",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 10
+    },
+    "3": {
+      "chapter": 3,
+      "title": "Chapter 3",
+      "slides": [
+        {
+          "fileName": "slide-3-0.md",
+          "slide": 0,
+          "id": "3-0",
+          "title": "세션 목표",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-3-1.md",
+          "slide": 1,
+          "id": "3-1",
+          "title": "💬 사전 질문",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-3-2.md",
+          "slide": 2,
+          "id": "3-2",
+          "title": "학습 목표",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-3.md",
+          "slide": 3,
+          "id": "3-3",
+          "title": "# ❌ 나쁜 예",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-4.md",
+          "slide": 4,
+          "id": "3-4",
+          "title": "# ❌ 나쁜 예",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-5.md",
+          "slide": 5,
+          "id": "3-5",
+          "title": "# ❌ 나쁜 예",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-6.md",
+          "slide": 6,
+          "id": "3-6",
+          "title": "# ❌ 나쁜 예",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-7.md",
+          "slide": 7,
+          "id": "3-7",
+          "title": "➄ 예시 제공",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-8.md",
+          "slide": 8,
+          "id": "3-8",
+          "title": "⑥ 어조와 스타일",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-9.md",
+          "slide": 9,
+          "id": "3-9",
+          "title": "⑦ 원칙 또는 제약",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-10.md",
+          "slide": 10,
+          "id": "3-10",
+          "title": "⑧ 시나리오 활용",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-11.md",
+          "slide": 11,
+          "id": "3-11",
+          "title": "⑨ 구조화된 지시",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-12.md",
+          "slide": 12,
+          "id": "3-12",
+          "title": "⑩ 비교하기 - 옵션 분석 요청",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-3-13.md",
+          "slide": 13,
+          "id": "3-13",
+          "title": "마무리",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 14
+    },
+    "4": {
+      "chapter": 4,
+      "title": "Chapter 4",
+      "slides": [
+        {
+          "fileName": "slide-4-0.md",
+          "slide": 0,
+          "id": "4-0",
+          "title": "GPT 챗봇 만들기 실습",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-4-1.md",
+          "slide": 1,
+          "id": "4-1",
+          "title": "입력 (Input)",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-4-2.md",
+          "slide": 2,
+          "id": "4-2",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-3.md",
+          "slide": 3,
+          "id": "4-3",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-4.md",
+          "slide": 4,
+          "id": "4-4",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-5.md",
+          "slide": 5,
+          "id": "4-5",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-6.md",
+          "slide": 6,
+          "id": "4-6",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-7.md",
+          "slide": 7,
+          "id": "4-7",
+          "title": "입력 (Input)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-4-8.md",
+          "slide": 8,
+          "id": "4-8",
+          "title": "입력 (Input)",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 9
+    },
+    "5": {
+      "chapter": 5,
+      "title": "Chapter 5",
+      "slides": [
+        {
+          "fileName": "slide-5-0.md",
+          "slide": 0,
+          "id": "5-0",
+          "title": "HOW",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-5-1.md",
+          "slide": 1,
+          "id": "5-1",
+          "title": "설교 준비 어떻게 하시나요?",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-5-2.md",
+          "slide": 2,
+          "id": "5-2",
+          "title": "설교 준비 프로세스",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-3.md",
+          "slide": 3,
+          "id": "5-3",
+          "title": "1.1 웨슬리안 신학의 4중 기둥",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-4.md",
+          "slide": 4,
+          "id": "5-4",
+          "title": "1.2 3대 교회 원칙",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-5.md",
+          "slide": 5,
+          "id": "5-5",
+          "title": "2.1 『강단과 목회』의 전통",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-6.md",
+          "slide": 6,
+          "id": "5-6",
+          "title": "3.1 웨슬리 표준설교 연구",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-7.md",
+          "slide": 7,
+          "id": "5-7",
+          "title": "4.1 본문 선택과 기도",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-8.md",
+          "slide": 8,
+          "id": "5-8",
+          "title": "5.1 준회원 설교 훈련",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-9.md",
+          "slide": 9,
+          "id": "5-9",
+          "title": "6.1 『강단과 목회』 활용",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-10.md",
+          "slide": 10,
+          "id": "5-10",
+          "title": "7.1 설교 시간과 준비",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-11.md",
+          "slide": 11,
+          "id": "5-11",
+          "title": "8. 감리교회 설교의 특징",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-5-12.md",
+          "slide": 12,
+          "id": "5-12",
+          "title": "9. 현대적 적용과 과제",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 13
+    },
+    "6": {
+      "chapter": 6,
+      "title": "Chapter 6",
+      "slides": [
+        {
+          "fileName": "slide-6-0.md",
+          "slide": 0,
+          "id": "6-0",
+          "title": "# 연간 목회계획 프로세스 가이드",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-6-1.md",
+          "slide": 1,
+          "id": "6-1",
+          "title": "# 거시적 목회 철학 확립",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-6-2.md",
+          "slide": 2,
+          "id": "6-2",
+          "title": "# 전년도 사역 평가",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-3.md",
+          "slide": 3,
+          "id": "6-3",
+          "title": "# 연간 목회 전략 수립",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-4.md",
+          "slide": 4,
+          "id": "6-4",
+          "title": "# 월별/분기별 세부 계획",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-5.md",
+          "slide": 5,
+          "id": "6-5",
+          "title": "# 당회 승인 과정",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-6.md",
+          "slide": 6,
+          "id": "6-6",
+          "title": "분기별 점검 시스템",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-7.md",
+          "slide": 7,
+          "id": "6-7",
+          "title": "# 기도와 영성",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-8.md",
+          "slide": 8,
+          "id": "6-8",
+          "title": "예배 사역",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-6-9.md",
+          "slide": 9,
+          "id": "6-9",
+          "title": "평가 기준",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 10
+    },
+    "7": {
+      "chapter": 7,
+      "title": "Chapter 7",
+      "slides": [
+        {
+          "fileName": "slide-7-0.md",
+          "slide": 0,
+          "id": "7-0",
+          "title": "목회 시나리오",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-7-1.md",
+          "slide": 1,
+          "id": "7-1",
+          "title": "시나리오: 주일 설교 준비",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-7-2.md",
+          "slide": 2,
+          "id": "7-2",
+          "title": "Bad Example: AI에게 모든 것을 떠넘기는 방식",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-7-3.md",
+          "slide": 3,
+          "id": "7-3",
+          "title": "# **👍 Good Example: 구체적으로 '요청'하는 방식**",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-7-4.md",
+          "slide": 4,
+          "id": "7-4",
+          "title": "# **🏆 Best Example: AI와 '대화'하며 생각을 증폭시키는 방식(Thought Partner)**",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-7-5.md",
+          "slide": 5,
+          "id": "7-5",
+          "title": "Best Example: 프롬프트 예시",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-7-6.md",
+          "slide": 6,
+          "id": "7-6",
+          "title": "Best Example: 무엇이 최고인가?",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 7
+    },
+    "8": {
+      "chapter": 8,
+      "title": "Chapter 8",
+      "slides": [
+        {
+          "fileName": "slide-8-0.md",
+          "slide": 0,
+          "id": "8-0",
+          "title": "AI 12가지 활용 시나리오",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-8-1.md",
+          "slide": 1,
+          "id": "8-1",
+          "title": "LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-8-2.md",
+          "slide": 2,
+          "id": "8-2",
+          "title": "1. 이준호 목사: 주일설교 주제 선정",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-3.md",
+          "slide": 3,
+          "id": "8-3",
+          "title": "2. 김은혜 목사: 설교문 구조화",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-4.md",
+          "slide": 4,
+          "id": "8-4",
+          "title": "3. 김 목사(58세): 기존 설교 리프레시",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-5.md",
+          "slide": 5,
+          "id": "8-5",
+          "title": "LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-6.md",
+          "slide": 6,
+          "id": "8-6",
+          "title": "4. 박성민 목사: 성경공부 교재 제작",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-7.md",
+          "slide": 7,
+          "id": "8-7",
+          "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-8.md",
+          "slide": 8,
+          "id": "8-8",
+          "title": "6. 류 목사(51세): 성도 위로 메시지 & 기도 배경음악",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-9.md",
+          "slide": 9,
+          "id": "8-9",
+          "title": "7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-10.md",
+          "slide": 10,
+          "id": "8-10",
+          "title": "8. 신혜숙 목사: 상담 준비",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-11.md",
+          "slide": 11,
+          "id": "8-11",
+          "title": "LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-12.md",
+          "slide": 12,
+          "id": "8-12",
+          "title": "9. 정태영 목사: 새신자 환영 시스템 구축",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-13.md",
+          "slide": 13,
+          "id": "8-13",
+          "title": "10. 윤석진 목사: 교회 행사 기획",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-14.md",
+          "slide": 14,
+          "id": "8-14",
+          "title": "11. 이미영 목사: 어린이 교육 커리큘럼",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-8-15.md",
+          "slide": 15,
+          "id": "8-15",
+          "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 16
+    },
+    "9": {
+      "chapter": 9,
+      "title": "Chapter 9",
+      "slides": [
+        {
+          "fileName": "slide-9-0.md",
+          "slide": 0,
+          "id": "9-0",
+          "title": "8. 실전 AI 복합 활용 시나리오 : 청년 수련회 기획",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-9-1.md",
+          "slide": 1,
+          "id": "9-1",
+          "title": "1. ChatGPT 창의적 기획",
+          "type": "index"
+        },
+        {
+          "fileName": "slide-9-2.md",
+          "slide": 2,
+          "id": "9-2",
+          "title": "2. Perplexity 실시간 정보 수집",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-9-3.md",
+          "slide": 3,
+          "id": "9-3",
+          "title": "3. 멀티미디어 홍보 패키지",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-9-4.md",
+          "slide": 4,
+          "id": "9-4",
+          "title": "3. 멀티미디어 홍보 패키지 (계속)",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-9-5.md",
+          "slide": 5,
+          "id": "9-5",
+          "title": "4️⃣ 예산 최적화 계획",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-9-6.md",
+          "slide": 6,
+          "id": "9-6",
+          "title": "8-6. 수련회 예산 계획 결과",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-9-7.md",
+          "slide": 7,
+          "id": "9-7",
+          "title": "Share Link",
+          "type": "general"
+        }
+      ],
+      "totalSlides": 8
+    }
+  },
+  "metadata": {
+    "totalSlides": 99,
+    "totalChapters": 10,
+    "lastUpdated": "2025-07-30T16:53:32.350Z",
+    "buildId": 1753894412353,
+    "processedFiles": 103,
+    "uniqueSlides": 99
+  }
+}

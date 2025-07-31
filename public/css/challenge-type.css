@@ -1,0 +1,716 @@
+/* ===============================================
+   Challenge Slide Template CSS
+   Interactive Workshop & Presentation Design
+   =============================================== */
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #3a3a3a;
+  color: #333;
+  height: 100vh;
+  padding: 60px 40px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+/* ===============================================
+   Slide Header
+   =============================================== */
+
+.slide-header {
+  background: linear-gradient(135deg, #003366, #005a9c);
+  color: white;
+  padding: 30px 20px;
+  margin: -60px -40px 40px -40px;
+  position: relative;
+  text-align: center;
+}
+
+.slide-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+/* Challenge Badge */
+.challenge-badge {
+  background: #ff6b6b;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Badge Variations */
+.challenge-badge.level-1 {
+  background: #ff6b6b;
+}
+.challenge-badge.level-2 {
+  background: #4ecdc4;
+}
+.challenge-badge.level-3 {
+  background: #45b7d1;
+}
+.challenge-badge.level-4 {
+  background: #96ceb4;
+}
+.challenge-badge.level-5 {
+  background: #ffeaa7;
+  color: #2d3436;
+}
+
+.slide-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+time-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-size: 1em;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+/* ===============================================
+   Content Area
+   =============================================== */
+
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* ===============================================
+   Workflow Container
+   =============================================== */
+
+.workflow-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin: 40px 0;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.workflow-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4ecdc4, #45b7d1, #96ceb4);
+  border-radius: 15px 15px 0 0;
+}
+
+/* ===============================================
+   Workflow Steps
+   =============================================== */
+
+.workflow-step {
+  text-align: center;
+  padding: 25px 15px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.workflow-step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Step Type Styles */
+.workflow-step.input {
+  border-top: 4px solid #4ecdc4;
+}
+
+.workflow-step.input:hover {
+  background: linear-gradient(135deg, #f0fdfc, #e6fffa);
+}
+
+.workflow-step.ai-tool {
+  border-top: 4px solid #ff6b6b;
+}
+
+.workflow-step.ai-tool:hover {
+  background: linear-gradient(135deg, #fff5f5, #fed7d7);
+}
+
+.workflow-step.output {
+  border-top: 4px solid #45b7d1;
+}
+
+.workflow-step.output:hover {
+  background: linear-gradient(135deg, #f0f9ff, #dbeafe);
+}
+
+.workflow-step.process {
+  border-top: 4px solid #96ceb4;
+}
+
+.workflow-step.process:hover {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+/* Step Content */
+.step-icon {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.step-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 10px;
+}
+
+.step-content {
+  font-size: 0.95em;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* AI Tool Highlight */
+.ai-highlight {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 5px;
+  box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+}
+
+/* AI Tool Variations */
+.ai-highlight.chatgpt {
+  background: linear-gradient(135deg, #10a37f, #1a7f64);
+}
+.ai-highlight.claude {
+  background: linear-gradient(135deg, #d97706, #ea580c);
+}
+.ai-highlight.gemini {
+  background: linear-gradient(135deg, #4285f4, #1a73e8);
+}
+.ai-highlight.copilot {
+  background: linear-gradient(135deg, #0078d4, #106ebe);
+}
+
+/* Workflow Arrow */
+.workflow-arrow {
+  font-size: 2em;
+  color: #005a9c;
+  text-align: center;
+  animation: pulse 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.workflow-arrow:hover {
+  transform: scale(1.2);
+  color: #003366;
+}
+
+/* ===============================================
+   Application Section
+   =============================================== */
+
+.application-section {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 6px solid #2e7d32;
+  margin-top: 30px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.application-section:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.2);
+}
+
+.application-section::before {
+  content: '💡';
+  font-size: 1.8em;
+  position: absolute;
+  top: -15px;
+  left: 25px;
+  background: white;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+.application-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #2e7d32;
+  margin-bottom: 15px;
+  margin-left: 25px;
+}
+
+.application-content {
+  font-size: 1.1em;
+  color: #1b5e20;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  line-height: 1.6;
+}
+
+/* Visual Elements */
+.qr-visual {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-size: 2em;
+  min-width: 60px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.qr-visual:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================================
+   Benefits Section
+   =============================================== */
+
+.benefits {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 25px;
+  border-left: 5px solid #ff9800;
+  transition: all 0.3s ease;
+}
+
+.benefits:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(255, 152, 0, 0.2);
+}
+
+.benefits-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #e65100;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.benefits-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  list-style: none;
+}
+
+.benefits-list li {
+  padding: 8px 0;
+  color: #bf360c;
+  position: relative;
+  padding-left: 20px;
+  transition: all 0.3s ease;
+}
+
+.benefits-list li::before {
+  content: '✓';
+  color: #ff9800;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.benefits-list li:hover {
+  color: #d84315;
+  transform: translateX(3px);
+}
+
+.benefits-list li:hover::before {
+  color: #f57c00;
+  transform: scale(1.2);
+}
+
+/* ===============================================
+   Additional Sections
+   =============================================== */
+
+/* Requirements Section */
+.requirements-section {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 6px solid #1976d2;
+  margin-top: 30px;
+  position: relative;
+}
+
+.requirements-section::before {
+  content: '📋';
+  font-size: 1.8em;
+  position: absolute;
+  top: -15px;
+  left: 25px;
+  background: white;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+/* Steps Section */
+.steps-section {
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 6px solid #7b1fa2;
+  margin-top: 30px;
+  position: relative;
+}
+
+.steps-section::before {
+  content: '📝';
+  font-size: 1.8em;
+  position: absolute;
+  top: -15px;
+  left: 25px;
+  background: white;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+}
+
+.step-number {
+  background: #7b1fa2;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* ===============================================
+   Difficulty Levels
+   =============================================== */
+
+.difficulty-easy {
+  --primary-color: #4caf50;
+  --secondary-color: #81c784;
+  --accent-color: #a5d6a7;
+}
+
+.difficulty-medium {
+  --primary-color: #ff9800;
+  --secondary-color: #ffb74d;
+  --accent-color: #ffcc80;
+}
+
+.difficulty-hard {
+  --primary-color: #f44336;
+  --secondary-color: #e57373;
+  --accent-color: #ffab91;
+}
+
+.difficulty-expert {
+  --primary-color: #9c27b0;
+  --secondary-color: #ba68c8;
+  --accent-color: #ce93d8;
+}
+
+/* Apply difficulty colors */
+.difficulty-easy .challenge-badge,
+.difficulty-medium .challenge-badge,
+.difficulty-hard .challenge-badge,
+.difficulty-expert .challenge-badge {
+  background: var(--primary-color);
+}
+
+.difficulty-easy .workflow-step.input,
+.difficulty-medium .workflow-step.input,
+.difficulty-hard .workflow-step.input,
+.difficulty-expert .workflow-step.input {
+  border-top-color: var(--primary-color);
+}
+
+/* ===============================================
+   Responsive Design
+   =============================================== */
+
+@media (max-width: 768px) {
+  body {
+    padding: 40px 20px;
+  }
+
+  .slide-header {
+    margin: -40px -20px 30px -20px;
+    padding: 25px 15px;
+  }
+
+  .slide-header h1 {
+    font-size: 1.8em;
+  }
+
+  .workflow-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .workflow-arrow {
+    transform: rotate(90deg);
+    margin: 0;
+  }
+
+  .application-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .benefits-list {
+    grid-template-columns: 1fr;
+  }
+
+  .step-item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .slide-header {
+    margin: -20px -10px 20px -10px;
+    padding: 20px 10px;
+  }
+
+  .slide-header h1 {
+    font-size: 1.5em;
+  }
+
+  .workflow-step {
+    padding: 20px 10px;
+    min-height: 140px;
+  }
+
+  .step-icon {
+    font-size: 2em;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+}
+
+/* ===============================================
+   Animation & Interaction Utilities
+   =============================================== */
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Sequential Animation Delays */
+.workflow-step:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.workflow-step:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.workflow-step:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* ===============================================
+   Print Styles
+   =============================================== */
+
+@media print {
+  body {
+    background: white;
+    padding: 20px;
+  }
+
+  .slide-header {
+    background: #003366 !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .workflow-container {
+    break-inside: avoid;
+  }
+
+  .application-section,
+  .benefits {
+    break-inside: avoid;
+  }
+
+  .workflow-step:hover,
+  .application-section:hover,
+  .benefits:hover {
+    transform: none;
+  }
+}
+
+/* ===============================================
+   Utility Classes
+   =============================================== */
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+.highlight {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  padding: 2px 6px;
+  border-radius: 4px;
+}

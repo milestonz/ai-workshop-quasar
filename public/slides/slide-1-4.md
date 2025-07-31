@@ -1,13 +1,13 @@
-### ChatGPT 기초 사용법
+@general
 
-주의사항: 가짜 사이트 구별법
+# ChatGPT 기초 사용법
 
-### 구글에서 검색 : '챗지피티', 'ChatGPT'
+### **구글에서 검색 : '챗지피티', 'ChatGPT'**
 
-1. OpenAI ChatGPT :
+1. OpenAI ChatGPT : https://chatgpt.com/ | https://openai.com/ko-KR/business/
 
 2. Anthropic Claude :
 
 3. Google Gemini :
 
-유료 결제 시점 : 무료버전으로 사용하다가 결제하라는 메시지가 뜰 때
+### Q. 유료 결제할 시점은 언제가 적절할까요?

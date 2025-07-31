@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강사 소개 - 목회자를 위한 AI 활용 시나리오</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .slide-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            padding: 50px;
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8, #2563eb, #1e40af);
+            border-radius: 25px 25px 0 0;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #1e40af;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: #2563eb;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            color: #3730a3;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .tagline {
+            font-style: italic;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .contact-info h2 {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .contact-item {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .contact-item strong {
+            color: #1e40af;
+            font-weight: 600;
+            display: inline-block;
+            width: 80px;
+        }
+
+        .experience-section {
+            margin: 30px 0;
+        }
+
+        .experience-item {
+            background: rgba(59, 130, 246, 0.08);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+            transform: translateX(5px);
+        }
+
+        .experience-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .experience-desc {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        blockquote {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 5px solid #0ea5e9;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            color: #0369a1;
+            font-size: 1.1rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(59, 130, 246, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .slide-container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .contact-item strong {
+                width: 60px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .contact-item {
+                font-size: 1rem;
+            }
+        }
+
+        /* 접근성 */
+        .slide-container:focus {
+            outline: 3px solid #3b82f6;
+            outline-offset: 5px;
+        }
+
+        /* 인쇄 스타일 */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .slide-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                background: white;
+            }
+
+            .nav-hint {
+                display: none;
+            }
+        }
+
+        /* 애니메이션 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-container > * {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .experience-item {
+            animation: slideIn 0.8s ease forwards;
+        }
+
+        .experience-item:nth-child(1) { animation-delay: 0.1s; }
+        .experience-item:nth-child(2) { animation-delay: 0.2s; }
+        .experience-item:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="nav-hint">
+        ← → 키 또는 스페이스바로 네비게이션
+    </div>
+
+    <div class="slide-container" tabindex="0">
+        <h1>강사 소개</h1>
+        <div class="tagline">Design Light Growth Journey</div>
+
+        <h2>이정표 LEE JEONG PYO</h2>
+        <div style="text-align: center; font-size: 1.3rem; font-weight: 600; color: #1e40af; margin-bottom: 20px;">
+            마일스톤즈 대표컨설턴트
+        </div>
+
+        <blockquote>
+            "디지털 트랜스포메이션과 AI 기술을 통해 조직과 개인의 성장을 돕는 전문가입니다. 특히, 지식전문가(코치,강사 등)들이 AI로 생산성을 높일 수 있는 플랫폼 개발과 컨설팅합니다."
+        </blockquote>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <span style="background: #f3f4f6; padding: 8px 15px; border-radius: 20px; margin: 5px;">디지털전환컨설팅</span>
+            <span style="background: #f3f4f6; padding: 8px 15px; border-radius: 20px; margin: 5px;">생성형AI코칭</span>
+        </div>
+        <div style="text-align: center; margin: 20px 0;">
+            <span style="background: #f3f4f6; padding: 8px 15px; border-radius: 20px; margin: 5px;">한국코치협회 인증코치(KPC)</span>
+            <span style="background: #f3f4f6; padding: 8px 15px; border-radius: 20px; margin: 5px;">Lego Serious Play 인증퍼실리테이터</span>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-tag">#플랫폼</div>
+            <div class="skill-tag">#DX</div>
+            <div class="skill-tag">#AI</div>
+            <div class="skill-tag">#컨설팅</div>
+            <div class="skill-tag">#코칭</div>
+            <div class="skill-tag">#교육</div>
+        </div>
+
+        <div class="contact-info">
+            <h2>📞 연락처 정보</h2>
+            <div class="contact-item"><strong>전화</strong> 010-3851-4216</div>
+            <div class="contact-item"><strong>이메일</strong> jplee@milestonz.com</div>
+            <div class="contact-item"><strong>주소</strong> 서울특별시 강동구 올림픽로 752 강오름빌딩 502호</div>
+            <div class="contact-item"><strong>웹사이트</strong> coachingware.kr</div>
+        </div>
+
+        <div class="experience-section">
+            <h2>💼 주요 경력</h2>
+            
+            <div class="experience-item">
+                <div class="experience-title">(주) 유니시스 부사장 | 플랫폼사업본부</div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-title">(주) KST Place 대표이사</div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-title">삼성SDS 기획팀장 | 디지털혁신TF장</div>
+                <div class="experience-desc">
+                    "Data-Driven Digital Transformation Leader" 비저닝<br>
+                    디지털 신규사업, 스마트시티/디지털 헬스케어 사업개발<br>
+                    사내벤처 인큐베이션 총괄(12건 육성, 6개 사업화)<br>
+                    AI 기반 컨택센터 혁신 및 홈페이지 혁신 컨설팅
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(59, 130, 246, 0.05); border-radius: 15px;">
+            <h3>📞 추가 문의</h3>
+            <p>세미나, 강의 관련 문의는 위 연락처로 연락주세요</p>
+        </div>
+    </div>
+
+    <script>
+        // 키보드 네비게이션
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    window.location.href = 'slide-0-3.html';
+                    break;
+                case 'ArrowLeft':
+                    window.location.href = 'slide-0-1.html';
+                    break;
+                case 'Home':
+                    window.location.href = 'slide-0-0.html';
+                    break;
+            }
+        });
+
+        // 클릭으로 다음 슬라이드
+        document.querySelector('.slide-container').addEventListener('click', function() {
+            window.location.href = 'slide-0-3.html';
+        });
+
+        // 로드 애니메이션
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

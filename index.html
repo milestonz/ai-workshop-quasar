@@ -20,5 +20,31 @@
   </head>
   <body>
     <!-- quasar:entry-point -->
+
+    <script>
+      // 코드 블록 copy 기능
+      function copyToClipboard(button, text) {
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.background = '#4CAF50';
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.style.background = '#4CAF50';
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error('클립보드 복사 실패:', err);
+            button.textContent = 'Failed';
+            button.style.background = '#f44336';
+            setTimeout(() => {
+              button.textContent = 'Copy';
+              button.style.background = '#4CAF50';
+            }, 2000);
+          });
+      }
+    </script>
   </body>
 </html>

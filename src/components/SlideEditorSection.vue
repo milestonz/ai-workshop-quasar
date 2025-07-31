@@ -1,7 +1,7 @@
 <template>
   <q-card class="sidebar-card q-mt-md">
     <q-card-section>
-      <h6 class="q-my-none">
+      <h6 class="q-my-none editor-title">
         {{ currentSlideType === 'chapter' ? 'Chapter 편집기' : '슬라이드 편집기' }}
       </h6>
       <div class="text-caption text-grey-6 q-mt-xs">
@@ -39,6 +39,18 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
+      <!-- 목차 업데이트 버튼 -->
+      <div class="row q-gutter-sm q-mb-md">
+        <q-btn
+          icon="refresh"
+          label="목차 업데이트"
+          @click="handleUpdateTOC"
+          :loading="updatingTOC"
+          color="primary"
+        />
+        <q-btn icon="add" label="새 슬라이드" @click="handleAddNewSlide" color="positive" />
+      </div>
+
       <MarkdownEditor
         :key="`${currentLesson}-${currentSlide}`"
         :initial-content="currentSlideContent"
@@ -50,12 +62,25 @@
         @auto-update="handleAutoUpdate"
         ref="markdownEditor"
       />
+
+      <!-- 슬라이드 반영 버튼 -->
+      <div class="q-mt-md text-right">
+        <q-btn
+          color="accent"
+          icon="check_circle"
+          label="슬라이드 반영"
+          @click="applySlide"
+          :loading="isApplying"
+          :disable="isApplying"
+        />
+      </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
 import MarkdownEditor from './MarkdownEditor.vue';
 
 interface CurrentSlideInfo {
@@ -73,6 +98,7 @@ interface Props {
   currentLesson: number;
   currentSlide: number;
   currentSlideContent: string;
+  isApplying?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -83,9 +109,14 @@ const emit = defineEmits<{
   slidePreview: [content: string];
   createMarkdownFile: [content: string, slideId: string];
   autoUpdate: [content: string, slideId: string];
+  updateTOC: [];
+  addNewSlide: [];
+  applySlide: [slideId: string];
 }>();
 
+const $q = useQuasar();
 const markdownEditor = ref();
+const updatingTOC = ref(false);
 
 // 슬라이드 내용 저장
 const handleSlideContentSave = (content: string, slideId: string) => {
@@ -112,8 +143,55 @@ const handleAutoUpdate = (content: string, slideId: string) => {
   emit('autoUpdate', content, slideId);
 };
 
+// 목차 업데이트
+const handleUpdateTOC = async () => {
+  updatingTOC.value = true;
+  try {
+    emit('updateTOC');
+
+    // 성공 메시지 표시
+    $q.notify({
+      type: 'positive',
+      message: '목차 업데이트가 시작되었습니다',
+      position: 'top',
+      timeout: 2000,
+      icon: 'refresh',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } catch (error) {
+    // 오류 메시지 표시
+    $q.notify({
+      type: 'negative',
+      message: '목차 업데이트 중 오류가 발생했습니다',
+      position: 'top',
+      timeout: 3000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } finally {
+    updatingTOC.value = false;
+  }
+};
+
+// 새 슬라이드 추가
+const handleAddNewSlide = () => {
+  emit('addNewSlide');
+};
+
+// 슬라이드 반영
+const applySlide = () => {
+  emit('applySlide', `${props.currentLesson}-${props.currentSlide}`);
+};
+
 // 마크다운 에디터 ref 노출
 defineExpose({
   markdownEditor,
 });
 </script>
+
+<style scoped>
+.editor-title {
+  color: #000000;
+  font-weight: bold;
+}
+</style>

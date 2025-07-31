@@ -1,0 +1,44 @@
+{
+  "slidesDirectory": "../../public/slides",
+  "outputDirectory": "../../public/generated",
+  "outputFilename": "ai-workshop-slides.html",
+  "template": {
+    "title": "목회자를 위한 AI 활용 시나리오",
+    "subtitle": "ChatGPT와 동역하는 스마트 목회 가이드",
+    "author": "Milestonz",
+    "theme": {
+      "primaryColor": "#1e3c72",
+      "secondaryColor": "#2a5298",
+      "accentColor": "#3498db"
+    }
+  },
+  "slideTypes": {
+    "intro": {
+      "detectPatterns": ["목회자를 위한 AI", "강사 소개"],
+      "className": "intro-slide",
+      "background": "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)"
+    },
+    "chapter": {
+      "detectPatterns": ["Why?", "WHAT?", "How?", "시나리오", "워크숍"],
+      "className": "chapter-slide",
+      "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+    },
+    "poll": {
+      "detectPatterns": ["실시간 투표", "Quick Poll", "질문"],
+      "className": "poll-slide",
+      "background": "linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)"
+    },
+    "stats": {
+      "detectPatterns": ["%", "통계", "현황"],
+      "className": "stats-slide",
+      "hasSpecialLayout": true
+    }
+  },
+  "features": {
+    "navigation": true,
+    "keyboard": true,
+    "slideCounter": true,
+    "responsive": true,
+    "animations": true
+  }
+}

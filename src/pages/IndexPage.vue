@@ -1,485 +1,637 @@
 <template>
-  <q-page class="bg-grey-2 full-height">
-    <div class="main-layout" :class="{ 'presentation-mode': isPresentationMode }">
-      <!-- 슬라이드 뷰어 컨테이너 -->
-      <SlideViewerContainer
-        :key="
-          isPresentationMode
-            ? 'presentation'
-            : `${courseStore.currentLesson}-${courseStore.currentSlide}`
-        "
-        :lesson="
-          courseStore.lessons[courseStore.currentLesson] || {
-            title: '로딩 중...',
-            slides: 0,
-            completed: false,
-            videoUrl: null,
-          }
-        "
-        :slide-index="courseStore.currentSlide"
-        :is-presentation-mode="isPresentationMode"
-        :slide-viewer-width="slideViewerWidth"
-        :is-prev-button-disabled="isPrevButtonDisabled"
-        :is-next-button-disabled="isNextButtonDisabled"
-        @prev-slide="prevSlide"
-        @next-slide="nextSlide"
-        @slide-navigation="handleSlideNavigation"
-        ref="slideViewerContainerRef"
-      />
-
-      <!-- 구분선 (프리젠테이션 모드에서 숨김) -->
-      <div v-if="!isPresentationMode" class="resize-handle" @mousedown="startResize"></div>
-
-      <!-- 프리젠테이션 모드 단축키 안내 -->
-      <div v-if="isPresentationMode" class="presentation-shortcuts">
-        <div class="shortcuts-tooltip">
-          <q-icon name="keyboard" size="sm" />
-          <span class="shortcuts-text">ESC: 편집기 모드, 화살표 키: 슬라이드 이동</span>
-        </div>
+  <q-page class="index-page">
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+      <!-- 슬라이드 뷰어 영역 -->
+      <div
+        class="slide-viewer-container"
+        :class="{ 'with-editor': !isPresentationMode }"
+        :style="slideViewerStyle"
+      >
+        <SimpleSlideViewer
+          :key="slideViewerKey"
+          :slide-number="currentSlideNumber"
+          :slide-type="currentSlideType"
+        />
       </div>
 
-      <!-- 편집기 사이드바 컨테이너 (편집기 모드에서만 표시) -->
-      <SidebarContainer
-        v-if="!isPresentationMode"
-        :slide-viewer-width="slideViewerWidth"
-        :comments="comments"
-        :show-comments="showComments"
-        :current-slide-type="currentSlideType"
-        :current-slide-info="safeCurrentSlideInfo"
-        :current-lesson="currentLesson"
-        :current-slide="currentSlide"
-        :current-slide-content="currentSlideContent"
-        :current-slide-html="currentSlideHtml"
-        :lesson-title="currentLessonData?.title || ''"
-        @toggle-comments="toggleComments"
-        @add-comment="addComment"
-        @toggle-comment-like="toggleCommentLike"
-        @slide-content-save="handleSlideContentSave"
-        @slide-content-change="handleSlideContentChange"
-        @slide-preview="handleSlidePreview"
-        @create-markdown-file="handleCreateMarkdownFile"
-        @auto-update="handleAutoUpdate"
-        @export-success="handleExportSuccess"
-        @export-error="handleExportError"
-        ref="sidebarContainerRef"
-      />
+      <!-- 리사이저 바 (편집기 모드에서만 표시) -->
+      <div v-if="!isPresentationMode" class="resizer-bar" @mousedown="startResizing"></div>
+
+      <!-- 편집기 영역 (편집기 모드에서만 표시) -->
+      <div v-if="!isPresentationMode" class="editor-container" :style="editorStyle">
+        <SlideEditorSection
+          :current-slide-type="currentSlideType"
+          :current-slide-info="currentSlideInfo"
+          :current-lesson="currentLesson"
+          :current-slide="currentSlide"
+          :current-slide-content="currentSlideContent"
+          :is-applying="isApplying"
+          @slide-content-save="handleSlideContentSave"
+          @slide-content-change="handleSlideContentChange"
+          @slide-preview="handleSlidePreview"
+          @create-markdown-file="handleCreateMarkdownFile"
+          @auto-update="handleAutoUpdate"
+          @update-toc="handleUpdateTOC"
+          @add-new-slide="handleAddNewSlide"
+          @apply-slide="handleApplySlide"
+          ref="slideEditorSection"
+        />
+      </div>
+
+      <!-- 네비게이션 컨트롤 (프레젠테이션 모드에서만 표시) -->
+      <div v-if="isPresentationMode" class="navigation-controls">
+        <q-btn
+          :disable="isFirstSlide"
+          @click="goToPreviousSlide"
+          color="primary"
+          icon="chevron_left"
+          round
+          size="lg"
+          class="nav-btn"
+        />
+
+        <div class="slide-info">
+          <span class="slide-counter"
+            >{{ courseStore.currentLesson }}-{{ courseStore.currentSlide + 1 }}</span
+          >
+        </div>
+
+        <q-btn
+          :disable="isLastSlide"
+          @click="goToNextSlide"
+          color="primary"
+          icon="chevron_right"
+          round
+          size="lg"
+          class="nav-btn"
+        />
+      </div>
+
+      <!-- 편집기 모드 안내 메시지 -->
+      <div v-if="!isPresentationMode" class="editor-mode-notice">
+        <q-banner class="bg-orange text-white" rounded>
+          <template v-slot:avatar>
+            <q-icon name="edit" />
+          </template>
+          <div class="text-body2">
+            <strong>편집기 모드</strong><br />
+            현재 편집기 모드입니다. 프레젠테이션 모드로 전환하려면 상단의 편집 버튼을 클릭하세요.
+          </div>
+        </q-banner>
+      </div>
+
+      <!-- HTML 변환 버튼은 MainLayout 헤더로 이동됨 -->
     </div>
+
+    <!-- 키보드 단축키 안내 (프레젠테이션 모드에서만 표시) -->
+    <q-banner
+      v-if="showKeyboardHelp && isPresentationMode"
+      class="bg-info text-white keyboard-help"
+      rounded
+    >
+      <template v-slot:avatar>
+        <q-icon name="keyboard" />
+      </template>
+      <div class="text-body2">
+        <strong>키보드 단축키:</strong><br />
+        ← → : 이전/다음 슬라이드 | Space : 다음 슬라이드<br />
+        Home/End : 처음/마지막 슬라이드 | F11 : 전체화면<br />
+        ESC : 편집기 모드 | ? : 도움말 토글
+      </div>
+      <template v-slot:action>
+        <q-btn flat color="white" label="닫기" @click="showKeyboardHelp = false" />
+      </template>
+    </q-banner>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRoute, useRouter } from 'vue-router';
 import { useCourseStore } from '../stores/course';
-import SlideViewerContainer from '../components/SlideViewerContainer.vue';
-import SidebarContainer from '../components/SidebarContainer.vue';
-import { convertMarkdownToHTML } from '../utils/markdown';
+import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
+import SlideEditorSection from '../components/SlideEditorSection.vue';
 
+// Quasar 인스턴스
+const $q = useQuasar();
+
+// Router 인스턴스
+const route = useRoute();
+const router = useRouter();
+
+// Course 스토어
 const courseStore = useCourseStore();
 
-// 프리젠테이션 모드 상태
+// 반응형 데이터
+const showKeyboardHelp = ref(false);
+
+// Course store에서 필요한 변수들
+const currentLesson = computed(() => courseStore.currentLesson);
+const currentSlide = computed(() => courseStore.currentSlide);
+
+// 편집기 모드 상태
 const isPresentationMode = computed(() => courseStore.isPresentationMode);
 
-// 키보드 이벤트 핸들러
-const handleKeydown = (event: KeyboardEvent) => {
-  // 프레젠테이션 모드에서만 키보드 이벤트 처리
-  if (!isPresentationMode.value) return;
+// 편집기 모드 변경 감지
+watch(
+  () => isPresentationMode.value,
+  async (newMode) => {
+    console.log(`🎭 편집기 모드 변경: ${newMode ? '프레젠테이션' : '편집기'}`);
 
-  // ESC 키로 프레젠테이션 모드 종료
-  if (event.key === 'Escape') {
-    courseStore.togglePresentationMode();
+    // 편집기 모드로 변경될 때 현재 슬라이드 내용 로드
+    if (!newMode) {
+      try {
+        const lesson = courseStore.currentLesson;
+        const slide = courseStore.currentSlide;
+        console.log(`📂 편집기 모드 전환 - MD 파일 내용 로드: ${lesson}-${slide}`);
+        const content = await courseStore.loadSlideContentForEditing(lesson, slide);
+        console.log(`✅ 편집기 모드 전환 - MD 파일 내용 로드 완료:`, {
+          contentLength: content.length,
+          contentPreview: content.substring(0, 100),
+        });
+        currentSlideContent.value = content;
+      } catch (error) {
+        console.error(`❌ 편집기 모드 전환 - MD 파일 내용 로드 실패:`, error);
+        const lesson = courseStore.currentLesson;
+        const slide = courseStore.currentSlide;
+        currentSlideContent.value = `# 슬라이드 ${lesson}-${slide}\n\n새로운 슬라이드 내용을 작성하세요.`;
+      }
+    }
+  },
+);
+
+// 편집기 관련 변수들
+const slideEditorSection = ref();
+const currentSlideContent = ref('');
+const currentSlideInfo = computed(() => ({
+  lessonTitle: `강의 ${courseStore.currentLesson + 1}`,
+  slideTitle: `슬라이드 ${courseStore.currentSlide + 1}`,
+  slideIndex: courseStore.currentSlide + 1,
+  totalSlides: courseStore.currentLessonData?.slides || 0,
+  lessonNumber: courseStore.currentLesson + 1,
+  totalLessons: courseStore.lessons.length,
+}));
+
+// HTML 변환 관련 변수들은 MainLayout으로 이동됨
+
+// 편집기 이벤트 핸들러들
+const handleSlideContentSave = (content: string) => {
+  console.log('슬라이드 내용 저장:', content);
+  currentSlideContent.value = content;
+};
+
+const handleSlideContentChange = (content: string) => {
+  console.log('슬라이드 내용 변경:', content);
+  currentSlideContent.value = content;
+};
+
+const handleSlidePreview = () => {
+  console.log('슬라이드 미리보기');
+};
+
+const handleCreateMarkdownFile = () => {
+  console.log('마크다운 파일 생성');
+};
+
+const handleAutoUpdate = () => {
+  console.log('자동 업데이트');
+};
+
+const handleUpdateTOC = () => {
+  console.log('목차 업데이트');
+};
+
+const handleAddNewSlide = () => {
+  console.log('새 슬라이드 추가');
+};
+
+const isApplying = ref(false);
+
+const handleApplySlide = async (slideNumber: string) => {
+  isApplying.value = true;
+  try {
+    console.log('🔄 슬라이드 반영 시작:', slideNumber);
+
+    // 1. 현재 편집 중인 md 파일 저장
+    const [lesson = '0', slide = '0'] = (slideNumber || '0-0').split('-');
+    const mdPath = `public/slides/slide-${lesson}-${slide}.md`;
+
+    // 파일 시스템에 저장
+    if (typeof window !== 'undefined' && (window as any).__TAURI__) {
+      // Tauri 환경
+      await (window as any).__TAURI__.fs.writeTextFile(mdPath, currentSlideContent.value);
+      console.log('✅ MD 파일 저장 완료 (Tauri):', mdPath);
+
+      // Tauri 환경에서는 빌드도 자동으로 실행
+      // (Tauri에서는 Node.js 스크립트 실행 가능)
+    } else {
+      // 개발 환경에서는 클립보드에 복사
+      console.log('💾 MD 파일 내용을 클립보드에 복사 중...');
+
+      try {
+        await navigator.clipboard.writeText(currentSlideContent.value);
+        console.log('✅ MD 파일 내용이 클립보드에 복사되었습니다.');
+
+        // 사용자에게 수동 저장 안내
+        $q.notify({
+          type: 'info',
+          message: `편집한 내용이 클립보드에 복사되었습니다.
+           public/slides/slide-${lesson}-${slide}.md 파일에 붙여넣고
+           'npm run build-slides-new' 명령어로 빌드해주세요.`,
+          position: 'top',
+          timeout: 8000,
+          icon: 'content_copy',
+          actions: [
+            {
+              label: '확인',
+              color: 'white',
+              handler: () => {
+                // 터미널 명령어 안내
+                console.log('💡 터미널에서 다음 명령어를 실행하세요:');
+                console.log(`npm run build-slides-new`);
+              },
+            },
+          ],
+        });
+      } catch (clipboardError) {
+        console.error('❌ 클립보드 복사 실패:', clipboardError);
+
+        // 클립보드 복사 실패 시 다운로드 방식 사용
+        const blob = new Blob([currentSlideContent.value], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `slide-${lesson}-${slide}.md`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        $q.notify({
+          type: 'info',
+          message: 'MD 파일이 다운로드되었습니다. public/slides 폴더에 저장하고 빌드해주세요.',
+          position: 'top',
+          timeout: 5000,
+          icon: 'download',
+          actions: [{ label: '확인', color: 'white' }],
+        });
+      }
+
+      return; // 개발 환경에서는 자동 빌드하지 않음
+    }
+
+    // 2. 슬라이드 뷰어 리프레시 (key 변경으로 강제 리렌더링)
+    slideViewerKey.value++;
+
+    // 3. 성공 메시지 표시
+    $q.notify({
+      type: 'positive',
+      message: '슬라이드가 성공적으로 반영되었습니다!',
+      position: 'top',
+      timeout: 2000,
+      icon: 'check_circle',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+
+    console.log('🎉 슬라이드 반영 완료');
+  } catch (error) {
+    console.error('❌ 슬라이드 반영 실패:', error);
+
+    $q.notify({
+      type: 'negative',
+      message: '슬라이드 반영 중 오류가 발생했습니다.',
+      position: 'top',
+      timeout: 3000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } finally {
+    isApplying.value = false;
+  }
+};
+
+// HTML 변환 함수는 MainLayout으로 이동됨
+
+const slideViewerKey = ref(0);
+
+// 계산된 속성들
+const totalSlides = computed(() => {
+  // course store의 lessons 데이터를 기반으로 총 슬라이드 수 계산
+  return courseStore.lessons.reduce((total, lesson) => total + lesson.slides, 0);
+});
+
+const currentSlideNumber = computed(() => {
+  // course store의 currentLesson과 currentSlide를 기반으로 슬라이드 번호 생성
+  return `${courseStore.currentLesson}-${courseStore.currentSlide}`;
+});
+
+const currentSlideType = computed(() => {
+  // 슬라이드 번호를 기반으로 타입 추정
+  const slideNum = currentSlideNumber.value;
+  if (slideNum === '0-0') return 'cover';
+  if (slideNum === '0-1') return 'index';
+  if (slideNum === '0-2') return 'profile';
+  if (slideNum.endsWith('-0')) return 'chapter';
+  if (slideNum.startsWith('2-') && slideNum !== '2-0') return 'example';
+  if (slideNum.startsWith('3-') && slideNum !== '3-0') return 'challenge';
+  return 'lecture';
+});
+
+// 첫 번째 슬라이드인지 확인 (첫 번째 Chapter의 첫 번째 슬라이드)
+const isFirstSlide = computed(() => {
+  return courseStore.currentLesson === 0 && courseStore.currentSlide === 0;
+});
+
+// 마지막 슬라이드인지 확인 (마지막 Chapter의 마지막 슬라이드)
+const isLastSlide = computed(() => {
+  const lastLessonIndex = courseStore.lessons.length - 1;
+  const lastLesson = courseStore.lessons[lastLessonIndex];
+  return (
+    courseStore.currentLesson === lastLessonIndex &&
+    courseStore.currentSlide === (lastLesson?.slides || 0) - 1
+  );
+});
+
+const slideViewerWidth = ref(60); // %
+const editorWidth = ref(40); // %
+const resizing = ref(false);
+const minWidth = 20; // 최소 20%
+const maxWidth = 80; // 최대 80%
+
+const slideViewerStyle = computed(() =>
+  !isPresentationMode.value ? { flex: `0 0 ${slideViewerWidth.value}%` } : {},
+);
+const editorStyle = computed(() =>
+  !isPresentationMode.value ? { flex: `0 0 ${editorWidth.value}%` } : {},
+);
+
+const startResizing = (e: MouseEvent) => {
+  resizing.value = true;
+  document.body.style.cursor = 'col-resize';
+};
+const stopResizing = () => {
+  resizing.value = false;
+  document.body.style.cursor = '';
+};
+const handleResizing = (e: MouseEvent) => {
+  if (!resizing.value) return;
+  const mainContent = document.querySelector('.main-content') as HTMLElement;
+  if (!mainContent) return;
+  const rect = mainContent.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const percent = (x / rect.width) * 100;
+  if (percent > minWidth && percent < maxWidth) {
+    slideViewerWidth.value = percent;
+    editorWidth.value = 100 - percent;
+  }
+};
+
+// 메서드들
+const goToPreviousSlide = () => {
+  courseStore.prevSlide();
+};
+
+const goToNextSlide = () => {
+  courseStore.nextSlide();
+};
+
+const goToFirstSlide = () => {
+  // 첫 번째 Chapter의 첫 번째 슬라이드로 이동
+  courseStore.setCurrentLesson(0);
+  courseStore.setCurrentSlide(0);
+};
+
+const goToLastSlide = () => {
+  // 마지막 Chapter의 마지막 슬라이드로 이동
+  const lastLessonIndex = courseStore.lessons.length - 1;
+  const lastLesson = courseStore.lessons[lastLessonIndex];
+  if (lastLesson) {
+    courseStore.setCurrentLesson(lastLessonIndex);
+    courseStore.setCurrentSlide(lastLesson.slides - 1);
+  }
+};
+
+const updateRoute = () => {
+  router.push({
+    query: {
+      ...route.query,
+      lesson: courseStore.currentLesson.toString(),
+      slide: courseStore.currentSlide.toString(),
+    },
+  });
+};
+
+// 키보드 이벤트 처리 (프레젠테이션 모드에서만 작동)
+const handleKeydown = (event: KeyboardEvent) => {
+  // 편집기 모드에서는 키보드 단축키 비활성화
+  if (!isPresentationMode.value) {
     return;
   }
 
-  // 슬라이드 네비게이션 키들
   switch (event.key) {
-    case 'ArrowRight':
-    case 'ArrowDown':
-    case 'PageDown':
-    case ' ': // 스페이스바
-      event.preventDefault();
-      if (!isNextButtonDisabled.value) {
-        nextSlide();
-      }
-      break;
     case 'ArrowLeft':
-    case 'ArrowUp':
-    case 'PageUp':
       event.preventDefault();
-      if (!isPrevButtonDisabled.value) {
-        prevSlide();
-      }
+      goToPreviousSlide();
+      break;
+    case 'ArrowRight':
+    case ' ':
+      event.preventDefault();
+      goToNextSlide();
       break;
     case 'Home':
       event.preventDefault();
-      // 첫 번째 슬라이드로 이동
-      courseStore.setCurrentSlide(0);
+      goToFirstSlide();
       break;
     case 'End':
       event.preventDefault();
-      // 마지막 슬라이드로 이동
-      const lastSlide = (courseStore.currentLessonData?.slides || 0) - 1;
-      courseStore.setCurrentSlide(lastSlide);
+      goToLastSlide();
+      break;
+    case '?':
+      event.preventDefault();
+      showKeyboardHelp.value = !showKeyboardHelp.value;
       break;
   }
 };
 
-// 구분선 조절을 위한 상태
-const slideViewerWidth = ref(70);
-const isResizing = ref(false);
-
-// 슬라이드 뷰어 컨테이너 ref
-const slideViewerContainerRef = ref();
-
-// 사이드바 컨테이너 ref
-const sidebarContainerRef = ref();
-
-// Store에서 필요한 상태와 액션들을 구조분해할당
-const {
-  currentSlide,
-  isPlaying,
-  showComments,
-  newComment,
-  notes,
-  comments,
-  currentLessonData,
-  slideProgress,
-  nextSlide,
-  prevSlide,
-  togglePlaying,
-  toggleComments,
-  addComment,
-  updateNotes,
-  saveNotes,
-  clearNotes,
-  toggleCommentLike,
-  hasVideo,
-  currentLesson,
-  getCurrentSlideContent,
-  saveSlideContent,
-  getCurrentSlideType,
-  getSlideContentFromMD,
-  saveSlideContentToMD,
-  overwriteSlideContentToMD,
-} = courseStore;
-
-// 현재 슬라이드 타입
-const currentSlideType = computed(() => getCurrentSlideType());
-
-// 화살표 버튼 비활성화 조건
-const isPrevButtonDisabled = computed(() => {
-  // 첫 번째 Chapter의 첫 번째 슬라이드인 경우에만 비활성화
-  return courseStore.currentSlide === 0 && courseStore.currentLesson === 0;
+// 라이프사이클 훅
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown);
+  window.addEventListener('mousemove', handleResizing);
+  window.addEventListener('mouseup', stopResizing);
 });
 
-const isNextButtonDisabled = computed(() => {
-  // 마지막 Chapter의 마지막 슬라이드인 경우에만 비활성화
-  const isLastSlide = courseStore.currentSlide === (courseStore.currentLessonData?.slides || 0) - 1;
-  const isLastChapter = courseStore.currentLesson === courseStore.lessons.length - 1;
-  return isLastSlide && isLastChapter;
-});
-
-// 현재 슬라이드 내용 (MD 파일에서 읽어옴)
-const currentSlideContent = ref('');
-
-// MD 파일에서 슬라이드 내용을 로드하는 함수
-const loadSlideContentFromMD = async () => {
-  try {
-    const lesson = courseStore.lessons[courseStore.currentLesson];
-    if (!lesson) {
-      currentSlideContent.value = '';
-      return;
-    }
-
-    // 실제 lessonIndex와 slideIndex를 사용하여 componentKey 생성
-    const componentKey = `${courseStore.currentLesson}-${courseStore.currentSlide}`;
-    const content = await getSlideContentFromMD(componentKey);
-    currentSlideContent.value = content;
-
-    // 뷰어도 즉시 업데이트
-    if (slideViewerContainerRef.value?.slideViewerRef?.value) {
-      slideViewerContainerRef.value.slideViewerRef.value.updateContent(content);
-    }
-  } catch (error) {
-    console.error('❌ MD 파일 내용 로드 실패:', error);
-    currentSlideContent.value = '';
-  }
-};
-
-// 현재 슬라이드 제목
-const currentSlideTitle = computed(() => {
-  if (!currentLessonData) return '';
-
-  const lesson = currentLessonData;
-  const slideTitles = lesson.slideTitles;
-
-  if (slideTitles && slideTitles[currentSlide]) {
-    return slideTitles[currentSlide];
-  }
-
-  // 슬라이드 제목이 없으면 기본 형식으로 생성
-  const lessonNumber = lesson.title.split('.')[0]?.trim() || '1';
-  return `${lessonNumber}-${currentSlide + 1}`;
-});
-
-// 현재 슬라이드 정보
-const currentSlideInfo = computed(() => {
-  const lesson = courseStore.lessons[courseStore.currentLesson];
-  const slideIndex = courseStore.currentSlide;
-
-  if (!lesson) return null;
-
-  return {
-    lessonTitle: lesson.title,
-    slideTitle: lesson.slideTitles?.[slideIndex] || `슬라이드 ${slideIndex + 1}`,
-    slideIndex: slideIndex + 1,
-    totalSlides: lesson.slides,
-    lessonNumber: courseStore.currentLesson + 1,
-    totalLessons: courseStore.lessons.length,
-  };
-});
-
-// 현재 슬라이드 HTML 내용
-const currentSlideHTML = computed(() => {
-  if (!currentSlideContent.value) return '';
-
-  try {
-    return convertMarkdownToHTML(currentSlideContent.value);
-  } catch (error) {
-    console.error('HTML 변환 오류:', error);
-    return currentSlideContent.value;
-  }
-});
-
-// SidebarContainer용 변수들
-const currentSlideHtml = computed(() => currentSlideHTML.value);
-const safeCurrentSlideInfo = computed(
-  () =>
-    currentSlideInfo.value || {
-      lessonTitle: '',
-      slideTitle: '',
-      slideIndex: 1,
-      totalSlides: 1,
-      lessonNumber: 1,
-      totalLessons: 1,
-    },
-);
-
-// 슬라이드 내용 저장
-const handleSlideContentSave = async (content: string, slideId: string) => {
-  console.log('🔍 [IndexPage] 저장 시작');
-  console.log('🔍 [IndexPage] 원본 내용 길이:', content.length);
-  console.log(
-    '🔍 [IndexPage] 원본 내용 끝부분:',
-    JSON.stringify(content.substring(content.length - 20)),
-  );
-
-  // 끝부분의 불필요한 줄바꿈 제거
-  const cleanedContent = content.trimEnd();
-
-  console.log('🔍 [IndexPage] 정리된 내용 길이:', cleanedContent.length);
-  console.log(
-    '🔍 [IndexPage] 정리된 내용 끝부분:',
-    JSON.stringify(cleanedContent.substring(cleanedContent.length - 20)),
-  );
-  console.log('🔍 [IndexPage] 제거된 빈줄 수:', content.length - cleanedContent.length);
-
-  // 추가로 연속된 빈줄을 하나로 정리
-  const finalContent = cleanedContent.replace(/\n{3,}/g, '\n\n');
-
-  console.log('🔍 [IndexPage] 최종 내용 길이:', finalContent.length);
-  console.log(
-    '🔍 [IndexPage] 최종 내용 끝부분:',
-    JSON.stringify(finalContent.substring(finalContent.length - 20)),
-  );
-
-  saveSlideContent(finalContent);
-
-  // MD 파일 덮어쓰기
-  try {
-    const lesson = courseStore.lessons[courseStore.currentLesson];
-    const componentKey = `${courseStore.currentLesson}-${courseStore.currentSlide}`;
-
-    const success = await overwriteSlideContentToMD(componentKey, finalContent);
-
-    if (!success) {
-      console.error('MD 파일 덮어쓰기 실패:', slideId);
-      alert('❌ 저장 실패! 파일 생성에 실패했습니다.');
-    }
-  } catch (error) {
-    console.error('MD 파일 저장 실패:', error);
-    alert('❌ 저장 실패! 오류가 발생했습니다.');
-  }
-};
-
-// 슬라이드 내용 변경 (실시간 뷰어 업데이트만)
-const handleSlideContentChange = async (content: string) => {
-  // 끝부분의 불필요한 줄바꿈 제거
-  const cleanedContent = content.trimEnd();
-
-  // 슬라이드 내용 업데이트 (메모리만)
-  saveSlideContent(cleanedContent);
-};
-
-// 슬라이드 미리보기
-const handleSlidePreview = (content: string) => {
-  // 미리보기 시 메인 슬라이드에 반영
-  saveSlideContent(content);
-
-  // 슬라이드 뷰어 업데이트
-  if (slideViewerContainerRef.value?.slideViewerRef?.value) {
-    slideViewerContainerRef.value.slideViewerRef.value.updateContent(content);
-  }
-};
-
-// 자동 업데이트 처리 (실시간 뷰어 업데이트만)
-const handleAutoUpdate = (content: string, slideId: string) => {
-  try {
-    // 끝부분의 불필요한 줄바꿈 제거
-    const cleanedContent = content.trimEnd();
-
-    saveSlideContent(cleanedContent);
-    if (slideViewerContainerRef.value?.slideViewerRef?.value) {
-      slideViewerContainerRef.value.slideViewerRef.value.updateContent(cleanedContent);
-    }
-  } catch (error) {
-    console.error('실시간 뷰어 업데이트 실패:', error);
-  }
-};
-
-// 마크다운 파일 생성
-const handleCreateMarkdownFile = async (content: string, slideId: string) => {
-  try {
-    const componentKey = slideId;
-    const success = await saveSlideContentToMD(componentKey, content);
-
-    if (success) {
-      console.log('✅ 마크다운 파일 생성 완료:', slideId);
-    } else {
-      console.error('❌ 마크다운 파일 생성 실패:', slideId);
-      alert('❌ 파일 생성에 실패했습니다.');
-    }
-  } catch (error) {
-    console.error('❌ 마크다운 파일 생성 오류:', error);
-    alert('❌ 파일 생성 중 오류가 발생했습니다.');
-  }
-};
-
-// 슬라이드 네비게이션 처리
-const handleSlideNavigation = (direction: 'prev' | 'next') => {
-  if (direction === 'prev') {
-    prevSlide();
-  } else {
-    nextSlide();
-  }
-};
-
-// 구분선 조절 시작
-const startResize = (event: MouseEvent) => {
-  isResizing.value = true;
-  document.addEventListener('mousemove', handleResize);
-  document.addEventListener('mouseup', stopResize);
-  event.preventDefault();
-};
-
-// 구분선 조절 중
-const handleResize = (event: MouseEvent) => {
-  if (!isResizing.value) return;
-
-  const container = document.querySelector('.main-layout') as HTMLElement;
-  if (!container) return;
-
-  const containerRect = container.getBoundingClientRect();
-  const newWidth = ((event.clientX - containerRect.left) / containerRect.width) * 100;
-
-  // 최소 30%, 최대 90%로 제한
-  slideViewerWidth.value = Math.max(30, Math.min(90, newWidth));
-};
-
-// 구분선 조절 종료
-const stopResize = () => {
-  isResizing.value = false;
-  document.removeEventListener('mousemove', handleResize);
-  document.removeEventListener('mouseup', stopResize);
-};
-
-// 내보내기 성공 처리
-const handleExportSuccess = (message: string) => {
-  console.log('✅ 내보내기 성공:', message);
-};
-
-// 내보내기 오류 처리
-const handleExportError = (error: string) => {
-  console.error('❌ 내보내기 오류:', error);
-  alert(`❌ 내보내기 실패: ${error}`);
-};
-
-// Watch 함수들
+// Course 스토어 변경사항 감지
 watch(
-  () => courseStore.currentLesson,
-  async () => {
-    await loadSlideContentFromMD();
+  () => [courseStore.currentLesson, courseStore.currentSlide],
+  async ([newLesson, newSlide]) => {
+    if (newLesson !== undefined && newSlide !== undefined) {
+      console.log(`🔄 IndexPage - 스토어 변경 감지: lesson=${newLesson}, slide=${newSlide}`);
+
+      // 편집기 모드일 때 MD 파일 내용 로드
+      if (!isPresentationMode.value) {
+        try {
+          console.log(`📂 편집기 모드 - MD 파일 내용 로드 시작: ${newLesson}-${newSlide}`);
+          const content = await courseStore.loadSlideContentForEditing(newLesson, newSlide);
+          console.log(`✅ 편집기 모드 - MD 파일 내용 로드 완료:`, {
+            contentLength: content.length,
+            contentPreview: content.substring(0, 100),
+          });
+          currentSlideContent.value = content;
+        } catch (error) {
+          console.error(`❌ 편집기 모드 - MD 파일 내용 로드 실패:`, error);
+          currentSlideContent.value = `# 슬라이드 ${newLesson}-${newSlide}\n\n새로운 슬라이드 내용을 작성하세요.`;
+        }
+      }
+    }
   },
   { immediate: true },
 );
 
-watch(
-  () => courseStore.currentSlide,
-  async () => {
-    await loadSlideContentFromMD();
-  },
-);
-
-// 컴포넌트 마운트/언마운트
-onMounted(() => {
-  document.addEventListener('keydown', handleKeydown);
-});
-
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('mousemove', handleResizing);
+  window.removeEventListener('mouseup', stopResizing);
 });
 </script>
 
 <style scoped>
-.main-layout {
+.index-page {
+  height: 100vh;
   display: flex;
-  height: 100%;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
   position: relative;
 }
 
-.presentation-mode {
-  background: #000000;
+.slide-viewer-container {
+  flex: 1;
+  position: relative;
 }
 
-.resize-handle {
-  width: 4px;
-  background: #ddd;
-  cursor: col-resize;
-  transition: background-color 0.2s;
+.slide-viewer-container.with-editor {
+  flex: 0 0 60%;
 }
 
-.resize-handle:hover {
-  background: #999;
+.editor-container {
+  flex: 0 0 40%;
+  border-left: 1px solid #e0e0e0;
+  background: #f5f5f5;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
-.presentation-shortcuts {
+.navigation-controls {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 20px; /* 우측 끝으로 이동 */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 간격 줄임 */
   z-index: 1000;
 }
 
-.shortcuts-tooltip {
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.nav-btn {
+  width: 32px; /* 버튼 크기 줄임 */
+  height: 32px; /* 버튼 크기 줄임 */
+  background: rgba(255, 255, 255, 0.9) !important; /* 반투명 배경 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  border-radius: 50%;
 }
 
-.shortcuts-text {
-  white-space: nowrap;
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  transform: scale(1.1); /* 호버 시 살짝 확대 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.slide-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px; /* 너비 줄임 */
+  background: rgba(255, 255, 255, 0.9); /* 반투명 배경 */
+  border-radius: 16px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.slide-counter {
+  font-size: 0.9em; /* 폰트 크기 줄임 */
+  font-weight: bold;
+  color: #333; /* 색상 변경 */
+}
+
+.keyboard-help {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  max-width: 400px;
+}
+
+.editor-mode-notice {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  max-width: 400px;
+}
+
+/* HTML 변환 버튼 스타일은 MainLayout으로 이동됨 */
+
+.resizer-bar {
+  width: 6px;
+  cursor: col-resize;
+  background: #e0e0e0;
+  transition: background 0.2s;
+  z-index: 10;
+}
+.resizer-bar:hover {
+  background: #bdbdbd;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .navigation-controls {
+    bottom: 15px;
+    right: 15px; /* 모바일에서도 우측 끝 */
+    gap: 6px; /* 간격 더 줄임 */
+  }
+
+  .nav-btn {
+    width: 28px; /* 모바일에서 더 작게 */
+    height: 28px; /* 모바일에서 더 작게 */
+  }
+
+  .slide-info {
+    min-width: 50px; /* 모바일에서 더 작게 */
+    padding: 3px 6px;
+  }
+
+  .slide-counter {
+    font-size: 0.8em; /* 모바일에서 더 작게 */
+  }
+
+  .keyboard-help {
+    top: 10px;
+    right: 10px;
+    max-width: 300px;
+  }
+
+  .editor-mode-notice {
+    top: 10px;
+    left: 10px;
+    max-width: 300px;
+  }
+
+  /* HTML 변환 버튼 반응형 스타일은 MainLayout으로 이동됨 */
 }
 </style>

@@ -1,0 +1,588 @@
+// 전역 강조 텍스트 스타일 (모든 **bold** 텍스트에 적용)
+.reveal .slides section,
+.markdown-slide {
+  strong,
+  b {
+    color: #ffffff !important; // 브라이트 레드로 통일
+    font-weight: 700 !important;
+  }
+
+  // 다른 강조 요소들도 동일하게
+  .bold,
+  .strong,
+  .emphasis {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+}
+
+// 녹색 라인 완전 제거
+* {
+  // 모든 녹색 관련 스타일 무효화
+  border-color: transparent !important;
+}
+
+// 역사로 녹색이 나타날 수 있는 요소들 방지
+.reveal .slides section,
+.markdown-slide {
+  * {
+    border-left-color: transparent !important;
+    border-right-color: transparent !important;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    outline-color: transparent !important;
+  }
+
+  // 문단 및 목록 요소에서 녹색 제거
+  p,
+  li,
+  div,
+  span {
+    border: none !important;
+    background-image: none !important;
+  }
+
+  // 특별히 주의해야 할 요소들
+  .green,
+  .success,
+  .positive {
+    color: #87ceeb !important; // 스카이블루로 대체
+    border-color: #87ceeb !important;
+    background-color: transparent !important;
+  }
+}
+
+// Reveal.js 기본 스타일 오버라이드 (녹색 제거)
+.reveal {
+  // background: #0a0a0a !important; // 검은색 배경 제거 - 원본 슬라이드 배경색 보존
+  // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+
+  // 모든 녹색 요소 방지
+  .progress {
+    background: rgba(255, 255, 255, 0.2) !important;
+
+    span {
+      background: #ffd700 !important; // 골드로 변경
+    }
+  }
+
+  // 링크 녹색 제거
+  a {
+    color: #87ceeb !important;
+
+    &:hover {
+      color: #ffd700 !important;
+    }
+  }
+
+  // 하이라이트 녹색 제거
+  .highlight {
+    background: rgba(255, 215, 0, 0.3) !important; // 골드 반투명
+    // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+  }
+}
+
+// 대비를 위한 추가 스타일
+body {
+  // background: #0a0a0a !important; // 검은색 배경 제거 - 원본 슬라이드 배경색 보존
+  // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+}
+
+// 목회 워크숍 전용 슬라이드 테마
+// src/css/ministry-theme.scss
+
+:root {
+  // 목회 브랜드 컬러 팔레트
+  --ministry-primary: #2c3e50; // 깊은 네이비 (신뢰, 안정)
+  --ministry-secondary: #e74c3c; // 따뜻한 빨간색 (열정, 사랑)
+  --ministry-accent: #3498db; // 밝은 블루 (희망, 지혜)
+  --ministry-success: #27ae60; // 그린 (성장, 은혜)
+  --ministry-warning: #f39c12; // 오렌지 (주의, 깨달음)
+  --ministry-background: #1a1a1a; // 다크 배경으로 변경
+  --ministry-text: #2c3e50; // 다크 네이비
+  --ministry-text-light: #7f8c8d; // 중간 그레이
+  --ministry-text-muted: #bdc3c7; // 연한 그레이
+  --ministry-border: #ecf0f1; // 매우 연한 그레이
+
+  // 그라데이션 (영적 분위기)
+  --ministry-gradient-divine: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --ministry-gradient-grace: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --ministry-gradient-peace: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --ministry-gradient-wisdom: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+
+  // 타이포그래피
+  --ministry-font-family:
+    'Noto Sans KR', 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ministry-heading-font:
+    'Noto Sans KR', 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  // 간격 시스템
+  --ministry-spacing-xs: 0.5rem; // 8px
+  --ministry-spacing-sm: 1rem; // 16px
+  --ministry-spacing-md: 1.5rem; // 24px
+  --ministry-spacing-lg: 2rem; // 32px
+  --ministry-spacing-xl: 3rem; // 48px
+  --ministry-spacing-xxl: 4rem; // 64px
+
+  // 그림자 시스템
+  --ministry-shadow-soft: 0 2px 10px rgba(44, 62, 80, 0.1);
+  --ministry-shadow-medium: 0 4px 20px rgba(44, 62, 80, 0.15);
+  --ministry-shadow-strong: 0 8px 30px rgba(44, 62, 80, 0.2);
+
+  // 둥근 모서리
+  --ministry-border-radius: 8px;
+  --ministry-border-radius-lg: 12px;
+}
+
+// 보다 어두운 배경으로 업데이트
+.reveal .slides section {
+  font-family: var(--ministry-font-family) !important;
+  text-align: left !important;
+  // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+  // background: #1a1a1a !important; // 검은색 배경 제거 - 원본 슬라이드 배경색 보존
+  padding: var(--ministry-spacing-lg) !important;
+  line-height: 1.6 !important;
+}
+
+// 모든 슬라이드에 다크 배경 적용
+.markdown-slide {
+  font-family: var(--ministry-font-family);
+  line-height: 1.6;
+  // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+  // background: #1a1a1a; // 검은색 배경 제거 - 원본 슬라이드 배경색 보존
+  max-width: 100%;
+  margin: 0 auto;
+  padding: var(--ministry-spacing-md);
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  // 헤딩 스타일 시스템
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--ministry-heading-font);
+    margin-bottom: var(--ministry-spacing-md);
+    font-weight: 600;
+    line-height: 1.3;
+    // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+  }
+
+  h1 {
+    font-size: 3rem;
+    color: #ffd700; // 골드 컬러로 강조
+    text-align: center;
+    margin-bottom: var(--ministry-spacing-xl);
+    border-bottom: 3px solid #ffd700;
+    padding-bottom: var(--ministry-spacing-md);
+  }
+
+  h2 {
+    font-size: 2.2rem;
+    color: #87ceeb; // 스카이블루로 구분
+    margin-bottom: var(--ministry-spacing-lg);
+    border-left: 4px solid #ffd700; // 골드 테두리로 변경
+    padding-left: var(--ministry-spacing-md);
+  }
+
+  h3 {
+    font-size: 1.8rem; // 2.5rem에서 1.8rem으로 2단계 축소
+    color: #ff4757; // 브라이트 레드로 변경 (슬라이드 제목)
+    text-align: center;
+    margin-bottom: var(--ministry-spacing-lg);
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 1.8rem;
+    color: #98fb98; // 라이트그린으로
+    border-left: 3px solid #87ceeb; // 스카이블루 테두리로 변경
+    padding-left: var(--ministry-spacing-md);
+    margin-bottom: var(--ministry-spacing-md);
+  }
+
+  h5 {
+    font-size: 1.4rem;
+    color: #dda0dd; // 라이트퍼플로
+    margin-bottom: var(--ministry-spacing-sm);
+  }
+
+  h6 {
+    font-size: 1.2rem;
+    color: #f0e68c; // 카키색으로
+    margin-bottom: var(--ministry-spacing-sm);
+  }
+
+  // 문단 스타일 (크기 1.3배 증가)
+  p {
+    font-size: 1.56rem; // 1.2rem에서 1.56rem으로 1.3배 증가
+    line-height: 1.7;
+    margin-bottom: var(--ministry-spacing-md);
+    // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // 리스트 스타일 (크기 1.3배 증가)
+  ul,
+  ol {
+    margin-bottom: var(--ministry-spacing-lg);
+    padding-left: var(--ministry-spacing-lg);
+
+    li {
+      font-size: 1.56rem; // 1.2rem에서 1.56rem으로 1.3배 증가
+      line-height: 1.8;
+      margin-bottom: var(--ministry-spacing-sm);
+      // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+
+      &::marker {
+        color: #ffd700; // 마커를 골드로
+        font-weight: bold;
+      }
+
+      // 강조된 텍스트 (레드계통으로 변경)
+      strong {
+        color: #ff6b6b; // 브라이트 레드로 변경
+        font-weight: 700;
+      }
+
+      // 코드 텍스트
+      code {
+        background: rgba(255, 255, 255, 0.1); // 반투명 화이트 배경
+        color: #87ceeb; // 스카이블루 텍스트
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+
+      // 특수 문자나 기호 스타일 (녹색 방지)
+      em {
+        color: #dda0dd; // 라이트퍼플로
+        font-style: italic;
+      }
+    }
+
+    // 중첩 리스트
+    ul,
+    ol {
+      margin-top: var(--ministry-spacing-sm);
+      margin-bottom: var(--ministry-spacing-sm);
+    }
+  }
+
+  // 인용구 스타일 (녹색 제거)
+  blockquote {
+    background: var(--ministry-gradient-divine);
+    // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+    padding: var(--ministry-spacing-lg);
+    margin: var(--ministry-spacing-lg) 0;
+    border-radius: var(--ministry-border-radius-lg);
+    border: none; // 모든 테두리 제거
+    text-align: center;
+    font-style: italic;
+    font-size: 1.3rem;
+    box-shadow: var(--ministry-shadow-medium);
+    position: relative;
+
+    &::before {
+      content: '"';
+      font-size: 4rem;
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      opacity: 0.3;
+    }
+
+    p {
+      margin: 0;
+      // color: white; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+    }
+  }
+
+  // 링크 스타일
+  a {
+    color: #87ceeb; // 스카이블루 링크
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #ffd700; // 호버시 골드
+      border-bottom-color: #ffd700;
+    }
+  }
+
+  // 이미지 스타일
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--ministry-border-radius);
+    box-shadow: var(--ministry-shadow-soft);
+    margin: var(--ministry-spacing-md) auto;
+    display: block;
+  }
+
+  // 수평선 스타일 (녹색 라인 제거)
+  hr {
+    border: none;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3); // 흰색 반투명으로 변경
+    margin: var(--ministry-spacing-xl) 0;
+    border-radius: 1px;
+  }
+}
+
+// 슬라이드 타입별 특별 스타일
+// 타이틀 슬라이드 (표지)
+.slide-type-title,
+.slide-0-0 {
+  // background: var(--ministry-gradient-divine) !important; // 배경 제거 - 원본 슬라이드 배경색 보존
+  // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 100vh !important;
+  padding: var(--ministry-spacing-xxl) !important;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+      repeat;
+  }
+
+  * {
+    // color: white !important; // 흰색 텍스트 제거 - 원본 슬라이드 텍스트색 보존
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+  }
+
+  h3 {
+    font-size: 4rem !important;
+    margin-bottom: var(--ministry-spacing-lg) !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+  }
+
+  h2 {
+    font-size: 2rem !important;
+    opacity: 0.9;
+    margin-bottom: var(--ministry-spacing-xl) !important;
+    font-weight: 500 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  h5,
+  h6 {
+    font-size: 1.3rem !important;
+    opacity: 0.8;
+    margin-bottom: var(--ministry-spacing-sm) !important;
+  }
+
+  p {
+    font-size: 1.2rem !important;
+    opacity: 0.8;
+  }
+}
+
+// 목차 슬라이드
+.slide-type-toc,
+.slide-0-1 {
+  padding: var(--ministry-spacing-xl) !important;
+  background: #2a2a2a !important; // 어두운 배경
+
+  h3 {
+    color: #ff4757 !important; // 브라이트 레드로 통일
+    margin-bottom: var(--ministry-spacing-xl) !important;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      background: #3a3a3a; // 더 어두운 카드 배경
+      color: white; // 화이트 텍스트
+      margin-bottom: var(--ministry-spacing-md);
+      padding: var(--ministry-spacing-lg);
+      border-radius: var(--ministry-border-radius-lg);
+      box-shadow: var(--ministry-shadow-soft);
+      border-left: 4px solid #87ceeb; // 스카이블루 테두리
+      font-size: 1.82rem; // 1.4rem에서 1.82rem으로 1.3배 증가
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateX(10px);
+        box-shadow: var(--ministry-shadow-medium);
+        background: #4a4a4a; // 호버시 더 밝은 배경
+      }
+
+      strong {
+        color: #ff6b6b; // 브라이트 레드로 통일
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+
+// 강사 소개 슬라이드
+.slide-0-2 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%) !important; // 다크 그라데이션
+
+  h3 {
+    color: #ff4757 !important; // 브라이트 레드로 통일
+    margin-bottom: var(--ministry-spacing-xl) !important;
+  }
+
+  h1 {
+    font-size: 4rem !important;
+    color: #ffb6c1 !important; // 라이트핑크
+    margin: var(--ministry-spacing-lg) 0 !important;
+    border: none !important;
+  }
+
+  h4 {
+    color: #87ceeb !important; // 스카이블루
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: var(--ministry-spacing-md) !important;
+  }
+
+  p {
+    font-size: 1.43rem; // 1.1rem에서 1.43rem으로 1.3배 증가
+    color: #dda0dd !important; // 라이트퍼플
+    margin-top: var(--ministry-spacing-lg);
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .markdown-slide {
+    padding: var(--ministry-spacing-md);
+
+    h1 {
+      font-size: 2.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+    h3 {
+      font-size: 2rem;
+    }
+    h4 {
+      font-size: 1.5rem;
+    }
+
+    p,
+    li {
+      font-size: 1.1rem;
+    }
+  }
+
+  .slide-type-title h3 {
+    font-size: 2.5rem !important;
+  }
+}
+
+// 프레젠테이션 모드 최적화 (텍스트 크기 조정)
+.presentation-mode .markdown-slide {
+  padding: var(--ministry-spacing-xl);
+
+  h3 {
+    font-size: 2.2rem; // 프레젠테이션 모드에서도 적절한 크기로 조정
+  }
+
+  p,
+  li {
+    font-size: 1.69rem; // 1.3rem에서 1.69rem으로 1.3배 증가
+  }
+}
+
+// 부드러운 애니메이션
+.slide-transition-enter-active,
+.slide-transition-leave-active {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-transition-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-transition-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+// 리스트 아이템 순차 애니메이션
+.markdown-slide li {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.markdown-slide li:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.markdown-slide li:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.markdown-slide li:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.markdown-slide li:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.markdown-slide li:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.markdown-slide li:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+// 반응형 디자인 - H3 크기 조정
+@media (max-width: 768px) {
+  .markdown-slide {
+    h3 {
+      font-size: 1.5rem !important; // 모바일에서 더 작게
+    }
+
+    p,
+    li {
+      font-size: 1.43rem !important; // 1.1rem에서 1.43rem으로 1.3배 증가
+    }
+  }
+
+  .slide-type-title h3 {
+    font-size: 2rem !important; // 타이틀 슬라이드는 약간 크게
+  }
+}

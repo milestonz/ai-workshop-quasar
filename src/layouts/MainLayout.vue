@@ -2,7 +2,15 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+          :disable="!isAuthenticated"
+        />
 
         <q-toolbar-title> 📖 목회 현장에서 만나는 12가지 AI 활용 시나리오 </q-toolbar-title>
 
@@ -15,6 +23,7 @@
           color="white"
           @click="shareWithStudents"
           class="q-mr-xs"
+          :disable="!isAuthenticated"
         >
           <q-tooltip>수강생과 공유</q-tooltip>
         </q-btn>
@@ -28,6 +37,7 @@
           :color="isPresentationMode ? 'white' : 'orange'"
           @click="togglePresentationMode"
           class="q-mr-xs"
+          :disable="!isAuthenticated"
         >
           <q-tooltip>{{ isPresentationMode ? '편집기 모드' : '프리젠테이션 모드' }}</q-tooltip>
         </q-btn>
@@ -94,10 +104,99 @@
           @click="handleSaveAll"
           :loading="isSaving"
           class="q-mr-xs"
+          :disable="!isAuthenticated"
         >
           <q-tooltip>전체 저장</q-tooltip>
         </q-btn>
 
+        <!-- Import 버튼 -->
+        <q-btn
+          flat
+          round
+          dense
+          icon="upload"
+          color="white"
+          @click="showCourseImport = true"
+          class="q-mr-xs"
+          :disable="!isAuthenticated"
+        >
+          <q-tooltip>강의 가져오기</q-tooltip>
+        </q-btn>
+
+        <!-- 슬라이드 빌드 버튼 -->
+        <q-btn
+          flat
+          round
+          dense
+          icon="build"
+          :color="isBuilding ? 'orange' : 'white'"
+          :loading="isBuilding"
+          @click="buildAllSlides"
+          class="q-mr-xs"
+          :disable="!isAuthenticated"
+        >
+          <q-tooltip>슬라이드 빌드</q-tooltip>
+        </q-btn>
+
+        <!-- 설문 결과 버튼 -->
+        <q-btn
+          flat
+          round
+          dense
+          icon="analytics"
+          color="white"
+          @click="goToSurveyResults"
+          class="q-mr-xs"
+          :disable="!isAuthenticated"
+        >
+          <q-tooltip>설문 결과</q-tooltip>
+        </q-btn>
+
+        <!-- 설정 버튼 -->
+        <q-btn
+          flat
+          round
+          dense
+          icon="settings"
+          color="white"
+          @click="showSettings = true"
+          class="q-mr-xs"
+          :disable="!isAuthenticated"
+        >
+          <q-tooltip>설정</q-tooltip>
+        </q-btn>
+
+        <!-- 로그인/로그아웃 버튼 -->
+        <q-btn
+          v-if="isFirebaseConfigured && !isAuthenticated"
+          flat
+          round
+          dense
+          icon="login"
+          color="white"
+          @click="showLoginDialog = true"
+          class="q-mr-xs"
+        >
+          <q-tooltip>로그인</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          v-else
+          flat
+          round
+          dense
+          :icon="photoURL ? undefined : 'person'"
+          color="white"
+          @click="handleLogout"
+          class="q-mr-xs"
+        >
+          <q-avatar v-if="photoURL" size="24px" class="q-mr-xs">
+            <img :src="photoURL" :alt="displayName" />
+          </q-avatar>
+          <q-tooltip>{{ displayName }} (로그아웃)</q-tooltip>
+        </q-btn>
+
+        <!-- 현재 슬라이드 정보 -->
         <div class="text-caption q-mr-md">
           슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}
         </div>
@@ -108,36 +207,26 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-grey-1"
-      :persistent="isPresentationMode"
+      class="bg-grey-1 sidebar-drawer"
+      :width="320"
+      :breakpoint="700"
+      style="max-height: 95vh"
+      v-if="isAuthenticated"
     >
-      <q-scroll-area class="fit">
-        <div class="q-pa-md">
+      <q-scroll-area class="fit" style="max-height: 95vh">
+        <div class="q-pa-sm">
           <!-- 진도율 -->
-          <div class="q-mb-md">
+          <div class="q-mb-sm">
             <div class="text-subtitle2 q-mb-sm">학습 진도</div>
             <q-linear-progress :value="progress / 100" color="primary" class="q-mb-xs" />
             <div class="text-caption text-grey-7">{{ progress }}%</div>
           </div>
 
           <!-- 강의 목록 -->
-          <div class="q-mb-md">
-            <div class="row items-center justify-between q-mb-sm">
+          <div class="q-mb-sm">
+            <div class="row items-center justify-between q-mb-xs">
               <div class="text-subtitle2">강의 목차</div>
               <div class="row items-center">
-                <q-btn
-                  flat
-                  round
-                  dense
-                  size="sm"
-                  icon="refresh"
-                  color="blue"
-                  class="q-mr-xs"
-                  @click="updateCourseOutline"
-                  :disable="isUpdating"
-                  :loading="isUpdating"
-                  title="목차 UPDATE"
-                />
                 <q-btn
                   flat
                   round
@@ -151,22 +240,31 @@
                 />
               </div>
             </div>
-            <q-list padding>
+            <q-list padding class="sidebar-list">
               <q-expansion-item
                 v-for="(lesson, index) in lessons"
                 :key="index"
-                :default-opened="index === currentLesson"
+                :model-value="getChapterExpanded(index)"
+                @update:model-value="(val: boolean) => setChapterExpanded(index, val)"
                 :class="{
-                  'bg-blue-1': index === currentLesson,
+                  'selected-chapter': index === currentLesson,
                   'locked-chapter': isChapterLocked(index),
+                  'chapter-item-active': index === currentLesson,
                 }"
+                @before-show="onChapterExpand(index)"
                 @click="setCurrentLesson(index)"
               >
                 <template v-slot:header>
                   <div class="row items-center justify-between full-width">
                     <div class="row items-center">
                       <div>
-                        <div class="text-weight-medium text-primary">
+                        <div
+                          class="text-weight-medium"
+                          :class="{
+                            'text-purple': index === currentLesson,
+                            'text-primary': index !== currentLesson,
+                          }"
+                        >
                           {{ getChapterTitle(index) }}
                         </div>
                         <div class="text-caption text-grey-6">{{ lesson.slides }}개 슬라이드</div>
@@ -202,7 +300,7 @@
                 <q-list padding>
                   <q-item
                     v-for="slideIndex in [...Array(lesson.slides).keys()]"
-                    :key="`lesson-${index}-slide-${slideIndex}`"
+                    :key="'lesson-' + index + '-slide-' + slideIndex"
                     v-show="slideIndex > 0"
                     clickable
                     v-ripple
@@ -210,6 +308,7 @@
                     :class="{
                       'q-pl-lg slide-item': true,
                       'locked-slide': isSlideLocked(index, slideIndex),
+                      'slide-item-active': index === currentLesson && slideIndex === currentSlide,
                     }"
                     @click="selectSlide(index, slideIndex)"
                   >
@@ -220,41 +319,73 @@
                       </q-item-label>
                     </q-item-section>
                     <q-item-section side>
-                      <!-- 슬라이드 잠금 버튼 -->
-                      <q-btn
-                        flat
-                        round
-                        dense
-                        size="xs"
-                        :icon="isSlideLocked(index, slideIndex) ? 'lock' : 'lock_open'"
-                        :color="isSlideLocked(index, slideIndex) ? 'red' : 'grey'"
-                        @click.stop="toggleSlideLock(index, slideIndex)"
-                        :title="
-                          isSlideLocked(index, slideIndex) ? '슬라이드 잠금 해제' : '슬라이드 잠금'
-                        "
-                      />
+                      <div class="row items-center">
+                        <!-- 슬라이드 잠금 버튼 -->
+                        <q-btn
+                          flat
+                          round
+                          dense
+                          size="xs"
+                          :icon="isSlideLocked(index, slideIndex) ? 'lock' : 'lock_open'"
+                          :color="isSlideLocked(index, slideIndex) ? 'red' : 'grey'"
+                          @click.stop="toggleSlideLock(index, slideIndex)"
+                          :title="
+                            isSlideLocked(index, slideIndex)
+                              ? '슬라이드 잠금 해제'
+                              : '슬라이드 잠금'
+                          "
+                        />
+                      </div>
                     </q-item-section>
                   </q-item>
                 </q-list>
               </q-expansion-item>
             </q-list>
           </div>
-
-          <!-- 현재 강의 정보 -->
-          <q-separator class="q-my-md" />
-          <div class="text-caption text-grey-7 q-mb-xs">현재 강의</div>
-          <div class="text-body2 q-mb-xs">
-            {{ currentLessonData?.title || '강의를 선택해주세요' }}
-          </div>
-          <div class="text-caption text-grey-7">
-            슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}
-          </div>
         </div>
       </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <!-- Firebase 설정이 없는 경우 -->
+      <div v-if="!isFirebaseConfigured" class="login-required">
+        <div class="text-center q-pa-xl">
+          <q-icon name="settings" size="100px" color="orange" class="q-mb-lg" />
+          <div class="text-h4 text-weight-bold q-mb-md">Firebase 설정 필요</div>
+          <div class="text-body1 text-grey-7 q-mb-lg">
+            로그인 기능을 사용하려면 Firebase 설정이 필요합니다.<br />
+            .env 파일에 Firebase 프로젝트 설정을 추가해주세요.
+          </div>
+          <q-btn
+            color="orange"
+            icon="settings"
+            label="설정 방법 보기"
+            size="lg"
+            @click="showSettings = true"
+          />
+        </div>
+      </div>
+
+      <!-- Firebase 설정이 있지만 로그인하지 않은 경우 -->
+      <div v-else-if="!isAuthenticated" class="login-required">
+        <div class="text-center q-pa-xl">
+          <q-icon name="lock" size="100px" color="primary" class="q-mb-lg" />
+          <div class="text-h4 text-weight-bold q-mb-md">관리자 로그인 필요</div>
+          <div class="text-body1 text-grey-7 q-mb-lg">
+            강의를 편집하고 관리하려면 로그인이 필요합니다.
+          </div>
+          <q-btn
+            color="primary"
+            icon="login"
+            label="Google로 로그인"
+            size="lg"
+            @click="showLoginDialog = true"
+          />
+        </div>
+      </div>
+
+      <!-- 로그인한 경우 메인 콘텐츠 표시 -->
+      <router-view v-else />
     </q-page-container>
 
     <!-- 공유 팝업 다이얼로그 -->
@@ -295,6 +426,35 @@
             </q-input>
           </div>
 
+          <!-- 이메일 공유 섹션 -->
+          <div class="q-mb-md">
+            <div class="text-caption text-grey-7 q-mb-xs">📧 이메일로 공유:</div>
+            <div class="row q-col-gutter-sm">
+              <div class="col-8">
+                <q-input
+                  v-model="shareEmail"
+                  outlined
+                  dense
+                  placeholder="수강생 이메일 주소"
+                  type="email"
+                />
+              </div>
+              <div class="col-4">
+                <q-btn
+                  :loading="sendingEmail"
+                  :disable="!shareEmail || !isValidEmail(shareEmail)"
+                  color="primary"
+                  label="이메일 전송"
+                  @click="sendShareEmail"
+                  dense
+                />
+              </div>
+            </div>
+            <div v-if="emailSent" class="text-positive text-caption q-mt-xs">
+              ✅ 공유 이메일이 전송되었습니다!
+            </div>
+          </div>
+
           <!-- 잠긴 항목 정보 -->
           <div
             v-if="shareLockInfo.lockedChapters.length > 0 || shareLockInfo.lockedSlides.length > 0"
@@ -322,22 +482,204 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- 강의 가져오기 다이얼로그 -->
+    <q-dialog v-model="showCourseImport" persistent>
+      <CourseImport @cancel="showCourseImport = false" @success="handleCourseImportSuccess" />
+    </q-dialog>
+
+    <!-- 설정 다이얼로그 -->
+    <q-dialog v-model="showSettings">
+      <q-card style="min-width: 350px" class="settings-dialog">
+        <q-card-section>
+          <div class="text-h6 text-dark">설정</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-toggle v-model="autoPlay" label="자동 재생" color="primary" class="text-dark" />
+          <q-toggle
+            v-model="showSlideNumbers"
+            label="슬라이드 번호 표시"
+            color="primary"
+            class="text-dark"
+          />
+          <q-toggle
+            v-model="enableKeyboardNavigation"
+            label="키보드 네비게이션"
+            color="primary"
+            class="text-dark"
+          />
+
+          <!-- 학생 모드 토글 -->
+          <q-toggle
+            v-model="enableStudentMode"
+            label="학생 모드 활성화"
+            color="orange"
+            class="text-dark q-mt-md"
+          />
+          <div class="text-caption text-grey-7 q-mt-xs">
+            활성화 시 학생들이 /study 경로로 접근할 수 있습니다.
+          </div>
+
+          <!-- 학생 로그인 요구 토글 -->
+          <q-toggle
+            v-model="requireStudentLogin"
+            label="학생 모드에서 로그인 요구"
+            color="red"
+            class="text-dark q-mt-md"
+            :disable="!enableStudentMode"
+          />
+          <div class="text-caption text-grey-7 q-mt-xs">
+            활성화 시 학생들이 강의를 수강하려면 로그인이 필요합니다.
+          </div>
+
+          <!-- 학생 공유 링크 -->
+          <div v-if="enableStudentMode" class="q-mt-md">
+            <div class="text-subtitle2 q-mb-sm">학생 공유 링크</div>
+            <div class="share-link-section">
+              <div class="code-block">
+                <code>{{ studentShareUrl }}</code>
+                <q-btn
+                  flat
+                  round
+                  size="sm"
+                  icon="content_copy"
+                  color="primary"
+                  @click="copyStudentShareUrl"
+                  class="copy-btn"
+                />
+              </div>
+              <div class="text-caption text-grey-7 q-mt-xs">이 링크를 학생들에게 공유하세요.</div>
+            </div>
+          </div>
+        </q-card-section>
+
+        <!-- 슬라이드 빌드 명령어 섹션 -->
+        <q-card-section class="q-pt-none">
+          <div class="text-subtitle2 q-mb-sm">슬라이드 빌드</div>
+          <div class="build-command-section">
+            <p class="text-caption q-mb-sm">
+              터미널에서 다음 명령어를 실행하여 모든 슬라이드를 빌드하세요:
+            </p>
+            <div class="code-block">
+              <code>node scripts/build-slides.cjs public/slides public/generated/slides</code>
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="content_copy"
+                color="primary"
+                @click="copyBuildCommand"
+                class="copy-btn"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="취소" color="primary" v-close-popup />
+          <q-btn flat label="적용" color="primary" v-close-popup @click="applySettings" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- HTML 변환 다이얼로그 -->
+    <q-dialog v-model="showHtmlConvertDialog">
+      <q-card style="min-width: 500px" class="html-convert-dialog">
+        <q-card-section>
+          <div class="text-h6 text-dark">HTML 변환</div>
+          <div class="text-subtitle2 text-grey-7 q-mt-sm">
+            슬라이드를 HTML로 변환하는 방법을 선택하세요.
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <!-- 자동 변환 옵션 -->
+          <div class="convert-option">
+            <div class="option-header">
+              <q-icon name="auto_awesome" color="primary" class="q-mr-sm" />
+              <span class="text-subtitle2">자동 변환 (권장)</span>
+            </div>
+            <p class="text-caption q-mt-sm q-mb-md">
+              서버를 통해 자동으로 모든 슬라이드를 HTML로 변환합니다.
+            </p>
+            <q-btn
+              :loading="isConverting"
+              :disable="isConverting"
+              @click="convertSlidesToHTML"
+              color="primary"
+              icon="code"
+              label="자동 변환 실행"
+              class="q-mb-md"
+            />
+          </div>
+
+          <!-- 수동 변환 옵션 -->
+          <q-separator class="q-my-md" />
+
+          <div class="convert-option">
+            <div class="option-header">
+              <q-icon name="terminal" color="orange" class="q-mr-sm" />
+              <span class="text-subtitle2">수동 변환</span>
+            </div>
+            <p class="text-caption q-mt-sm q-mb-sm">
+              터미널에서 다음 명령어를 실행하여 수동으로 변환할 수 있습니다:
+            </p>
+            <div class="code-block">
+              <code>node scripts/build-slides.cjs public/slides public/generated/slides</code>
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="content_copy"
+                color="primary"
+                @click="copyBuildCommand"
+                class="copy-btn"
+              />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="닫기" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <!-- 로그인 다이얼로그 -->
+    <LoginDialog v-model="showLoginDialog" v-if="isFirebaseConfigured" />
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { computed, ref, reactive, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 import { useCourseStore } from 'src/stores/course';
+import { useAuth } from '../composables/useAuth';
+import CourseImport from '../components/CourseImport.vue';
+import LoginDialog from '../components/LoginDialog.vue';
+import { emailApiService } from '../services/emailApiService';
+import { convertMarkdownToHTML } from '../utils/markdown';
+import { generateHTMLTemplate } from '../utils/htmlTemplate';
 import html2canvas from 'html2canvas';
 
 const courseStore = useCourseStore();
+const $q = useQuasar();
+const router = useRouter();
+const {
+  user,
+  isAuthenticated,
+  displayName,
+  photoURL,
+  signInWithGoogle,
+  logout,
+  initAuth,
+  isFirebaseConfigured,
+} = useAuth();
 
 // Computed properties
-const leftDrawerOpen = computed({
-  get: () => (isPresentationMode.value ? true : courseStore.sidebarOpen),
-  set: () => courseStore.toggleSidebar(),
-});
-
+const leftDrawerOpen = ref(false);
 const currentLesson = computed(() => courseStore.currentLesson);
 const currentSlide = computed(() => courseStore.currentSlide);
 const currentLessonData = computed(() => courseStore.currentLessonData);
@@ -352,7 +694,6 @@ const slideTitles = reactive<{ [key: string]: string }>({});
 const chapterTitles = reactive<{ [key: number]: string }>({});
 
 // 목차 업데이트 상태
-const isUpdating = ref(false);
 
 // 공유 팝업 상태
 const showShareDialog = ref(false);
@@ -362,10 +703,50 @@ const shareLockInfo = ref({
   lockedSlides: [] as string[],
 });
 const copySuccess = ref(false);
+const shareEmail = ref('');
+const sendingEmail = ref(false);
+const emailSent = ref(false);
+
+// 강의 가져오기 다이얼로그 상태
+const showCourseImport = ref(false);
+
+// HTML 변환 상태
+const isConverting = ref(false);
+const showHtmlConvertDialog = ref(false);
+
+// 슬라이드 빌드 상태
+const isBuilding = ref(false);
+
+// 설정 관련 상태
+const showSettings = ref(false);
+const autoPlay = ref(false);
+const showSlideNumbers = ref(true);
+const enableKeyboardNavigation = ref(true);
+const enableStudentMode = ref(
+  localStorage.getItem('enableStudentMode') === 'true' ||
+    import.meta.env.VITE_ENABLE_STUDENT_MODE === 'true',
+);
+const requireStudentLogin = ref(localStorage.getItem('requireStudentLogin') === 'true');
+
+// 로그인 관련 상태
+const showLoginDialog = ref(false);
+
+// 학생 공유 URL
+const studentShareUrl = computed(() => {
+  const baseUrl = window.location.origin;
+  // 현재 강의 ID를 가져오는 방법 (임시로 'default' 사용)
+  const courseId = 'default';
+  return `${baseUrl}/study/${courseId}`;
+});
 
 // Methods
 const toggleLeftDrawer = () => {
-  courseStore.toggleSidebar();
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+
+// 로그아웃 처리
+const handleLogout = async () => {
+  await logout();
 };
 
 const setCurrentLesson = (index: number) => {
@@ -377,13 +758,37 @@ const setCurrentLesson = (index: number) => {
   // 잠긴 Chapter인지 확인
   if (courseStore.isChapterLocked(index)) {
     console.log('🔒 잠긴 Chapter로 이동 시도:', index);
-    alert('🔒 이 Chapter는 잠겨있어서 학생들에게 공유되지 않습니다.');
+    $q.notify({
+      type: 'warning',
+      message: '🔒 이 Chapter는 잠겨있어서 학생들에게 공유되지 않습니다.',
+      position: 'top',
+      timeout: 4000,
+      icon: 'lock',
+      actions: [{ label: '확인', color: 'white' }],
+    });
     return;
   }
 
   courseStore.setCurrentLesson(index);
   // Chapter를 클릭하면 첫 번째 슬라이드(슬라이드 0)를 자동으로 선택
   courseStore.setCurrentSlide(0);
+
+  // 선택된 Chapter만 펼치기
+  onChapterExpand(index);
+};
+
+// Chapter 확장 함수
+const onChapterExpand = (index: number) => {
+  // 다른 Chapter들은 접기
+  Object.keys(isChapterExpanded.value).forEach((key) => {
+    const numKey = parseInt(key);
+    if (numKey !== index) {
+      isChapterExpanded.value[numKey] = false;
+    }
+  });
+
+  // 선택된 Chapter만 펼치기
+  isChapterExpanded.value[index] = true;
 };
 
 // 슬라이드 번호를 ➀, ➁, ➂ 형태로 변환
@@ -425,7 +830,14 @@ const selectSlide = async (lessonIndex: number, slideIndex: number) => {
   // 잠긴 슬라이드인지 확인
   if (courseStore.isSlideLocked(lessonIndex, slideIndex)) {
     console.log('🔒 잠긴 슬라이드로 이동 시도:', `${lessonIndex}-${slideIndex}`);
-    alert('🔒 이 슬라이드는 잠겨있어서 학생들에게 공유되지 않습니다.');
+    $q.notify({
+      type: 'warning',
+      message: '🔒 이 슬라이드는 잠겨있어서 학생들에게 공유되지 않습니다.',
+      position: 'top',
+      timeout: 4000,
+      icon: 'lock',
+      actions: [{ label: '확인', color: 'white' }],
+    });
     return;
   }
 
@@ -458,34 +870,6 @@ const selectSlide = async (lessonIndex: number, slideIndex: number) => {
   }
 };
 
-// 목차 UPDATE 함수
-const updateCourseOutline = async () => {
-  try {
-    isUpdating.value = true;
-    console.log('🔄 목차 UPDATE 시작...');
-
-    await courseStore.initializeCourseOutline();
-
-    console.log('✅ 목차 UPDATE 완료');
-
-    // 목차 리프레시 - 캐시된 제목들 초기화
-    console.log('🔄 목차 리프레시 시작...');
-    Object.keys(slideTitles).forEach((key: string) => delete slideTitles[key]);
-    Object.keys(chapterTitles).forEach((key: string) => {
-      const numKey = parseInt(key);
-      if (!isNaN(numKey)) {
-        delete chapterTitles[numKey];
-      }
-    });
-
-    console.log('✅ 목차 리프레시 완료');
-  } catch (error) {
-    console.error('❌ 목차 UPDATE 실패:', error);
-  } finally {
-    isUpdating.value = false;
-  }
-};
-
 // 잠금 관련 함수들
 const toggleChapterLock = (lessonIndex: number) => {
   courseStore.toggleChapterLock(lessonIndex);
@@ -503,15 +887,58 @@ const isSlideLocked = (lessonIndex: number, slideIndex: number): boolean => {
   return courseStore.isSlideLocked(lessonIndex, slideIndex);
 };
 
+const saveHTMLFile = async (fileName: string, content: string): Promise<void> => {
+  try {
+    console.log(`📄 HTML 파일 저장 시작: ${fileName}`);
+
+    // 브라우저에서 다운로드로 파일 저장
+    const blob = new Blob([content], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.style.display = 'none';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    console.log('✅ HTML 파일 다운로드 완료:', fileName);
+
+    // 사용자에게 안내 메시지 표시
+    $q.notify({
+      type: 'info',
+      message: `📄 HTML 파일이 다운로드되었습니다.\n\n파일명: ${fileName}\n\n이 파일을 public/generated/slides/ 폴더에 저장하세요.\n\n또는 터미널에서 'npm run convert-slides-individual'을 실행하세요.`,
+      position: 'top',
+      timeout: 8000,
+      icon: 'download',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } catch (error) {
+    console.error('❌ HTML 파일 저장 실패:', error);
+    throw error;
+  }
+};
+
 // 화면캡처 기능
 const handleCaptureSlide = async () => {
   try {
     console.log('📸 화면캡처 시작...');
 
     // 슬라이드 뷰어 요소 찾기
-    const slideViewer = document.querySelector('.slide-viewer');
+    const slideViewer = document.querySelector('.simple-slide-viewer');
     if (!slideViewer) {
-      alert('❌ 슬라이드 뷰어를 찾을 수 없습니다.');
+      $q.notify({
+        type: 'negative',
+        message: '❌ 슬라이드 뷰어를 찾을 수 없습니다.',
+        position: 'top',
+        timeout: 3000,
+        icon: 'error',
+        actions: [{ label: '확인', color: 'white' }],
+      });
       return;
     }
 
@@ -553,10 +980,24 @@ const handleCaptureSlide = async () => {
     document.body.removeChild(link);
 
     console.log('✅ 화면캡처 완료:', filename);
-    alert(`📸 화면캡처가 완료되었습니다!\n\n파일명: ${filename}`);
+    $q.notify({
+      type: 'positive',
+      message: `📸 화면캡처가 완료되었습니다!\n\n파일명: ${filename}`,
+      position: 'top',
+      timeout: 4000,
+      icon: 'camera_alt',
+      actions: [{ label: '확인', color: 'white' }],
+    });
   } catch (error) {
     console.error('❌ 화면캡처 실패:', error);
-    alert('❌ 화면캡처에 실패했습니다.\n\n오류: ' + error);
+    $q.notify({
+      type: 'negative',
+      message: `❌ 화면캡처에 실패했습니다.\n\n오류: ${error}`,
+      position: 'top',
+      timeout: 5000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
   }
 };
 
@@ -566,7 +1007,7 @@ const handleSendNotesByEmail = () => {
 
 // 공유 기능
 const shareWithStudents = () => {
-  const studentUrl = `${window.location.origin}/study`;
+  const studentUrl = `${window.location.origin}/study/default`;
 
   // 잠긴 슬라이드 정보 수집
   const lockedInfo = {
@@ -619,7 +1060,95 @@ const copyShareLink = async () => {
     console.log('✅ 링크 복사 성공:', shareUrl.value);
   } catch (error) {
     console.error('❌ 링크 복사 실패:', error);
-    alert('❌ 링크 복사에 실패했습니다. 수동으로 복사해주세요.');
+    $q.notify({
+      type: 'negative',
+      message: '❌ 링크 복사에 실패했습니다. 수동으로 복사해주세요.',
+      position: 'top',
+      timeout: 4000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  }
+};
+
+// 이메일 유효성 검사
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// 이메일 공유 전송
+const sendShareEmail = async () => {
+  if (!shareEmail.value || !isValidEmail(shareEmail.value)) {
+    $q.notify({
+      type: 'warning',
+      message: '유효한 이메일 주소를 입력해주세요.',
+      position: 'top',
+    });
+    return;
+  }
+
+  sendingEmail.value = true;
+  emailSent.value = false;
+
+  try {
+    const result = await emailApiService.sendCourseShareEmail(
+      shareEmail.value,
+      '수강생',
+      displayName.value,
+      'AI Workshop 강의',
+      shareUrl.value,
+    );
+
+    if (result.success) {
+      emailSent.value = true;
+      shareEmail.value = '';
+      $q.notify({
+        type: 'positive',
+        message: '공유 이메일이 성공적으로 전송되었습니다.',
+        position: 'top',
+      });
+    } else {
+      // 이메일 서비스가 설정되지 않은 경우 더 자세한 안내
+      if (result.message?.includes('설정되지 않았습니다')) {
+        $q.notify({
+          type: 'warning',
+          message: '이메일 서비스가 설정되지 않았습니다. 링크를 직접 복사하여 공유하세요.',
+          position: 'top',
+          timeout: 8000,
+          actions: [
+            {
+              label: '링크 복사',
+              color: 'white',
+              handler: () => copyShareLink(),
+            },
+          ],
+        });
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: '이메일 전송에 실패했습니다: ' + result.message,
+          position: 'top',
+        });
+      }
+    }
+  } catch (error) {
+    console.error('이메일 전송 오류:', error);
+    $q.notify({
+      type: 'warning',
+      message: '이메일 전송에 실패했습니다. 링크를 직접 복사하여 공유하세요.',
+      position: 'top',
+      timeout: 8000,
+      actions: [
+        {
+          label: '링크 복사',
+          color: 'white',
+          handler: () => copyShareLink(),
+        },
+      ],
+    });
+  } finally {
+    sendingEmail.value = false;
   }
 };
 
@@ -630,7 +1159,7 @@ const togglePresentationMode = () => {
 
 // 전체화면 토글
 const toggleFullscreen = () => {
-  const slideViewer = document.querySelector('.slide-viewer');
+  const slideViewer = document.querySelector('.simple-slide-viewer');
   if (slideViewer) {
     if (!document.fullscreenElement) {
       slideViewer.requestFullscreen().catch((err) => {
@@ -755,6 +1284,256 @@ const loadAllSlideTitles = async () => {
 // 저장 관련 상태
 const isSaving = ref(false);
 
+// Chapter 펼침/접힘 상태 관리
+const isChapterExpanded = ref<{ [key: number]: boolean }>({});
+
+// Chapter 확장 상태를 안전하게 가져오는 함수
+const getChapterExpanded = (index: number): boolean => {
+  return isChapterExpanded.value[index] ?? false;
+};
+
+// Chapter 확장 상태를 설정하는 함수
+const setChapterExpanded = (index: number, value: boolean) => {
+  isChapterExpanded.value[index] = value;
+};
+
+// 설정 적용 메서드
+const applySettings = () => {
+  // 학생 모드 설정을 localStorage에 저장
+  localStorage.setItem('enableStudentMode', enableStudentMode.value.toString());
+
+  // 학생 로그인 요구 설정을 localStorage에 저장
+  localStorage.setItem('requireStudentLogin', requireStudentLogin.value.toString());
+
+  // 환경변수 업데이트 (런타임에서는 제한적이지만, 다음 빌드 시 반영)
+  console.log('🎓 학생 모드 설정:', enableStudentMode.value ? '활성화' : '비활성화');
+  console.log('🔐 학생 로그인 요구:', requireStudentLogin.value ? '활성화' : '비활성화');
+
+  $q.notify({
+    message: `설정이 적용되었습니다. (학생 모드: ${enableStudentMode.value ? '활성화' : '비활성화'}, 로그인 요구: ${requireStudentLogin.value ? '활성화' : '비활성화'})`,
+    color: 'positive',
+    icon: 'check_circle',
+    timeout: 3000,
+  });
+};
+
+// 슬라이드 빌드 명령어 복사 함수
+const copyBuildCommand = async () => {
+  try {
+    const command = 'node scripts/build-slides.cjs public/slides public/generated/slides';
+    await navigator.clipboard.writeText(command);
+
+    $q.notify({
+      type: 'positive',
+      message: '명령어가 클립보드에 복사되었습니다!',
+      position: 'top',
+      timeout: 2000,
+      icon: 'content_copy',
+    });
+  } catch (error) {
+    console.error('클립보드 복사 실패:', error);
+
+    $q.notify({
+      type: 'negative',
+      message: '클립보드 복사에 실패했습니다.',
+      position: 'top',
+      timeout: 3000,
+      icon: 'error',
+    });
+  }
+};
+
+// 학생 공유 URL 복사 함수
+const copyStudentShareUrl = async () => {
+  try {
+    await navigator.clipboard.writeText(studentShareUrl.value);
+
+    $q.notify({
+      type: 'positive',
+      message: '학생 공유 링크가 클립보드에 복사되었습니다!',
+      position: 'top',
+      timeout: 2000,
+      icon: 'content_copy',
+    });
+  } catch (error) {
+    console.error('클립보드 복사 실패:', error);
+
+    $q.notify({
+      type: 'negative',
+      message: '클립보드 복사에 실패했습니다.',
+      position: 'top',
+      timeout: 3000,
+      icon: 'error',
+    });
+  }
+};
+
+// 강의 가져오기 성공 처리
+const handleCourseImportSuccess = (courseId: string) => {
+  showCourseImport.value = false;
+
+  $q.notify({
+    type: 'positive',
+    message: '새 강의가 성공적으로 추가되었습니다!',
+    position: 'top',
+  });
+};
+
+// HTML 변환 함수
+const convertSlidesToHTML = async () => {
+  try {
+    isConverting.value = true;
+    console.log('🔄 HTML 변환 시작...');
+
+    // 서버 API 호출
+    const response = await fetch('http://localhost:3001/api/convert-slides', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      console.log('✅ HTML 변환 완료:', result);
+
+      // 다이얼로그 닫기
+      showHtmlConvertDialog.value = false;
+
+      // 성공 메시지 표시
+      $q.notify({
+        type: 'positive',
+        message: `HTML 변환이 완료되었습니다! (${result.totalFiles}개 파일)`,
+        position: 'top',
+        timeout: 5000,
+        icon: 'check_circle',
+        actions: [
+          {
+            label: '상세보기',
+            color: 'white',
+            handler: () => {
+              console.log('변환된 파일들:', result.convertedFiles);
+              console.log('출력 로그:', result.output);
+            },
+          },
+          { label: '확인', color: 'white' },
+        ],
+      });
+    } else {
+      throw new Error(result.message || 'HTML 변환 실패');
+    }
+  } catch (error) {
+    console.error('❌ HTML 변환 실패:', error);
+
+    // 에러 메시지 안전하게 처리
+    const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다';
+
+    $q.notify({
+      type: 'negative',
+      message: `HTML 변환 중 오류가 발생했습니다: ${errorMessage}`,
+      position: 'top',
+      timeout: 5000,
+      icon: 'error',
+      actions: [
+        {
+          label: '서버 시작',
+          color: 'white',
+          handler: () => {
+            console.log('💡 터미널에서 다음 명령어를 실행하세요:');
+            console.log('npm run server');
+          },
+        },
+        { label: '확인', color: 'white' },
+      ],
+    });
+  } finally {
+    isConverting.value = false;
+  }
+};
+
+// 슬라이드 빌드 함수
+const buildAllSlides = async () => {
+  isBuilding.value = true;
+  try {
+    console.log('🚀 슬라이드 빌드 시작...');
+
+    // 방법 1: API 엔드포인트 호출 (권장)
+    try {
+      const response = await fetch('/api/build-slides', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputDir: 'public/slides',
+          outputDir: 'public/generated/slides',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      console.log('✅ 슬라이드 빌드 완료:', result);
+
+      // 성공 메시지 표시
+      $q.notify({
+        type: 'positive',
+        message: '모든 슬라이드가 성공적으로 빌드되었습니다!',
+        position: 'top',
+        timeout: 3000,
+        icon: 'check_circle',
+        actions: [{ label: '확인', color: 'white' }],
+      });
+    } catch (apiError) {
+      console.log('API 서버 연결 실패, 직접 실행 방법 사용:', apiError);
+
+      // 방법 2: 터미널 명령어 안내 (API 서버가 없을 때)
+      $q.notify({
+        type: 'info',
+        message: `터미널에서 다음 명령어를 실행하세요:
+         node scripts/build-slides.cjs public/slides public/generated/slides`,
+        position: 'top',
+        timeout: 8000,
+        icon: 'terminal',
+        actions: [
+          {
+            label: '명령어 복사',
+            color: 'white',
+            handler: () => {
+              navigator.clipboard.writeText(
+                'node scripts/build-slides.cjs public/slides public/generated/slides',
+              );
+              $q.notify({
+                type: 'positive',
+                message: '명령어가 클립보드에 복사되었습니다!',
+                position: 'top',
+                timeout: 2000,
+              });
+            },
+          },
+        ],
+      });
+    }
+  } catch (error) {
+    console.error('❌ 슬라이드 빌드 실패:', error);
+
+    $q.notify({
+      type: 'negative',
+      message: '슬라이드 빌드 중 오류가 발생했습니다.',
+      position: 'top',
+      timeout: 5000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } finally {
+    isBuilding.value = false;
+  }
+};
+
 // 전체 저장 함수
 const handleSaveAll = async () => {
   try {
@@ -782,15 +1561,34 @@ const handleSaveAll = async () => {
     console.log('✅ 전체 저장 완료');
 
     // 성공 알림 표시
-    alert('💾 전체 저장이 완료되었습니다!');
+    $q.notify({
+      type: 'positive',
+      message: '💾 전체 저장이 완료되었습니다!',
+      position: 'top',
+      timeout: 3000,
+      icon: 'save',
+      actions: [{ label: '확인', color: 'white' }],
+    });
   } catch (error) {
     console.error('❌ 전체 저장 실패:', error);
 
     // 오류 알림 표시
-    alert('❌ 저장 중 오류가 발생했습니다.');
+    $q.notify({
+      type: 'negative',
+      message: '❌ 저장 중 오류가 발생했습니다.',
+      position: 'top',
+      timeout: 5000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
   } finally {
     isSaving.value = false;
   }
+};
+
+// 설문 결과 페이지로 이동
+const goToSurveyResults = () => {
+  router.push('/survey-results');
 };
 
 // 자동 저장 인터벌
@@ -798,7 +1596,16 @@ let autoSaveInterval: NodeJS.Timeout | null = null;
 
 // 컴포넌트 마운트 시 제목 로드 및 자동 저장 시작
 onMounted(() => {
+  // Firebase 인증 초기화
+  initAuth();
+
   loadAllSlideTitles();
+
+  // 현재 선택된 Chapter만 펼치기
+  const initialLesson = currentLesson.value;
+  if (initialLesson !== undefined && initialLesson >= 0) {
+    isChapterExpanded.value[initialLesson] = true;
+  }
 
   // 5분마다 자동 저장
   autoSaveInterval = setInterval(
@@ -844,10 +1651,38 @@ window.addEventListener('beforeunload', (event) => {
 </script>
 
 <style scoped>
-/* 선택된 강의 스타일 */
-.bg-blue-1 {
-  background-color: #e3f2fd !important;
-  border-left: 4px solid #1976d2;
+/* 선택된 Chapter 스타일 */
+.selected-chapter {
+  background-color: #f5f5f5 !important;
+  border-left: 4px solid #666;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px rgba(102, 102, 102, 0.2);
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+.selected-chapter .q-expansion-item__header {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+/* 일반 Chapter 스타일 */
+.q-expansion-item:not(.selected-chapter):not(.locked-chapter) {
+  background-color: #fafafa;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.q-expansion-item:not(.selected-chapter):not(.locked-chapter):hover {
+  background-color: #f0f0f0;
+  transform: translateX(4px);
+}
+
+/* 그레이 텍스트 스타일 */
+.text-purple {
+  color: #333 !important;
 }
 
 /* 잠긴 Chapter 스타일 */
@@ -866,12 +1701,18 @@ window.addEventListener('beforeunload', (event) => {
 
 /* 슬라이드 항목 스타일 */
 .slide-item {
-  border-left: 2px solid #e0e0e0;
+  /* border-left: 2px solid #4caf50; */ /* 녹색 세로 괄호 제거 */
   margin-left: 8px;
 }
 
 .slide-item:hover {
   background-color: #f5f5f5;
+}
+
+/* 잠긴 슬라이드 스타일 - 녹색 줄을 회색으로 변경 */
+.slide-item.locked-slide {
+  /* border-left: 2px solid #9e9e9e; */ /* 회색 세로 괄호 제거 */
+  opacity: 0.7;
 }
 
 /* 강의 제목과 슬라이드 제목 구분 */
@@ -999,5 +1840,278 @@ window.addEventListener('beforeunload', (event) => {
   border-radius: 20px;
   backdrop-filter: blur(10px);
   z-index: 1000;
+}
+
+/* YouTube 스타일 사이드바 */
+.sidebar-drawer {
+  background: #f8f9fa !important; /* YouTube 스타일 밝은 회색 배경 */
+  border-right: 1px solid #e9ecef !important;
+  transition: all 0.3s ease !important;
+}
+
+.sidebar-drawer .q-scroll-area {
+  background: #f8f9fa !important;
+}
+
+/* YouTube 스타일 Chapter 항목 */
+.sidebar-drawer .q-expansion-item {
+  margin-bottom: 1px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+}
+
+.sidebar-drawer .q-expansion-item:hover {
+  background-color: #e9ecef !important; /* YouTube 스타일 호버 */
+  transform: translateX(2px) !important;
+  border-radius: 8px !important;
+  margin: 2px 4px !important;
+}
+
+.sidebar-drawer .selected-chapter {
+  background-color: #e3f2fd !important; /* YouTube 스타일 선택 배경 */
+  border-left: 3px solid #1976d2 !important;
+  border-radius: 8px !important;
+  margin: 2px 4px !important;
+}
+
+.sidebar-drawer .locked-chapter {
+  opacity: 0.6 !important;
+  background-color: rgba(244, 67, 54, 0.05) !important;
+  border-radius: 8px !important;
+}
+
+/* YouTube 스타일 슬라이드 항목 */
+.sidebar-drawer .slide-item {
+  border-radius: 8px !important;
+  margin: 2px 8px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  /* border-left: 2px solid #4caf50; */ /* 녹색 세로 괄호 제거 */
+}
+
+.sidebar-drawer .slide-item:hover {
+  background-color: #e9ecef !important; /* YouTube 스타일 호버 */
+  transform: translateX(4px) !important;
+  border-radius: 8px !important;
+  margin: 2px 12px !important;
+  padding-left: 12px !important;
+}
+
+.sidebar-drawer .slide-item.q-item--active,
+.sidebar-drawer .slide-item-active {
+  background-color: #e3f2fd !important; /* YouTube 스타일 선택 배경 */
+  color: #1976d2 !important;
+  font-weight: 600 !important;
+  border-left: 3px solid #1976d2 !important;
+  border-radius: 8px !important;
+  margin: 2px 12px !important;
+  padding-left: 12px !important;
+}
+
+.sidebar-drawer .chapter-item-active {
+  background-color: #e3f2fd !important; /* YouTube 스타일 선택 배경 */
+  border-left: 3px solid #1976d2 !important;
+  border-radius: 8px !important;
+  margin: 2px 4px !important;
+}
+
+.sidebar-drawer .locked-slide {
+  opacity: 0.5 !important;
+  background-color: rgba(244, 67, 54, 0.05) !important;
+  border-radius: 8px !important;
+}
+
+/* YouTube 스타일 텍스트 */
+.sidebar-drawer .text-weight-medium {
+  font-weight: 500 !important;
+  color: #212529 !important; /* YouTube 스타일 텍스트 색상 */
+}
+
+.sidebar-drawer .text-caption {
+  color: #6c757d !important; /* YouTube 스타일 보조 텍스트 */
+  font-size: 0.75rem !important;
+}
+
+/* YouTube 스타일 버튼 */
+.sidebar-drawer .q-btn {
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.sidebar-drawer .q-btn:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* YouTube 스타일 확장 아이템 헤더 */
+.sidebar-drawer .q-expansion-item__header {
+  min-height: 48px !important; /* YouTube 스타일 높이 */
+  padding: 8px 12px !important; /* YouTube 스타일 패딩 */
+  border-radius: 8px !important;
+}
+
+/* YouTube 스타일 슬라이드 아이템 */
+.sidebar-drawer .q-item {
+  min-height: 36px !important; /* YouTube 스타일 높이 */
+  padding: 6px 12px !important; /* YouTube 스타일 패딩 */
+  border-radius: 8px !important;
+}
+
+.sidebar-drawer .slide-item {
+  min-height: 32px !important; /* YouTube 스타일 높이 */
+  padding: 4px 12px !important; /* YouTube 스타일 패딩 */
+  border-radius: 8px !important;
+}
+
+/* YouTube 스타일 리스트 */
+.sidebar-list {
+  background: transparent !important;
+  padding: 4px !important;
+}
+
+.sidebar-list .q-expansion-item {
+  margin-bottom: 2px !important;
+  border-radius: 8px !important;
+}
+
+.sidebar-list .slide-item {
+  margin: 1px 0 !important;
+  border-radius: 8px !important;
+}
+
+/* 반응형 YouTube 스타일 */
+@media (max-width: 768px) {
+  .sidebar-drawer {
+    width: 280px !important;
+    max-height: 95vh !important;
+  }
+
+  .sidebar-drawer .q-expansion-item {
+    margin-bottom: 1px !important;
+  }
+
+  .sidebar-drawer .slide-item {
+    margin: 1px 4px !important;
+  }
+}
+
+/* 전체화면 모드 YouTube 스타일 */
+:fullscreen .sidebar-drawer {
+  background: #f8f9fa !important;
+}
+
+:fullscreen .sidebar-drawer .q-scroll-area {
+  background: #f8f9fa !important;
+}
+
+/* 설정 다이얼로그 스타일 */
+.settings-dialog {
+  background: white;
+}
+
+.settings-dialog .text-h6 {
+  color: #1976d2 !important;
+  font-weight: 600;
+}
+
+.settings-dialog .q-toggle {
+  color: #333 !important;
+}
+
+.settings-dialog .q-toggle__label {
+  color: #333 !important;
+  font-weight: 500;
+}
+
+.settings-dialog .q-card-section {
+  color: #333;
+}
+
+.settings-dialog .q-btn {
+  color: #1976d2 !important;
+}
+
+/* 슬라이드 빌드 명령어 섹션 스타일 */
+.build-command-section {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.code-block {
+  position: relative;
+  background: #2d3748;
+  border-radius: 6px;
+  padding: 12px 40px 12px 12px;
+  margin-top: 8px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.code-block code {
+  color: #e2e8f0;
+  font-size: 0.9em;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.copy-btn {
+  position: absolute !important;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* HTML 변환 다이얼로그 스타일 */
+.html-convert-dialog {
+  background: white;
+}
+
+.html-convert-dialog .text-h6 {
+  color: #1976d2 !important;
+  font-weight: 600;
+}
+
+.convert-option {
+  margin-bottom: 16px;
+}
+
+.option-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.option-header .text-subtitle2 {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 전체화면 모드에서 사이드바 높이 조정 */
+:fullscreen .sidebar-drawer {
+  max-height: 90vh !important;
+}
+
+:fullscreen .sidebar-drawer .q-scroll-area {
+  max-height: 90vh !important;
+}
+
+/* 사이드바 리스트 최적화 */
+.sidebar-list {
+  padding: 8px !important;
+}
+
+.sidebar-list .q-expansion-item {
+  margin-bottom: 2px;
+}
+
+.sidebar-list .slide-item {
+  margin: 1px 0;
+  padding: 4px 8px !important;
 }
 </style>
