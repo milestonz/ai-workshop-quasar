@@ -322,8 +322,6 @@ npm run watch-slides
 bash# 테스트 실행으로 문제 진단
 npm run test-converter
 
-# 수동 확인
-
 node scripts/slide-converter/convert-slides.js
 스타일이 이상할 때:
 
