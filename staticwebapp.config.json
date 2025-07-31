@@ -1,21 +1,18 @@
 {
   "routes": [
     {
+      "route": "/",
+      "serve": "/index.html"
+    },
+    {
       "route": "/*",
-      "serve": "/index.html",
-      "statusCode": 200
+      "serve": "/index.html"
     }
   ],
   "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/images/*.{png,jpg,gif}", "/css/*", "/js/*", "/api/*"]
+    "rewrite": "/index.html"
   },
   "platform": {
     "apiRuntime": "node:18"
-  },
-  "environmentVariables": {
-    "VITE_AZURE_STORAGE_ACCOUNT_NAME": "aiseminarstorage",
-    "VITE_AZURE_STORAGE_ACCOUNT_KEY": "MXLu872St0nkQ0FAnBDITpQa34JZ/q1mDKo9CMIR44nDdTtyEDsQC+Scrtcjab/whqTBQrG3oeev+AStHUMCKQ==",
-    "VITE_AZURE_STORAGE_CONTAINER_NAME": "ai-seminar-container"
   }
 }

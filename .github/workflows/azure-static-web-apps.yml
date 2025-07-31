@@ -23,88 +23,59 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-
+      
       - name: Install dependencies
         run: npm ci
-
+      
       - name: Build the app
         run: npm run build
         env:
           NODE_ENV: production
-
-      - name: Clean up unnecessary files
+      
+      - name: Clean up for deployment
         run: |
-          echo "Cleaning up unnecessary files to reduce deployment size..."
-
-          # Remove all PDF files (they are too large)
+          echo "Cleaning up for Azure Static Web Apps deployment..."
+          
+          # Remove all PDF files
           find dist/ -name "*.pdf" -delete
-          echo "Removed PDF files"
-
-          # Remove large image files that are not essential
+          
+          # Remove large image files
           find dist/images -name "*.png" -size +500k -delete
-          echo "Removed large PNG files"
-
+          
           # Remove test files
           rm -rf dist/test-*
-          echo "Removed test files"
-
+          
           # Remove development files
           rm -rf dist/.DS_Store
-          echo "Removed .DS_Store files"
-
+          
           # Remove unnecessary generated files
           rm -rf dist/generated/template-based-converter-cjs-generated
           rm -rf dist/generated/slides-sidebar
-          echo "Removed unnecessary generated files"
-
-          # Remove AI presentation template files
-          rm -rf dist/ai-presentation-template
-          rm -rf ai-presentation-template
-          rm -f ai-presentation-template.pdf
-          rm -f ai-presentation-template.zip
-          echo "Removed AI presentation template files"
-
-          # Remove large files from public
-          rm -rf public/generated/template-based-converter-cjs-generated
-          rm -rf public/generated/slides-sidebar
-          echo "Removed large public files"
-
+          
           # Remove large HTML files
           find dist/ -name "*.html" -size +100k -delete
-          echo "Removed large HTML files"
-
-          # Keep only essential slides (first 30 to be safe)
+          
+          # Keep only essential slides (first 20)
           mkdir -p dist/generated/slides-essential
-          find dist/generated/slides -name "slide-*.html" | head -30 | xargs -I {} cp {} dist/generated/slides-essential/
+          find dist/generated/slides -name "slide-*.html" | head -20 | xargs -I {} cp {} dist/generated/slides-essential/
           rm -rf dist/generated/slides
           mv dist/generated/slides-essential dist/generated/slides
-          echo "Kept only essential slides"
-
+          
           # Remove any remaining large files
           find dist/ -type f -size +1M -delete
-          echo "Removed remaining large files"
-
-          echo "Cleanup completed. Current dist size:"
-          du -sh dist/
-          echo "Largest files remaining:"
-          find dist/ -type f -exec du -h {} + | sort -hr | head -10
-
-      - name: Verify build output
-        run: |
-          echo "Checking if dist directory exists..."
-          ls -la dist/
-          echo "Checking dist contents..."
-          find dist/ -type f | head -20
+          
           echo "Final dist size:"
           du -sh dist/
-
-      - name: Build And Deploy
+          echo "Files in dist:"
+          find dist/ -type f | wc -l
+      
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
@@ -126,11 +97,7 @@ jobs:
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: 'close'
-          app_location: '/'
-          api_location: ''
-          output_location: 'dist'
