@@ -316,7 +316,8 @@ npm run watch-slides
 확장성: 새로운 슬라이드 타입 쉽게 추가
 유지보수: 설정 파일로 중앙 관리
 
-🚨 문제 해결
+<문제 해결>
+
 변환이 안 될 때:
 bash# 테스트 실행으로 문제 진단
 npm run test-converter
