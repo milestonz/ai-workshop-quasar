@@ -1,17 +1,16 @@
-name: Azure Static Web Apps CI/CD
+# DISABLED: Azure Static Web Apps deployment
+# Using Azure App Service instead
+name: Azure Static Web Apps CI/CD (DISABLED)
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches: [master]
+  # Disabled - no triggers
+  workflow_dispatch: # Manual trigger only
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: false # Always skip this job
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy Job (DISABLED)
     steps:
       - uses: actions/checkout@v4
 
