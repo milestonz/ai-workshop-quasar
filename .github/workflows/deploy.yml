@@ -1,0 +1,21 @@
+# DISABLED: GitHub Pages deployment
+# Using Azure Static Web Apps instead
+
+name: Deploy to GitHub Pages (DISABLED)
+
+on:
+  # Disabled - no triggers
+  workflow_dispatch: # Manual trigger only
+
+# 중복 실행 방지
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    if: false # Always skip this job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip deployment
+        run: echo "This deployment is disabled. Use Azure Static Web Apps instead."
