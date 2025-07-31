@@ -90,11 +90,6 @@ jobs:
         echo "Deployment package created:"
         du -sh deployment/
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
     - name: Deploy to Azure App Service
       run: |
         # Create zip file
@@ -102,11 +97,16 @@ jobs:
         zip -r ../deployment.zip .
         cd ..
         
-        # Deploy the zip file
-        az webapp deployment source config-zip \
-          --resource-group ai-seminar-rg \
-          --name slide-view-app \
-          --src deployment.zip
+        # Get deployment credentials
+        DEPLOYMENT_USERNAME=$(az webapp deployment list-publishing-credentials --name slide-view-app --resource-group ai-seminar-rg --query publishingUserName --output tsv)
+        DEPLOYMENT_PASSWORD=$(az webapp deployment list-publishing-credentials --name slide-view-app --resource-group ai-seminar-rg --query publishingPassword --output tsv)
+        
+        # Deploy using curl with basic auth
+        curl -X POST \
+          -u "$DEPLOYMENT_USERNAME:$DEPLOYMENT_PASSWORD" \
+          -H "Content-Type: application/zip" \
+          --data-binary @deployment.zip \
+          "https://slide-view-app.scm.azurewebsites.net/api/zipdeploy"
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
