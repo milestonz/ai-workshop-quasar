@@ -52,14 +52,23 @@ jobs:
           # Remove large HTML files
           find dist/ -name "*.html" -size +100k -delete
 
-          # Keep only essential slides (first 20)
+          # Keep only essential slides (first 10)
           mkdir -p dist/generated/slides-essential
-          find dist/generated/slides -name "slide-*.html" | head -20 | xargs -I {} cp {} dist/generated/slides-essential/
+          find dist/generated/slides -name "slide-*.html" | head -10 | xargs -I {} cp {} dist/generated/slides-essential/
           rm -rf dist/generated/slides
           mv dist/generated/slides-essential dist/generated/slides
 
           # Remove any remaining large files
           find dist/ -type f -size +1M -delete
+
+          # Remove unnecessary directories
+          rm -rf dist/scripts
+          rm -rf dist/tests
+          rm -rf dist/playwright-report
+
+          # Remove large assets
+          find dist/assets -name "*.js" -size +500k -delete
+          find dist/assets -name "*.css" -size +100k -delete
 
           echo "Final dist size:"
           du -sh dist/
@@ -73,13 +82,11 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
           skip_app_build: true
-          skip_api_build: false
+          skip_api_build: true
           app_location: '/dist'
-          api_location: '/api'
           output_location: ''
           deployment_environment: production
           app_build_command: ''
-          api_build_command: ''
           app_artifact_location: 'dist'
 
   close_pull_request_job:
