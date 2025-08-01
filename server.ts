@@ -22,6 +22,12 @@ app.use(express.json());
 
 // 정적 파일 서빙
 app.use(express.static('public'));
+app.use(express.static('dist'));
+
+// Vue.js SPA를 위한 fallback
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // HTML 변환 API 엔드포인트
 app.post('/api/convert-slides', (req, res) => {

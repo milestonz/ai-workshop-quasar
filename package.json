@@ -14,7 +14,7 @@
     "test:headed": "playwright test --headed",
     "dev": "quasar dev",
     "build": "quasar build",
-    "postinstall": "npm install -g tsx",
+    "postinstall": "npm install -g tsx && npm run build",
     "start": "npx tsx server.ts",
     "deploy:azure": "npm run build && swa start dist --api-location \"\"",
     "deploy:azure:local": "AZURE_STATIC_WEB_APPS_API_TOKEN=\"d81ad71520c1bf911b738f1bda2664599bf43a7667b99cc084650ea1a30b60f501-d6213ac8-279b-44ac-97b3-ce915cf3020700f0520030744f0f\" swa start dist --api-location \"\"",
