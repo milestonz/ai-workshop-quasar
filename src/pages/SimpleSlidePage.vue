@@ -4,7 +4,7 @@
     <div class="main-content">
       <!-- 슬라이드 뷰어 영역 -->
       <div class="slide-viewer-container">
-        <SimpleSlideViewer :slide-number="currentSlideNumber" :slide-type="currentSlideType" />
+        <SimpleSlideViewer :slide-number="currentSlideNumber" />
       </div>
 
       <!-- 네비게이션 컨트롤 -->
