@@ -432,6 +432,15 @@ const initializeEmailService = () => {
 app.listen(PORT, () => {
   console.log(`🚀 HTML 변환 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📁 작업 디렉토리: ${process.cwd()}`);
+  
+  // dist 폴더 확인
+  const distPath = path.join(__dirname, 'dist');
+  if (fs.existsSync(distPath)) {
+    console.log(`✅ Vue.js 빌드 파일 발견: ${distPath}`);
+  } else {
+    console.log(`⚠️ Vue.js 빌드 파일이 없습니다: ${distPath}`);
+    console.log(`📝 정적 파일만 서빙합니다.`);
+  }
 
   // 이메일 서비스 초기화
   initializeEmailService();
