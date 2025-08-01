@@ -83,18 +83,16 @@ const updateDynamicStyle = (slideType: string) => {
   }
 };
 
-// 사전 변환된 HTML 파일 목록 (정적)
-const slideFiles = ref([
-  // ... (기존 파일 목록)
-]);
+// 사전 변환된 HTML 파일 목록 (동적 로드)
+const slideFiles = ref<string[]>([]);
 
 // 계산된 속성들
 const totalSlides = computed(() => slideFiles.value.length);
 
 const currentSlideNumber = computed(() => {
   const fileName = slideFiles.value[currentSlideIndex.value];
-  // slide-0-0.html -> 0-0
-  return fileName ? fileName.replace('slide-', '').replace('.html', '') : '0-0';
+  // slide-0-0.md -> 0-0
+  return fileName ? fileName.replace('slide-', '').replace('.md', '') : '0-0';
 });
 
 const currentSlideType = computed(() => {
@@ -162,26 +160,48 @@ const handleKeydown = (event: KeyboardEvent) => {
 };
 
 // 라이프사이클 훅
-onMounted(() => {
-  // URL 파라미터에서 초기 슬라이드 인덱스 설정
-  const slideParam = route.query.slide;
-  if (slideParam) {
-    const slideIndex = parseInt(slideParam as string);
-    if (slideIndex >= 0 && slideIndex < totalSlides.value) {
-      currentSlideIndex.value = slideIndex;
+onMounted(async () => {
+  try {
+    const response = await fetch('/slides/files.json');
+    if (!response.ok) {
+      throw new Error('Failed to load slide list.');
     }
+    const data = await response.json();
+    slideFiles.value = data.files
+      .filter((file: string) => file.startsWith('slide-') && file.endsWith('.md'))
+      .sort((a: string, b: string) => {
+        // 'slide-1-10.md' 같은 파일명을 올바르게 정렬하기 위한 로직
+        const [aChapter, aSlide] = a.replace('slide-', '').replace('.md', '').split('-').map(Number);
+        const [bChapter, bSlide] = b.replace('slide-', '').replace('.md', '').split('-').map(Number);
+        if (aChapter !== bChapter) {
+          return aChapter - bChapter;
+        }
+        return aSlide - bSlide;
+      });
+
+    // URL 파라미터에서 초기 슬라이드 인덱스 설정
+    const slideParam = route.query.slide;
+    if (slideParam) {
+      const slideIndex = parseInt(slideParam as string);
+      if (slideIndex >= 0 && slideIndex < totalSlides.value) {
+        currentSlideIndex.value = slideIndex;
+      }
+    }
+
+    // 초기 CSS 적용
+    updateDynamicStyle(currentSlideType.value);
+
+    document.addEventListener('keydown', handleKeydown);
+    console.log('🚀 SimpleSlidePage 마운트됨, 슬라이드 목록 로드 완료:', slideFiles.value.length);
+  } catch (error) {
+    console.error('슬라이드 목록 로드 실패:', error);
   }
-
-  // 초기 CSS 적용
-  updateDynamicStyle(currentSlideType.value);
-
-  document.addEventListener('keydown', handleKeydown);
-  console.log('🚀 SimpleSlidePage 마운트됨');
 });
 
 watch(currentSlideType, (newType) => {
   updateDynamicStyle(newType);
 });
+
 
 
 onUnmounted(() => {
