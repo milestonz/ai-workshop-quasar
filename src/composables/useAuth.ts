@@ -106,6 +106,11 @@ export function useAuth() {
   const initAuth = () => {
       if(isAuthInitialized) return;
       isAuthInitialized = true;
+
+      if (!auth) {
+        loading.value = false;
+        return;
+      }
       
       onAuthStateChanged(auth, async (firebaseUser) => {
           if (firebaseUser) {
