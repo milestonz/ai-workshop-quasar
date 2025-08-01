@@ -97,21 +97,33 @@ export function useAuth() {
       return;
     }
 
-    // 1. 인증 상태 변화를 감지하는 리스너 설정
+    // 1. 리디렉션 결과 처리 (먼저 처리해야 함)
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          console.log('✅ 리디렉션 로그인 성공:', result.user.email);
+        }
+      })
+      .catch((err) => {
+        console.error('❌ 리디렉션 결과 처리 중 오류 발생:', err);
+        error.value = err.message;
+      });
+
+    // 2. 인증 상태 변화를 감지하는 리스너 설정
     unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       console.log('onAuthStateChanged 실행. 사용자:', firebaseUser ? firebaseUser.email : '없음');
       if (firebaseUser) {
-        user.value = await fetchUserRole(firebaseUser);
+        try {
+          user.value = await fetchUserRole(firebaseUser);
+          console.log('✅ 사용자 역할 설정 완료:', user.value.role);
+        } catch (err) {
+          console.error('❌ 사용자 역할 가져오기 실패:', err);
+          error.value = err.message;
+        }
       } else {
         user.value = null;
       }
       loading.value = false;
-    });
-
-    // 2. 리디렉션 결과 처리 (오류 캐치 목적)
-    getRedirectResult(auth).catch((err) => {
-      console.error('리디렉션 결과 처리 중 오류 발생:', err);
-      error.value = err.message;
     });
   };
 
