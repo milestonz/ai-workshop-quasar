@@ -1,104 +1,45 @@
-# DISABLED: Using Azure CLI deployment instead
-name: Deploy to Azure App Service (DISABLED)
+name: Deploy to Azure App Service
 
 on:
-  # Disabled - no triggers
-  workflow_dispatch: # Manual trigger only
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  NODE_VERSION: '18'
 
 jobs:
-  build_and_deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build the app
-      run: npm run build
-      env:
-        NODE_ENV: production
+      - name: Build the app
+        run: npm run build
+        env:
+          NODE_ENV: production
 
-    - name: Clean up for deployment
-      run: |
-        echo "Cleaning up for Azure App Service deployment..."
-        
-        # Remove all PDF files
-        find dist/ -name "*.pdf" -delete
-        
-        # Remove large image files
-        find dist/images -name "*.png" -size +500k -delete
-        
-        # Remove test files
-        rm -rf dist/test-*
-        
-        # Remove development files
-        rm -rf dist/.DS_Store
-        
-        # Remove unnecessary generated files
-        rm -rf dist/generated/template-based-converter-cjs-generated
-        rm -rf dist/generated/slides-sidebar
-        
-        # Remove large HTML files
-        find dist/ -name "*.html" -size +100k -delete
-        
-        # Keep only essential slides (first 10)
-        mkdir -p dist/generated/slides-essential
-        find dist/generated/slides -name "slide-*.html" | head -10 | xargs -I {} cp {} dist/generated/slides-essential/
-        rm -rf dist/generated/slides
-        mv dist/generated/slides-essential dist/generated/slides
-        
-        # Remove any remaining large files
-        find dist/ -type f -size +1M -delete
-        
-        # Remove unnecessary directories
-        rm -rf dist/scripts
-        rm -rf dist/tests
-        rm -rf dist/playwright-report
-        
-        # Remove large assets
-        find dist/assets -name "*.js" -size +500k -delete
-        find dist/assets -name "*.css" -size +100k -delete
-        
-        echo "Final dist size:"
-        du -sh dist/
+      - name: Copy slides to dist
+        run: |
+          echo "Copying slides to dist directory..."
+          cp -r public/slides dist/
+          echo "Slides copied successfully"
 
-    - name: Create deployment package
-      run: |
-        # Create a deployment package with both frontend and backend
-        mkdir -p deployment
-        cp -r dist/* deployment/
-        cp server.ts deployment/
-        cp package.json deployment/
-        cp package-lock.json deployment/
-        cp tsconfig.json deployment/
-        cp .env deployment/
-        cp -r src/services deployment/
-        cp -r scripts deployment/
-        cp -r public/slides deployment/public/
-        
-        echo "Deployment package created:"
-        du -sh deployment/
-
-    - name: Deploy to Azure App Service
-      uses: azure/webapps-deploy@v3
-      with:
-        app-name: 'ai-workshop-quasar-app'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ./deployment
-
-  close_pull_request:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request
-    steps:
-      - name: Close Pull Request
-        run: echo "Pull request closed" 
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'ai-workshop-quasar'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
