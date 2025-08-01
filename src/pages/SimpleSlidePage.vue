@@ -48,42 +48,6 @@ const router = useRouter();
 
 // 반응형 데이터
 const currentSlideIndex = ref(0);
-
-// 슬라이드 타입에 따른 CSS 파일 이름 매핑
-const slideTypeCssMap: { [key: string]: string } = {
-  cover: 'cover-type.css',
-  index: 'index-type.css',
-  profile: 'profile-type.css',
-  chapter: 'chapter-type.css',
-  example: 'example-type.css',
-  challenge: 'challenge-type.css',
-  lecture: 'lecture-type.css',
-  poll: 'poll-type.css',
-  timeline: 'timeline-type.css',
-  general: 'general-type.css',
-};
-
-const updateDynamicStyle = (slideType: string) => {
-  const cssFileName = slideTypeCssMap[slideType] || 'general-type.css';
-  const cssPath = `/css/${cssFileName}`; // 절대 경로 사용
-  const styleId = 'dynamic-slide-style';
-
-  let styleElement = document.getElementById(styleId) as HTMLLinkElement;
-
-  if (!styleElement) {
-    styleElement = document.createElement('link');
-    styleElement.id = styleId;
-    styleElement.rel = 'stylesheet';
-    document.head.appendChild(styleElement);
-  }
-
-  if (styleElement.href !== window.location.origin + cssPath) {
-    styleElement.href = cssPath;
-    console.log(`🎨 동적 CSS 적용: ${cssPath}`);
-  }
-};
-
-// 사전 변환된 HTML 파일 목록 (동적 로드)
 const slideFiles = ref<string[]>([]);
 
 // 계산된 속성들
@@ -93,18 +57,6 @@ const currentSlideNumber = computed(() => {
   const fileName = slideFiles.value[currentSlideIndex.value];
   // slide-0-0.md -> 0-0
   return fileName ? fileName.replace('slide-', '').replace('.md', '') : '0-0';
-});
-
-const currentSlideType = computed(() => {
-  // 슬라이드 번호를 기반으로 타입 추정
-  const slideNum = currentSlideNumber.value;
-  if (slideNum === '0-0') return 'cover';
-  if (slideNum === '0-1') return 'index';
-  if (slideNum === '0-2') return 'profile';
-  if (slideNum.endsWith('-0')) return 'chapter';
-  if (slideNum.startsWith('2-') && slideNum !== '2-0') return 'example';
-  if (slideNum.startsWith('3-') && slideNum !== '3-0') return 'challenge';
-  return 'lecture';
 });
 
 // 메서드들
@@ -170,7 +122,6 @@ onMounted(async () => {
     slideFiles.value = data.files
       .filter((file: string) => /^slide-\d+-\d+\.md$/.test(file)) // 정규식으로 정확한 파일 형식 필터링
       .sort((a: string, b: string) => {
-        // 'slide-1-10.md' 같은 파일명을 올바르게 정렬하기 위한 로직
         const [aChapter, aSlide] = a.replace('slide-', '').replace('.md', '').split('-').map(Number);
         const [bChapter, bSlide] = b.replace('slide-', '').replace('.md', '').split('-').map(Number);
         if (aChapter !== bChapter) {
@@ -179,7 +130,6 @@ onMounted(async () => {
         return (aSlide || 0) - (bSlide || 0);
       });
 
-    // URL 파라미터에서 초기 슬라이드 인덱스 설정
     const slideParam = route.query.slide;
     if (slideParam) {
       const slideIndex = parseInt(slideParam as string);
@@ -188,21 +138,12 @@ onMounted(async () => {
       }
     }
 
-    // 초기 CSS 적용
-    updateDynamicStyle(currentSlideType.value);
-
     document.addEventListener('keydown', handleKeydown);
     console.log('🚀 SimpleSlidePage 마운트됨, 슬라이드 목록 로드 완료:', slideFiles.value.length);
   } catch (error) {
     console.error('슬라이드 목록 로드 실패:', error);
   }
 });
-
-watch(currentSlideType, (newType) => {
-  updateDynamicStyle(newType);
-});
-
-
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown);
