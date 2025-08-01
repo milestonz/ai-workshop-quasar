@@ -1,5 +1,11 @@
 import { ref, computed } from 'vue';
-import { signInWithPopup, signOut, onAuthStateChanged, type User } from 'firebase/auth';
+import { 
+  signInWithRedirect, 
+  signOut, 
+  onAuthStateChanged, 
+  getRedirectResult,
+  type User 
+} from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, googleProvider, firebaseApp } from '../firebase/config';
 import { useQuasar } from 'quasar';
@@ -9,24 +15,16 @@ interface AppUser extends User {
   role: 'admin' | 'student' | 'unknown';
 }
 
+// 이 모듈의 상태를 전역적으로 관리 (싱글턴처럼 사용)
+const user = ref<AppUser | null>(null);
+const loading = ref(true);
+const error = ref<string | null>(null);
+
+let isAuthInitialized = false;
+
 export function useAuth() {
   const $q = useQuasar();
   const db = firebaseApp ? getFirestore(firebaseApp) : null;
-
-  // 상태
-  const user = ref<AppUser | null>(null);
-  const loading = ref(true); // 초기 로딩 상태 true
-  const error = ref<string | null>(null);
-
-  // Firebase 설정 확인
-  const isFirebaseConfigured = computed(() => !!firebaseApp);
-
-  // 계산된 속성
-  const isAuthenticated = computed(() => !!user.value);
-  const displayName = computed(() => user.value?.displayName || '사용자');
-  const email = computed(() => user.value?.email || '');
-  const photoURL = computed(() => user.value?.photoURL || '');
-  const userRole = computed(() => user.value?.role || 'unknown');
 
   const fetchUserRole = async (firebaseUser: User): Promise<AppUser> => {
     if (!db) throw new Error("Firestore is not initialized.");
@@ -38,7 +36,6 @@ export function useAuth() {
       const userData = userDoc.data();
       return { ...firebaseUser, role: userData.role || 'student' };
     } else {
-      // 새로운 사용자일 경우 'student' 역할로 DB에 추가
       const newUser = {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
@@ -51,101 +48,91 @@ export function useAuth() {
       return { ...firebaseUser, role: 'student' };
     }
   };
-  
-  // Google 로그인
-  const signInWithGoogle = async (): Promise<'admin' | 'student' | 'unknown'> => {
+
+  const signInWithGoogle = async () => {
+    if (loading.value) return;
     loading.value = true;
     error.value = null;
-
     try {
-      if (!auth || !googleProvider || !db) {
-        throw new Error('Firebase or Firestore is not configured.');
-      }
-      
-      const result = await signInWithPopup(auth, googleProvider);
-      const firebaseUser = result.user;
-      
-      const appUser = await fetchUserRole(firebaseUser);
-      user.value = appUser;
-
-      $q.notify({
-        type: 'positive',
-        message: `${appUser.displayName}님, 환영합니다!`,
-        position: 'top',
-      });
-      console.log('✅ Google 로그인 성공, 역할:', appUser.role);
-      return appUser.role;
-
+      if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
+      await signInWithRedirect(auth, googleProvider);
     } catch (err: any) {
-      console.error('❌ Google 로그인 실패:', err);
+      console.error('❌ Google 로그인 리디렉션 실패:', err);
       error.value = err.message;
-      $q.notify({ type: 'negative', message: '로그인에 실패했습니다.' });
-      return 'unknown';
-    } finally {
+      $q.notify({ type: 'negative', message: '로그인을 시작할 수 없습니다.' });
       loading.value = false;
     }
   };
 
-  // 로그아웃
-  const logout = async () => {
-    loading.value = true;
-    error.value = null;
-
-    try {
-      if (!auth) throw new Error('Firebase is not configured.');
-      await signOut(auth);
-      user.value = null;
-      $q.notify({ type: 'info', message: '로그아웃되었습니다.' });
-      console.log('✅ 로그아웃 성공');
-    } catch (err: any) {
-      console.error('❌ 로그아웃 실패:', err);
-      error.value = err.message;
-      $q.notify({ type: 'negative', message: '로그아웃에 실패했습니다.' });
-    } finally {
-      loading.value = false;
+  const handleRedirectResult = async (): Promise<AppUser | null> => {
+    if (!isAuthInitialized) {
+      // onAuthStateChanged가 먼저 실행되도록 약간의 지연을 줌
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
-  };
-
-  // 인증 상태 감지 (초기화)
-  const initAuth = () => {
-    if (!auth) {
-      console.warn('⚠️ Firebase is not initialized, skipping auth state change listener.');
-      loading.value = false;
-      return;
+    if (user.value) { // 이미 로그인 정보가 있으면 처리하지 않음
+        loading.value = false;
+        return user.value;
     }
     
-    onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          loading.value = true;
-          user.value = await fetchUserRole(firebaseUser);
-          console.log(`🔄 인증 상태 변경: ${user.value.email} (${user.value.role}) 로그인`);
-        } catch(e) {
-            console.error("사용자 역할 정보 가져오기 실패", e)
-            user.value = null; // 역할 정보 못가져오면 로그아웃 처리
-        } finally {
-            loading.value = false;
-        }
-      } else {
-        user.value = null;
-        console.log('🔄 인증 상태 변경: 로그아웃 상태');
-        loading.value = false;
+    loading.value = true;
+    try {
+      if (!auth || !db) throw new Error("Firebase not configured");
+      const result = await getRedirectResult(auth);
+      if (result) {
+        const firebaseUser = result.user;
+        const appUser = await fetchUserRole(firebaseUser);
+        user.value = appUser;
+        console.log('✅ Google 리디렉션 로그인 성공, 역할:', appUser.role);
+        return appUser;
       }
-    });
+      return null;
+    } catch (err: any) {
+      console.error('❌ Google 로그인 결과 처리 실패:', err);
+      error.value = err.message;
+      return null;
+    } finally {
+        loading.value = false;
+    }
   };
 
+  const logout = async () => {
+    if (!auth) return;
+    await signOut(auth);
+    user.value = null;
+    $q.notify({ type: 'info', message: '로그아웃되었습니다.' });
+    console.log('✅ 로그아웃 성공');
+  };
+  
+  const initAuth = () => {
+      if(isAuthInitialized) return;
+      isAuthInitialized = true;
+      
+      onAuthStateChanged(auth, async (firebaseUser) => {
+          if (firebaseUser) {
+              if (!user.value || user.value.uid !== firebaseUser.uid) {
+                  user.value = await fetchUserRole(firebaseUser);
+              }
+          } else {
+              user.value = null;
+          }
+          loading.value = false;
+      });
+  }
+
+
   return {
-    user,
-    loading,
-    error,
-    isAuthenticated,
-    displayName,
-    email,
-    photoURL,
-    isFirebaseConfigured,
-    userRole,
+    user: computed(() => user.value),
+    loading: computed(() => loading.value),
+    error: computed(() => error.value),
+    isAuthenticated: computed(() => !!user.value),
+    displayName: computed(() => user.value?.displayName || '사용자'),
+    email: computed(() => user.value?.email || ''),
+    photoURL: computed(() => user.value?.photoURL || ''),
+    isFirebaseConfigured: computed(() => !!firebaseApp),
+    userRole: computed(() => user.value?.role || 'unknown'),
     signInWithGoogle,
     logout,
+    handleRedirectResult,
     initAuth,
   };
 }

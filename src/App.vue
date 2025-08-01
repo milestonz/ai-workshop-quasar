@@ -4,16 +4,32 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useCourseStore } from 'src/stores/course';
+import { useRouter } from 'vue-router';
+import { useAuth } from './composables/useAuth';
 
-const courseStore = useCourseStore();
+const { handleRedirectResult, initAuth } = useAuth();
+const router = useRouter();
 
 onMounted(async () => {
-  console.log('🚀 앱 시작 - LocalStorage에서 데이터 로드 중...');
-  courseStore.loadFromLocalStorage();
+  // 앱 시작 시 Firebase 인증 상태 리스너 초기화
+  initAuth();
 
-  console.log('🔄 MD 파일 기반 목차 초기화 중...');
-  await courseStore.initializeCourseOutline();
-  console.log('✅ 목차 초기화 완료');
+  // 리디렉션 후 돌아온 경우 로그인 결과 처리
+  const user = await handleRedirectResult();
+  
+  if (user) {
+    // 로그인 성공 후 역할에 따라 페이지 이동
+    if (user.role === 'admin') {
+      // 현재 경로가 학생 뷰가 아니라면 관리자 홈으로 이동
+      if (!router.currentRoute.value.path.startsWith('/study')) {
+        router.push('/');
+      }
+    } else if (user.role === 'student') {
+      // 현재 경로가 학생 뷰가 아니라면 학생 홈으로 이동
+       if (!router.currentRoute.value.path.startsWith('/study')) {
+        router.push('/study/default');
+      }
+    }
+  }
 });
 </script>

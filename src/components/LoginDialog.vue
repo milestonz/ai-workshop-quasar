@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuth } from '../composables/useAuth';
 
 interface Props {
@@ -48,7 +47,6 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
-const router = useRouter();
 
 const { signInWithGoogle, loading, error } = useAuth();
 
@@ -57,16 +55,8 @@ const isOpen = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const handleGoogleLogin = async () => {
-  const role = await signInWithGoogle();
-  if (!error.value) {
-    isOpen.value = false;
-    // 역할에 따라 리디렉션
-    if (role === 'admin') {
-      router.push('/');
-    } else if (role === 'student') {
-      router.push('/study/default');
-    }
-  }
+const handleGoogleLogin = () => {
+  // 이 함수는 이제 구글 로그인 페이지로 리디렉션을 시작합니다.
+  signInWithGoogle();
 };
 </script>
