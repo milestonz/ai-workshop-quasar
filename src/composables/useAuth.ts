@@ -39,42 +39,71 @@ export function useAuth() {
   const fetchUserRole = async (firebaseUser: User): Promise<AppUser> => {
     if (!db) throw new Error('Firestore is not initialized.');
 
-    try {
-      const userRef = doc(db, 'users', firebaseUser.uid);
-      const userDoc = await getDoc(userRef);
+    const maxRetries = 3;
+    let retryCount = 0;
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        return { ...firebaseUser, role: userData.role || 'student' };
-      } else {
-        // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
-        const usersCollectionRef = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersCollectionRef);
-        const isFirstUser = usersSnapshot.empty;
+    while (retryCount < maxRetries) {
+      try {
+        console.log('🔍 사용자 정보 확인 중:', firebaseUser.email, `(시도 ${retryCount + 1}/${maxRetries})`);
+        const userRef = doc(db, 'users', firebaseUser.uid);
+        const userDoc = await getDoc(userRef);
 
-        const newUser = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
-          role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
-          createdAt: serverTimestamp(),
-        };
-        await setDoc(userRef, newUser);
-        return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log('✅ 기존 사용자 발견:', userData);
+          return { ...firebaseUser, role: userData.role || 'student' };
+        } else {
+          console.log('🆕 새 사용자 등록 시작:', firebaseUser.email);
+          
+          // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
+          const usersCollectionRef = collection(db, 'users');
+          const usersSnapshot = await getDocs(usersCollectionRef);
+          const isFirstUser = usersSnapshot.empty;
+          
+          console.log('📊 현재 등록된 사용자 수:', usersSnapshot.size);
+          console.log('👑 첫 번째 사용자 여부:', isFirstUser);
+
+          const newUser = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+            role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
+            createdAt: serverTimestamp(),
+          };
+          
+          console.log('💾 새 사용자 정보 저장 중:', newUser);
+          await setDoc(userRef, newUser);
+          console.log('✅ 새 사용자 등록 완료:', firebaseUser.email, '역할:', isFirstUser ? 'admin' : 'student');
+          
+          return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
+        }
+      } catch (error: any) {
+        retryCount++;
+        console.error(`❌ Firestore 접근 오류 (시도 ${retryCount}/${maxRetries}):`, error);
+        console.error('❌ 오류 코드:', error.code);
+        console.error('❌ 오류 메시지:', error.message);
+
+        // Firestore 권한 오류가 발생해도 기본 사용자 정보는 반환
+        if (error.code === 'permission-denied') {
+          console.warn('⚠️ Firestore 권한 오류. 기본 역할로 설정합니다.');
+          return { ...firebaseUser, role: 'student' };
+        }
+
+        // 마지막 시도가 아니면 잠시 대기 후 재시도
+        if (retryCount < maxRetries) {
+          console.log(`⏳ ${retryCount * 1000}ms 후 재시도...`);
+          await new Promise(resolve => setTimeout(resolve, retryCount * 1000));
+        } else {
+          // 모든 시도 실패 시 기본 사용자 정보 반환
+          console.error('❌ 모든 재시도 실패. 기본 역할로 설정합니다.');
+          return { ...firebaseUser, role: 'student' };
+        }
       }
-    } catch (error: any) {
-      console.error('❌ Firestore 접근 오류:', error);
-
-      // Firestore 권한 오류가 발생해도 기본 사용자 정보는 반환
-      if (error.code === 'permission-denied') {
-        console.warn('⚠️ Firestore 권한 오류. 기본 역할로 설정합니다.');
-        return { ...firebaseUser, role: 'student' };
-      }
-
-      // 다른 오류는 다시 던지기
-      throw error;
     }
+
+    // 이론적으로 도달하지 않지만 안전장치
+    return { ...firebaseUser, role: 'student' };
   };
 
   const signInWithGoogle = async () => {
