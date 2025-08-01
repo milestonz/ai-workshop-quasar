@@ -1,10 +1,11 @@
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { 
   signInWithRedirect, 
   signOut, 
   onAuthStateChanged, 
   getRedirectResult,
-  type User 
+  type User,
+  type Unsubscribe
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, googleProvider, firebaseApp } from '../firebase/config';
@@ -20,7 +21,8 @@ const user = ref<AppUser | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-let isAuthInitialized = false;
+let unsubscribe: Unsubscribe | null = null;
+let isInitCalled = false; // initAuth가 중복 호출되는 것을 방지
 
 export function useAuth() {
   const $q = useQuasar();
@@ -48,69 +50,19 @@ export function useAuth() {
       return { ...firebaseUser, role: 'student' };
     }
   };
-
+  
   const signInWithGoogle = async () => {
-    console.log('useAuth: signInWithGoogle - 함수 시작.');
-    if (loading.value) {
-      console.warn('useAuth: signInWithGoogle - 이미 로딩 중이므로 중단합니다.');
-      return;
-    }
-    
+    if (loading.value) return;
     loading.value = true;
     error.value = null;
-    console.log('useAuth: signInWithGoogle - 로딩 상태를 true로 변경.');
-    
     try {
-      if (!auth || !googleProvider) {
-        const msg = 'Firebase auth 또는 googleProvider가 설정되지 않았습니다.';
-        console.error(`useAuth: signInWithGoogle - ${msg}`);
-        error.value = msg;
-        loading.value = false;
-        $q.notify({ type: 'negative', message: msg });
-        return;
-      }
-
-      console.log('useAuth: signInWithGoogle - signInWithRedirect를 호출합니다. 페이지가 리디렉션되어야 합니다.');
+      if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
       await signInWithRedirect(auth, googleProvider);
-      // This part should not be reached.
-      console.log('useAuth: signInWithGoogle - 리디렉션이 발생하지 않았습니다. (오류)');
-      loading.value = false;
-
     } catch (err: any) {
-      console.error('useAuth: signInWithGoogle - CATCH 블록 실행. 로그인 리디렉션 실패:', err);
+      console.error('❌ Google 로그인 리디렉션 실패:', err);
       error.value = err.message;
       $q.notify({ type: 'negative', message: '로그인을 시작할 수 없습니다.' });
       loading.value = false;
-    }
-  };
-
-  const handleRedirectResult = async (): Promise<AppUser | null> => {
-    if (!isAuthInitialized) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    if (user.value) {
-        loading.value = false;
-        return user.value;
-    }
-    
-    loading.value = true;
-    try {
-      if (!auth || !db) throw new Error("Firebase not configured");
-      const result = await getRedirectResult(auth);
-      if (result) {
-        const firebaseUser = result.user;
-        const appUser = await fetchUserRole(firebaseUser);
-        user.value = appUser;
-        console.log('✅ Google 리디렉션 로그인 성공, 역할:', appUser.role);
-        return appUser;
-      }
-      return null;
-    } catch (err: any) {
-      console.error('❌ Google 로그인 결과 처리 실패:', err);
-      error.value = err.message;
-      return null;
-    } finally {
-        loading.value = false;
     }
   };
 
@@ -121,27 +73,38 @@ export function useAuth() {
     $q.notify({ type: 'info', message: '로그아웃되었습니다.' });
     console.log('✅ 로그아웃 성공');
   };
-  
-  const initAuth = () => {
-      if(isAuthInitialized) return;
-      isAuthInitialized = true;
 
-      if (!auth) {
+  // 앱 시작 시 호출될 단일 초기화 함수
+  const initAuth = () => {
+    if (isInitCalled) return;
+    isInitCalled = true;
+    
+    if (!auth) {
         loading.value = false;
         return;
+    }
+
+    // 1. 인증 상태 변화를 감지하는 리스너 설정
+    unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log('onAuthStateChanged 실행. 사용자:', firebaseUser ? firebaseUser.email : '없음');
+      if (firebaseUser) {
+        user.value = await fetchUserRole(firebaseUser);
+      } else {
+        user.value = null;
       }
-      
-      onAuthStateChanged(auth, async (firebaseUser) => {
-          if (firebaseUser) {
-              if (!user.value || user.value.uid !== firebaseUser.uid) {
-                  user.value = await fetchUserRole(firebaseUser);
-              }
-          } else {
-              user.value = null;
-          }
-          loading.value = false;
-      });
-  }
+      loading.value = false;
+    });
+
+    // 2. 리디렉션 결과 처리 (오류 캐치 목적)
+    getRedirectResult(auth).catch((err) => {
+        console.error('리디렉션 결과 처리 중 오류 발생:', err);
+        error.value = err.message;
+    });
+  };
+  
+  onUnmounted(() => {
+    if (unsubscribe) unsubscribe();
+  });
 
   return {
     user: computed(() => user.value),
@@ -155,7 +118,6 @@ export function useAuth() {
     userRole: computed(() => user.value?.role || 'unknown'),
     signInWithGoogle,
     logout,
-    handleRedirectResult,
     initAuth,
   };
 }
