@@ -611,14 +611,27 @@ export const useCourseStore = defineStore('course', () => {
   // 초기화 함수 - 앱 시작 시 호출
   const initializeCourseOutline = async () => {
     try {
-      const generatedLessons = await generateCourseOutlineFromMD();
-      if (generatedLessons && generatedLessons.length > 0) {
-        lessons.value = generatedLessons;
-        console.log('✅ MD 파일 기반 목차 생성 완료:', generatedLessons);
-      } else {
-        console.warn('⚠️ MD 파일에서 목차를 생성할 수 없어 기본 목차를 사용합니다.');
-        lessons.value = generateDefaultLessons();
-      }
+      console.log('🚀 강의 목차 초기화 시작...');
+      
+      // 1. 기본 목차로 먼저 표시 (즉시 사용 가능)
+      lessons.value = generateDefaultLessons();
+      console.log('✅ 기본 목차 즉시 표시 완료');
+      
+      // 2. 백그라운드에서 MD 파일 기반 목차 로드
+      setTimeout(async () => {
+        try {
+          const generatedLessons = await generateCourseOutlineFromMD();
+          if (generatedLessons && generatedLessons.length > 0) {
+            lessons.value = generatedLessons;
+            console.log('✅ MD 파일 기반 목차 로드 완료:', generatedLessons);
+          } else {
+            console.warn('⚠️ MD 파일에서 목차를 생성할 수 없어 기본 목차를 유지합니다.');
+          }
+        } catch (error) {
+          console.error('❌ MD 파일 목차 로드 실패 (기본 목차 유지):', error);
+        }
+      }, 100); // 100ms 지연으로 백그라운드 처리
+      
     } catch (error) {
       console.error('❌ 목차 초기화 실패:', error);
       lessons.value = generateDefaultLessons();

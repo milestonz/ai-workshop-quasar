@@ -5,7 +5,17 @@
       <p>{{ error }}</p>
     </div>
     <div v-else-if="slideUrl" class="slide-iframe-container">
-      <iframe :src="slideUrl" class="slide-iframe" @load="onIframeLoad"></iframe>
+      <iframe 
+        :src="slideUrl" 
+        class="slide-iframe" 
+        @load="onIframeLoad"
+        @error="onIframeError"
+      ></iframe>
+      <!-- 로딩 인디케이터 (선택적) -->
+      <div v-if="isLoading" class="loading-overlay">
+        <q-spinner-dots size="50px" color="primary" />
+        <p>슬라이드 로딩 중...</p>
+      </div>
     </div>
     <div v-else class="no-content">
       <q-icon name="slideshow" size="50px" color="grey" />
@@ -37,11 +47,25 @@ const onIframeLoad = () => {
   console.log(`✅ iframe 로드 완료: ${slideUrl.value}`);
 };
 
+const onIframeError = (event: Event) => {
+  error.value = '슬라이드 로딩 중 오류가 발생했습니다.';
+  console.error('슬라이드 로딩 중 오류 발생:', event);
+  isLoading.value = false;
+};
+
 watch(() => props.slideNumber, (newSlideNumber) => {
   if (newSlideNumber) {
     isLoading.value = true;
     error.value = '';
     console.log(`🔄 iframe URL 변경: ${slideUrl.value}`);
+    
+    // 3초 후에도 로딩이 안 되면 로딩 상태 해제
+    setTimeout(() => {
+      if (isLoading.value) {
+        isLoading.value = false;
+        console.log('⚠️ 슬라이드 로딩 시간 초과');
+      }
+    }, 3000);
   }
 }, { immediate: true });
 
@@ -58,15 +82,39 @@ watch(() => props.slideNumber, (newSlideNumber) => {
   overflow: hidden;
   background: #fff;
 }
+
 .slide-iframe-container {
   width: 100%;
   height: 100%;
+  position: relative;
 }
+
 .slide-iframe {
   width: 100%;
   height: 100%;
   border: none;
 }
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.loading-overlay p {
+  margin-top: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
 .error,
 .no-content {
   text-align: center;
