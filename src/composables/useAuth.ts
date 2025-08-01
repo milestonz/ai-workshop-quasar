@@ -93,38 +93,62 @@ export function useAuth() {
     isInitCalled = true;
 
     if (!auth) {
+      console.log('⚠️ Firebase Auth가 초기화되지 않음');
       loading.value = false;
       return;
     }
 
-    // 1. 리디렉션 결과 처리 (먼저 처리해야 함)
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result) {
-          console.log('✅ 리디렉션 로그인 성공:', result.user.email);
-        }
-      })
-      .catch((err) => {
-        console.error('❌ 리디렉션 결과 처리 중 오류 발생:', err);
-        error.value = err.message;
-      });
+    console.log('🔐 Firebase Auth 초기화 시작');
 
-    // 2. 인증 상태 변화를 감지하는 리스너 설정
+    // 1. 인증 상태 변화를 감지하는 리스너 설정 (먼저 설정)
     unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log('onAuthStateChanged 실행. 사용자:', firebaseUser ? firebaseUser.email : '없음');
+      console.log('🔄 onAuthStateChanged 실행. 사용자:', firebaseUser ? firebaseUser.email : '없음');
+      
       if (firebaseUser) {
+        console.log('✅ 인증된 사용자 감지:', {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          emailVerified: firebaseUser.emailVerified
+        });
+        
         try {
           user.value = await fetchUserRole(firebaseUser);
           console.log('✅ 사용자 역할 설정 완료:', user.value.role);
-        } catch (err) {
+        } catch (err: any) {
           console.error('❌ 사용자 역할 가져오기 실패:', err);
           error.value = err.message;
         }
       } else {
+        console.log('ℹ️ 인증되지 않은 사용자');
         user.value = null;
       }
       loading.value = false;
     });
+
+    // 2. 리디렉션 결과 처리 (약간의 지연 후 처리)
+    setTimeout(() => {
+      if (!auth) return;
+      
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result) {
+            console.log('✅ 리디렉션 로그인 성공:', result.user.email);
+            console.log('✅ 인증 결과:', {
+              user: result.user.email,
+              operationType: result.operationType
+            });
+          } else {
+            console.log('ℹ️ 리디렉션 결과 없음 (새로고침 또는 직접 접근)');
+          }
+        })
+        .catch((err: any) => {
+          console.error('❌ 리디렉션 결과 처리 중 오류 발생:', err);
+          console.error('❌ 오류 코드:', err.code);
+          console.error('❌ 오류 메시지:', err.message);
+          error.value = err.message;
+        });
+    }, 100);
   };
 
   onUnmounted(() => {
