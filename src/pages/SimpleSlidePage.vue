@@ -168,15 +168,15 @@ onMounted(async () => {
     }
     const data = await response.json();
     slideFiles.value = data.files
-      .filter((file: string) => file.startsWith('slide-') && file.endsWith('.md'))
+      .filter((file: string) => /^slide-\d+-\d+\.md$/.test(file)) // 정규식으로 정확한 파일 형식 필터링
       .sort((a: string, b: string) => {
         // 'slide-1-10.md' 같은 파일명을 올바르게 정렬하기 위한 로직
         const [aChapter, aSlide] = a.replace('slide-', '').replace('.md', '').split('-').map(Number);
         const [bChapter, bSlide] = b.replace('slide-', '').replace('.md', '').split('-').map(Number);
         if (aChapter !== bChapter) {
-          return aChapter - bChapter;
+          return (aChapter || 0) - (bChapter || 0);
         }
-        return aSlide - bSlide;
+        return (aSlide || 0) - (bSlide || 0);
       });
 
     // URL 파라미터에서 초기 슬라이드 인덱스 설정
