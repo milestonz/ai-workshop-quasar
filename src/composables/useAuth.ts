@@ -50,14 +50,34 @@ export function useAuth() {
   };
 
   const signInWithGoogle = async () => {
-    if (loading.value) return;
+    console.log('useAuth: signInWithGoogle - 함수 시작.');
+    if (loading.value) {
+      console.warn('useAuth: signInWithGoogle - 이미 로딩 중이므로 중단합니다.');
+      return;
+    }
+    
     loading.value = true;
     error.value = null;
+    console.log('useAuth: signInWithGoogle - 로딩 상태를 true로 변경.');
+    
     try {
-      if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
+      if (!auth || !googleProvider) {
+        const msg = 'Firebase auth 또는 googleProvider가 설정되지 않았습니다.';
+        console.error(`useAuth: signInWithGoogle - ${msg}`);
+        error.value = msg;
+        loading.value = false;
+        $q.notify({ type: 'negative', message: msg });
+        return;
+      }
+
+      console.log('useAuth: signInWithGoogle - signInWithRedirect를 호출합니다. 페이지가 리디렉션되어야 합니다.');
       await signInWithRedirect(auth, googleProvider);
+      // This part should not be reached.
+      console.log('useAuth: signInWithGoogle - 리디렉션이 발생하지 않았습니다. (오류)');
+      loading.value = false;
+
     } catch (err: any) {
-      console.error('❌ Google 로그인 리디렉션 실패:', err);
+      console.error('useAuth: signInWithGoogle - CATCH 블록 실행. 로그인 리디렉션 실패:', err);
       error.value = err.message;
       $q.notify({ type: 'negative', message: '로그인을 시작할 수 없습니다.' });
       loading.value = false;
@@ -66,10 +86,9 @@ export function useAuth() {
 
   const handleRedirectResult = async (): Promise<AppUser | null> => {
     if (!isAuthInitialized) {
-      // onAuthStateChanged가 먼저 실행되도록 약간의 지연을 줌
       await new Promise(resolve => setTimeout(resolve, 100));
     }
-    if (user.value) { // 이미 로그인 정보가 있으면 처리하지 않음
+    if (user.value) {
         loading.value = false;
         return user.value;
     }
@@ -123,7 +142,6 @@ export function useAuth() {
           loading.value = false;
       });
   }
-
 
   return {
     user: computed(() => user.value),

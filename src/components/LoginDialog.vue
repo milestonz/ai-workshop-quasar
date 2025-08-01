@@ -56,7 +56,7 @@ const isOpen = computed({
 });
 
 const handleGoogleLogin = () => {
-  // 이 함수는 이제 구글 로그인 페이지로 리디렉션을 시작합니다.
+  console.log('LoginDialog: handleGoogleLogin - 로그인 버튼 클릭. signInWithGoogle 호출.');
   signInWithGoogle();
 };
 </script>
