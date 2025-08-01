@@ -39,28 +39,41 @@ export function useAuth() {
   const fetchUserRole = async (firebaseUser: User): Promise<AppUser> => {
     if (!db) throw new Error('Firestore is not initialized.');
 
-    const userRef = doc(db, 'users', firebaseUser.uid);
-    const userDoc = await getDoc(userRef);
+    try {
+      const userRef = doc(db, 'users', firebaseUser.uid);
+      const userDoc = await getDoc(userRef);
 
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      return { ...firebaseUser, role: userData.role || 'student' };
-    } else {
-      // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
-      const usersCollectionRef = collection(db, 'users');
-      const usersSnapshot = await getDocs(usersCollectionRef);
-      const isFirstUser = usersSnapshot.empty;
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        return { ...firebaseUser, role: userData.role || 'student' };
+      } else {
+        // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
+        const usersCollectionRef = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersCollectionRef);
+        const isFirstUser = usersSnapshot.empty;
 
-      const newUser = {
-        uid: firebaseUser.uid,
-        email: firebaseUser.email,
-        displayName: firebaseUser.displayName,
-        photoURL: firebaseUser.photoURL,
-        role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
-        createdAt: serverTimestamp(),
-      };
-      await setDoc(userRef, newUser);
-      return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
+        const newUser = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+          photoURL: firebaseUser.photoURL,
+          role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
+          createdAt: serverTimestamp(),
+        };
+        await setDoc(userRef, newUser);
+        return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
+      }
+    } catch (error: any) {
+      console.error('❌ Firestore 접근 오류:', error);
+      
+      // Firestore 권한 오류가 발생해도 기본 사용자 정보는 반환
+      if (error.code === 'permission-denied') {
+        console.warn('⚠️ Firestore 권한 오류. 기본 역할로 설정합니다.');
+        return { ...firebaseUser, role: 'student' };
+      }
+      
+      // 다른 오류는 다시 던지기
+      throw error;
     }
   };
 
@@ -70,7 +83,13 @@ export function useAuth() {
     error.value = null;
     try {
       if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('✅ Google 로그인 팝업 성공:', result.user.email);
+      
+      // 팝업 창이 열려있다면 닫기 시도
+      if (window.opener) {
+        window.close();
+      }
     } catch (err: any) {
       console.error('❌ Google 로그인 팝업 실패:', err);
       error.value = err.message;
