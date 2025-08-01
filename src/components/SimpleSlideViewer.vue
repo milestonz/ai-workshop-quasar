@@ -42,16 +42,35 @@ const loadSlideHTML = async (slideNumber: string) => {
 
     let response = await fetch(staticPath);
     
-    // 정적 파일이 없으면 동적 변환 API 사용
+    // 정적 파일이 없으면 API에서 마크다운 받기
     if (!response.ok) {
-      console.log(`📂 SimpleSlideViewer - 동적 변환 API 사용: /api/slide/${slideNumber}`);
+      console.log(`📂 SimpleSlideViewer - API에서 마크다운 받기: /api/slide/${slideNumber}`);
       response = await fetch(`/api/slide/${slideNumber}`);
       
       if (!response.ok) {
-        throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}.html`);
+        throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}`);
       }
+
+      // 마크다운 데이터 받기
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || '슬라이드 로드 실패');
+      }
+
+      // 마크다운을 HTML로 변환
+      const html = convertMarkdownToHTML(data.content);
+      htmlContent.value = html;
+
+      await nextTick();
+      if (slideContentRef.value) {
+        slideContentRef.value.innerHTML = html;
+      }
+
+      console.log(`✅ SimpleSlideViewer - 마크다운 변환 완료: ${slideNumber}`);
+      return;
     }
 
+    // 기존 HTML 파일 처리
     const html = await response.text();
     console.log(`📄 SimpleSlideViewer - HTML 파일 크기: ${html.length} bytes`);
 
@@ -76,6 +95,40 @@ const loadSlideHTML = async (slideNumber: string) => {
     console.error(`❌ SimpleSlideViewer - 슬라이드 로드 실패: ${slideNumber}`, err);
     error.value = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
   }
+};
+
+// 마크다운을 HTML로 변환하는 함수
+const convertMarkdownToHTML = (markdown: string): string => {
+  // 간단한 마크다운 변환
+  let html = markdown
+    // 제목
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    
+    // 굵은 글씨
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.+?)__/g, '<strong>$1</strong>')
+    
+    // 기울임꼴
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    
+    // 코드
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    
+    // 링크
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+    
+    // 줄바꿈
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+
+  // 단락 태그 추가
+  html = `<p>${html}</p>`;
+  
+  return html;
 };
 
 const handleViewerClick = (event: MouseEvent) => {
