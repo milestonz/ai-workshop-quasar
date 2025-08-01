@@ -39,6 +39,9 @@ export function useAuth() {
         projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
       });
       
+      if (!auth || !googleProvider) {
+        throw new Error('Firebase is not configured.');
+      }
       const result = await signInWithPopup(auth, googleProvider);
       user.value = result.user;
 
@@ -71,6 +74,9 @@ export function useAuth() {
     error.value = null;
 
     try {
+      if (!auth) {
+        throw new Error('Firebase is not configured.');
+      }
       await signOut(auth);
       user.value = null;
 
@@ -106,6 +112,10 @@ export function useAuth() {
       projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ? '설정됨' : '설정 안됨',
     });
 
+    if (!auth) {
+      console.warn('⚠️ Firebase is not initialized, skipping auth state change listener.');
+      return;
+    }
     onAuthStateChanged(auth, (currentUser) => {
       user.value = currentUser;
       console.log('🔄 인증 상태 변경:', {

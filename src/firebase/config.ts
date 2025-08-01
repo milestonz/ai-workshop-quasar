@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth';
 
 // Firebase 설정
 const firebaseConfig = {
@@ -34,9 +34,9 @@ if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.proj
 }
 
 // Firebase 앱 초기화
-let app;
-let auth;
-let googleProvider;
+let app: FirebaseApp | undefined;
+let auth: Auth | null;
+let googleProvider: GoogleAuthProvider | null;
 
 if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId) {
   app = initializeApp(firebaseConfig);
@@ -52,4 +52,3 @@ if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.project
 // Auth 인스턴스, Google Auth Provider, app 인스턴스 내보내기
 export { auth, googleProvider };
 export default app;
-
