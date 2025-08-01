@@ -34,6 +34,9 @@ yarn-error.log*
 .env.local*
 .env.backup
 
+# Azure deployment files
+*.PublishSettings
+
 # AI presentation template files
 ai-presentation-template/
 ai-presentation-template.pdf
