@@ -191,13 +191,19 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
+  width: 80px; /* min-width 대신 고정 width 사용 */
+  height: 40px; /* 고정 높이 추가 */
+  flex-shrink: 0; /* 크기 고정 */
 }
 
 .slide-counter {
   font-size: 1.1em;
   font-weight: bold;
   color: #333;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
 }
 
 /* 반응형 디자인 */
@@ -210,6 +216,11 @@ onUnmounted(() => {
   .nav-btn {
     width: 35px;
     height: 35px;
+  }
+
+  .slide-info {
+    width: 60px; /* 모바일에서 고정 너비 */
+    height: 35px; /* 모바일에서 고정 높이 */
   }
 
   .slide-counter {

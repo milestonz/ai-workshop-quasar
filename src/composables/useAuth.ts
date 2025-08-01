@@ -65,13 +65,13 @@ export function useAuth() {
       }
     } catch (error: any) {
       console.error('❌ Firestore 접근 오류:', error);
-      
+
       // Firestore 권한 오류가 발생해도 기본 사용자 정보는 반환
       if (error.code === 'permission-denied') {
         console.warn('⚠️ Firestore 권한 오류. 기본 역할로 설정합니다.');
         return { ...firebaseUser, role: 'student' };
       }
-      
+
       // 다른 오류는 다시 던지기
       throw error;
     }
@@ -85,7 +85,7 @@ export function useAuth() {
       if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
       const result = await signInWithPopup(auth, googleProvider);
       console.log('✅ Google 로그인 팝업 성공:', result.user.email);
-      
+
       // 팝업 창이 열려있다면 닫기 시도
       if (window.opener) {
         window.close();

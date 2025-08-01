@@ -556,17 +556,23 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 60px; /* 너비 줄임 */
+  width: 80px; /* min-width 대신 고정 width 사용 */
+  height: 32px; /* 고정 높이 추가 */
   background: rgba(255, 255, 255, 0.9); /* 반투명 배경 */
   border-radius: 16px;
   padding: 4px 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0; /* 크기 고정 */
 }
 
 .slide-counter {
   font-size: 0.9em; /* 폰트 크기 줄임 */
   font-weight: bold;
   color: #333; /* 색상 변경 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
 }
 
 .keyboard-help {
@@ -612,7 +618,8 @@ onUnmounted(() => {
   }
 
   .slide-info {
-    min-width: 50px; /* 모바일에서 더 작게 */
+    width: 60px; /* 모바일에서 고정 너비 */
+    height: 28px; /* 모바일에서 고정 높이 */
     padding: 3px 6px;
   }
 
