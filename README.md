@@ -323,17 +323,17 @@ bash# 테스트 실행으로 문제 진단
 npm run test-converter
 
 node scripts/slide-converter/convert-slides.js
+
 스타일이 이상할 때:
 
 config.json에서 테마 색상 확인
-슬라이드 타입 자동 감지 결과 확인
+슬라이드 타입 자동 감지 결과 확인ㄷ
 
 파일이 없다는 오류:
-
 public/slides/ 디렉토리 존재 확인
 파일명이 slide-X-Y.md 패턴인지 확인
 
-🎊 완성된 시스템의 가치
+🎊 완성된 시스템:
 이제 목회자를 위한 AI 활용 시나리오 강의뿐만 아니라, 앞으로 만들 모든 프레젠테이션에서 이 변환기를 활용할 수 있습니다:
 
 마크다운으로 빠른 슬라이드 작성
