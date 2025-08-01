@@ -161,7 +161,7 @@
                   <q-avatar v-if="photoURL" size="24px" class="q-mr-xs">
                     <img :src="photoURL" :alt="displayName" />
                   </q-avatar>
-                  <q-tooltip>{{ displayName }} (로그아웃)</q-tooltip>
+                  <q-tooltip>{{ isStudentMode() ? '학습 종료' : displayName + ' (로그아웃)' }}</q-tooltip>
                 </q-btn>
               </div>
 
@@ -569,20 +569,62 @@ const updateRoute = () => {
 
 // 로그아웃 처리
 const handleLogout = async () => {
-  try {
-    await logout();
-    $q.notify({
-      type: 'positive',
-      message: '로그아웃되었습니다.',
-      position: 'top',
+  // Student mode에서만 브라우저 종료
+  if (isStudentMode()) {
+    $q.dialog({
+      title: '학습 종료',
+      message: '화면을 종료하시겠습니까?',
+      persistent: true,
+      ok: {
+        label: '예',
+        color: 'primary'
+      },
+      cancel: {
+        label: '아니오',
+        flat: true
+      }
+    }).onOk(() => {
+      // 브라우저 종료 시도
+      try {
+        // window.close()는 사용자가 직접 열지 않은 창에서만 작동
+        window.close();
+        
+        // window.close()가 작동하지 않으면 사용자에게 안내
+        setTimeout(() => {
+          $q.notify({
+            type: 'info',
+            message: '브라우저 탭을 직접 닫아주세요.',
+            position: 'top',
+            timeout: 5000
+          });
+        }, 1000);
+      } catch (error) {
+        console.error('브라우저 종료 실패:', error);
+        $q.notify({
+          type: 'info',
+          message: '브라우저 탭을 직접 닫아주세요.',
+          position: 'top',
+          timeout: 5000
+        });
+      }
     });
-  } catch (error) {
-    console.error('로그아웃 오류:', error);
-    $q.notify({
-      type: 'negative',
-      message: '로그아웃 중 오류가 발생했습니다.',
-      position: 'top',
-    });
+  } else {
+    // 일반 모드에서는 기존 로그아웃 동작
+    try {
+      await logout();
+      $q.notify({
+        type: 'positive',
+        message: '로그아웃되었습니다.',
+        position: 'top',
+      });
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
+      $q.notify({
+        type: 'negative',
+        message: '로그아웃 중 오류가 발생했습니다.',
+        position: 'top',
+      });
+    }
   }
 };
 
