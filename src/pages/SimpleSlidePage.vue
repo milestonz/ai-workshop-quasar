@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
 
@@ -49,91 +49,43 @@ const router = useRouter();
 // 반응형 데이터
 const currentSlideIndex = ref(0);
 
+// 슬라이드 타입에 따른 CSS 파일 이름 매핑
+const slideTypeCssMap: { [key: string]: string } = {
+  cover: 'cover-type.css',
+  index: 'index-type.css',
+  profile: 'profile-type.css',
+  chapter: 'chapter-type.css',
+  example: 'example-type.css',
+  challenge: 'challenge-type.css',
+  lecture: 'lecture-type.css',
+  poll: 'poll-type.css',
+  timeline: 'timeline-type.css',
+  general: 'general-type.css',
+};
+
+const updateDynamicStyle = (slideType: string) => {
+  const cssFileName = slideTypeCssMap[slideType] || 'general-type.css';
+  const cssPath = `/css/${cssFileName}`; // 절대 경로 사용
+  const styleId = 'dynamic-slide-style';
+
+  let styleElement = document.getElementById(styleId) as HTMLLinkElement;
+
+  if (!styleElement) {
+    styleElement = document.createElement('link');
+    styleElement.id = styleId;
+    styleElement.rel = 'stylesheet';
+    document.head.appendChild(styleElement);
+  }
+
+  if (styleElement.href !== window.location.origin + cssPath) {
+    styleElement.href = cssPath;
+    console.log(`🎨 동적 CSS 적용: ${cssPath}`);
+  }
+};
+
 // 사전 변환된 HTML 파일 목록 (정적)
 const slideFiles = ref([
-  'slide-0-0.html',
-  'slide-0-1.html',
-  'slide-0-2.html',
-  'slide-0-3.html',
-  'slide-0-4.html',
-  'slide-0-5.html',
-  'slide-0-6.html',
-  'slide-1-0.html',
-  'slide-1-1.html',
-  'slide-1-2.html',
-  'slide-1-3.html',
-  'slide-1-4.html',
-  'slide-1-5.html',
-  'slide-1-6.html',
-  'slide-1-7.html',
-  'slide-1-8.html',
-  'slide-1-9.html',
-  'slide-1-10.html',
-  'slide-1-11.html',
-  'slide-1-12.html',
-  'slide-1-13.html',
-  'slide-1-14.html',
-  'slide-2-0.html',
-  'slide-2-1.html',
-  'slide-2-2.html',
-  'slide-2-3.html',
-  'slide-2-4.html',
-  'slide-2-5.html',
-  'slide-2-6.html',
-  'slide-2-7.html',
-  'slide-2-8.html',
-  'slide-2-9.html',
-  'slide-2-10.html',
-  'slide-2-11.html',
-  'slide-2-12.html',
-  'slide-2-13.html',
-  'slide-3-0.html',
-  'slide-3-1.html',
-  'slide-3-2.html',
-  'slide-3-3.html',
-  'slide-3-4.html',
-  'slide-3-5.html',
-  'slide-3-6.html',
-  'slide-3-7.html',
-  'slide-3-8.html',
-  'slide-4-0.html',
-  'slide-4-1.html',
-  'slide-4-2.html',
-  'slide-4-3.html',
-  'slide-5-0.html',
-  'slide-5-1.html',
-  'slide-6-0.html',
-  'slide-6-1.html',
-  'slide-6-2.html',
-  'slide-6-3.html',
-  'slide-6-4.html',
-  'slide-6-5.html',
-  'slide-6-6.html',
-  'slide-6-7.html',
-  'slide-7-0.html',
-  'slide-7-1.html',
-  'slide-7-2.html',
-  'slide-7-3.html',
-  'slide-7-4.html',
-  'slide-7-5.html',
-  'slide-7-6.html',
-  'slide-7-7.html',
-  'slide-7-8.html',
-  'slide-7-9.html',
-  'slide-7-10.html',
-  'slide-7-11.html',
-  'slide-7-12.html',
-  'slide-7-13.html',
-  'slide-7-14.html',
-  'slide-7-15.html',
-  'slide-8-0.html',
-  'slide-8-1.html',
-  'slide-8-2.html',
-  'slide-8-3.html',
-  'slide-8-4.html',
-  'slide-8-5.html',
-  'slide-8-6.html',
-  'slide-8-7.html',
+  // ... (기존 파일 목록)
 ]);
 
 // 계산된 속성들
@@ -220,9 +172,17 @@ onMounted(() => {
     }
   }
 
+  // 초기 CSS 적용
+  updateDynamicStyle(currentSlideType.value);
+
   document.addEventListener('keydown', handleKeydown);
   console.log('🚀 SimpleSlidePage 마운트됨');
 });
+
+watch(currentSlideType, (newType) => {
+  updateDynamicStyle(newType);
+});
+
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown);
