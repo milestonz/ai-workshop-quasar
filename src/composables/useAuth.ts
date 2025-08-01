@@ -1,6 +1,6 @@
 import { ref, computed, onUnmounted } from 'vue';
 import {
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
   onAuthStateChanged,
   getRedirectResult,
@@ -70,9 +70,9 @@ export function useAuth() {
     error.value = null;
     try {
       if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (err: any) {
-      console.error('❌ Google 로그인 리디렉션 실패:', err);
+      console.error('❌ Google 로그인 팝업 실패:', err);
       error.value = err.message;
       $q.notify({ type: 'negative', message: '로그인을 시작할 수 없습니다.' });
       loading.value = false;
@@ -100,18 +100,21 @@ export function useAuth() {
 
     console.log('🔐 Firebase Auth 초기화 시작');
 
-    // 1. 인증 상태 변화를 감지하는 리스너 설정 (먼저 설정)
+    // 인증 상태 변화를 감지하는 리스너 설정
     unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log('🔄 onAuthStateChanged 실행. 사용자:', firebaseUser ? firebaseUser.email : '없음');
-      
+      console.log(
+        '🔄 onAuthStateChanged 실행. 사용자:',
+        firebaseUser ? firebaseUser.email : '없음',
+      );
+
       if (firebaseUser) {
         console.log('✅ 인증된 사용자 감지:', {
           uid: firebaseUser.uid,
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
-          emailVerified: firebaseUser.emailVerified
+          emailVerified: firebaseUser.emailVerified,
         });
-        
+
         try {
           user.value = await fetchUserRole(firebaseUser);
           console.log('✅ 사용자 역할 설정 완료:', user.value.role);
@@ -125,30 +128,6 @@ export function useAuth() {
       }
       loading.value = false;
     });
-
-    // 2. 리디렉션 결과 처리 (약간의 지연 후 처리)
-    setTimeout(() => {
-      if (!auth) return;
-      
-      getRedirectResult(auth)
-        .then((result) => {
-          if (result) {
-            console.log('✅ 리디렉션 로그인 성공:', result.user.email);
-            console.log('✅ 인증 결과:', {
-              user: result.user.email,
-              operationType: result.operationType
-            });
-          } else {
-            console.log('ℹ️ 리디렉션 결과 없음 (새로고침 또는 직접 접근)');
-          }
-        })
-        .catch((err: any) => {
-          console.error('❌ 리디렉션 결과 처리 중 오류 발생:', err);
-          console.error('❌ 오류 코드:', err.code);
-          console.error('❌ 오류 메시지:', err.message);
-          error.value = err.message;
-        });
-    }, 100);
   };
 
   onUnmounted(() => {
