@@ -50,5 +50,4 @@ if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.project
 }
 
 // Auth 인스턴스, Google Auth Provider, app 인스턴스 내보내기
-export { auth, googleProvider };
-export default app;
+export { auth, googleProvider, app as firebaseApp };
