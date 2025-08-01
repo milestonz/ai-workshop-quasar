@@ -30,7 +30,9 @@ yarn-error.log*
 *.sln
 
 # local .env files
+.env
 .env.local*
+.env.backup
 
 # AI presentation template files
 ai-presentation-template/
