@@ -29,24 +29,19 @@ jobs:
       env:
         NODE_ENV: production
 
-    - name: Create static deployment package
+    - name: Copy slides to dist
       run: |
-        echo "Creating static deployment package..."
-        
-        # 정적 파일만 포함
-        mkdir -p static-deployment
-        cp -r dist/* static-deployment/
-        cp -r public/slides static-deployment/
-        
-        echo "Static deployment package created:"
-        du -sh static-deployment/
+        echo "Copying slides to dist directory..."
+        cp -r public/slides dist/
+        echo "Slides copied successfully"
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/master'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./static-deployment
+        publish_dir: ./dist
+        force_orphan: true
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
