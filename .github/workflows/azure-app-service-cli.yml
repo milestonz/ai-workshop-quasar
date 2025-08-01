@@ -1,4 +1,4 @@
-name: Deploy to Azure App Service (CLI)
+name: Deploy to Azure App Service (Static)
 
 on:
   push:
@@ -11,112 +11,52 @@ jobs:
   build_and_deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-
+    
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Install dependencies
+      run: npm ci
 
-      - name: Build the app
-        run: npm run build
-        env:
-          NODE_ENV: production
+    - name: Build the app
+      run: npm run build
+      env:
+        NODE_ENV: production
 
-      - name: Clean up for deployment
-        run: |
-          echo "Cleaning up for Azure App Service deployment..."
+    - name: Create static deployment package
+      run: |
+        echo "Creating static deployment package..."
+        
+        # 정적 파일만 포함
+        mkdir -p static-deployment
+        cp -r dist/* static-deployment/
+        cp -r public/slides static-deployment/
+        
+        # 필요한 설정 파일들
+        cp staticwebapp.config.json static-deployment/
+        
+        echo "Static deployment package created:"
+        du -sh static-deployment/
 
-          # Remove all PDF files
-          find dist/ -name "*.pdf" -delete
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-          # Remove large image files
-          find dist/images -name "*.png" -size +500k -delete
-
-          # Remove test files
-          rm -rf dist/test-*
-
-          # Remove development files
-          rm -rf dist/.DS_Store
-
-          # Remove unnecessary generated files
-          rm -rf dist/generated/template-based-converter-cjs-generated
-          rm -rf dist/generated/slides-sidebar
-
-          # Remove large HTML files
-          find dist/ -name "*.html" -size +100k -delete
-
-          # Remove any remaining large files
-          find dist/ -type f -size +1M -delete
-
-          # Remove unnecessary directories
-          rm -rf dist/scripts
-          rm -rf dist/tests
-          rm -rf dist/playwright-report
-
-          # Remove large assets
-          find dist/assets -name "*.js" -size +500k -delete
-          find dist/assets -name "*.css" -size +100k -delete
-
-          echo "Final dist size:"
-          du -sh dist/
-
-      - name: Create deployment package
-        run: |
-          # Create a deployment package with both frontend and backend
-          mkdir -p deployment
-          cp -r dist/* deployment/
-          cp server.cjs deployment/
-          cp package.json deployment/
-          cp package-lock.json deployment/
-          cp tsconfig.json deployment/
-          cp .env deployment/
-          cp -r src/services deployment/
-          cp -r scripts deployment/
-          cp -r public/slides deployment/public/
-
-          echo "Deployment package created:"
-          du -sh deployment/
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Set App Settings
-        run: |
-          az webapp config appsettings set --resource-group ai-seminar-rg --name slide-view-app-new --settings \
-          "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}" \
-          "VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" \
-          "VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }}" \
-          "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" \
-          "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" \
-          "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}" \
-          "EMAIL_HOST=${{ secrets.EMAIL_HOST }}" \
-          "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" \
-          "EMAIL_SECURE=${{ secrets.EMAIL_SECURE }}" \
-          "EMAIL_USER=${{ secrets.EMAIL_USER }}" \
-          "EMAIL_PASS=${{ secrets.EMAIL_PASS }}" \
-          "VITE_ENABLE_STUDENT_MODE=true"
-
-      - name: Deploy to Azure App Service
-        run: |
-          # Create zip file for deployment
-          zip -r ../deployment.zip .
-
-          # Deploy using Azure CLI
-          az webapp deploy \
-            --resource-group ai-seminar-rg \
-            --name slide-view-app-new \
-            --src-path ../deployment.zip \
-            --type zip
-        working-directory: ./deployment
+    - name: Deploy to Azure Static Web Apps
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        action: "upload"
+        app_location: "static-deployment"
+        skip_app_build: true
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

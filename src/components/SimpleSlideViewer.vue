@@ -36,61 +36,29 @@ const loadSlideHTML = async (slideNumber: string) => {
   htmlContent.value = '';
 
   try {
-    // 먼저 정적 파일에서 찾기 시도
-    const staticPath = `/generated/slides/slide-${slideNumber}.html`;
-    console.log(`📂 SimpleSlideViewer - 정적 파일 시도: ${staticPath}`);
+    // 마크다운 파일 직접 로드
+    const mdPath = `/slides/slide-${slideNumber}.md`;
+    console.log(`📂 SimpleSlideViewer - 마크다운 파일 로드: ${mdPath}`);
 
-    let response = await fetch(staticPath);
+    const response = await fetch(mdPath);
     
-    // 정적 파일이 없으면 API에서 마크다운 받기
     if (!response.ok) {
-      console.log(`📂 SimpleSlideViewer - API에서 마크다운 받기: /api/slide/${slideNumber}`);
-      response = await fetch(`/api/slide/${slideNumber}`);
-      
-      if (!response.ok) {
-        throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}`);
-      }
-
-      // 마크다운 데이터 받기
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.message || '슬라이드 로드 실패');
-      }
-
-      // 마크다운을 HTML로 변환
-      const html = convertMarkdownToHTML(data.content);
-      htmlContent.value = html;
-
-      await nextTick();
-      if (slideContentRef.value) {
-        slideContentRef.value.innerHTML = html;
-      }
-
-      console.log(`✅ SimpleSlideViewer - 마크다운 변환 완료: ${slideNumber}`);
-      return;
+      throw new Error(`슬라이드 파일을 찾을 수 없습니다: slide-${slideNumber}.md`);
     }
 
-    // 기존 HTML 파일 처리
-    const html = await response.text();
-    console.log(`📄 SimpleSlideViewer - HTML 파일 크기: ${html.length} bytes`);
+    const markdown = await response.text();
+    console.log(`📄 SimpleSlideViewer - 마크다운 파일 크기: ${markdown.length} bytes`);
 
-    const styleMatch = html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-    const styleContent = styleMatch?.[1] || '';
-
-    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-    const bodyContent = bodyMatch?.[1] || html;
-
-    const fullContent = `<style>${styleContent}</style>${bodyContent}`;
-
-    htmlContent.value = fullContent;
+    // 마크다운을 HTML로 변환
+    const html = convertMarkdownToHTML(markdown);
+    htmlContent.value = html;
 
     await nextTick();
-
     if (slideContentRef.value) {
-      slideContentRef.value.innerHTML = fullContent;
+      slideContentRef.value.innerHTML = html;
     }
 
-    console.log(`✅ SimpleSlideViewer - 슬라이드 로드 완료: ${slideNumber}`);
+    console.log(`✅ SimpleSlideViewer - 마크다운 변환 완료: ${slideNumber}`);
   } catch (err) {
     console.error(`❌ SimpleSlideViewer - 슬라이드 로드 실패: ${slideNumber}`, err);
     error.value = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
