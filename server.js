@@ -22,6 +22,9 @@ app.use(express.json());
 // 정적 파일 서빙
 app.use(express.static('public'));
 app.use(express.static('dist'));
+app.use('/css', express.static(path.join(__dirname, 'dist/css')));
+app.use('/slides', express.static(path.join(__dirname, 'dist/slides')));
+
 
 // API 라우트들
 app.post('/api/convert-slides', (req, res) => {
