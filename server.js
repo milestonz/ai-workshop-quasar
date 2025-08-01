@@ -1,9 +1,13 @@
-const express = require('express');
-const { exec } = require('child_process');
-const path = require('path');
-const fs = require('fs');
-const cors = require('cors');
-const dotenv = require('dotenv');
+import express from 'express';
+import { exec } from 'child_process';
+import path from 'path';
+import fs from 'fs';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // .env 파일 로드
 dotenv.config();
