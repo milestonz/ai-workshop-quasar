@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+import { slideLog } from 'src/utils/logger';
 
 interface Props {
   slideNumber: string; // e.g., '0-0', '1-2'
@@ -44,12 +45,12 @@ const slideUrl = computed(() => {
 
 const onIframeLoad = () => {
   isLoading.value = false;
-  console.log(`✅ iframe 로드 완료: ${slideUrl.value}`);
+  slideLog.log(`✅ iframe 로드 완료: ${slideUrl.value}`);
 };
 
 const onIframeError = (event: Event) => {
   error.value = '슬라이드 로딩 중 오류가 발생했습니다.';
-  console.error('슬라이드 로딩 중 오류 발생:', event);
+  slideLog.error('슬라이드 로딩 중 오류 발생:', event);
   isLoading.value = false;
 };
 
@@ -57,13 +58,13 @@ watch(() => props.slideNumber, (newSlideNumber) => {
   if (newSlideNumber) {
     isLoading.value = true;
     error.value = '';
-    console.log(`🔄 iframe URL 변경: ${slideUrl.value}`);
+    slideLog.log(`🔄 iframe URL 변경: ${slideUrl.value}`);
     
     // 3초 후에도 로딩이 안 되면 로딩 상태 해제
     setTimeout(() => {
       if (isLoading.value) {
         isLoading.value = false;
-        console.log('⚠️ 슬라이드 로딩 시간 초과');
+        slideLog.log('⚠️ 슬라이드 로딩 시간 초과');
       }
     }, 3000);
   }

@@ -111,6 +111,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useCourseStore } from '../stores/course';
+import { slideLog } from 'src/utils/logger';
 import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
 import SlideEditorSection from '../components/SlideEditorSection.vue';
 
@@ -178,17 +179,17 @@ const currentSlideInfo = computed(() => ({
 
 // 편집기 이벤트 핸들러들
 const handleSlideContentSave = (content: string) => {
-  console.log('슬라이드 내용 저장:', content);
+  slideLog.log('슬라이드 내용 저장:', content);
   currentSlideContent.value = content;
 };
 
 const handleSlideContentChange = (content: string) => {
-  console.log('슬라이드 내용 변경:', content);
+  slideLog.log('슬라이드 내용 변경:', content);
   currentSlideContent.value = content;
 };
 
 const handleSlidePreview = () => {
-  console.log('슬라이드 미리보기');
+  slideLog.log('슬라이드 미리보기');
 };
 
 const handleCreateMarkdownFile = () => {
@@ -204,7 +205,7 @@ const handleUpdateTOC = () => {
 };
 
 const handleAddNewSlide = () => {
-  console.log('새 슬라이드 추가');
+  slideLog.log('새 슬라이드 추가');
 };
 
 const isApplying = ref(false);
@@ -212,7 +213,7 @@ const isApplying = ref(false);
 const handleApplySlide = async (slideNumber: string) => {
   isApplying.value = true;
   try {
-    console.log('🔄 슬라이드 반영 시작:', slideNumber);
+    slideLog.log('🔄 슬라이드 반영 시작:', slideNumber);
 
     // 1. 현재 편집 중인 md 파일 저장
     const [lesson = '0', slide = '0'] = (slideNumber || '0-0').split('-');
@@ -295,9 +296,9 @@ const handleApplySlide = async (slideNumber: string) => {
       actions: [{ label: '확인', color: 'white' }],
     });
 
-    console.log('🎉 슬라이드 반영 완료');
+    slideLog.log('🎉 슬라이드 반영 완료');
   } catch (error) {
-    console.error('❌ 슬라이드 반영 실패:', error);
+    slideLog.error('❌ 슬라이드 반영 실패:', error);
 
     $q.notify({
       type: 'negative',

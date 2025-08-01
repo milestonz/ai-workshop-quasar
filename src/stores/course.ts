@@ -1,6 +1,7 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { azureBlobService } from 'src/services/azureBlobService';
+import { slideLog } from 'src/utils/logger';
 import type { SlideData, Lesson, Comment } from '../types/slide';
 
 export const useCourseStore = defineStore('course', () => {
@@ -23,47 +24,47 @@ export const useCourseStore = defineStore('course', () => {
   const generateCourseOutlineFromMD = async (): Promise<Lesson[]> => {
     try {
       // 1. 캐시 무효화 확인
-      try {
-        const cacheResponse = await fetch('/slides/toc-cache-invalidation.json');
-        if (cacheResponse.ok) {
-          const cacheData = await cacheResponse.json();
-          console.log(`🔄 캐시 무효화 감지: ${cacheData.lastBuild}`);
+              try {
+          const cacheResponse = await fetch('/slides/toc-cache-invalidation.json');
+          if (cacheResponse.ok) {
+            const cacheData = await cacheResponse.json();
+            slideLog.log(`🔄 캐시 무효화 감지: ${cacheData.lastBuild}`);
+          }
+        } catch (error) {
+          slideLog.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
         }
-      } catch (error) {
-        console.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
-      }
 
       // 2. 통합 사이드바 데이터 가져오기 (우선 시도)
       let sidebarData = null;
-      try {
-        const sidebarResponse = await fetch('/slides/sidebar-data.json');
-        if (sidebarResponse.ok) {
-          sidebarData = await sidebarResponse.json();
-          console.log(
-            '✅ 통합 사이드바 데이터 로드 완료:',
-            sidebarData.slides.length,
-            '개 슬라이드,',
-            Object.keys(sidebarData.chapters).length,
-            '개 챕터',
-          );
+              try {
+          const sidebarResponse = await fetch('/slides/sidebar-data.json');
+          if (sidebarResponse.ok) {
+            sidebarData = await sidebarResponse.json();
+            slideLog.log(
+              '✅ 통합 사이드바 데이터 로드 완료:',
+              sidebarData.slides.length,
+              '개 슬라이드,',
+              Object.keys(sidebarData.chapters).length,
+              '개 챕터',
+            );
+          }
+        } catch (error) {
+          slideLog.warn('⚠️ 통합 사이드바 데이터 로드 실패:', error);
         }
-      } catch (error) {
-        console.warn('⚠️ 통합 사이드바 데이터 로드 실패:', error);
-      }
 
       // 3. 파일 목록 가져오기
       let mdFiles: string[] = [];
-      try {
-        const response = await fetch('/slides/files.json');
-        if (response.ok) {
-          const data = await response.json();
-          mdFiles = data.files || [];
-          console.log('✅ 파일 목록 로드 완료:', mdFiles.length, '개 파일');
-        } else {
-          throw new Error('files.json을 읽을 수 없습니다');
-        }
-      } catch (error) {
-        console.warn('❌ JSON 파일 로드 실패, 하드코딩된 목록 사용:', error);
+              try {
+          const response = await fetch('/slides/files.json');
+          if (response.ok) {
+            const data = await response.json();
+            mdFiles = data.files || [];
+            slideLog.log('✅ 파일 목록 로드 완료:', mdFiles.length, '개 파일');
+          } else {
+            throw new Error('files.json을 읽을 수 없습니다');
+          }
+        } catch (error) {
+          slideLog.warn('❌ JSON 파일 로드 실패, 하드코딩된 목록 사용:', error);
         // fallback: 하드코딩된 목록
         mdFiles = [
           'slide-0-0.md',
@@ -611,11 +612,11 @@ export const useCourseStore = defineStore('course', () => {
   // 초기화 함수 - 앱 시작 시 호출
   const initializeCourseOutline = async () => {
     try {
-      console.log('🚀 강의 목차 초기화 시작...');
+      slideLog.log('🚀 강의 목차 초기화 시작...');
       
       // 1. 기본 목차로 먼저 표시 (즉시 사용 가능)
       lessons.value = generateDefaultLessons();
-      console.log('✅ 기본 목차 즉시 표시 완료');
+      slideLog.log('✅ 기본 목차 즉시 표시 완료');
       
       // 2. 백그라운드에서 MD 파일 기반 목차 로드
       setTimeout(async () => {
@@ -623,17 +624,17 @@ export const useCourseStore = defineStore('course', () => {
           const generatedLessons = await generateCourseOutlineFromMD();
           if (generatedLessons && generatedLessons.length > 0) {
             lessons.value = generatedLessons;
-            console.log('✅ MD 파일 기반 목차 로드 완료:', generatedLessons);
+            slideLog.log('✅ MD 파일 기반 목차 로드 완료:', generatedLessons);
           } else {
-            console.warn('⚠️ MD 파일에서 목차를 생성할 수 없어 기본 목차를 유지합니다.');
+            slideLog.warn('⚠️ MD 파일에서 목차를 생성할 수 없어 기본 목차를 유지합니다.');
           }
         } catch (error) {
-          console.error('❌ MD 파일 목차 로드 실패 (기본 목차 유지):', error);
+          slideLog.error('❌ MD 파일 목차 로드 실패 (기본 목차 유지):', error);
         }
       }, 100); // 100ms 지연으로 백그라운드 처리
       
     } catch (error) {
-      console.error('❌ 목차 초기화 실패:', error);
+      slideLog.error('❌ 목차 초기화 실패:', error);
       lessons.value = generateDefaultLessons();
     }
   };

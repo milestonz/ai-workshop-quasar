@@ -44,7 +44,11 @@ export function useAuth() {
 
     while (retryCount < maxRetries) {
       try {
-        console.log('🔍 사용자 정보 확인 중:', firebaseUser.email, `(시도 ${retryCount + 1}/${maxRetries})`);
+        console.log(
+          '🔍 사용자 정보 확인 중:',
+          firebaseUser.email,
+          `(시도 ${retryCount + 1}/${maxRetries})`,
+        );
         const userRef = doc(db, 'users', firebaseUser.uid);
         const userDoc = await getDoc(userRef);
 
@@ -54,12 +58,12 @@ export function useAuth() {
           return { ...firebaseUser, role: userData.role || 'student' };
         } else {
           console.log('🆕 새 사용자 등록 시작:', firebaseUser.email);
-          
+
           // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
           const usersCollectionRef = collection(db, 'users');
           const usersSnapshot = await getDocs(usersCollectionRef);
           const isFirstUser = usersSnapshot.empty;
-          
+
           console.log('📊 현재 등록된 사용자 수:', usersSnapshot.size);
           console.log('👑 첫 번째 사용자 여부:', isFirstUser);
 
@@ -71,11 +75,16 @@ export function useAuth() {
             role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
             createdAt: serverTimestamp(),
           };
-          
+
           console.log('💾 새 사용자 정보 저장 중:', newUser);
           await setDoc(userRef, newUser);
-          console.log('✅ 새 사용자 등록 완료:', firebaseUser.email, '역할:', isFirstUser ? 'admin' : 'student');
-          
+          console.log(
+            '✅ 새 사용자 등록 완료:',
+            firebaseUser.email,
+            '역할:',
+            isFirstUser ? 'admin' : 'student',
+          );
+
           return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
         }
       } catch (error: any) {
@@ -93,7 +102,7 @@ export function useAuth() {
         // 마지막 시도가 아니면 잠시 대기 후 재시도
         if (retryCount < maxRetries) {
           console.log(`⏳ ${retryCount * 1000}ms 후 재시도...`);
-          await new Promise(resolve => setTimeout(resolve, retryCount * 1000));
+          await new Promise((resolve) => setTimeout(resolve, retryCount * 1000));
         } else {
           // 모든 시도 실패 시 기본 사용자 정보 반환
           console.error('❌ 모든 재시도 실패. 기본 역할로 설정합니다.');
