@@ -1,13 +1,21 @@
 import { ref, computed, onUnmounted } from 'vue';
-import { 
-  signInWithRedirect, 
-  signOut, 
-  onAuthStateChanged, 
+import {
+  signInWithRedirect,
+  signOut,
+  onAuthStateChanged,
   getRedirectResult,
   type User,
-  type Unsubscribe
+  type Unsubscribe,
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  collection,
+  getDocs,
+} from 'firebase/firestore';
 import { auth, googleProvider, firebaseApp } from '../firebase/config';
 import { useQuasar } from 'quasar';
 
@@ -29,8 +37,8 @@ export function useAuth() {
   const db = firebaseApp ? getFirestore(firebaseApp) : null;
 
   const fetchUserRole = async (firebaseUser: User): Promise<AppUser> => {
-    if (!db) throw new Error("Firestore is not initialized.");
-    
+    if (!db) throw new Error('Firestore is not initialized.');
+
     const userRef = doc(db, 'users', firebaseUser.uid);
     const userDoc = await getDoc(userRef);
 
@@ -38,19 +46,24 @@ export function useAuth() {
       const userData = userDoc.data();
       return { ...firebaseUser, role: userData.role || 'student' };
     } else {
+      // 첫 번째 사용자인지 확인 (users 컬렉션의 문서 수 확인)
+      const usersCollectionRef = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersCollectionRef);
+      const isFirstUser = usersSnapshot.empty;
+
       const newUser = {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
         photoURL: firebaseUser.photoURL,
-        role: 'student',
+        role: isFirstUser ? 'admin' : 'student', // 첫 번째 사용자는 admin, 나머지는 student
         createdAt: serverTimestamp(),
       };
       await setDoc(userRef, newUser);
-      return { ...firebaseUser, role: 'student' };
+      return { ...firebaseUser, role: isFirstUser ? 'admin' : 'student' };
     }
   };
-  
+
   const signInWithGoogle = async () => {
     if (loading.value) return;
     loading.value = true;
@@ -78,10 +91,10 @@ export function useAuth() {
   const initAuth = () => {
     if (isInitCalled) return;
     isInitCalled = true;
-    
+
     if (!auth) {
-        loading.value = false;
-        return;
+      loading.value = false;
+      return;
     }
 
     // 1. 인증 상태 변화를 감지하는 리스너 설정
@@ -97,11 +110,11 @@ export function useAuth() {
 
     // 2. 리디렉션 결과 처리 (오류 캐치 목적)
     getRedirectResult(auth).catch((err) => {
-        console.error('리디렉션 결과 처리 중 오류 발생:', err);
-        error.value = err.message;
+      console.error('리디렉션 결과 처리 중 오류 발생:', err);
+      error.value = err.message;
     });
   };
-  
+
   onUnmounted(() => {
     if (unsubscribe) unsubscribe();
   });
