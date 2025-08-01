@@ -128,6 +128,7 @@ interface Props {
 interface Emits {
   (e: 'update:modelValue', value: boolean): void;
   (e: 'submit', data: SurveyData): void;
+  (e: 'completed'): void; // 설문 완료 이벤트 추가
 }
 
 const props = defineProps<Props>();
@@ -202,6 +203,9 @@ const submitSurvey = () => {
     position: 'top',
     timeout: 3000,
   });
+
+  // 설문 완료 이벤트 발생
+  emit('completed');
 };
 
 const closeSurvey = () => {

@@ -252,7 +252,7 @@
     <LoginDialog v-model="showLoginDialog" />
 
     <!-- 설문조사 다이얼로그 -->
-    <SurveyDialog v-model="showSurveyDialog" @submit="handleSurveySubmit" />
+    <SurveyDialog v-model="showSurveyDialog" @submit="handleSurveySubmit" @completed="handleSurveyCompleted" />
   </q-layout>
 </template>
 
@@ -268,6 +268,7 @@ import SurveyDialog from '../components/SurveyDialog.vue';
 import { emailApiService } from '../services/emailApiService';
 import { surveyApiService } from '../services/surveyApiService';
 import type { SurveyData } from '../types/survey';
+import { isStudentMode } from 'src/utils/logger';
 
 const $q = useQuasar();
 const route = useRoute();
@@ -677,6 +678,51 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
       type: 'negative',
       message: '설문조사 제출에 실패했습니다.',
       position: 'top',
+    });
+  }
+};
+
+const handleSurveyCompleted = () => {
+  console.log('설문조사가 완료되었습니다.');
+  
+  // Student mode에서만 브라우저 종료 확인 팝업 표시
+  if (isStudentMode()) {
+    $q.dialog({
+      title: '학습 완료',
+      message: '화면을 종료하시겠습니까?',
+      persistent: true,
+      ok: {
+        label: '예',
+        color: 'primary'
+      },
+      cancel: {
+        label: '아니오',
+        flat: true
+      }
+    }).onOk(() => {
+      // 브라우저 종료 시도
+      try {
+        // window.close()는 사용자가 직접 열지 않은 창에서만 작동
+        window.close();
+        
+        // window.close()가 작동하지 않으면 사용자에게 안내
+        setTimeout(() => {
+          $q.notify({
+            type: 'info',
+            message: '브라우저 탭을 직접 닫아주세요.',
+            position: 'top',
+            timeout: 5000
+          });
+        }, 1000);
+      } catch (error) {
+        console.error('브라우저 종료 실패:', error);
+        $q.notify({
+          type: 'info',
+          message: '브라우저 탭을 직접 닫아주세요.',
+          position: 'top',
+          timeout: 5000
+        });
+      }
     });
   }
 };
