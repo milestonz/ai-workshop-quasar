@@ -262,6 +262,25 @@
       <q-btn fab icon="menu" color="primary" @click="leftDrawerOpen = !leftDrawerOpen" />
     </q-page-sticky>
 
+    <!-- 종료 확인 Dialog -->
+    <q-dialog v-model="showExitDialog" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section class="row items-center">
+          <q-avatar icon="exit_to_app" color="primary" text-color="white" />
+          <span class="q-ml-sm text-h6">{{ exitDialogTitle }}</span>
+        </q-card-section>
+
+        <q-card-section>
+          <p>화면을 종료하시겠습니까?</p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="아니오" color="grey" v-close-popup />
+          <q-btn unelevated label="예" color="primary" @click="confirmExit" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <!-- 로그인 다이얼로그 -->
     <LoginDialog v-model="showLoginDialog" />
 
@@ -296,6 +315,8 @@ const currentSlideIndex = ref(0);
 const completedSlides = ref<number[]>([]);
 const showLoginDialog = ref(false);
 const showSurveyDialog = ref(false);
+const showExitDialog = ref(false); // 종료 확인 Dialog 상태
+const exitDialogTitle = ref('학습 종료'); // 종료 확인 Dialog 제목
 
 // 학생 로그인 요구 설정
 const requireStudentLogin = ref(localStorage.getItem('requireStudentLogin') === 'true');
@@ -585,43 +606,8 @@ const updateRoute = () => {
 const handleLogout = async () => {
   // Student mode에서만 브라우저 종료
   if (isStudentMode()) {
-    $q.dialog({
-      title: '학습 종료',
-      message: '화면을 종료하시겠습니까?',
-      persistent: true,
-      ok: {
-        label: '예',
-        color: 'primary'
-      },
-      cancel: {
-        label: '아니오',
-        flat: true
-      }
-    }).onOk(() => {
-      // 브라우저 종료 시도
-      try {
-        // window.close()는 사용자가 직접 열지 않은 창에서만 작동
-        window.close();
-        
-        // window.close()가 작동하지 않으면 사용자에게 안내
-        setTimeout(() => {
-          $q.notify({
-            type: 'info',
-            message: '브라우저 탭을 직접 닫아주세요.',
-            position: 'top',
-            timeout: 5000
-          });
-        }, 1000);
-      } catch (error) {
-        console.error('브라우저 종료 실패:', error);
-        $q.notify({
-          type: 'info',
-          message: '브라우저 탭을 직접 닫아주세요.',
-          position: 'top',
-          timeout: 5000
-        });
-      }
-    });
+    exitDialogTitle.value = '학습 종료'; // dialog 제목 설정
+    showExitDialog.value = true; // 종료 확인 Dialog 표시
   } else {
     // 일반 모드에서는 기존 로그아웃 동작
     try {
@@ -639,6 +625,32 @@ const handleLogout = async () => {
         position: 'top',
       });
     }
+  }
+};
+
+const confirmExit = () => {
+  // 브라우저 종료 시도
+  try {
+    // window.close()는 사용자가 직접 열지 않은 창에서만 작동
+    window.close();
+    
+    // window.close()가 작동하지 않으면 사용자에게 안내
+    setTimeout(() => {
+      $q.notify({
+        type: 'info',
+        message: '브라우저 탭을 직접 닫아주세요.',
+        position: 'top',
+        timeout: 5000
+      });
+    }, 1000);
+  } catch (error) {
+    console.error('브라우저 종료 실패:', error);
+    $q.notify({
+      type: 'info',
+      message: '브라우저 탭을 직접 닫아주세요.',
+      position: 'top',
+      timeout: 5000
+    });
   }
 };
 
@@ -743,43 +755,8 @@ const handleSurveyCompleted = () => {
   
   // Student mode에서만 브라우저 종료 확인 팝업 표시
   if (isStudentMode()) {
-    $q.dialog({
-      title: '학습 완료',
-      message: '화면을 종료하시겠습니까?',
-      persistent: true,
-      ok: {
-        label: '예',
-        color: 'primary'
-      },
-      cancel: {
-        label: '아니오',
-        flat: true
-      }
-    }).onOk(() => {
-      // 브라우저 종료 시도
-      try {
-        // window.close()는 사용자가 직접 열지 않은 창에서만 작동
-        window.close();
-        
-        // window.close()가 작동하지 않으면 사용자에게 안내
-        setTimeout(() => {
-          $q.notify({
-            type: 'info',
-            message: '브라우저 탭을 직접 닫아주세요.',
-            position: 'top',
-            timeout: 5000
-          });
-        }, 1000);
-      } catch (error) {
-        console.error('브라우저 종료 실패:', error);
-        $q.notify({
-          type: 'info',
-          message: '브라우저 탭을 직접 닫아주세요.',
-          position: 'top',
-          timeout: 5000
-        });
-      }
-    });
+    exitDialogTitle.value = '학습 완료'; // dialog 제목 설정
+    showExitDialog.value = true; // 종료 확인 Dialog 표시
   }
 };
 
