@@ -31,9 +31,7 @@
     "watch-slides": "node scripts/slide-converter/watch-slides.js",
     "batch-convert": "node scripts/slide-converter/batch-convert.js",
     "test-converter": "node scripts/slide-converter/test-converter.js",
-    "test-template-converter": "node scripts/slide-converter/test-template-converter.js",
-    "server": "node server.cjs",
-    "start": "node server.cjs"
+    "test-template-converter": "node scripts/slide-converter/test-template-converter.js"
   },
   "dependencies": {
     "@azure/functions": "^4.7.2",

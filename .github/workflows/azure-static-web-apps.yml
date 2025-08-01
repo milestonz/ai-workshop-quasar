@@ -42,6 +42,14 @@ jobs:
         cp staticwebapp.config.json static-deployment/
         cp web.config static-deployment/
         
+        # 불필요한 파일들 제거
+        rm -rf static-deployment/scripts
+        rm -rf static-deployment/services
+        rm -f static-deployment/package.json
+        rm -f static-deployment/package-lock.json
+        rm -f static-deployment/tsconfig.json
+        rm -f static-deployment/.env
+        
         echo "Static deployment package created:"
         du -sh static-deployment/
 
