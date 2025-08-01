@@ -85,11 +85,8 @@ export function useAuth() {
       if (!auth || !googleProvider) throw new Error('Firebase is not configured.');
       const result = await signInWithPopup(auth, googleProvider);
       console.log('✅ Google 로그인 팝업 성공:', result.user.email);
-
-      // 팝업 창이 열려있다면 닫기 시도
-      if (window.opener) {
-        window.close();
-      }
+      
+      // 팝업은 Firebase가 자동으로 처리하므로 별도 닫기 로직 제거
     } catch (err: any) {
       console.error('❌ Google 로그인 팝업 실패:', err);
       error.value = err.message;
@@ -139,7 +136,16 @@ export function useAuth() {
           console.log('✅ 사용자 역할 설정 완료:', user.value.role);
         } catch (err: any) {
           console.error('❌ 사용자 역할 가져오기 실패:', err);
-          error.value = err.message;
+          console.error('❌ 오류 코드:', err.code);
+          console.error('❌ 오류 메시지:', err.message);
+          
+          // Firestore 권한 오류가 발생해도 기본 사용자 정보는 설정
+          if (err.code === 'permission-denied') {
+            console.warn('⚠️ Firestore 권한 오류. 기본 역할로 사용자 설정합니다.');
+            user.value = { ...firebaseUser, role: 'student' };
+          } else {
+            error.value = err.message;
+          }
         }
       } else {
         console.log('ℹ️ 인증되지 않은 사용자');
