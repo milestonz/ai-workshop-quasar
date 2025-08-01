@@ -34,13 +34,22 @@ if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.proj
 }
 
 // Firebase 앱 초기화
-const app = initializeApp(firebaseConfig);
+let app;
+let auth;
+let googleProvider;
 
-// Auth 인스턴스 생성
-export const auth = getAuth(app);
+if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  googleProvider = new GoogleAuthProvider();
+} else {
+  console.warn('⚠️ Firebase가 초기화되지 않았습니다. 일부 기능(인증, 투표 등)이 작동하지 않을 수 있습니다.');
+  // Firebase가 초기화되지 않았을 때 auth와 googleProvider를 mock 객체나 null로 설정할 수 있습니다.
+  auth = null;
+  googleProvider = null;
+}
 
-// Google Auth Provider 생성
-export const googleProvider = new GoogleAuthProvider();
-
-// 기본 내보내기
+// Auth 인스턴스, Google Auth Provider, app 인스턴스 내보내기
+export { auth, googleProvider };
 export default app;
+
