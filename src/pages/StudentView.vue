@@ -148,8 +148,22 @@
                 <q-chip color="secondary" text-color="white" icon="person" :label="displayName" />
               </div>
 
-              <!-- 로그아웃 버튼 (로그인이 필요한 경우에만 표시) -->
-              <div v-if="requireStudentLogin && isAuthenticated" class="col-auto">
+              <!-- 로그아웃 버튼 (Student mode에서 항상 표시) -->
+              <div v-if="isStudentMode()" class="col-auto">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  icon="logout"
+                  color="grey-7"
+                  @click="handleLogout"
+                >
+                  <q-tooltip>학습 종료</q-tooltip>
+                </q-btn>
+              </div>
+
+              <!-- 일반 로그아웃 버튼 (로그인이 필요한 경우에만 표시) -->
+              <div v-else-if="requireStudentLogin && isAuthenticated" class="col-auto">
                 <q-btn
                   flat
                   round
@@ -161,7 +175,7 @@
                   <q-avatar v-if="photoURL" size="24px" class="q-mr-xs">
                     <img :src="photoURL" :alt="displayName" />
                   </q-avatar>
-                  <q-tooltip>{{ isStudentMode() ? '학습 종료' : displayName + ' (로그아웃)' }}</q-tooltip>
+                  <q-tooltip>{{ displayName }} (로그아웃)</q-tooltip>
                 </q-btn>
               </div>
 
