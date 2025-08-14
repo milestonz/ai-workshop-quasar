@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>가스펠 작곡</title>
+  <title>새신자/성도 안내 예배/행사 안내 챗봇</title>
   <style>
       
       * {
@@ -59,119 +59,356 @@
       }
 
       /* 코드 블록 스타일 */
-.code-block-wrapper {
-    position: relative;
-    margin: 16px 0;
-}
+      .code-block-wrapper {
+          position: relative;
+          margin: 16px 0;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #1e293b;
+          border: 1px solid #334155;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-pre {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 16px;
-    padding-right: 48px; /* 복사 버튼을 위한 여백 */
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 0;
-    border: 1px solid #334155;
-}
-
-.copy-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: #2563eb;
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    z-index: 10;
-}
-
-.copy-button:hover {
-    background: #1d4ed8;
-}
-
-.copy-button:active {
-    background: #1e40af;
-}
-
-.copy-button.copied {
-    background: #059669;
-}
-
-      code {
+      pre {
+          background: #1e293b;
+          color: #e2e8f0;
+          padding: 16px;
+          padding-right: 48px; /* 복사 버튼을 위한 여백 */
+          border-radius: 8px;
+          overflow-x: auto;
+          margin: 0;
+          border: none;
           font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
           font-size: 14px;
           line-height: 1.5;
+          white-space: pre-wrap;
+          word-wrap: break-word;
       }
 
-      p code {
-          background: #f1f5f9;
-          color: #1e293b;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-size: 0.9em;
-      }
-
-      /* 투표 옵션 스타일 */
-      .poll-option {
-          font-size: 20px;
-          padding: 15px 20px;
-          margin: 10px 0;
-          border-radius: 10px;
+      .copy-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: #3b82f6;
+          border: none;
+          color: white;
+          padding: 6px 12px;
           cursor: pointer;
-          transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.1);
-          border: 2px solid transparent;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          z-index: 10;
       }
 
-      .poll-option:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-      }
+      .copy-button:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+      .copy-button:active { background: #1e40af; transform: translateY(0); }
+      .copy-button.copied { background: #10b981; }
 
-      .poll-option.selected {
-          background: rgba(59, 130, 246, 0.3);
-          border-color: #3b82f6;
-      }
+      code { font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; font-size: 14px; line-height: 1.5; }
+      p code { background: #f1f5f9; color: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
 
+      /* 마크다운 테이블 기본 스타일 */
+      .md-table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; }
+      .md-table th, .md-table td { border: 1px solid #e5e7eb; padding: 10px 12px; font-size: 16px; }
+      .md-table thead th { background: #f8fafc; font-weight: 700; }
+      .md-table tbody tr:nth-child(even) { background: #f9fafb; }
+
+      /* 대화 박스(""" ... """) */
+      .dialog-box {
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        border-left: 6px solid #3b82f6;
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin: 16px 0;
+        box-shadow: 0 6px 18px rgba(0,0,0,.06);
+      }
+      .dialog-box p { margin: 6px 0; line-height: 1.6; }
+
+      /* 이미지 스타일링 */
+      .slide-image { max-width:100%; height:auto; border-radius:12px; box-shadow: 0 8px 25px rgba(0,0,0,.15); margin:20px auto; display:block; transition: transform .3s ease, box-shadow .3s ease; }
+      .slide-image:hover { transform: scale(1.02); box-shadow: 0 12px 35px rgba(0,0,0,.2); }
+
+      .image-slide { text-align:center; }
+      .image-slide h1 { margin-bottom:30px; }
+      .image-slide h2 { margin-bottom:25px; color:#666; }
+
+      /* 투표 옵션 기본(비-poll 템플릿 보완) */
+      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
+      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
+      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+
+      /* URL 링크 스타일 */
+      .url-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white !important;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 8px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        word-break: break-all;
+      }
+      .url-link:hover {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        text-decoration: none;
+        color: white !important;
+      }
+      .url-link:active {
+        transform: translateY(0);
+      }
 
   
       
-          body {
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-          .slide-container {
-              background: rgba(255, 255, 255, 0.95);
-          }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            height: 100vh;
+            padding: 60px 40px;
+            overflow-y: auto;
+        }
 
-          h1 {
-              font-size: 3rem;
-              color: #1e40af;
-              margin-bottom: 10px;
-              font-weight: 700;
-              text-align: center;
-          }
+        .slide-container {
+            background: transparent;
+            backdrop-filter: none;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 0;
+            max-width: none;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: none;
+        }
 
-          h2 {
-              font-size: 2.5rem;
-              color: #2563eb;
-              margin-bottom: 25px;
-              font-weight: 600;
-          }
+        .slide-header {
+            background: linear-gradient(135deg, #003366, #005A9C);
+            color: white;
+            padding: 30px 20px;
+            margin: -60px -40px 40px -40px;
+            position: relative;
+            text-align: center;
+        }
 
-          h3 {
-              font-size: 1.8rem;
-              color: #3730a3;
-              margin-bottom: 20px;
-              font-weight: 500;
-          }
-      
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+        }
+
+        .challenge-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .time-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 1em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .workflow-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .workflow-step {
+            text-align: center;
+            padding: 25px 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .workflow-step.input {
+            border-top: 4px solid #4ECDC4;
+        }
+
+        .workflow-step.ai-tool {
+            border-top: 4px solid #FF6B6B;
+        }
+
+        .workflow-step.output {
+            border-top: 4px solid #45B7D1;
+        }
+
+        .step-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .step-content {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .ai-highlight {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .workflow-arrow {
+            font-size: 2em;
+            color: #005A9C;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .practice-section {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid #2e7d32;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .practice-section::before {
+            content: '💡';
+            font-size: 1.8em;
+            position: absolute;
+            top: -15px;
+            left: 25px;
+            background: white;
+            padding: 0 10px;
+        }
+
+        .practice-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            margin-left: 25px;
+        }
+
+        .practice-content {
+            font-size: 1.1em;
+            color: #1b5e20;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .qr-visual {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 2em;
+            min-width: 60px;
+            text-align: center;
+        }
+
+
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 20px;
+            }
+
+            .slide-header {
+                margin: -40px -20px 30px -20px;
+                padding: 25px 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .workflow-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .workflow-arrow {
+                transform: rotate(90deg);
+                margin: 0;
+            }
+
+            .application-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .benefits-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    
 
       /* 반응형 추가 스타일 */
       @media (max-width: 768px) {
@@ -209,96 +446,155 @@ pre {
       .slide-container > * {
           animation: slideIn 0.6s ease forwards;
       }
+
+      /* 슬라이드 번호 스타일 */
+      .slide-number { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,.7); color:#fff; padding:8px 12px; border-radius:20px; font-size:14px; z-index:1000; }
+
+      /* 자유 입력 필드 (poll) */
+      .poll-free { margin: 30px 0; display:flex; gap:10px; justify-content:center; }
+      .poll-free input[type="text"], .poll-free textarea { width: 100%; max-width: 520px; padding: 14px 16px; border-radius: 12px; border: 2px solid #f59e0b; font-size: 1rem; }
+      .poll-free button { padding: 12px 18px; border-radius: 12px; border: 0; background:#f59e0b; color:white; font-weight:700; cursor:pointer; }
   </style>
 </head>
-<body class="general-slide">
+<body class="challenge-slide">
   <div class="slide-container" tabindex="0">
-      <h1>가스펠 작곡</h1>
+      
+    <div class="slide-header">
+        <div class="challenge-badge">시나리오 실습</div>
+        <h1>새신자/성도 안내 예배/행사 안내 챗봇</h1>
+        <div class="time-badge">⏱️ 10분</div>
+    </div>
 
-<h2>입력 (Input)</h2>
+    <div class="content">
+        <div class="workflow-container">
+            <div class="workflow-step input">
+                <div class="step-icon">📝</div>
+                <div class="step-title">입력 (Input)</div>
+                <div class="step-content">
+                    • 교회 안내 정보<br>• 홈페이지 링크<br>• 예배/행사 일정
+                </div>
+            </div>
 
-<ul>
-<li>성경 구절</li>
-<li>찬양 가사</li>
-<li>음악 스타일</li>
-</ul>
+            <div class="workflow-arrow">→</div>
 
-<h2>AI 도구</h2>
+            <div class="workflow-step ai-tool">
+                <div class="step-icon">🤖</div>
+                <div class="step-title">AI 도구</div>
+                <div class="step-content">
+                    <div class="ai-highlight">ChatGPT</div>
+                    <div style="margin-top: 10px; font-size: 0.9em;">
+                        프롬프트 엔지니어링으로 맞춤형 안내 생성
+                    </div>
+                </div>
+            </div>
 
-<p>#3 Suno</p>
-<p>AI 음악 생성 및 편곡</p>
+            <div class="workflow-arrow">→</div>
 
-<h2>출력 (Output)</h2>
+            <div class="workflow-step output">
+                <div class="step-icon">📋</div>
+                <div class="step-title">출력 (Output)</div>
+                <div class="step-content">
+                    • 새신자 안내 정보<br>• 담당자 연락처<br>• 맞춤형 응답
+                </div>
+            </div>
+        </div>
 
-<ul>
-<li>가스펠 곡</li>
-<li>악보 파일</li>
-<li>음원 파일</li>
-</ul>
+        <div class="practice-section">
+            <div class="practice-title">실습</div>
+            <div class="practice-content">
+                <div class="qr-visual">📱</div>
+                <div>
+                    만수중앙교회 <a href="https://chatgpt.com/share/689d41ab-9f80-800e-ab62-a431ca142a91" target="_blank" rel="noopener noreferrer" class="url-link">https://chatgpt.com/share/689d41ab-9f80-800e-ab62-a431ca142a91</a><br>만수중앙교회 새신자 안내 도우미 <a href="https://chatgpt.com/g/g-689d401b44f48191bc56b3746889b6f5-mansujunganggyohoe-saesinja-annae-doumi" target="_blank" rel="noopener noreferrer" class="url-link">https://chatgpt.com/g/g-689d401b44f48191bc56b3746889b6f5-mansujunganggyohoe-saesinja-annae-doumi</a><br>GPTs 만들기 : 기독교대한감리회 중부연회 <a href="https://chatgpt.com/share/689d441b-3864-800e-82c0-4a4efc0ae35d" target="_blank" rel="noopener noreferrer" class="url-link">https://chatgpt.com/share/689d441b-3864-800e-82c0-4a4efc0ae35d</a><br>중부연회 안내 챗봇 <a href="https://chatgpt.com/g/g-689d432cfd6c81918b62a8e2c9221a0b-gidoggyodaehangamrihoe-jungbuyeonhoe-sogae" target="_blank" rel="noopener noreferrer" class="url-link">https://chatgpt.com/g/g-689d432cfd6c81918b62a8e2c9221a0b-gidoggyodaehangamrihoe-jungbuyeonhoe-sogae</a><br>"교회 안내장에 QR 스티커 부착하세요" 새신자나 방문자가 QR코드를 스캔하면 즉시 AI 챗봇과 연결되어 궁금한 사항을 실시간으로 문의하고 안내받을 수 있습니다. <a href="https://m.site.naver.com/1OxuT" target="_blank" rel="noopener noreferrer" class="url-link">https://m.site.naver.com/1OxuT</a><br><a href="https://qr.naver.com/create" target="_blank" rel="noopener noreferrer" class="url-link">https://qr.naver.com/create</a><br>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+  </div>
 
-<h2>적용 아이디어</h2>
-
-<p><strong>AI 가스펠 작곡 시스템</strong></p>
-<p>성경 구절이나 찬양 가사를 입력하면 AI가 자동으로 가스펠 스타일의 곡을 작곡하여 교회 음악 사역에 활용할 수 있습니다.</p>
-
-<h2>기대 효과</h2>
-
-<ul>
-<li>독창적인 찬양 곡 제작</li>
-<li>음악 사역자 부담 경감</li>
-<li>다양한 음악 스타일 제공</li>
-<li>교회 음악 품질 향상</li>
-<li>음악 제작 비용 절약</li>
-</ul>
-
-      </div>
+  <div class="slide-number" id="slideNumber"></div>
 
     <script>
-      // 키보드 네비게이션
+      // 키보드 네비게이션 → 부모로 전달하여 앱 라우팅과 동기화
       document.addEventListener('keydown', function(e) {
           switch(e.key) {
               case 'ArrowRight':
-              case ' ':
-                  window.location.href = 'slide-4-4.html';
+              case 'ArrowDown':
+              case 'PageDown':
+              case ' ': // Space
+                  try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
                   break;
               case 'ArrowLeft':
-                  window.location.href = 'slide-4-2.html';
+              case 'ArrowUp':
+              case 'PageUp':
+                  try { window.parent && window.parent.postMessage({ type: 'slide-prev' }, '*'); } catch(_) {}
                   break;
               case 'Home':
-                  window.location.href = 'slide-0-0.html';
+                  try { window.parent && window.parent.postMessage({ type: 'slide-first' }, '*'); } catch(_) {}
                   break;
               case 'End':
-                  window.location.href = 'slide-9-7.html';
+                  try { window.parent && window.parent.postMessage({ type: 'slide-last' }, '*'); } catch(_) {}
                   break;
           }
       });
 
-      // 클릭으로 다음 슬라이드 (투표 슬라이드가 아닌 경우)
+      // 클릭으로 다음 슬라이드(링크/코드/복사 버튼 제외) → 부모에 위임
       
       document.querySelector('.slide-container').addEventListener('click', function(e) {
-          // 코드 블록 복사 버튼이나 코드 블록 자체를 클릭한 경우 슬라이드 이동 방지
-          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) {
-              return;
-          }
-          window.location.href = 'slide-4-4.html';
+          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) return;
+          if (e.target.closest('a')) return; // 링크는 기본 동작 유지
+          try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
       });
       
 
-      // 로드 애니메이션
+      // 슬라이드 번호 계산 및 표시 (기존 유지)
+      function updateSlideNumber() {
+          const el = document.getElementById('slideNumber');
+          if (!el) return;
+          const currentPath = window.location.pathname;
+          const fileName = currentPath.split('/').pop();
+          const match = fileName && fileName.match(new RegExp('slide-(\d+)-(\d+)\.html'));
+          if (match) {
+              el.textContent = match[1] + '-' + match[2];
+          }
+      }
       window.addEventListener('load', function() {
           document.body.style.opacity = '0';
           document.body.style.transition = 'opacity 0.5s ease';
           setTimeout(() => {
               document.body.style.opacity = '1';
           }, 100);
+
+          // 슬라이드 번호 업데이트
+          updateSlideNumber();
+
+          // 모든 링크를 새 탭으로 열도록 보장
+          try {
+            document.querySelectorAll('a').forEach(function(a){
+              a.setAttribute('target','_blank');
+              a.setAttribute('rel','noopener noreferrer');
+            });
+          } catch (_) {}
       });
 
             // 코드 복사 기능
-                  function copyCode(button) {
-          
-      }
+            function copyCode(button) {
+                const codeBlock = button.previousElementSibling;
+                const code = codeBlock.textContent;
+                navigator.clipboard.writeText(code).then(function() {
+                    const originalText = button.textContent;
+                    button.textContent = '복사됨!';
+                    button.style.backgroundColor = '#10b981';
+                    setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor = ''; }, 2000);
+                }).catch(function(err) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code; document.body.appendChild(textArea); textArea.select(); document.execCommand('copy'); document.body.removeChild(textArea);
+                    const originalText = button.textContent; button.textContent = '복사됨!'; button.style.backgroundColor = '#10b981'; setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor=''; }, 2000);
+                });
+            }
 
       
     </script>
+    
 </body>
 </html>

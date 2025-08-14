@@ -85,12 +85,17 @@ body {
 .lecture-content h3 {
   font-size: 1.5em;
   color: #666;
-  margin: 25px 0 12px 0;
+  margin: 25px 0 0 0;
   padding-left: 12px;
   border-left: 3px solid #764ba2;
   background: #f8f9fa;
   padding: 8px 12px;
   border-radius: 0 8px 8px 0;
+}
+
+/* h3 바로 다음 목록의 상단 여백 제거 */
+.lecture-content h3 + ul {
+  margin-top: 0;
 }
 
 .lecture-content h4 {
@@ -260,7 +265,7 @@ body {
 }
 
 .lecture-highlight h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 0 0;
   font-size: 1.3em;
   color: #333;
   text-align: center;
@@ -299,7 +304,7 @@ body {
 }
 
 .lecture-note h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 0 0;
   font-size: 1.3em;
   text-align: center;
 }
@@ -336,7 +341,7 @@ body {
 }
 
 .lecture-warning h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 0 0;
   font-size: 1.3em;
   text-align: center;
 }

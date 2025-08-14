@@ -1,4 +1,4 @@
-@lecture
+@general
 
 # 마무리
 

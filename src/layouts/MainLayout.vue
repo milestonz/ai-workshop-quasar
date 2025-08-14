@@ -9,13 +9,14 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-          :disable="!isAuthenticated"
+          :disable="!isAuthenticated && !(isGuestAuthenticated && isGuestInfoRegistered)"
         />
 
         <q-toolbar-title> 📖 목회 현장에서 만나는 12가지 AI 활용 시나리오 </q-toolbar-title>
 
         <!-- 공유 버튼 -->
         <q-btn
+          v-if="isAuthenticated"
           flat
           round
           dense
@@ -23,13 +24,13 @@
           color="white"
           @click="shareWithStudents"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>수강생과 공유</q-tooltip>
         </q-btn>
 
-        <!-- 편집기 모드 버튼 (프리젠테이션 모드 해제) -->
+        <!-- 편집기 모드 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -37,13 +38,27 @@
           :color="isPresentationMode ? 'white' : 'orange'"
           @click="togglePresentationMode"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>{{ isPresentationMode ? '편집기 모드' : '프리젠테이션 모드' }}</q-tooltip>
         </q-btn>
 
+        <!-- 게스트 모드 안내 -->
+        <q-btn
+          v-if="isGuestAuthenticated && isGuestInfoRegistered"
+          flat
+          round
+          dense
+          icon="info"
+          color="orange"
+          @click="showGuestModeInfo"
+          class="q-mr-xs"
+        >
+          <q-tooltip>게스트 모드 안내</q-tooltip>
+        </q-btn>
+
         <!-- 전체화면 버튼 -->
         <q-btn
+          v-if="isAuthenticated || (isGuestAuthenticated && isGuestInfoRegistered)"
           flat
           round
           dense
@@ -57,6 +72,7 @@
 
         <!-- 다운로드 버튼 -->
         <q-btn
+          v-if="isAuthenticated || (isGuestAuthenticated && isGuestInfoRegistered)"
           flat
           round
           dense
@@ -70,6 +86,7 @@
 
         <!-- 캡처 버튼 -->
         <q-btn
+          v-if="isAuthenticated || (isGuestAuthenticated && isGuestInfoRegistered)"
           flat
           round
           dense
@@ -83,6 +100,7 @@
 
         <!-- 이메일 버튼 -->
         <q-btn
+          v-if="isAuthenticated"
           flat
           round
           dense
@@ -94,8 +112,9 @@
           <q-tooltip>이메일 전송</q-tooltip>
         </q-btn>
 
-        <!-- 저장 버튼 -->
+        <!-- 저장 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -104,13 +123,13 @@
           @click="handleSaveAll"
           :loading="isSaving"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>전체 저장</q-tooltip>
         </q-btn>
 
-        <!-- Import 버튼 -->
+        <!-- Import 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -118,13 +137,13 @@
           color="white"
           @click="showCourseImport = true"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>강의 가져오기</q-tooltip>
         </q-btn>
 
-        <!-- 슬라이드 빌드 버튼 -->
+        <!-- 슬라이드 빌드 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -133,13 +152,13 @@
           :loading="isBuilding"
           @click="buildAllSlides"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>슬라이드 빌드</q-tooltip>
         </q-btn>
 
-        <!-- 설문 결과 버튼 -->
+        <!-- 설문 결과 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -147,13 +166,13 @@
           color="white"
           @click="goToSurveyResults"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>설문 결과</q-tooltip>
         </q-btn>
 
-        <!-- 설정 버튼 -->
+        <!-- 설정 버튼 (관리자 전용) -->
         <q-btn
+          v-if="isAuthenticated && userRole === 'admin'"
           flat
           round
           dense
@@ -161,45 +180,68 @@
           color="white"
           @click="showSettings = true"
           class="q-mr-xs"
-          :disable="!isAuthenticated"
         >
           <q-tooltip>설정</q-tooltip>
         </q-btn>
 
         <!-- 로그인/로그아웃 버튼 -->
-        <q-btn
-          v-if="isFirebaseConfigured && !isAuthenticated"
-          flat
-          round
-          dense
-          icon="login"
-          color="white"
-          @click="showLoginDialog = true"
-          class="q-mr-xs"
-        >
-          <q-tooltip>로그인</q-tooltip>
-        </q-btn>
+        <div v-if="!isAuthenticated && !isGuestAuthenticated" class="row items-center q-gutter-xs">
+          <!-- Google 로그인 버튼 -->
+          <q-btn
+            v-if="isFirebaseConfigured"
+            flat
+            round
+            dense
+            icon="login"
+            color="white"
+            @click="handleDirectLogin"
+            class="q-mr-xs"
+          >
+            <q-tooltip>Google 로그인</q-tooltip>
+          </q-btn>
 
-        <q-btn
-          v-else
-          flat
-          round
-          dense
-          :icon="photoURL ? undefined : 'person'"
-          color="white"
-          @click="handleLogout"
-          class="q-mr-xs"
-        >
-          <q-avatar v-if="photoURL" size="24px" class="q-mr-xs">
-            <img :src="photoURL" :alt="displayName" />
-          </q-avatar>
-          <q-tooltip>{{ displayName }} (로그아웃)</q-tooltip>
-        </q-btn>
-
-        <!-- 현재 슬라이드 정보 -->
-        <div class="text-caption q-mr-md">
-          슬라이드 {{ currentSlide + 1 }} / {{ currentLessonData?.slides || 0 }}
+          <!-- 게스트 로그인 버튼 -->
+          <q-btn
+            flat
+            round
+            dense
+            icon="person"
+            color="orange"
+            @click="showGuestLoginDialog = true"
+            class="q-mr-xs"
+          >
+            <q-tooltip>게스트 모드</q-tooltip>
+          </q-btn>
         </div>
+
+        <!-- 로그아웃 버튼 -->
+        <q-btn
+          v-else-if="isAuthenticated"
+          flat
+          dense
+          color="white"
+          @click="showUserInfoSettings"
+          class="q-mr-xs user-info-btn"
+        >
+          <span class="user-name">{{ displayName }}</span>
+          <q-tooltip
+            >{{ displayName }} ({{ userRole === 'admin' ? '관리자' : '수강생' }}) - 사용자 정보
+            설정</q-tooltip
+          >
+        </q-btn>
+
+        <!-- 게스트 로그아웃 버튼 -->
+        <q-btn
+          v-else-if="isGuestAuthenticated && isGuestInfoRegistered"
+          flat
+          dense
+          color="orange"
+          @click="showUserInfoSettings"
+          class="q-mr-xs user-info-btn"
+        >
+          <span class="user-name">{{ guestUser?.name }}</span>
+          <q-tooltip>{{ guestUser?.name }} (게스트) - 사용자 정보 설정</q-tooltip>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -211,13 +253,33 @@
       :width="320"
       :breakpoint="700"
       style="max-height: 95vh"
-      v-if="isAuthenticated"
+      v-if="isAuthenticated || (isGuestAuthenticated && isGuestInfoRegistered)"
     >
       <q-scroll-area class="fit" style="max-height: 95vh">
         <div class="q-pa-sm">
+          <!-- 사용자 정보 -->
+          <div class="q-mb-sm">
+            <div class="text-subtitle2 q-mb-sm">사용자 정보</div>
+            <div class="text-caption text-grey-7">
+              <span v-if="isAuthenticated">
+                {{ displayName }} ({{ userRole === 'admin' ? '관리자' : '수강생' }})
+              </span>
+              <span v-else-if="isGuestAuthenticated && isGuestInfoRegistered" class="text-orange">
+                {{ guestUser?.name }} (게스트)
+              </span>
+            </div>
+          </div>
+
           <!-- 진도율 -->
           <div class="q-mb-sm">
-            <div class="text-subtitle2 q-mb-sm">학습 진도</div>
+            <div class="text-subtitle2 q-mb-sm">
+              <span v-if="isAuthenticated">
+                {{ userRole === 'admin' ? '학습 진도' : '수강 진도' }}
+              </span>
+              <span v-else-if="isGuestAuthenticated && isGuestInfoRegistered" class="text-orange">
+                게스트 진도
+              </span>
+            </div>
             <q-linear-progress :value="progress / 100" color="primary" class="q-mb-xs" />
             <div class="text-caption text-grey-7">{{ progress }}%</div>
           </div>
@@ -225,8 +287,15 @@
           <!-- 강의 목록 -->
           <div class="q-mb-sm">
             <div class="row items-center justify-between q-mb-xs">
-              <div class="text-subtitle2">강의 목차</div>
-              <div class="row items-center">
+              <div class="text-subtitle2">
+                <span v-if="isAuthenticated">
+                  {{ userRole === 'admin' ? '강의 목차' : '학습 목차' }}
+                </span>
+                <span v-else-if="isGuestAuthenticated && isGuestInfoRegistered" class="text-orange">
+                  게스트 목차
+                </span>
+              </div>
+              <div class="row items-center" v-if="isAuthenticated && userRole === 'admin'">
                 <q-btn
                   flat
                   round
@@ -241,6 +310,10 @@
               </div>
             </div>
             <q-list padding class="sidebar-list">
+              <div v-if="lessons.length === 0" class="text-center q-pa-md">
+                <q-spinner color="primary" size="2em" />
+                <div class="text-caption text-grey-6 q-mt-sm">강의 목차를 로드하는 중...</div>
+              </div>
               <q-expansion-item
                 v-for="(lesson, index) in lessons"
                 :key="index"
@@ -266,11 +339,17 @@
                           }"
                         >
                           {{ getChapterTitle(index) }}
+                          <span
+                            v-if="isGuestAuthenticated && isGuestInfoRegistered"
+                            class="text-caption text-orange"
+                          >
+                            (게스트)
+                          </span>
                         </div>
                         <div class="text-caption text-grey-6">{{ lesson.slides }}개 슬라이드</div>
                       </div>
                     </div>
-                    <div class="row items-center">
+                    <div class="row items-center" v-if="isAuthenticated && userRole === 'admin'">
                       <!-- Chapter 잠금 버튼 -->
                       <q-btn
                         flat
@@ -301,7 +380,6 @@
                   <q-item
                     v-for="slideIndex in [...Array(lesson.slides).keys()]"
                     :key="'lesson-' + index + '-slide-' + slideIndex"
-                    v-show="slideIndex > 0"
                     clickable
                     v-ripple
                     :active="index === currentLesson && slideIndex === currentSlide"
@@ -316,9 +394,15 @@
                       <q-item-label class="text-caption text-grey-8">
                         {{ getChapterNumber(index) }}-{{ slideIndex }}
                         {{ getSlideTitle(index, slideIndex) }}
+                        <span
+                          v-if="isGuestAuthenticated && isGuestInfoRegistered"
+                          class="text-caption text-orange"
+                        >
+                          (게스트)
+                        </span>
                       </q-item-label>
                     </q-item-section>
-                    <q-item-section side>
+                    <q-item-section side v-if="isAuthenticated && userRole === 'admin'">
                       <div class="row items-center">
                         <!-- 슬라이드 잠금 버튼 -->
                         <q-btn
@@ -367,25 +451,53 @@
       </div>
 
       <!-- Firebase 설정이 있지만 로그인하지 않은 경우 -->
-      <div v-else-if="!isAuthenticated" class="login-required">
+      <div v-else-if="!isAuthenticated && !isGuestAuthenticated" class="login-required">
         <div class="text-center q-pa-xl">
           <q-icon name="lock" size="100px" color="primary" class="q-mb-lg" />
-          <div class="text-h4 text-weight-bold q-mb-md">관리자 로그인 필요</div>
-          <div class="text-body1 text-grey-7 q-mb-lg">
-            강의를 편집하고 관리하려면 로그인이 필요합니다.
+          <div class="text-h4 text-weight-bold q-mb-md">로그인</div>
+          <div class="text-body1 text-white q-mb-lg">
+            강의를 수강하려면 로그인이 필요합니다.<br />
+            구글 계정이 없으시면 게스트 모드를 이용하세요.
           </div>
-          <q-btn
-            color="primary"
-            icon="login"
-            label="Google로 로그인"
-            size="lg"
-            @click="showLoginDialog = true"
-          />
+          <div class="row justify-center q-gutter-md">
+            <q-btn
+              color="primary"
+              icon="login"
+              label="Google로 로그인"
+              size="lg"
+              @click="handleDirectLogin"
+            />
+            <q-btn
+              color="orange"
+              icon="person"
+              label="게스트 모드"
+              size="lg"
+              @click="showGuestLoginDialog = true"
+            />
+          </div>
         </div>
       </div>
 
-      <!-- 로그인한 경우 메인 콘텐츠 표시 -->
-      <router-view v-else />
+      <!-- 로그인한 경우 또는 게스트 정보가 등록된 경우 메인 콘텐츠 표시 -->
+      <router-view v-else-if="isAuthenticated || (isGuestAuthenticated && isGuestInfoRegistered)" />
+
+      <!-- 게스트 로그인했지만 정보 등록이 필요한 경우 -->
+      <div v-else-if="isGuestAuthenticated && !isGuestInfoRegistered" class="guest-info-required">
+        <div class="text-center q-pa-xl">
+          <q-icon name="person_add" size="100px" color="orange" class="q-mb-lg" />
+          <div class="text-h4 text-weight-bold q-mb-md text-white">게스트 정보 등록 필요</div>
+          <div class="text-body1 text-white q-mb-lg">
+            강의를 수강하기 위해 이름과 이메일을 등록해주세요.
+          </div>
+          <q-btn
+            color="orange"
+            icon="person_add"
+            label="정보 등록하기"
+            size="lg"
+            @click="showGuestInfoDialog = true"
+          />
+        </div>
+      </div>
     </q-page-container>
 
     <!-- 공유 팝업 다이얼로그 -->
@@ -648,6 +760,30 @@
 
     <!-- 로그인 다이얼로그 -->
     <LoginDialog v-model="showLoginDialog" v-if="isFirebaseConfigured" />
+
+    <!-- 게스트 로그인 다이얼로그 -->
+    <GuestLoginDialog
+      v-model="showGuestLoginDialog"
+      @guest-login-success="handleGuestLoginSuccess"
+      @google-login-request="handleGoogleLoginRequest"
+    />
+
+    <!-- 게스트 정보 등록 다이얼로그 -->
+    <GuestInfoDialog
+      v-model="showGuestInfoDialog"
+      :current-guest-user="guestUser"
+      @guest-info-submitted="handleGuestInfoSubmitted"
+      @guest-info-cancelled="handleGuestInfoCancelled"
+    />
+
+    <!-- 사용자 정보 설정 다이얼로그 -->
+    <UserInfoDialog
+      v-if="getUserInfoData()"
+      v-model="showUserInfoDialog"
+      :user-info="getUserInfoData()!"
+      @update-user-info="handleUserInfoUpdate"
+      @logout="handleUserInfoLogout"
+    />
   </q-layout>
 </template>
 
@@ -657,8 +793,12 @@ import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import { useCourseStore } from 'src/stores/course';
 import { useAuth } from '../composables/useAuth';
+import { useGuestAuth } from '../composables/useGuestAuth';
 import CourseImport from '../components/CourseImport.vue';
 import LoginDialog from '../components/LoginDialog.vue';
+import GuestLoginDialog from '../components/GuestLoginDialog.vue';
+import GuestInfoDialog from '../components/GuestInfoDialog.vue';
+import UserInfoDialog from '../components/UserInfoDialog.vue';
 import { emailApiService } from '../services/emailApiService';
 import { convertMarkdownToHTML } from '../utils/markdown';
 import { generateHTMLTemplate } from '../utils/htmlTemplate';
@@ -676,14 +816,34 @@ const {
   logout,
   initAuth,
   isFirebaseConfigured,
+  userRole,
+  debugUserInfo,
+  checkFirebaseConfig,
 } = useAuth();
+
+// 게스트 인증 시스템
+const {
+  guestUser,
+  isGuestMode,
+  isGuestAuthenticated,
+  isGuestInfoRegistered,
+  signInAsGuest,
+  registerGuestInfo,
+  signOutGuest,
+  restoreGuestSession,
+  canAccessFeature,
+} = useGuestAuth();
 
 // Computed properties
 const leftDrawerOpen = ref(false);
 const currentLesson = computed(() => courseStore.currentLesson);
 const currentSlide = computed(() => courseStore.currentSlide);
 const currentLessonData = computed(() => courseStore.currentLessonData);
-const lessons = computed(() => courseStore.lessons);
+const lessons = computed(() => {
+  const lessonsData = courseStore.lessons;
+  console.log('📋 lessons computed 호출, 개수:', lessonsData.length);
+  return lessonsData;
+});
 const progress = computed(() => courseStore.progress);
 const isPresentationMode = computed(() => courseStore.isPresentationMode);
 
@@ -730,6 +890,9 @@ const requireStudentLogin = ref(localStorage.getItem('requireStudentLogin') === 
 
 // 로그인 관련 상태
 const showLoginDialog = ref(false);
+const showGuestLoginDialog = ref(false);
+const showGuestInfoDialog = ref(false);
+const showUserInfoDialog = ref(false);
 
 // 학생 공유 URL
 const studentShareUrl = computed(() => {
@@ -746,7 +909,211 @@ const toggleLeftDrawer = () => {
 
 // 로그아웃 처리
 const handleLogout = async () => {
-  await logout();
+  try {
+    // 사용자 정보 저장 (로그아웃 페이지로 전달하기 위해)
+    const userName = user.value?.displayName || '사용자';
+    const userEmail = user.value?.email || '';
+
+    // 로그아웃 실행
+    await logout();
+
+    // 로그아웃 페이지로 이동 (사용자 정보와 함께)
+    router.push({
+      path: '/logout',
+      query: {
+        name: userName,
+        email: userEmail,
+        isGuest: 'false',
+      },
+    });
+  } catch (error) {
+    console.error('로그아웃 오류:', error);
+    $q.notify({
+      type: 'negative',
+      message: '로그아웃 중 오류가 발생했습니다.',
+      position: 'top',
+    });
+  }
+};
+
+// 게스트 로그아웃 처리
+const handleGuestLogout = async () => {
+  try {
+    // 게스트 사용자 정보 저장 (로그아웃 페이지로 전달하기 위해)
+    const userName = guestUser.value?.name || '게스트';
+    const userEmail = guestUser.value?.email || '';
+
+    // 게스트 로그아웃 실행
+    await signOutGuest();
+
+    // 로그아웃 페이지로 이동 (사용자 정보와 함께)
+    router.push({
+      path: '/logout',
+      query: {
+        name: userName,
+        email: userEmail,
+        isGuest: 'true',
+      },
+    });
+  } catch (error) {
+    console.error('게스트 로그아웃 오류:', error);
+    $q.notify({
+      type: 'negative',
+      message: '로그아웃 중 오류가 발생했습니다.',
+      position: 'top',
+    });
+  }
+};
+
+// 게스트 로그인 성공 처리
+const handleGuestLoginSuccess = (guestUser: any) => {
+  console.log('🎭 게스트 로그인 성공:', guestUser);
+
+  // 게스트 정보가 이미 등록된 경우 팝업을 표시하지 않음
+  if (guestUser.isInfoRegistered) {
+    console.log('🎭 게스트 정보가 이미 등록됨, StudentView로 바로 라우팅');
+    router.push('/study/ai-workshop');
+  } else {
+    // 게스트 정보 등록 다이얼로그 표시
+    showGuestInfoDialog.value = true;
+  }
+};
+
+// Google 로그인 요청 처리
+const handleGoogleLoginRequest = () => {
+  showLoginDialog.value = true;
+};
+
+// 게스트 정보 등록 완료 처리
+const handleGuestInfoSubmitted = async (userInfo: { name: string; email: string }) => {
+  console.log('🎭 게스트 정보 등록:', userInfo);
+
+  try {
+    await registerGuestInfo(userInfo.name, userInfo.email);
+
+    // 게스트 모드에서는 StudentView로 라우팅
+    console.log('🎭 게스트 정보 등록 완료: StudentView로 라우팅');
+    router.push('/study/ai-workshop');
+  } catch (error) {
+    console.error('게스트 정보 등록 실패:', error);
+    $q.notify({
+      type: 'negative',
+      message: '게스트 정보 등록에 실패했습니다.',
+      position: 'top',
+    });
+  }
+};
+
+// 게스트 정보 등록 취소 처리
+const handleGuestInfoCancelled = async () => {
+  console.log('🎭 게스트 정보 등록 취소');
+  // 게스트 로그아웃 처리
+  await signOutGuest();
+  $q.notify({
+    type: 'info',
+    message: '게스트 모드가 취소되었습니다.',
+    position: 'top',
+    timeout: 2000,
+  });
+};
+
+// 사용자 정보 데이터 생성
+const getUserInfoData = () => {
+  if (isAuthenticated.value && user.value) {
+    return {
+      name: user.value.displayName || '사용자',
+      email: user.value.email || '',
+      role: userRole.value as 'admin' | 'student' | 'guest',
+      isGuest: false,
+      loginType: 'Google 계정',
+    };
+  } else if (isGuestAuthenticated.value && guestUser.value) {
+    return {
+      name: guestUser.value.name || '게스트',
+      email: guestUser.value.email || '',
+      role: 'guest' as const,
+      isGuest: true,
+      loginType: '게스트 모드',
+    };
+  }
+  return null;
+};
+
+// 사용자 정보 설정 다이얼로그 표시
+const showUserInfoSettings = () => {
+  const userInfo = getUserInfoData();
+  if (userInfo) {
+    showUserInfoDialog.value = true;
+  }
+};
+
+// 사용자 정보 업데이트 처리
+const handleUserInfoUpdate = async (updatedInfo: { name: string; email: string }) => {
+  console.log('👤 사용자 정보 업데이트:', updatedInfo);
+
+  try {
+    if (isGuestAuthenticated.value) {
+      // 게스트 사용자 정보 업데이트
+      await registerGuestInfo(updatedInfo.name, updatedInfo.email);
+    }
+
+    $q.notify({
+      type: 'positive',
+      message: '사용자 정보가 업데이트되었습니다!',
+      position: 'top',
+      timeout: 2000,
+    });
+  } catch (error) {
+    console.error('사용자 정보 업데이트 실패:', error);
+    $q.notify({
+      type: 'negative',
+      message: '사용자 정보 업데이트에 실패했습니다.',
+      position: 'top',
+    });
+  }
+};
+
+// 사용자 정보 설정에서 로그아웃 처리
+const handleUserInfoLogout = async () => {
+  console.log('🔍 MainLayout: handleUserInfoLogout 호출됨');
+  console.log('🔍 MainLayout: 인증 상태 확인:', {
+    isAuthenticated: isAuthenticated.value,
+    isGuestAuthenticated: isGuestAuthenticated.value,
+    userRole: userRole.value,
+  });
+
+  if (isAuthenticated.value) {
+    console.log('🔍 MainLayout: 일반 사용자 로그아웃 실행');
+    await handleLogout();
+  } else if (isGuestAuthenticated.value) {
+    console.log('🔍 MainLayout: 게스트 사용자 로그아웃 실행');
+    await handleGuestLogout();
+  } else {
+    console.log('🔍 MainLayout: 인증되지 않은 사용자');
+  }
+  showUserInfoDialog.value = false;
+};
+
+// 게스트 모드 안내 표시
+const showGuestModeInfo = () => {
+  $q.notify({
+    type: 'info',
+    message:
+      '게스트 모드에서는 슬라이드 보기와 다운로드만 가능합니다. 편집 기능을 사용하려면 Google 로그인이 필요합니다.',
+    position: 'top',
+    timeout: 5000,
+    icon: 'info',
+    actions: [
+      {
+        label: 'Google 로그인',
+        color: 'primary',
+        handler: () => {
+          showLoginDialog.value = true;
+        },
+      },
+      { label: '확인', color: 'white' },
+    ],
+  });
 };
 
 const setCurrentLesson = (index: number) => {
@@ -1214,9 +1581,14 @@ const getSlideTitle = (lessonIndex: number, slideIndex: number): string => {
     return slideTitles[cacheKey];
   }
 
-  // lesson의 slideTitles에서 가져오기
+  // lesson의 slideTitles에서 가져오기 (사이드바 데이터 우선)
   if (lesson?.slideTitles?.[slideIndex]) {
     return lesson.slideTitles[slideIndex];
+  }
+
+  // lesson의 slideData에서 가져오기
+  if (lesson?.slideData?.[slideIndex]?.title) {
+    return lesson.slideData[slideIndex].title;
   }
 
   // fallback: 슬라이드 번호 (1-based)
@@ -1534,8 +1906,13 @@ const buildAllSlides = async () => {
   }
 };
 
-// 전체 저장 함수
+// 전체 저장 함수 (알림 표시)
 const handleSaveAll = async () => {
+  await saveAllData(true);
+};
+
+// 전체 저장 함수 (알림 표시 여부 제어)
+const saveAllData = async (showNotification: boolean = true) => {
   try {
     isSaving.value = true;
     console.log('💾 전체 저장 시작...');
@@ -1557,30 +1934,34 @@ const handleSaveAll = async () => {
       console.warn('⚠️ files.json 업데이트 중 오류 (무시됨):', error);
     }
 
-    // 4. 성공 메시지 표시
+    // 4. 성공 메시지 표시 (showNotification이 true인 경우에만)
     console.log('✅ 전체 저장 완료');
 
-    // 성공 알림 표시
-    $q.notify({
-      type: 'positive',
-      message: '💾 전체 저장이 완료되었습니다!',
-      position: 'top',
-      timeout: 3000,
-      icon: 'save',
-      actions: [{ label: '확인', color: 'white' }],
-    });
+    if (showNotification) {
+      // 성공 알림 표시
+      $q.notify({
+        type: 'positive',
+        message: '💾 전체 저장이 완료되었습니다!',
+        position: 'top',
+        timeout: 3000,
+        icon: 'save',
+        actions: [{ label: '확인', color: 'white' }],
+      });
+    }
   } catch (error) {
     console.error('❌ 전체 저장 실패:', error);
 
-    // 오류 알림 표시
-    $q.notify({
-      type: 'negative',
-      message: '❌ 저장 중 오류가 발생했습니다.',
-      position: 'top',
-      timeout: 5000,
-      icon: 'error',
-      actions: [{ label: '확인', color: 'white' }],
-    });
+    if (showNotification) {
+      // 오류 알림 표시
+      $q.notify({
+        type: 'negative',
+        message: '❌ 저장 중 오류가 발생했습니다.',
+        position: 'top',
+        timeout: 5000,
+        icon: 'error',
+        actions: [{ label: '확인', color: 'white' }],
+      });
+    }
   } finally {
     isSaving.value = false;
   }
@@ -1591,13 +1972,84 @@ const goToSurveyResults = () => {
   router.push('/survey-results');
 };
 
-// 자동 저장 인터벌
+// 직접 로그인 처리 (팝업 없이 바로 로그인)
+const handleDirectLogin = async () => {
+  try {
+    console.log('🔐 직접 로그인 시작...');
+    await signInWithGoogle();
+    console.log('✅ 직접 로그인 완료');
+  } catch (error) {
+    console.error('❌ 직접 로그인 실패:', error);
+    $q.notify({
+      type: 'negative',
+      message: '로그인에 실패했습니다. 다시 시도해주세요.',
+      position: 'top',
+      timeout: 3000,
+    });
+  }
+};
+
+// 자동 저장 인터벌 (5분마다)
 let autoSaveInterval: NodeJS.Timeout | null = null;
+const AUTO_SAVE_INTERVAL = 5 * 60 * 1000; // 5분
+
+// 인증 상태 변화 감지 (Google 로그인)
+watch(
+  isAuthenticated,
+  (newAuthState) => {
+    console.log('🔐 Google 인증 상태 변화 감지:', newAuthState);
+    if (newAuthState) {
+      // 로그인 성공 시 다이얼로그 닫기
+      showLoginDialog.value = false;
+      console.log('✅ Google 로그인 성공 - 다이얼로그 닫힘');
+
+      // 사용자 역할에 따른 화면 모드 설정
+      const role = userRole.value;
+      console.log('👤 사용자 역할:', role);
+
+      if (role === 'student') {
+        // 학생 모드: StudentView.vue로 라우팅
+        console.log('🎓 학생 모드: StudentView로 라우팅');
+        router.push('/study/ai-workshop');
+      } else if (role === 'admin') {
+        // 관리자 모드: 편집기 모드 유지 (기본값)
+        console.log('👨‍💼 관리자 모드: 편집 기능 활성화');
+      }
+
+      // 디버깅 정보 출력
+      debugUserInfo();
+    }
+  },
+  { immediate: true },
+); // immediate: true 추가하여 초기 상태도 감지
+
+// 게스트 인증 상태 변화 감지
+watch(isGuestAuthenticated, (newGuestAuthState) => {
+  console.log('🎭 게스트 인증 상태 변화 감지:', newGuestAuthState);
+  if (newGuestAuthState && isGuestInfoRegistered.value) {
+    // 게스트 정보 등록 완료 시 StudentView로 라우팅
+    console.log('🎭 게스트 모드: StudentView로 라우팅');
+    router.push('/study/ai-workshop');
+  }
+});
 
 // 컴포넌트 마운트 시 제목 로드 및 자동 저장 시작
-onMounted(() => {
+onMounted(async () => {
+  console.log('🚀 MainLayout 마운트 시작...');
+
+  // Firebase 설정 상태 확인
+  checkFirebaseConfig();
+
   // Firebase 인증 초기화
   initAuth();
+
+  // 게스트 세션 복원
+  await restoreGuestSession();
+
+  // 강의 목차 초기화
+  console.log('📚 강의 목차 초기화 시작...');
+  await courseStore.initializeCourseOutline();
+  console.log('✅ 강의 목차 초기화 완료, lessons 개수:', lessons.value.length);
 
   loadAllSlideTitles();
 
@@ -1607,22 +2059,33 @@ onMounted(() => {
     isChapterExpanded.value[initialLesson] = true;
   }
 
-  // 5분마다 자동 저장
-  autoSaveInterval = setInterval(
-    async () => {
-      if (!isSaving.value) {
-        console.log('⏰ 자동 저장 실행...');
-        try {
-          await courseStore.saveToLocalStorage();
-          await courseStore.saveLockStatus();
-          console.log('✅ 자동 저장 완료');
-        } catch (error) {
-          console.warn('⚠️ 자동 저장 실패:', error);
+  // Firebase가 초기화된 후에만 자동 저장 시작
+  const startAutoSave = () => {
+    // 5분마다 자동 저장
+    autoSaveInterval = setInterval(
+      async () => {
+        if (!isSaving.value) {
+          console.log('⏰ 자동 저장 실행...');
+          try {
+            await courseStore.saveToLocalStorage();
+            await courseStore.saveLockStatus();
+            console.log('✅ 자동 저장 완료');
+          } catch (error) {
+            console.warn('⚠️ 자동 저장 실패:', error);
+          }
         }
-      }
-    },
-    5 * 60 * 1000,
-  ); // 5분
+      },
+      5 * 60 * 1000,
+    ); // 5분
+  };
+
+  // Firebase 초기화 완료 후 자동 저장 시작
+  if (isFirebaseConfigured.value) {
+    startAutoSave();
+  } else {
+    // Firebase가 설정되지 않은 경우 자동 저장 비활성화
+    console.log('⚠️ Firebase가 설정되지 않아 자동 저장을 비활성화합니다.');
+  }
 });
 
 // 브라우저를 닫기 전에 자동 저장
@@ -1634,18 +2097,31 @@ onBeforeUnmount(() => {
     clearInterval(autoSaveInterval);
   }
 
-  // 마지막 저장 실행
-  handleSaveAll();
+  // 마지막 저장 실행 (알림 없이, 비동기로)
+  if (!isSaving.value) {
+    saveAllData(false);
+  }
 });
 
-// 페이지를 떠나기 전에 저장 확인
+// 페이지를 떠나기 전에 저장 확인 (최적화)
+let isPageUnloading = false;
+
 window.addEventListener('beforeunload', (event) => {
+  if (isPageUnloading) return; // 중복 실행 방지
+
+  isPageUnloading = true;
   console.log('🔄 페이지 이탈 전 자동 저장...');
 
   // 동기적으로 저장 상태 확인
   if (isSaving.value) {
     event.preventDefault();
     event.returnValue = '저장 중입니다. 잠시만 기다려주세요.';
+    return;
+  }
+
+  // 페이지 이탈 시 조용히 저장 (알림 없이, 비동기로)
+  if (!isSaving.value) {
+    saveAllData(false);
   }
 });
 </script>
@@ -2113,5 +2589,25 @@ window.addEventListener('beforeunload', (event) => {
 .sidebar-list .slide-item {
   margin: 1px 0;
   padding: 4px 8px !important;
+}
+
+/* 사용자명 버튼 스타일 */
+.user-info-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  min-width: auto !important;
+  height: auto !important;
+}
+
+.user-info-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.user-name {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 0.9em !important;
+  white-space: nowrap !important;
 }
 </style>

@@ -12,7 +12,8 @@
         <q-btn
           :disable="currentSlideIndex === 0"
           @click="goToPreviousSlide"
-          color="primary"
+          color="blue"
+          text-color="white"
           icon="chevron_left"
           round
           size="lg"
@@ -20,13 +21,16 @@
         />
 
         <div class="slide-info">
-          <span class="slide-counter">{{ currentSlideIndex + 1 }} / {{ totalSlides }}</span>
+          <span class="slide-counter"
+            >{{ currentSlideNumber }} ({{ currentSlideIndex + 1 }}/{{ totalSlides }})</span
+          >
         </div>
 
         <q-btn
           :disable="currentSlideIndex === totalSlides - 1"
           @click="goToNextSlide"
-          color="primary"
+          color="blue"
+          text-color="white"
           icon="chevron_right"
           round
           size="lg"
@@ -62,8 +66,11 @@ const currentSlideNumber = computed(() => {
 // 메서드들
 const goToSlide = (index: number) => {
   if (index >= 0 && index < totalSlides.value) {
+    const oldIndex = currentSlideIndex.value;
     currentSlideIndex.value = index;
     updateRoute();
+
+    console.log(`🔄 슬라이드 변경: ${oldIndex} -> ${index} (${currentSlideNumber.value})`);
   }
 };
 
@@ -77,6 +84,44 @@ const goToNextSlide = () => {
   if (currentSlideIndex.value < totalSlides.value - 1) {
     goToSlide(currentSlideIndex.value + 1);
   }
+};
+
+// 슬라이드 번호로 직접 이동하는 함수 (새로 추가)
+const goToSlideByNumber = (slideNumber: string) => {
+  const targetIndex = slideFiles.value.findIndex((file) => {
+    const fileNumber = file.replace('slide-', '').replace('.md', '');
+    return fileNumber === slideNumber;
+  });
+
+  if (targetIndex !== -1) {
+    goToSlide(targetIndex);
+  } else {
+    console.warn(`슬라이드 번호 ${slideNumber}를 찾을 수 없습니다.`);
+  }
+};
+
+// 현재 슬라이드 번호 가져오기
+const getCurrentSlideNumber = () => {
+  const fileName = slideFiles.value[currentSlideIndex.value];
+  return fileName ? fileName.replace('slide-', '').replace('.md', '') : '0-0';
+};
+
+// 다음 슬라이드 번호 가져오기 (연속되지 않아도)
+const getNextSlideNumber = () => {
+  if (currentSlideIndex.value < totalSlides.value - 1) {
+    const nextFileName = slideFiles.value[currentSlideIndex.value + 1];
+    return nextFileName ? nextFileName.replace('slide-', '').replace('.md', '') : null;
+  }
+  return null;
+};
+
+// 이전 슬라이드 번호 가져오기 (연속되지 않아도)
+const getPreviousSlideNumber = () => {
+  if (currentSlideIndex.value > 0) {
+    const prevFileName = slideFiles.value[currentSlideIndex.value - 1];
+    return prevFileName ? prevFileName.replace('slide-', '').replace('.md', '') : null;
+  }
+  return null;
 };
 
 const updateRoute = () => {
@@ -122,8 +167,16 @@ onMounted(async () => {
     slideFiles.value = data.files
       .filter((file: string) => /^slide-\d+-\d+\.md$/.test(file)) // 정규식으로 정확한 파일 형식 필터링
       .sort((a: string, b: string) => {
-        const [aChapter, aSlide] = a.replace('slide-', '').replace('.md', '').split('-').map(Number);
-        const [bChapter, bSlide] = b.replace('slide-', '').replace('.md', '').split('-').map(Number);
+        const [aChapter, aSlide] = a
+          .replace('slide-', '')
+          .replace('.md', '')
+          .split('-')
+          .map(Number);
+        const [bChapter, bSlide] = b
+          .replace('slide-', '')
+          .replace('.md', '')
+          .split('-')
+          .map(Number);
         if (aChapter !== bChapter) {
           return (aChapter || 0) - (bChapter || 0);
         }
@@ -140,6 +193,7 @@ onMounted(async () => {
 
     document.addEventListener('keydown', handleKeydown);
     console.log('🚀 SimpleSlidePage 마운트됨, 슬라이드 목록 로드 완료:', slideFiles.value.length);
+    console.log('📋 슬라이드 목록:', slideFiles.value.slice(0, 10), '...'); // 처음 10개만 로그
   } catch (error) {
     console.error('슬라이드 목록 로드 실패:', error);
   }

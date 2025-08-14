@@ -57,3 +57,12 @@ test-*
 api/
 host.json
 local.settings.json
+
+# Quasar generated files
+/src-capacitor/
+/src-cordova/
+/src-electron/
+/dist/
+
+#ignore public/generated folder
+/public/generated/

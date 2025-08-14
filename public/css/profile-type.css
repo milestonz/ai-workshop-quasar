@@ -347,7 +347,7 @@ body {
 .section h3 {
   color: #3a3a3a;
   font-size: 1.4em;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -485,7 +485,13 @@ body {
 
 .contact-info h3 {
   color: #2e7d32;
-  margin-bottom: 15px;
+  margin-bottom: 0;
+}
+
+/* h3 바로 다음 목록의 상단 여백 제거 */
+.section h3 + ul,
+.contact-info h3 + ul {
+  margin-top: 0;
 }
 
 .contact-item {

@@ -257,8 +257,13 @@ body {
 .content h3 {
   color: #000 !important;
   font-size: 1.6em !important;
-  margin-bottom: 1em;
+  margin-bottom: 0;
   font-weight: 600;
+}
+
+/* h3 바로 다음 목록의 상단 여백 제거 (마진 겹침 방지) */
+.content h3 + ul {
+  margin-top: 0;
 }
 
 .content h4 {

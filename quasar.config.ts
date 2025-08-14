@@ -12,7 +12,7 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['pinia', 'azure'],
+    boot: ['pinia'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
@@ -73,13 +73,13 @@ export default defineConfig((/* ctx */) => {
           { server: false },
         ],
       ],
-      
-      // Azure Functions 파일들을 빌드에서 제외
+
+      // 빌드 설정
       rollupOptions: {
-        external: ['@azure/functions'],
+        // 외부 의존성 설정
       },
-      
-      // Azure Functions 디렉토리를 빌드에서 제외
+
+      // 공개 폴더 설정
       ignorePublicFolder: false,
     },
 

@@ -1,5 +1,7 @@
 <template>
   <q-page class="index-page">
+    <!-- 배경 이미지 -->
+    <div class="login-background"></div>
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
       <!-- 슬라이드 뷰어 영역 -->
@@ -44,7 +46,8 @@
         <q-btn
           :disable="isFirstSlide"
           @click="goToPreviousSlide"
-          color="primary"
+          color="blue"
+          text-color="white"
           icon="chevron_left"
           round
           size="lg"
@@ -60,7 +63,8 @@
         <q-btn
           :disable="isLastSlide"
           @click="goToNextSlide"
-          color="primary"
+          color="blue"
+          text-color="white"
           icon="chevron_right"
           round
           size="lg"
@@ -111,6 +115,8 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useCourseStore } from '../stores/course';
+import { useAuth } from '../composables/useAuth';
+import { useGuestAuth } from '../composables/useGuestAuth';
 import { slideLog } from 'src/utils/logger';
 import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
 import SlideEditorSection from '../components/SlideEditorSection.vue';
@@ -124,6 +130,10 @@ const router = useRouter();
 
 // Course 스토어
 const courseStore = useCourseStore();
+
+// 인증 상태
+const { isAuthenticated } = useAuth();
+const { isGuestAuthenticated } = useGuestAuth();
 
 // 반응형 데이터
 const showKeyboardHelp = ref(false);
@@ -215,97 +225,58 @@ const handleApplySlide = async (slideNumber: string) => {
   try {
     slideLog.log('🔄 슬라이드 반영 시작:', slideNumber);
 
-    // 1. 현재 편집 중인 md 파일 저장
+    // 1. 현재 편집 중인 md 파일을 Firebase Storage에 저장
     const [lesson = '0', slide = '0'] = (slideNumber || '0-0').split('-');
-    const mdPath = `public/slides/slide-${lesson}-${slide}.md`;
+    const componentKey = `${lesson}-${slide}`;
 
-    // 파일 시스템에 저장
-    if (typeof window !== 'undefined' && (window as any).__TAURI__) {
-      // Tauri 환경
-      await (window as any).__TAURI__.fs.writeTextFile(mdPath, currentSlideContent.value);
-      console.log('✅ MD 파일 저장 완료 (Tauri):', mdPath);
+    // Firebase Storage에 저장
+    const saveSuccess = await courseStore.saveSlideToFirebaseStorage(
+      componentKey,
+      currentSlideContent.value,
+    );
 
-      // Tauri 환경에서는 빌드도 자동으로 실행
-      // (Tauri에서는 Node.js 스크립트 실행 가능)
+    if (saveSuccess) {
+      console.log('✅ Firebase Storage에 MD 파일 저장 완료:', componentKey);
+
+      // 2. 슬라이드 뷰어 리프레시 (key 변경으로 강제 리렌더링)
+      slideViewerKey.value++;
+
+      // 3. 성공 메시지 표시
+      $q.notify({
+        type: 'positive',
+        message: '슬라이드가 Firebase Storage에 성공적으로 저장되었습니다!',
+        position: 'top',
+        timeout: 3000,
+        icon: 'cloud_done',
+        actions: [{ label: '확인', color: 'white' }],
+      });
+
+      // 4. 로컬 다운로드도 제공 (백업용)
+      const blob = new Blob([currentSlideContent.value], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `slide-${componentKey}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      console.log('📁 로컬 백업 파일도 다운로드되었습니다.');
     } else {
-      // 개발 환경에서는 클립보드에 복사
-      console.log('💾 MD 파일 내용을 클립보드에 복사 중...');
-
-      try {
-        await navigator.clipboard.writeText(currentSlideContent.value);
-        console.log('✅ MD 파일 내용이 클립보드에 복사되었습니다.');
-
-        // 사용자에게 수동 저장 안내
-        $q.notify({
-          type: 'info',
-          message: `편집한 내용이 클립보드에 복사되었습니다.
-           public/slides/slide-${lesson}-${slide}.md 파일에 붙여넣고
-           'npm run build-slides-new' 명령어로 빌드해주세요.`,
-          position: 'top',
-          timeout: 8000,
-          icon: 'content_copy',
-          actions: [
-            {
-              label: '확인',
-              color: 'white',
-              handler: () => {
-                // 터미널 명령어 안내
-                console.log('💡 터미널에서 다음 명령어를 실행하세요:');
-                console.log(`npm run build-slides-new`);
-              },
-            },
-          ],
-        });
-      } catch (clipboardError) {
-        console.error('❌ 클립보드 복사 실패:', clipboardError);
-
-        // 클립보드 복사 실패 시 다운로드 방식 사용
-        const blob = new Blob([currentSlideContent.value], { type: 'text/markdown' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `slide-${lesson}-${slide}.md`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        $q.notify({
-          type: 'info',
-          message: 'MD 파일이 다운로드되었습니다. public/slides 폴더에 저장하고 빌드해주세요.',
-          position: 'top',
-          timeout: 5000,
-          icon: 'download',
-          actions: [{ label: '확인', color: 'white' }],
-        });
-      }
-
-      return; // 개발 환경에서는 자동 빌드하지 않음
+      throw new Error('Firebase Storage 저장에 실패했습니다.');
     }
-
-    // 2. 슬라이드 뷰어 리프레시 (key 변경으로 강제 리렌더링)
-    slideViewerKey.value++;
-
-    // 3. 성공 메시지 표시
-    $q.notify({
-      type: 'positive',
-      message: '슬라이드가 성공적으로 반영되었습니다!',
-      position: 'top',
-      timeout: 2000,
-      icon: 'check_circle',
-      actions: [{ label: '확인', color: 'white' }],
-    });
 
     slideLog.log('🎉 슬라이드 반영 완료');
   } catch (error) {
-    slideLog.error('❌ 슬라이드 반영 실패:', error);
+    slideLog.error('❌ Firebase Storage 저장 실패:', error);
 
     $q.notify({
       type: 'negative',
-      message: '슬라이드 반영 중 오류가 발생했습니다.',
+      message: 'Firebase Storage에 저장 중 오류가 발생했습니다. 인터넷 연결을 확인해주세요.',
       position: 'top',
-      timeout: 3000,
-      icon: 'error',
+      timeout: 5000,
+      icon: 'cloud_off',
       actions: [{ label: '확인', color: 'white' }],
     });
   } finally {
@@ -461,6 +432,16 @@ onMounted(() => {
   document.addEventListener('keydown', handleKeydown);
   window.addEventListener('mousemove', handleResizing);
   window.addEventListener('mouseup', stopResizing);
+
+  // 배경 이미지 로딩 확인
+  const bgImage = new Image();
+  bgImage.onload = () => {
+    console.log('✅ 배경 이미지 로딩 성공:', bgImage.src);
+  };
+  bgImage.onerror = () => {
+    console.error('❌ 배경 이미지 로딩 실패:', bgImage.src);
+  };
+  bgImage.src = '/images/20250806_1231_churchtech.png';
 });
 
 // Course 스토어 변경사항 감지
@@ -502,6 +483,26 @@ onUnmounted(() => {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+/* 로그인 페이지 배경 이미지 */
+.login-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/20250806_1231_churchtech.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+  opacity: 1;
+  pointer-events: none;
 }
 
 .main-content {
@@ -509,6 +510,11 @@ onUnmounted(() => {
   display: flex;
   flex-direction: row;
   position: relative;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  margin: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .slide-viewer-container {
@@ -522,10 +528,12 @@ onUnmounted(() => {
 
 .editor-container {
   flex: 0 0 40%;
-  border-left: 1px solid #e0e0e0;
-  background: #f5f5f5;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(245, 245, 245, 0.95);
   overflow-y: auto;
   max-height: 100vh;
+  backdrop-filter: blur(10px);
+  border-radius: 0 8px 8px 0;
 }
 
 .navigation-controls {
@@ -541,14 +549,13 @@ onUnmounted(() => {
 .nav-btn {
   width: 32px; /* 버튼 크기 줄임 */
   height: 32px; /* 버튼 크기 줄임 */
-  background: rgba(255, 255, 255, 0.9) !important; /* 반투명 배경 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   border-radius: 50%;
+  backdrop-filter: blur(10px);
 }
 
 .nav-btn:hover {
-  background: rgba(255, 255, 255, 1) !important;
   transform: scale(1.1); /* 호버 시 살짝 확대 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -559,11 +566,12 @@ onUnmounted(() => {
   justify-content: center;
   width: 80px; /* min-width 대신 고정 width 사용 */
   height: 32px; /* 고정 높이 추가 */
-  background: rgba(255, 255, 255, 0.9); /* 반투명 배경 */
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   padding: 4px 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   flex-shrink: 0; /* 크기 고정 */
+  backdrop-filter: blur(10px);
 }
 
 .slide-counter {
@@ -582,6 +590,9 @@ onUnmounted(() => {
   right: 20px;
   z-index: 1001;
   max-width: 400px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .editor-mode-notice {
@@ -590,6 +601,9 @@ onUnmounted(() => {
   left: 20px;
   z-index: 1001;
   max-width: 400px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* HTML 변환 버튼 스타일은 MainLayout으로 이동됨 */
@@ -597,12 +611,15 @@ onUnmounted(() => {
 .resizer-bar {
   width: 6px;
   cursor: col-resize;
-  background: #e0e0e0;
+  background: rgba(255, 255, 255, 0.8);
   transition: background 0.2s;
   z-index: 10;
+  backdrop-filter: blur(5px);
+  border-radius: 3px;
 }
 .resizer-bar:hover {
-  background: #bdbdbd;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 /* 반응형 디자인 */

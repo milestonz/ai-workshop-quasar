@@ -1,5 +1,7 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getStorage, type FirebaseStorage } from 'firebase/storage';
 
 // Firebase 설정
 const firebaseConfig = {
@@ -37,17 +39,25 @@ if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.proj
 let app: FirebaseApp | undefined;
 let auth: Auth | null;
 let googleProvider: GoogleAuthProvider | null;
+let db: Firestore | null;
+let storage: FirebaseStorage | null;
 
 if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId) {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
+  db = getFirestore(app);
+  storage = getStorage(app);
 } else {
-  console.warn('⚠️ Firebase가 초기화되지 않았습니다. 일부 기능(인증, 투표 등)이 작동하지 않을 수 있습니다.');
+  console.warn(
+    '⚠️ Firebase가 초기화되지 않았습니다. 일부 기능(인증, 투표 등)이 작동하지 않을 수 있습니다.',
+  );
   // Firebase가 초기화되지 않았을 때 auth와 googleProvider를 mock 객체나 null로 설정할 수 있습니다.
   auth = null;
   googleProvider = null;
+  db = null;
+  storage = null;
 }
 
-// Auth 인스턴스, Google Auth Provider, app 인스턴스 내보내기
-export { auth, googleProvider, app as firebaseApp };
+// Auth 인스턴스, Google Auth Provider, Firestore, Storage, app 인스턴스 내보내기
+export { auth, googleProvider, db, storage, app as firebaseApp };

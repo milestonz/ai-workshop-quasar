@@ -1,0 +1,14 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // slides 폴더: 모든 사용자가 읽고 쓸 수 있음 (개발용)
+    match /slides/{slideId} {
+      allow read, write: if true;
+    }
+    
+    // 기타 파일: 모든 사용자가 접근 가능 (개발용)
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+} 

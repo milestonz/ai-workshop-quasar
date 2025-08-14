@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import MarkdownToHTMLConverter from './markdown-to-html.js';
+import MarkdownToHTMLConverter from './markdown-to-html-fixed.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,7 +35,209 @@ class IndividualSlideConverter {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${slideTitle} - 슬라이드 ${slideNumber + 1}</title>
-    <link rel="stylesheet" href="common-styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .slide-container {
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            padding: 60px;
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .slide {
+            width: 100%;
+        }
+
+        .slide-center {
+            text-align: center;
+        }
+
+        .slide-top {
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #2563eb;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #3730a3;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        h4 {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        li {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        .code-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .code-block-title {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .copy-button {
+            background: #2563eb;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background: #1d4ed8;
+        }
+
+        pre {
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        p code {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            h3 { font-size: 1.4rem; }
+            .slide-container { padding: 40px 25px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+            h3 { font-size: 1.2rem; }
+            .slide-container { padding: 30px 20px; }
+        }
+
+        /* 애니메이션 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-container > * {
+            animation: slideIn 0.6s ease forwards;
+        }
+    </style>
 </head>
 <body>
     <div class="slide-info">

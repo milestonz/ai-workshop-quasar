@@ -1,4 +1,4 @@
-@poll
+@general
 
 [실시간 투표]
 

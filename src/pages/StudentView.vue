@@ -7,7 +7,7 @@
       bordered
       class="bg-grey-1"
       :width="300"
-      v-if="!requireStudentLogin || isAuthenticated"
+      v-if="!requireStudentLogin || isAuthenticated || isGuestAuthenticated"
     >
       <q-scroll-area class="fit">
         <div class="q-pa-md">
@@ -35,6 +35,17 @@
 
           <!-- 목차 -->
           <div class="text-subtitle2 text-weight-medium q-mb-sm">📖 강의 목차</div>
+
+          <!-- Lock된 슬라이드 안내 -->
+          <q-banner v-if="hasLockedContent" class="bg-orange-1 text-orange-9 q-mb-md">
+            <template v-slot:avatar>
+              <q-icon name="lock" color="orange" />
+            </template>
+            <div class="text-caption">
+              <strong>잠금된 콘텐츠:</strong><br />
+              일부 Chapter나 슬라이드가 관리자에 의해 잠겨있습니다.
+            </div>
+          </q-banner>
           <q-list>
             <q-item
               v-for="(slide, index) in slideList"
@@ -52,8 +63,7 @@
                 />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-caption"> 슬라이드 {{ index + 1 }} </q-item-label>
-                <q-item-label caption>
+                <q-item-label>
                   {{ slide.title }}
                 </q-item-label>
               </q-item-section>
@@ -112,20 +122,32 @@
     <!-- 메인 콘텐츠 -->
     <q-page-container>
       <!-- 로그인이 필요한 경우 로그인 요구 -->
-      <div v-if="requireStudentLogin && !isAuthenticated" class="login-required">
+      <div
+        v-if="requireStudentLogin && !isAuthenticated && !isGuestAuthenticated"
+        class="login-required"
+      >
         <div class="text-center q-pa-xl">
           <q-icon name="school" size="100px" color="primary" class="q-mb-lg" />
           <div class="text-h4 text-weight-bold q-mb-md">학습을 위해 로그인이 필요합니다</div>
           <div class="text-body1 text-grey-7 q-mb-lg">
-            AI Workshop 강의를 수강하려면 Google 계정으로 로그인해주세요.
+            AI Workshop 강의를 수강하려면 Google 계정으로 로그인하거나 게스트 모드를 이용하세요.
           </div>
-          <q-btn
-            color="primary"
-            icon="login"
-            label="Google로 로그인"
-            size="lg"
-            @click="showLoginDialog = true"
-          />
+          <div class="row justify-center q-gutter-md">
+            <q-btn
+              color="primary"
+              icon="login"
+              label="Google로 로그인"
+              size="lg"
+              @click="handleDirectLogin"
+            />
+            <q-btn
+              color="orange"
+              icon="person"
+              label="게스트 모드"
+              size="lg"
+              @click="handleGuestLogin"
+            />
+          </div>
         </div>
       </div>
 
@@ -148,22 +170,28 @@
                 <q-chip color="secondary" text-color="white" icon="person" :label="displayName" />
               </div>
 
+              <!-- 게스트 사용자 정보 표시 -->
+              <div v-else-if="isGuestAuthenticated" class="col-auto">
+                <q-chip
+                  color="orange"
+                  text-color="white"
+                  icon="person"
+                  :label="guestUser?.name || '게스트'"
+                />
+              </div>
+
               <!-- 로그아웃 버튼 (Student mode에서 항상 표시) -->
               <div v-if="isStudentMode()" class="col-auto">
-                <q-btn
-                  flat
-                  round
-                  dense
-                  icon="logout"
-                  color="grey-7"
-                  @click="handleLogout"
-                >
+                <q-btn flat round dense icon="logout" color="grey-7" @click="handleLogout">
                   <q-tooltip>학습 종료</q-tooltip>
                 </q-btn>
               </div>
 
               <!-- 일반 로그아웃 버튼 (로그인이 필요한 경우에만 표시) -->
-              <div v-else-if="requireStudentLogin && isAuthenticated" class="col-auto">
+              <div
+                v-else-if="requireStudentLogin && (isAuthenticated || isGuestAuthenticated)"
+                class="col-auto"
+              >
                 <q-btn
                   flat
                   round
@@ -175,7 +203,7 @@
                   <q-avatar v-if="photoURL" size="24px" class="q-mr-xs">
                     <img :src="photoURL" :alt="displayName" />
                   </q-avatar>
-                  <q-tooltip>{{ displayName }} (로그아웃)</q-tooltip>
+                  <q-tooltip>{{ displayName || guestUser?.name || '사용자' }} (로그아웃)</q-tooltip>
                 </q-btn>
               </div>
 
@@ -186,6 +214,19 @@
             </div>
           </div>
         </div>
+
+        <!-- 키보드 단축키 안내 -->
+        <q-banner v-if="showKeyboardHelp" class="bg-info text-white q-mb-md" rounded>
+          <template v-slot:avatar>
+            <q-icon name="keyboard" />
+          </template>
+          <div class="text-body2">
+            <strong>키보드 단축키:</strong><br />
+            ← → : 이전/다음 슬라이드 | ↑ ↓ : 이전/다음 슬라이드<br />
+            Home/End : 첫/마지막 슬라이드 | Space : 다음 슬라이드<br />
+            ? : 이 도움말 토글
+          </div>
+        </q-banner>
 
         <!-- 슬라이드 뷰어 -->
         <div class="slide-container">
@@ -205,7 +246,7 @@
     <q-page-sticky
       position="bottom"
       :offset="[0, 0]"
-      v-if="!requireStudentLogin || isAuthenticated"
+      v-if="!requireStudentLogin || isAuthenticated || isGuestAuthenticated"
     >
       <div class="fixed-navigation-bar">
         <div class="row items-center justify-center q-pa-md">
@@ -215,7 +256,8 @@
               round
               size="lg"
               icon="chevron_left"
-              color="primary"
+              color="blue"
+              text-color="white"
               :disable="currentSlideIndex === 0"
               @click="goToSlide(currentSlideIndex - 1)"
             />
@@ -228,6 +270,9 @@
                 {{ currentSlideIndex + 1 }} / {{ totalSlides }}
               </div>
               <div class="text-caption text-grey-7">{{ currentSlideTitle }}</div>
+              <div v-if="hasLockedContent" class="text-caption text-orange-7 q-mt-xs">
+                🔒 일부 콘텐츠가 잠겨있습니다
+              </div>
             </div>
           </div>
 
@@ -248,7 +293,8 @@
               round
               size="lg"
               icon="chevron_right"
-              color="primary"
+              color="blue"
+              text-color="white"
               :disable="currentSlideIndex === totalSlides - 1"
               @click="goToSlide(currentSlideIndex + 1)"
             />
@@ -281,11 +327,45 @@
       </q-card>
     </q-dialog>
 
+    <!-- 로그아웃 확인 Dialog -->
+    <q-dialog v-model="showLogoutDialog" persistent>
+      <q-card style="min-width: 400px">
+        <q-card-section class="row items-center">
+          <q-avatar icon="logout" color="orange" text-color="white" />
+          <span class="q-ml-sm text-h6">로그아웃 확인</span>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-body1 q-mb-md">
+            <strong>{{ displayName || guestUser?.name || '사용자' }}</strong
+            >님, 정말로 로그아웃하시겠습니까?
+          </div>
+          <div class="text-caption text-grey-7">로그아웃하면 현재 학습 진행 상황이 저장됩니다.</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="취소" color="grey" v-close-popup />
+          <q-btn unelevated label="로그아웃" color="orange" @click="confirmLogout" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <!-- 로그인 다이얼로그 -->
     <LoginDialog v-model="showLoginDialog" />
 
+    <!-- 게스트 로그인 다이얼로그 -->
+    <GuestLoginDialog
+      v-model="showGuestLoginDialog"
+      @guest-login-success="handleGuestLoginSuccess"
+      @google-login-request="handleGoogleLoginRequest"
+    />
+
     <!-- 설문조사 다이얼로그 -->
-    <SurveyDialog v-model="showSurveyDialog" @submit="handleSurveySubmit" @completed="handleSurveyCompleted" />
+    <SurveyDialog
+      v-model="showSurveyDialog"
+      @submit="handleSurveySubmit"
+      @completed="handleSurveyCompleted"
+    />
   </q-layout>
 </template>
 
@@ -295,8 +375,10 @@ import { useRoute, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useCourseStore } from '../stores/course';
 import { useAuth } from '../composables/useAuth';
+import { useGuestAuth } from '../composables/useGuestAuth';
 import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
 import LoginDialog from '../components/LoginDialog.vue';
+import GuestLoginDialog from '../components/GuestLoginDialog.vue';
 import SurveyDialog from '../components/SurveyDialog.vue';
 import { emailApiService } from '../services/emailApiService';
 import { surveyApiService } from '../services/surveyApiService';
@@ -307,27 +389,37 @@ const $q = useQuasar();
 const route = useRoute();
 const router = useRouter();
 const courseStore = useCourseStore();
-const { user, isAuthenticated, displayName, photoURL, logout, initAuth } = useAuth();
+const { user, isAuthenticated, displayName, photoURL, logout, initAuth, signInWithGoogle } =
+  useAuth();
+const { guestUser, isGuestAuthenticated, signInAsGuest } = useGuestAuth();
 
 // State
 const leftDrawerOpen = ref(true);
 const currentSlideIndex = ref(0);
 const completedSlides = ref<number[]>([]);
 const showLoginDialog = ref(false);
+const showGuestLoginDialog = ref(false);
 const showSurveyDialog = ref(false);
 const showExitDialog = ref(false); // 종료 확인 Dialog 상태
 const exitDialogTitle = ref('학습 종료'); // 종료 확인 Dialog 제목
+const showLogoutDialog = ref(false); // 로그아웃 확인 Dialog 상태
 
-// 학생 로그인 요구 설정
-const requireStudentLogin = ref(localStorage.getItem('requireStudentLogin') === 'true');
+// 학생 로그인 요구 설정 (기본: 로그인 필수)
+// localStorage에 'false'로 명시된 경우에만 비활성화
+const requireStudentLogin = ref(localStorage.getItem('requireStudentLogin') !== 'false');
 
 // Computed
 const courseId = computed(() => route.params.courseId as string);
 const totalSlides = computed(() => {
-  return courseStore.lessons.reduce((total, lesson) => total + lesson.slides, 0);
+  return slideList.value.length;
 });
 
 const slideList = computed(() => {
+  // 강의 데이터나 잠금 상태가 로드되지 않았으면 빈 배열 반환
+  if (courseStore.lessons.length === 0) {
+    return [];
+  }
+
   const slides: Array<{
     index: number;
     title: string;
@@ -337,7 +429,19 @@ const slideList = computed(() => {
   }> = [];
 
   courseStore.lessons.forEach((lesson, lessonIndex) => {
+    // Chapter가 잠겨있으면 모든 슬라이드 건너뛰기
+    if (courseStore.isChapterLocked(lessonIndex)) {
+      console.log(`🔒 Chapter ${lessonIndex}가 잠겨있어서 건너뜀`);
+      return;
+    }
+
     for (let slideIndex = 0; slideIndex < lesson.slides; slideIndex++) {
+      // 개별 슬라이드가 잠겨있으면 건너뛰기
+      if (courseStore.isSlideLocked(lessonIndex, slideIndex)) {
+        console.log(`🔒 Slide ${lessonIndex}-${slideIndex}가 잠겨있어서 건너뜀`);
+        continue;
+      }
+
       const slideTitle = lesson.slideTitles?.[slideIndex] || `슬라이드 ${slides.length + 1}`;
       slides.push({
         index: slides.length,
@@ -539,7 +643,67 @@ const isCurrentSlideCompleted = computed(() => {
   return completedSlides.value.includes(currentSlideIndex.value);
 });
 
+// Lock된 콘텐츠가 있는지 확인
+const hasLockedContent = computed(() => {
+  return courseStore.lessons.some((lesson, lessonIndex) => {
+    // Chapter가 잠겨있으면 true
+    if (courseStore.isChapterLocked(lessonIndex)) {
+      return true;
+    }
+
+    // 개별 슬라이드가 잠겨있으면 true
+    for (let slideIndex = 0; slideIndex < lesson.slides; slideIndex++) {
+      if (courseStore.isSlideLocked(lessonIndex, slideIndex)) {
+        return true;
+      }
+    }
+
+    return false;
+  });
+});
+
 // Methods
+// 직접 로그인 처리 (팝업 없이 바로 로그인)
+const handleDirectLogin = async () => {
+  try {
+    console.log('🔐 학생 모드 - 직접 로그인 시작...');
+    await signInWithGoogle();
+    console.log('✅ 학생 모드 - 직접 로그인 완료');
+  } catch (error) {
+    console.error('❌ 학생 모드 - 직접 로그인 실패:', error);
+    $q.notify({
+      type: 'negative',
+      message: '로그인에 실패했습니다. 다시 시도해주세요.',
+      position: 'top',
+      timeout: 3000,
+    });
+  }
+};
+
+// 게스트 로그인 처리
+const handleGuestLogin = () => {
+  showGuestLoginDialog.value = true;
+};
+
+// 게스트 로그인 성공 처리
+const handleGuestLoginSuccess = (guestUser: any) => {
+  console.log('🎭 게스트 로그인 성공:', guestUser);
+  showGuestLoginDialog.value = false;
+
+  $q.notify({
+    type: 'positive',
+    message: '게스트 모드로 로그인되었습니다!',
+    position: 'top',
+    timeout: 2000,
+  });
+};
+
+// Google 로그인 요청 처리
+const handleGoogleLoginRequest = () => {
+  showGuestLoginDialog.value = false;
+  showLoginDialog.value = true;
+};
+
 const loadCourse = async () => {
   console.log('🎓 학생 모드 - 강의 로드 시작:', courseId.value);
 
@@ -557,14 +721,39 @@ const loadCourse = async () => {
     // course 스토어 초기화
     await courseStore.initializeCourseOutline();
 
+    // 코스ID 설정 및 Firestore에서 잠금 상태도 로드
+    const cid = (courseId.value || 'ai-workshop') as string;
+    courseStore.setCurrentCourseId(cid);
+
+    // Firestore에서 잠금 상태를 먼저 로드하고, 그 다음에 UI를 업데이트
+    const ok = await courseStore.loadLockStatusFromFirestore(cid);
+    console.log('🔄 Firestore 잠금 로드 결과:', ok);
+
+    // 실시간 잠금 상태 구독
+    courseStore.subscribeLockStatus(cid);
+
     console.log('📚 강의 데이터 로드 완료:', {
       lessonsCount: courseStore.lessons.length,
       lessons: courseStore.lessons.slice(0, 3), // 처음 3개 챕터만 로그
     });
 
-    // URL에서 슬라이드 인덱스 복원
+    // URL에서 슬라이드 인덱스 복원 (Lock된 슬라이드 고려)
     const slideIndex = parseInt(route.query.slide as string) || 0;
-    currentSlideIndex.value = Math.min(slideIndex, totalSlides.value - 1);
+
+    // Lock된 슬라이드를 고려하여 유효한 슬라이드 인덱스 찾기
+    if (slideList.value.length > 0) {
+      // URL의 슬라이드 인덱스가 유효한지 확인
+      if (slideIndex >= 0 && slideIndex < slideList.value.length) {
+        currentSlideIndex.value = slideIndex;
+      } else {
+        // 유효하지 않으면 첫 번째 잠금 해제된 슬라이드로 이동
+        currentSlideIndex.value = 0;
+        console.log('🔒 URL의 슬라이드 인덱스가 유효하지 않아 첫 번째 슬라이드로 이동');
+      }
+    } else {
+      currentSlideIndex.value = 0;
+      console.log('🔒 잠금 해제된 슬라이드가 없음');
+    }
     console.log('📄 현재 슬라이드 인덱스:', currentSlideIndex.value);
 
     // 완료된 슬라이드 로드
@@ -583,6 +772,8 @@ const goToSlide = (index: number) => {
   if (index >= 0 && index < totalSlides.value) {
     currentSlideIndex.value = index;
     updateRoute();
+  } else {
+    console.warn(`🚫 슬라이드 인덱스 ${index}가 범위를 벗어남 (0-${totalSlides.value - 1})`);
   }
 };
 
@@ -604,10 +795,9 @@ const updateRoute = () => {
 
 // 로그아웃 처리
 const handleLogout = async () => {
-  // Student mode에서만 브라우저 종료
+  // Student mode에서도 로그아웃 확인 다이얼로그 표시
   if (isStudentMode()) {
-    exitDialogTitle.value = '학습 종료'; // dialog 제목 설정
-    showExitDialog.value = true; // 종료 확인 Dialog 표시
+    showLogoutDialog.value = true; // 로그아웃 확인 Dialog 표시
   } else {
     // 일반 모드에서는 기존 로그아웃 동작
     try {
@@ -633,14 +823,14 @@ const confirmExit = () => {
   try {
     // window.close()는 사용자가 직접 열지 않은 창에서만 작동
     window.close();
-    
+
     // window.close()가 작동하지 않으면 사용자에게 안내
     setTimeout(() => {
       $q.notify({
         type: 'info',
         message: '브라우저 탭을 직접 닫아주세요.',
         position: 'top',
-        timeout: 5000
+        timeout: 5000,
       });
     }, 1000);
   } catch (error) {
@@ -649,7 +839,40 @@ const confirmExit = () => {
       type: 'info',
       message: '브라우저 탭을 직접 닫아주세요.',
       position: 'top',
-      timeout: 5000
+      timeout: 5000,
+    });
+  }
+};
+
+// 로그아웃 확인 처리
+const confirmLogout = async () => {
+  try {
+    // 다이얼로그 닫기
+    showLogoutDialog.value = false;
+
+    // 사용자 정보 저장 (로그아웃 페이지로 전달하기 위해)
+    const userName = displayName.value || guestUser.value?.name || '사용자';
+    const userEmail = user.value?.email || guestUser.value?.email || '';
+    const isGuest = isGuestAuthenticated.value;
+
+    // 로그아웃 실행
+    await logout();
+
+    // 로그아웃 페이지로 이동 (사용자 정보와 함께)
+    router.push({
+      path: '/logout',
+      query: {
+        name: userName,
+        email: userEmail,
+        isGuest: isGuest.toString(),
+      },
+    });
+  } catch (error) {
+    console.error('로그아웃 오류:', error);
+    $q.notify({
+      type: 'negative',
+      message: '로그아웃 중 오류가 발생했습니다.',
+      position: 'top',
     });
   }
 };
@@ -713,11 +936,14 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
     localStorage.setItem(key, JSON.stringify(surveyWithTimestamp));
 
     // 학습 완료 이메일 전송 (설문조사 완료 후)
-    if (user.value?.email) {
+    const targetEmail = user.value?.email || guestUser.value?.email;
+    const targetName = user.value?.displayName || guestUser.value?.name || '학습자';
+
+    if (targetEmail) {
       try {
         const result = await emailApiService.sendLearningCompletionEmail(
-          user.value.email,
-          user.value.displayName || '학습자',
+          targetEmail,
+          targetName,
           'AI Workshop 강의',
         );
 
@@ -729,10 +955,22 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
           });
         } else {
           console.warn('이메일 전송 실패:', result.message);
+          $q.notify({
+            type: 'warning',
+            message: '이메일 전송에 실패했습니다: ' + result.message,
+            position: 'top',
+          });
         }
       } catch (error) {
         console.error('이메일 전송 오류:', error);
+        $q.notify({
+          type: 'negative',
+          message: '이메일 전송 중 오류가 발생했습니다.',
+          position: 'top',
+        });
       }
+    } else {
+      console.warn('이메일 주소가 없어서 이메일을 전송할 수 없습니다.');
     }
 
     $q.notify({
@@ -752,11 +990,10 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
 
 const handleSurveyCompleted = () => {
   console.log('설문조사가 완료되었습니다.');
-  
-  // Student mode에서만 브라우저 종료 확인 팝업 표시
+
+  // Student mode에서만 로그아웃 확인 팝업 표시
   if (isStudentMode()) {
-    exitDialogTitle.value = '학습 완료'; // dialog 제목 설정
-    showExitDialog.value = true; // 종료 확인 Dialog 표시
+    showLogoutDialog.value = true; // 로그아웃 확인 Dialog 표시
   }
 };
 
@@ -803,6 +1040,9 @@ const formatDate = (dateString: string): string => {
   });
 };
 
+// 키보드 도움말 토글
+const showKeyboardHelp = ref(false);
+
 // Keyboard navigation
 const handleKeydown = (event: KeyboardEvent) => {
   if (courseStore.lessons.length === 0) return;
@@ -829,6 +1069,10 @@ const handleKeydown = (event: KeyboardEvent) => {
       event.preventDefault();
       goToSlide(totalSlides.value - 1);
       break;
+    case '?':
+      event.preventDefault();
+      showKeyboardHelp.value = !showKeyboardHelp.value;
+      break;
   }
 };
 
@@ -838,19 +1082,21 @@ onMounted(async () => {
   initAuth();
 
   await loadCourse();
-  // 학생 모드에서는 키보드 네비게이션 비활성화
-  // document.addEventListener('keydown', handleKeydown);
+  // 키보드 네비게이션 활성화
+  document.addEventListener('keydown', handleKeydown);
 });
 
 onUnmounted(() => {
-  // document.removeEventListener('keydown', handleKeydown);
+  document.removeEventListener('keydown', handleKeydown);
 });
 
 // Watch for route changes
 watch(
   () => route.params.courseId,
-  () => {
-    loadCourse();
+  (newCourseId) => {
+    if (newCourseId) {
+      loadCourse();
+    }
   },
   { immediate: true },
 );

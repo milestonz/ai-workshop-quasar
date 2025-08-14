@@ -1,0 +1,54 @@
+[
+  {
+    "id": "1754563861281",
+    "adminEmail": "jplee@milestonz.com",
+    "guestInfo": {
+      "name": "jpyolee",
+      "email": "jpyolee@naver.com",
+      "guestId": "guest_1754563859726_d341i94lv",
+      "createdAt": "2025-08-07T10:50:59.726Z",
+      "registrationTime": "2025-08-07T10:51:01.281Z"
+    },
+    "status": "pending",
+    "createdAt": "2025-08-07T10:51:01.281Z"
+  },
+  {
+    "id": "1754564865115",
+    "adminEmail": "jplee@milestonz.com",
+    "guestInfo": {
+      "name": "게스트 테스트",
+      "email": "jpyolee@naver.com",
+      "guestId": "guest_1754564858915_4yke301v4",
+      "createdAt": "2025-08-07T11:07:38.915Z",
+      "registrationTime": "2025-08-07T11:07:45.115Z"
+    },
+    "status": "pending",
+    "createdAt": "2025-08-07T11:07:45.115Z"
+  },
+  {
+    "id": "1754565984366",
+    "adminEmail": "jplee@milestonz.com",
+    "guestInfo": {
+      "name": "TEST-GUEST",
+      "email": "jpyolee@naver.com",
+      "guestId": "1754565984354",
+      "createdAt": "2025-08-07T11:26:24.354Z",
+      "registrationTime": "2025-08-07T11:26:24.366Z"
+    },
+    "status": "pending",
+    "createdAt": "2025-08-07T11:26:24.366Z"
+  },
+  {
+    "id": "1754565984414",
+    "adminEmail": "jplee@milestonz.com",
+    "guestInfo": {
+      "name": "TEST-GUEST",
+      "email": "jpyolee@naver.com",
+      "guestId": "guest_1754565981304_4kw77y5g1",
+      "createdAt": "2025-08-07T11:26:21.304Z",
+      "registrationTime": "2025-08-07T11:26:24.415Z"
+    },
+    "status": "pending",
+    "createdAt": "2025-08-07T11:26:24.415Z"
+  }
+]

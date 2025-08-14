@@ -1,13 +1,23 @@
 import { ref, computed, watch } from 'vue';
 import { defineStore } from 'pinia';
-import { azureBlobService } from 'src/services/azureBlobService';
 import { slideLog } from 'src/utils/logger';
 import type { SlideData, Lesson, Comment } from '../types/slide';
+import {
+  ref as storageRef,
+  uploadString,
+  getDownloadURL,
+  deleteObject,
+  listAll,
+} from 'firebase/storage';
+import { updateDoc, serverTimestamp, collection, getDocs, query, where } from 'firebase/firestore';
+import { storage, firebaseApp, db as appDb } from '../firebase/config';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 export const useCourseStore = defineStore('course', () => {
   // 상태
   const currentLesson = ref(0);
   const currentSlide = ref(0);
+  const currentCourseId = ref<string>('ai-workshop');
   const isPlaying = ref(false);
   const sidebarOpen = ref(true);
   const showComments = ref(false);
@@ -24,47 +34,97 @@ export const useCourseStore = defineStore('course', () => {
   const generateCourseOutlineFromMD = async (): Promise<Lesson[]> => {
     try {
       // 1. 캐시 무효화 확인
-              try {
-          const cacheResponse = await fetch('/slides/toc-cache-invalidation.json');
-          if (cacheResponse.ok) {
-            const cacheData = await cacheResponse.json();
-            slideLog.log(`🔄 캐시 무효화 감지: ${cacheData.lastBuild}`);
-          }
-        } catch (error) {
-          slideLog.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
+      try {
+        const cacheResponse = await fetch('/slides/toc-cache-invalidation.json');
+        if (cacheResponse.ok) {
+          const cacheData = await cacheResponse.json();
+          slideLog.log(`🔄 캐시 무효화 감지: ${cacheData.lastBuild}`);
         }
+      } catch (error) {
+        slideLog.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
+      }
 
       // 2. 통합 사이드바 데이터 가져오기 (우선 시도)
       let sidebarData = null;
-              try {
-          const sidebarResponse = await fetch('/slides/sidebar-data.json');
-          if (sidebarResponse.ok) {
-            sidebarData = await sidebarResponse.json();
+      try {
+        const sidebarResponse = await fetch('/slides/sidebar-data.json');
+        if (sidebarResponse.ok) {
+          sidebarData = await sidebarResponse.json();
+          slideLog.log(
+            '✅ 통합 사이드바 데이터 로드 완료:',
+            sidebarData.slides.length,
+            '개 슬라이드,',
+            Object.keys(sidebarData.chapters).length,
+            '개 챕터',
+          );
+
+          // 사이드바 데이터가 있으면 그것을 사용하여 Lesson 배열 생성
+          if (sidebarData.chapters && Object.keys(sidebarData.chapters).length > 0) {
+            const generatedLessons: Lesson[] = [];
+
+            // Chapter 번호로 정렬
+            const chapterNumbers = Object.keys(sidebarData.chapters)
+              .map(Number)
+              .sort((a, b) => a - b);
+
+            for (const chapterNum of chapterNumbers) {
+              const chapter = sidebarData.chapters[chapterNum.toString()];
+              if (!chapter || !chapter.slides) continue;
+
+              // 슬라이드 제목들 추출
+              const slideTitles: string[] = [];
+              const slideData: SlideData[] = [];
+
+              for (let i = 0; i < chapter.slides.length; i++) {
+                const slide = chapter.slides[i];
+                const title = slide.title || `슬라이드 ${slide.slide}`;
+                slideTitles.push(title);
+
+                slideData.push({
+                  title: title,
+                  videoUrl: slide.videoUrl || null,
+                  hasVideo: slide.videoUrl ? true : false,
+                });
+              }
+
+              const lesson: Lesson = {
+                title: chapter.title || `Chapter ${chapterNum}`,
+                slides: slideTitles.length,
+                slideData: slideData,
+                completed: false,
+                videoUrl: null,
+                slideTitles: slideTitles,
+                locked: false,
+              };
+
+              generatedLessons.push(lesson);
+            }
+
             slideLog.log(
-              '✅ 통합 사이드바 데이터 로드 완료:',
-              sidebarData.slides.length,
-              '개 슬라이드,',
-              Object.keys(sidebarData.chapters).length,
+              '✅ 사이드바 데이터로부터 Lesson 배열 생성 완료:',
+              generatedLessons.length,
               '개 챕터',
             );
+            return generatedLessons;
           }
-        } catch (error) {
-          slideLog.warn('⚠️ 통합 사이드바 데이터 로드 실패:', error);
         }
+      } catch (error) {
+        slideLog.warn('⚠️ 통합 사이드바 데이터 로드 실패:', error);
+      }
 
       // 3. 파일 목록 가져오기
       let mdFiles: string[] = [];
-              try {
-          const response = await fetch('/slides/files.json');
-          if (response.ok) {
-            const data = await response.json();
-            mdFiles = data.files || [];
-            slideLog.log('✅ 파일 목록 로드 완료:', mdFiles.length, '개 파일');
-          } else {
-            throw new Error('files.json을 읽을 수 없습니다');
-          }
-        } catch (error) {
-          slideLog.warn('❌ JSON 파일 로드 실패, 하드코딩된 목록 사용:', error);
+      try {
+        const response = await fetch('/slides/files.json');
+        if (response.ok) {
+          const data = await response.json();
+          mdFiles = data.files || [];
+          slideLog.log('✅ 파일 목록 로드 완료:', mdFiles.length, '개 파일');
+        } else {
+          throw new Error('files.json을 읽을 수 없습니다');
+        }
+      } catch (error) {
+        slideLog.warn('❌ JSON 파일 로드 실패, 하드코딩된 목록 사용:', error);
         // fallback: 하드코딩된 목록
         mdFiles = [
           'slide-0-0.md',
@@ -194,7 +254,7 @@ export const useCourseStore = defineStore('course', () => {
           // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
           const htmlTitleMatch = firstSlideContent.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
           if (htmlTitleMatch && htmlTitleMatch[1]) {
-            extractedTitle = htmlTitleMatch[1].trim();
+            extractedTitle = htmlTitleMatch[1].trim().replace(/^#+\s*/, '');
             console.log(`📝 Chapter 제목 추출 (HTML): ${extractedTitle}`);
           }
 
@@ -256,7 +316,7 @@ export const useCourseStore = defineStore('course', () => {
             // 1. HTML 제목 태그를 우선적으로 찾기 (<h1>, <h2>, <h3>)
             const htmlTitleMatch = content.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]>/);
             if (htmlTitleMatch && htmlTitleMatch[1]) {
-              title = htmlTitleMatch[1].trim();
+              title = htmlTitleMatch[1].trim().replace(/^#+\s*/, '');
               console.log(`📝 제목 추출 (HTML): ${title}`);
             }
 
@@ -613,11 +673,11 @@ export const useCourseStore = defineStore('course', () => {
   const initializeCourseOutline = async () => {
     try {
       slideLog.log('🚀 강의 목차 초기화 시작...');
-      
+
       // 1. 기본 목차로 먼저 표시 (즉시 사용 가능)
       lessons.value = generateDefaultLessons();
       slideLog.log('✅ 기본 목차 즉시 표시 완료');
-      
+
       // 2. 백그라운드에서 MD 파일 기반 목차 로드
       setTimeout(async () => {
         try {
@@ -632,7 +692,6 @@ export const useCourseStore = defineStore('course', () => {
           slideLog.error('❌ MD 파일 목차 로드 실패 (기본 목차 유지):', error);
         }
       }, 100); // 100ms 지연으로 백그라운드 처리
-      
     } catch (error) {
       slideLog.error('❌ 목차 초기화 실패:', error);
       lessons.value = generateDefaultLessons();
@@ -943,31 +1002,48 @@ export const useCourseStore = defineStore('course', () => {
     return lesson?.slideContents?.[currentSlide.value] || '';
   };
 
-  // MD 파일에서 슬라이드 내용을 읽어오는 함수
+  // MD 파일에서 슬라이드 내용을 읽어오는 함수 (로컬 우선, Firebase Storage 폴백)
   const getSlideContentFromMD = async (componentKey: string): Promise<string> => {
     console.log('📂 getSlideContentFromMD 시작:', componentKey);
+
+    // 로컬 파일에서 먼저 시도
     try {
       const url = `/slides/slide-${componentKey}.md`;
-      console.log('🌐 요청 URL:', url);
+      console.log('🌐 로컬 파일 요청 URL:', url);
 
       const response = await fetch(url);
       console.log('📡 응답 상태:', response.status, response.statusText);
 
-      if (!response.ok) {
-        console.log('❌ 응답 실패:', response.status, response.statusText);
-        return '';
+      if (response.ok) {
+        const content = await response.text();
+        console.log('✅ 로컬 MD 파일 내용 읽기 완료:', {
+          contentLength: content.length,
+          contentPreview: content.substring(0, 100),
+        });
+        return content;
+      } else {
+        console.log('❌ 로컬 파일 응답 실패:', response.status, response.statusText);
       }
-
-      const content = await response.text();
-      console.log('✅ MD 파일 내용 읽기 완료:', {
-        contentLength: content.length,
-        contentPreview: content.substring(0, 100),
-      });
-      return content;
     } catch (error) {
-      console.error('❌ MD 파일 읽기 실패:', error);
-      return '';
+      console.log('⚠️ 로컬 파일 로드 실패, Firebase Storage 폴백 시도:', error);
     }
+
+    // Firebase Storage에서 폴백 (로컬 파일이 없을 때만)
+    if (storage) {
+      try {
+        console.log('🔥 Firebase Storage에서 시도:', componentKey);
+        const content = await loadSlideFromFirebaseStorage(componentKey);
+        if (content) {
+          console.log('✅ Firebase Storage에서 로드 성공:', componentKey);
+          return content;
+        }
+      } catch (error) {
+        console.log('⚠️ Firebase Storage 로드 실패:', error);
+      }
+    }
+
+    console.log('❌ 모든 소스에서 파일을 찾을 수 없음:', componentKey);
+    return '';
   };
 
   // 슬라이드 선택 시 MD 파일 내용을 로드하는 함수
@@ -1053,32 +1129,109 @@ ${content}
     }
   };
 
-  // MD 파일을 지정된 디렉토리에 덮어쓰는 함수
-  const overwriteSlideContentToMD = async (componentKey: string, content: string) => {
+  // Firebase Storage를 사용하여 MD 파일을 저장하는 함수
+  const saveSlideToFirebaseStorage = async (componentKey: string, content: string) => {
     try {
-      console.log('📝 MD 파일 덮어쓰기 시작:', componentKey);
+      console.log('📝 Firebase Storage에 MD 파일 저장 시작:', componentKey);
       console.log('📝 저장할 내용 길이:', content.length);
-      console.log('📝 저장할 내용 끝부분:', content.substring(content.length - 50));
 
-      const response = await fetch(`/slides/${componentKey}.md`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: content,
-      });
-
-      if (response.ok) {
-        console.log('✅ MD 파일 덮어쓰기 성공:', componentKey);
-        return true;
-      } else {
-        console.error('❌ MD 파일 덮어쓰기 실패:', response.status);
-        return false;
+      if (!storage) {
+        throw new Error('Firebase Storage가 초기화되지 않았습니다.');
       }
+
+      // Firebase Storage에 파일 업로드
+      const slideRef = storageRef(storage, `slides/${componentKey}.md`);
+      await uploadString(slideRef, content, 'raw');
+
+      // Firestore에 메타데이터 업데이트 (db가 초기화된 경우에만)
+      if (appDb) {
+        const slideDocRef = doc(appDb, 'slides', componentKey);
+        await updateDoc(slideDocRef, {
+          lastModified: serverTimestamp(),
+          size: content.length,
+          fileName: `${componentKey}.md`,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+
+      console.log('✅ Firebase Storage에 MD 파일 저장 성공:', componentKey);
+      return true;
     } catch (error) {
-      console.error('❌ MD 파일 덮어쓰기 오류:', error);
+      console.error('❌ Firebase Storage 저장 오류:', error);
       return false;
     }
+  };
+
+  // Firebase Storage에서 MD 파일을 로드하는 함수
+  const loadSlideFromFirebaseStorage = async (componentKey: string): Promise<string> => {
+    try {
+      console.log('📖 Firebase Storage에서 MD 파일 로드 시작:', componentKey);
+
+      if (!storage) {
+        throw new Error('Firebase Storage가 초기화되지 않았습니다.');
+      }
+
+      const slideRef = storageRef(storage, `slides/${componentKey}.md`);
+      const downloadURL = await getDownloadURL(slideRef);
+      const response = await fetch(downloadURL);
+      const content = await response.text();
+
+      console.log('✅ Firebase Storage에서 MD 파일 로드 성공:', componentKey);
+      return content;
+    } catch (error) {
+      console.error('❌ Firebase Storage 로드 오류:', error);
+      throw error;
+    }
+  };
+
+  // Firebase Storage에서 모든 슬라이드 파일 목록을 가져오는 함수
+  const listAllSlidesFromFirebase = async (): Promise<string[]> => {
+    try {
+      console.log('📋 Firebase Storage에서 슬라이드 목록 가져오기 시작');
+
+      if (!storage) {
+        throw new Error('Firebase Storage가 초기화되지 않았습니다.');
+      }
+
+      const slidesRef = storageRef(storage, 'slides');
+      const result = await listAll(slidesRef);
+      const fileNames = result.items.map((item) => item.name.replace('.md', ''));
+
+      console.log(
+        '✅ Firebase Storage에서 슬라이드 목록 가져오기 성공:',
+        fileNames.length,
+        '개 파일',
+      );
+      return fileNames;
+    } catch (error) {
+      console.error('❌ Firebase Storage 목록 가져오기 오류:', error);
+      return [];
+    }
+  };
+
+  // Firebase Storage에서 MD 파일을 삭제하는 함수
+  const deleteSlideFromFirebaseStorage = async (componentKey: string) => {
+    try {
+      console.log('🗑️ Firebase Storage에서 MD 파일 삭제 시작:', componentKey);
+
+      if (!storage) {
+        throw new Error('Firebase Storage가 초기화되지 않았습니다.');
+      }
+
+      const slideRef = storageRef(storage, `slides/${componentKey}.md`);
+      await deleteObject(slideRef);
+
+      console.log('✅ Firebase Storage에서 MD 파일 삭제 성공:', componentKey);
+      return true;
+    } catch (error) {
+      console.error('❌ Firebase Storage 삭제 오류:', error);
+      return false;
+    }
+  };
+
+  // 기존 함수를 Firebase Storage 버전으로 대체
+  const overwriteSlideContentToMD = async (componentKey: string, content: string) => {
+    return await saveSlideToFirebaseStorage(componentKey, content);
   };
 
   // Chapter 잠금 토글 함수
@@ -1087,6 +1240,10 @@ ${content}
       lessons.value[lessonIndex].locked = !lessons.value[lessonIndex].locked;
       console.log(`🔒 Chapter ${lessonIndex} 잠금 상태 변경:`, lessons.value[lessonIndex].locked);
       saveToLocalStorage(); // 로컬 스토리지에 저장
+      // Firestore 동기화 (관리자 모드에서만 권한 허용됨)
+      saveLockStatusToFirestore(currentCourseId.value).catch((e) =>
+        console.warn('⚠️ Firestore 잠금 동기화 실패(Chapter):', e?.message || e),
+      );
     }
   };
 
@@ -1103,6 +1260,10 @@ ${content}
         lessons.value[lessonIndex].lockedSlides[slideIndex],
       );
       saveToLocalStorage(); // 로컬 스토리지에 저장
+      // Firestore 동기화 (관리자 모드 권한 필요)
+      saveLockStatusToFirestore(currentCourseId.value).catch((e) =>
+        console.warn('⚠️ Firestore 잠금 동기화 실패(Slide):', e?.message || e),
+      );
     }
   };
 
@@ -1125,6 +1286,143 @@ ${content}
   // 잠긴 슬라이드로 이동 방지 함수
   const canNavigateToSlide = (lessonIndex: number, slideIndex: number): boolean => {
     return !isSlideLocked(lessonIndex, slideIndex);
+  };
+
+  // 다음 잠금 해제된 슬라이드 찾기
+  const findNextUnlockedSlide = (
+    currentLessonIndex: number,
+    currentSlideIndex: number,
+  ): { lessonIndex: number; slideIndex: number } | null => {
+    let lessonIndex = currentLessonIndex;
+    let slideIndex = currentSlideIndex + 1;
+
+    // 현재 Chapter에서 다음 슬라이드부터 검색
+    while (lessonIndex < lessons.value.length) {
+      const lesson = lessons.value[lessonIndex];
+
+      if (!lesson) {
+        lessonIndex++;
+        slideIndex = 0;
+        continue;
+      }
+
+      // Chapter가 잠겨있으면 다음 Chapter로
+      if (lesson.locked) {
+        lessonIndex++;
+        slideIndex = 0;
+        continue;
+      }
+
+      // 현재 Chapter의 슬라이드들을 검색
+      while (slideIndex < lesson.slides) {
+        if (!isSlideLocked(lessonIndex, slideIndex)) {
+          return { lessonIndex, slideIndex };
+        }
+        slideIndex++;
+      }
+
+      // 다음 Chapter로 이동
+      lessonIndex++;
+      slideIndex = 0;
+    }
+
+    return null; // 더 이상 잠금 해제된 슬라이드가 없음
+  };
+
+  // 이전 잠금 해제된 슬라이드 찾기
+  const findPrevUnlockedSlide = (
+    currentLessonIndex: number,
+    currentSlideIndex: number,
+  ): { lessonIndex: number; slideIndex: number } | null => {
+    let lessonIndex = currentLessonIndex;
+    let slideIndex = currentSlideIndex - 1;
+
+    // 현재 Chapter에서 이전 슬라이드부터 검색
+    while (lessonIndex >= 0) {
+      const lesson = lessons.value[lessonIndex];
+
+      if (!lesson) {
+        lessonIndex--;
+        if (lessonIndex >= 0) {
+          const prevLesson = lessons.value[lessonIndex];
+          slideIndex = prevLesson ? prevLesson.slides - 1 : -1;
+        }
+        continue;
+      }
+
+      // Chapter가 잠겨있으면 이전 Chapter로
+      if (lesson.locked) {
+        lessonIndex--;
+        if (lessonIndex >= 0) {
+          const prevLesson = lessons.value[lessonIndex];
+          slideIndex = prevLesson ? prevLesson.slides - 1 : -1;
+        }
+        continue;
+      }
+
+      // 현재 Chapter의 슬라이드들을 검색
+      while (slideIndex >= 0) {
+        if (!isSlideLocked(lessonIndex, slideIndex)) {
+          return { lessonIndex, slideIndex };
+        }
+        slideIndex--;
+      }
+
+      // 이전 Chapter로 이동
+      lessonIndex--;
+      if (lessonIndex >= 0) {
+        const prevLesson = lessons.value[lessonIndex];
+        slideIndex = prevLesson ? prevLesson.slides - 1 : -1;
+      }
+    }
+
+    return null; // 더 이상 잠금 해제된 슬라이드가 없음
+  };
+
+  // 첫 번째 잠금 해제된 슬라이드 찾기
+  const findFirstUnlockedSlide = (): { lessonIndex: number; slideIndex: number } | null => {
+    for (let lessonIndex = 0; lessonIndex < lessons.value.length; lessonIndex++) {
+      const lesson = lessons.value[lessonIndex];
+
+      if (!lesson) continue;
+
+      // Chapter가 잠겨있으면 다음 Chapter로
+      if (lesson.locked) {
+        continue;
+      }
+
+      // Chapter의 슬라이드들을 검색
+      for (let slideIndex = 0; slideIndex < lesson.slides; slideIndex++) {
+        if (!isSlideLocked(lessonIndex, slideIndex)) {
+          return { lessonIndex, slideIndex };
+        }
+      }
+    }
+
+    return null; // 잠금 해제된 슬라이드가 없음
+  };
+
+  // 마지막 잠금 해제된 슬라이드 찾기
+  const findLastUnlockedSlide = (): { lessonIndex: number; slideIndex: number } | null => {
+    for (let lessonIndex = lessons.value.length - 1; lessonIndex >= 0; lessonIndex--) {
+      const lesson = lessons.value[lessonIndex];
+
+      if (!lesson) continue;
+
+      // Chapter가 잠겨있으면 이전 Chapter로
+      if (lesson.locked) {
+        continue;
+      }
+
+      // Chapter의 슬라이드들을 역순으로 검색
+      for (let slideIndex = lesson.slides - 1; slideIndex >= 0; slideIndex--) {
+        if (!isSlideLocked(lessonIndex, slideIndex)) {
+          return { lessonIndex, slideIndex };
+        }
+      }
+    }
+
+    return null; // 잠금 해제된 슬라이드가 없음
   };
 
   // 잠금 상태 저장 함수
@@ -1154,18 +1452,22 @@ ${content}
         }
       });
 
-      await azureBlobService.saveData('courseLockStatus', lockData);
-      console.log('🔒 Azure Blob Storage에 잠금 상태 저장 완료:', lockData);
+      // LocalStorage에 저장
+      localStorage.setItem('courseLockStatus', JSON.stringify(lockData));
+      console.log('🔒 잠금 상태 저장 완료:', lockData);
     } catch (error) {
-      console.error('❌ Azure Blob Storage 잠금 상태 저장 오류:', error);
+      console.error('❌ 잠금 상태 저장 오류:', error);
     }
   };
 
   // 잠금 상태 로드 함수
   const loadLockStatus = async () => {
     try {
-      const lockData = await azureBlobService.loadData('courseLockStatus');
-      if (lockData) {
+      // LocalStorage에서 잠금 상태 로드
+      const lockDataStr = localStorage.getItem('courseLockStatus');
+      if (lockDataStr) {
+        const lockData = JSON.parse(lockDataStr);
+
         // Chapter 잠금 상태 복원
         if (lockData.chapterLocks) {
           Object.keys(lockData.chapterLocks).forEach((lessonIndex) => {
@@ -1202,20 +1504,176 @@ ${content}
           });
         }
 
-        console.log('🔒 Azure Blob Storage에서 잠금 상태 로드 완료:', lockData);
+        console.log('🔒 LocalStorage에서 잠금 상태 로드 완료:', lockData);
       }
     } catch (error) {
-      console.error('❌ Azure Blob Storage 잠금 상태 로드 오류:', error);
+      console.error('❌ LocalStorage 잠금 상태 로드 오류:', error);
     }
   };
 
   // 잠금 상태 초기화 함수
   const clearLockStatus = async () => {
     try {
-      await azureBlobService.deleteData('courseLockStatus');
-      console.log('🔒 Azure Blob Storage 잠금 상태 초기화 완료');
+      localStorage.removeItem('courseLockStatus');
+      console.log('🔒 LocalStorage 잠금 상태 초기화 완료');
     } catch (error) {
-      console.error('❌ Azure Blob Storage 잠금 상태 초기화 오류:', error);
+      console.error('❌ LocalStorage 잠금 상태 초기화 오류:', error);
+    }
+  };
+
+  // ===== Firestore 연동: 잠금 상태 원격 저장/로드 =====
+  const db = appDb; // 환경에 따라 null일 수 있으므로 호출부에서 검사
+
+  const setCurrentCourseId = (courseId: string) => {
+    if (courseId && typeof courseId === 'string') {
+      currentCourseId.value = courseId;
+      console.log('📌 currentCourseId 설정:', currentCourseId.value);
+    }
+  };
+
+  const buildLockPayload = () => {
+    const lockData = {
+      chapterLocks: {} as { [key: number]: boolean },
+      slideLocks: {} as { [key: string]: boolean },
+      updatedAt: new Date().toISOString(),
+    };
+
+    lessons.value.forEach((lesson, lessonIndex) => {
+      if (!lesson) return;
+      if (lesson.locked === true) {
+        lockData.chapterLocks[lessonIndex] = true;
+      }
+      if (lesson.lockedSlides) {
+        Object.keys(lesson.lockedSlides).forEach((slideIndex) => {
+          const key = `${lessonIndex}-${slideIndex}`;
+          const slideLocked = lesson.lockedSlides![parseInt(slideIndex)];
+          if (slideLocked === true) {
+            lockData.slideLocks[key] = true;
+          }
+        });
+      }
+    });
+
+    return lockData;
+  };
+
+  const saveLockStatusToFirestore = async (courseId: string) => {
+    try {
+      if (!courseId || !db) return false;
+      const payload = buildLockPayload();
+      await setDoc(doc(db, 'locks', courseId), payload, { merge: true });
+      console.log('✅ Firestore 잠금 상태 저장 완료:', { courseId, ...payload });
+      return true;
+    } catch (error) {
+      console.error('❌ Firestore 잠금 상태 저장 실패:', error);
+      return false;
+    }
+  };
+
+  const loadLockStatusFromFirestore = async (courseId: string) => {
+    try {
+      if (!courseId || !db) return false;
+      const ref = doc(db, 'locks', courseId);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) {
+        console.log('ℹ️ Firestore 잠금 문서가 없습니다:', courseId);
+        return false;
+      }
+      const data = snap.data() as {
+        chapterLocks?: { [key: string]: boolean };
+        slideLocks?: { [key: string]: boolean };
+      };
+
+      // 초기화 후 반영
+      lessons.value.forEach((lesson) => {
+        if (!lesson) return;
+        lesson.locked = false;
+        lesson.lockedSlides = {};
+      });
+
+      if (data.chapterLocks) {
+        Object.keys(data.chapterLocks).forEach((key) => {
+          const lessonIndex = parseInt(key);
+          if (!isNaN(lessonIndex) && lessons.value[lessonIndex]) {
+            lessons.value[lessonIndex].locked = true;
+          }
+        });
+      }
+      if (data.slideLocks) {
+        Object.keys(data.slideLocks).forEach((pair) => {
+          const [li, si] = pair.split('-');
+          const lessonIndex = parseInt(li || '');
+          const slideIndex = parseInt(si || '');
+          if (!isNaN(lessonIndex) && !isNaN(slideIndex) && lessons.value[lessonIndex]) {
+            if (!lessons.value[lessonIndex].lockedSlides) {
+              lessons.value[lessonIndex].lockedSlides = {};
+            }
+            lessons.value[lessonIndex].lockedSlides![slideIndex] = true;
+          }
+        });
+      }
+
+      console.log('✅ Firestore 잠금 상태 로드 완료:', data);
+      return true;
+    } catch (error) {
+      console.error('❌ Firestore 잠금 상태 로드 실패:', error);
+      return false;
+    }
+  };
+
+  let unsubscribeLocks: (() => void) | null = null;
+
+  const subscribeLockStatus = (courseId: string) => {
+    try {
+      if (!courseId || !db) return;
+      const ref = doc(db, 'locks', courseId);
+      if (unsubscribeLocks) {
+        unsubscribeLocks();
+        unsubscribeLocks = null;
+      }
+      unsubscribeLocks = onSnapshot(ref, (snap) => {
+        if (!snap.exists()) {
+          console.log('ℹ️ 잠금 문서 없음 (실시간):', courseId);
+          return;
+        }
+        const data = snap.data() as {
+          chapterLocks?: { [key: string]: boolean };
+          slideLocks?: { [key: string]: boolean };
+        };
+
+        // 초기화 후 반영
+        lessons.value.forEach((lesson) => {
+          if (!lesson) return;
+          lesson.locked = false;
+          lesson.lockedSlides = {};
+        });
+
+        if (data.chapterLocks) {
+          Object.keys(data.chapterLocks).forEach((key) => {
+            const li = parseInt(key);
+            if (!isNaN(li) && lessons.value[li]) {
+              lessons.value[li].locked = true;
+            }
+          });
+        }
+        if (data.slideLocks) {
+          Object.keys(data.slideLocks).forEach((pair) => {
+            const [liStr, siStr] = pair.split('-');
+            const li = parseInt(liStr || '');
+            const si = parseInt(siStr || '');
+            if (!isNaN(li) && !isNaN(si) && lessons.value[li]) {
+              if (!lessons.value[li].lockedSlides) {
+                lessons.value[li].lockedSlides = {};
+              }
+              lessons.value[li].lockedSlides![si] = true;
+            }
+          });
+        }
+        console.log('🔔 실시간 잠금 상태 반영 완료:', data);
+      });
+      console.log('📡 잠금 상태 실시간 구독 시작:', courseId);
+    } catch (error) {
+      console.error('❌ 잠금 상태 실시간 구독 실패:', error);
     }
   };
 
@@ -1239,8 +1697,8 @@ ${content}
         files: fileList,
       };
 
-      // Azure Blob Storage에 저장
-      await azureBlobService.saveData('files.json', filesJson);
+      // LocalStorage에 저장
+      localStorage.setItem('files.json', JSON.stringify(filesJson));
 
       console.log('✅ files.json 업데이트 완료:', fileList.length, '개 파일');
       return true;
@@ -1455,8 +1913,8 @@ console.log('🎯 slide-${componentKey}.vue 컴포넌트 로드됨:', {
     }
   };
 
-  // 마크다운 파일 생성 함수
-  const createMarkdownFile = (componentKey: string, markdownContent: string) => {
+  // 마크다운 파일 생성 함수 (Firebase Storage + 다운로드)
+  const createMarkdownFile = async (componentKey: string, markdownContent: string) => {
     console.log('🎯 마크다운 파일 생성 시작:', {
       componentKey,
       contentLength: markdownContent.length,
@@ -1478,6 +1936,17 @@ ${markdownContent}
 *파일명: slide-${componentKey}.md*
 `;
 
+      // Firebase Storage에 저장
+      if (storage) {
+        try {
+          await saveSlideToFirebaseStorage(componentKey, mdContent);
+          console.log('✅ Firebase Storage에 마크다운 파일 저장 완료:', componentKey);
+        } catch (error) {
+          console.error('❌ Firebase Storage 저장 실패:', error);
+        }
+      }
+
+      // 로컬 다운로드도 제공
       const filename = `slide-${componentKey}.md`;
       const blob = new Blob([mdContent], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
@@ -1490,7 +1959,7 @@ ${markdownContent}
       URL.revokeObjectURL(url);
 
       console.log('✅ 마크다운 파일 생성 완료:', filename);
-      console.log('📁 파일을 src/components/slides/ 폴더에 저장해주세요.');
+      console.log('📁 Firebase Storage에 저장되었으며, 로컬 파일도 다운로드되었습니다.');
     } catch (error) {
       console.error('❌ 마크다운 파일 생성 오류:', error);
     }
@@ -1542,10 +2011,16 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
   // Local Storage 관련 함수들
   const loadFromLocalStorage = async () => {
     try {
-      // Azure Blob Storage 초기화 시도
-      await azureBlobService.initializeFromEnvironment();
+      // Firebase가 초기화되었는지 확인
+      const { firebaseApp } = await import('../firebase/config');
+      if (!firebaseApp) {
+        console.log('⚠️ Firebase가 초기화되지 않아 Azure Blob Storage 로드를 건너뜁니다.');
+        return;
+      }
 
-      const savedData = await azureBlobService.loadData('courseStore');
+      // LocalStorage에서 데이터 로드
+      const savedDataStr = localStorage.getItem('courseStore');
+      const savedData = savedDataStr ? JSON.parse(savedDataStr) : null;
       if (savedData) {
         currentLesson.value = savedData.currentLesson || 0;
         currentSlide.value = savedData.currentSlide || 0;
@@ -1579,13 +2054,14 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
           comments.value = savedData.comments;
         }
 
-        console.log('✅ Azure Blob Storage에서 데이터 로드 완료');
+        console.log('✅ LocalStorage에서 데이터 로드 완료');
       }
 
       // 잠금 상태 로드
       await loadLockStatus();
     } catch (error) {
-      console.error('❌ Azure Blob Storage 로드 오류:', error);
+      console.error('❌ LocalStorage 로드 오류:', error);
+      // 에러가 발생해도 앱이 계속 작동하도록 함
     }
   };
 
@@ -1606,20 +2082,21 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
         timestamp: new Date().toISOString(),
       };
 
-      await azureBlobService.saveData('courseStore', dataToSave);
-      console.log('✅ Azure Blob Storage 저장 완료');
+      localStorage.setItem('courseStore', JSON.stringify(dataToSave));
+      console.log('✅ LocalStorage 저장 완료');
     } catch (error) {
-      console.error('❌ Azure Blob Storage 저장 오류:', error);
+      console.error('❌ LocalStorage 저장 오류:', error);
+      // 에러가 발생해도 앱이 계속 작동하도록 함
     }
   };
 
   const clearLocalStorage = async () => {
     try {
-      await azureBlobService.deleteData('courseStore');
-      await azureBlobService.deleteData('courseLockStatus');
-      console.log('✅ Azure Blob Storage 클리어 완료');
+      localStorage.removeItem('courseStore');
+      localStorage.removeItem('courseLockStatus');
+      console.log('✅ LocalStorage 클리어 완료');
     } catch (error) {
-      console.error('❌ Azure Blob Storage 클리어 오류:', error);
+      console.error('❌ LocalStorage 클리어 오류:', error);
     }
   };
 
@@ -1894,15 +2371,31 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     // MD 파일 덮어쓰기 함수
     overwriteSlideContentToMD,
 
+    // Firebase Storage 관련 함수들
+    saveSlideToFirebaseStorage,
+    loadSlideFromFirebaseStorage,
+    listAllSlidesFromFirebase,
+    deleteSlideFromFirebaseStorage,
+
     // 잠금 관련 함수들
     toggleChapterLock,
     toggleSlideLock,
     isChapterLocked,
     isSlideLocked,
     canNavigateToSlide,
+    findNextUnlockedSlide,
+    findPrevUnlockedSlide,
+    findFirstUnlockedSlide,
+    findLastUnlockedSlide,
     saveLockStatus,
     loadLockStatus,
     clearLockStatus,
+
+    // Firestore 연동 함수
+    setCurrentCourseId,
+    saveLockStatusToFirestore,
+    loadLockStatusFromFirestore,
+    subscribeLockStatus,
 
     // files.json 업데이트 함수
     updateFilesJson,

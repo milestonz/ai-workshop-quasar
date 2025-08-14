@@ -443,7 +443,12 @@ body {
 .timeline-summary h3 {
   color: #2e7d32;
   font-size: 1.5em;
-  margin-bottom: 15px;
+  margin-bottom: 0;
+}
+
+/* h3 바로 다음 목록의 상단 여백 제거 */
+.timeline-summary h3 + ul {
+  margin-top: 0;
 }
 
 .timeline-summary p {

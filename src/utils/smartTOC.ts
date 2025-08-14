@@ -163,7 +163,7 @@ export const parseFileName = (fileName: string): { section: number; slide: numbe
   if (match) {
     return {
       section: parseInt(match[1] || '0', 10),
-      slide: parseInt(match[2] || '0', 10),
+      slide: parseInt(match[2] || '0', 10), // 실제 파일명의 번호를 그대로 사용
     };
   }
   return null;

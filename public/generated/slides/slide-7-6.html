@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Best Example: 무엇이 최고인가?</title>
+  <title>4. 박성민 목사: 성경공부 교재 제작</title>
   <style>
       
       * {
@@ -59,49 +59,62 @@
       }
 
       /* 코드 블록 스타일 */
-.code-block-wrapper {
-    position: relative;
-    margin: 16px 0;
-}
+      .code-block-wrapper {
+          position: relative;
+          margin: 16px 0;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #1e293b;
+          border: 1px solid #334155;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-pre {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 16px;
-    padding-right: 48px; /* 복사 버튼을 위한 여백 */
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 0;
-    border: 1px solid #334155;
-}
+      pre {
+          background: #1e293b;
+          color: #e2e8f0;
+          padding: 16px;
+          padding-right: 48px; /* 복사 버튼을 위한 여백 */
+          border-radius: 8px;
+          overflow-x: auto;
+          margin: 0;
+          border: none;
+          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          font-size: 14px;
+          line-height: 1.5;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+      }
 
-.copy-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: #2563eb;
-    border: none;
-    color: white;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    z-index: 10;
-}
+      .copy-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: #3b82f6;
+          border: none;
+          color: white;
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          z-index: 10;
+      }
 
-.copy-button:hover {
-    background: #1d4ed8;
-}
+      .copy-button:hover {
+          background: #2563eb;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
 
-.copy-button:active {
-    background: #1e40af;
-}
+      .copy-button:active {
+          background: #1e40af;
+          transform: translateY(0);
+      }
 
-.copy-button.copied {
-    background: #059669;
-}
+      .copy-button.copied {
+          background: #10b981;
+      }
 
       code {
           font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
@@ -115,6 +128,47 @@ pre {
           padding: 2px 6px;
           border-radius: 4px;
           font-size: 0.9em;
+      }
+
+      /* 이미지 스타일링 */
+      .slide-image {
+          max-width: 100%;
+          height: auto;
+          border-radius: 12px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+          margin: 20px 0;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .slide-image:hover {
+          transform: scale(1.02);
+          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 프로필 이미지 특별 스타일 */
+      .profile-image {
+          max-width: 300px;
+          max-height: 400px;
+          border-radius: 20px;
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+          border: 4px solid rgba(255, 255, 255, 0.3);
+      }
+
+      /* 이미지가 포함된 슬라이드의 레이아웃 */
+      .image-slide {
+          text-align: center;
+      }
+
+      .image-slide h1 {
+          margin-bottom: 30px;
+      }
+
+      .image-slide h2 {
+          margin-bottom: 25px;
+          color: #666;
       }
 
       /* 투표 옵션 스타일 */
@@ -168,8 +222,26 @@ pre {
           h3 {
               font-size: 1.8rem;
               color: #3730a3;
-              margin-bottom: 20px;
+              margin-bottom: 8px;
               font-weight: 500;
+          }
+
+          /* 이미지 스타일링 */
+          .slide-image {
+              max-width: 100%;
+              height: auto;
+              border-radius: 12px;
+              box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+              margin: 20px 0;
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          .slide-image:hover {
+              transform: scale(1.02);
+              box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
           }
       
 
@@ -209,32 +281,41 @@ pre {
       .slide-container > * {
           animation: slideIn 0.6s ease forwards;
       }
+
+      /* 슬라이드 번호 스타일 */
+      .slide-number {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 500;
+          z-index: 1000;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
   </style>
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>Best Example: 무엇이 최고인가?</h1>
+      <h1>4. 박성민 목사: 성경공부 교재 제작</h1>
 
-<ul>
-<li><strong>무엇이 최고인가?</strong></li>
-<li><strong>역할 부여:</strong> AI에게 명확한 페르소나를 부여하여 전문성을 극대화했습니다.</li>
-<li><strong>깊이 있는 질문:</strong> 단순 정보가 아닌, 신학적 '통찰'을 요구했습니다.</li>
-<li><strong>구체적인 맥락 제공:</strong> '우리 교회 성도들', '40-60대' 등 청중에 대한 정보를 주어 답변을 개인화했습니다.</li>
-<li><strong>대화형 접근:</strong> 한 번에 끝내지 않고, AI의 답변을 바탕으로 생각을 발전시켜 나갑니다.</li>
-<li><strong>적용점 구체화:</strong> '도전 과제'처럼 삶의 변화로 이어질 수 있는 구체적인 결과물을 요구했습니다.</li>
-</ul>
+<p><strong>핵심: 텍스트 생성을 넘어 시각 자료로 완성하기</strong></p>
 
-<ul>
-<li><strong>예상되는 AI 결과물:</strong></li>
-<li>역사적 배경에 대한 깊이 있는 통찰과, 실제 성도들의 삶에 와닿는 비유, 그리고 실천적인 적용점이 완벽하게 통합된 <strong>'나만을 위한 맞춤형 설교 아이디어'</strong>가 탄생합니다.</li>
-</ul>
+<p><strong>적용:</strong></p>
 
-<ul>
-<li><strong>결론/핵심:</strong></li>
-<li><strong>AI가 목회자를 대체하는 것이 아니라, 목회자의 신학적 사고와 창의성을 증폭시키는 최고의 파트너가 됩니다.</strong> AI의 잠재력을 100% 활용하며, 동시에 목회자 고유의 역할과 권위를 굳건히 지키는 가장 이상적인 방법입니다.</li>
-</ul>
+<p><strong>ChatGPT/Claude:</strong></p>
+<p>로마서 8장을 주제로 한 토론형 질문과 단계별 학습 내용을 생성합니다.</p>
 
-      </div>
+<p><strong>Gamma:</strong></p>
+<p>생성된 텍스트를 그대로 Gamma에 붙여넣기만 하면, 이미지와 디자인이 포함된 웹 기반의 인터랙티브 교재가 자동으로 완성되는 과정을 시연합니다.</p>
+
+  </div>
+
+  <div class="slide-number" id="slideNumber"></div>
 
     <script>
       // 키보드 네비게이션
@@ -267,6 +348,58 @@ pre {
       });
       
 
+      // 슬라이드 번호 계산 및 표시
+      function updateSlideNumber() {
+          const slideNumberElement = document.getElementById('slideNumber');
+          if (slideNumberElement) {
+              // 현재 파일명에서 슬라이드 번호 추출
+              const currentPath = window.location.pathname;
+              const fileName = currentPath.split('/').pop();
+              const match = fileName.match(new RegExp('slide-(\\d+)-(\\d+)\\.html'));
+
+              if (match) {
+                  const chapter = parseInt(match[1]);
+                  const slide = parseInt(match[2]);
+
+                  // 전체 슬라이드 목록에서 현재 위치 찾기
+                  const slideList = [
+                      // Chapter 0
+                      ...Array.from({length: 27}, (_, i) => ({chapter: 0, slide: i})),
+                      // Chapter 1
+                      ...Array.from({length: 6}, (_, i) => ({chapter: 1, slide: i})),
+                      // Chapter 2
+                      ...Array.from({length: 10}, (_, i) => ({chapter: 2, slide: i})),
+                      // Chapter 3
+                      ...Array.from({length: 14}, (_, i) => ({chapter: 3, slide: i})),
+                      // Chapter 4
+                      ...Array.from({length: 9}, (_, i) => ({chapter: 4, slide: i})),
+                      // Chapter 5
+                      ...Array.from({length: 53}, (_, i) => ({chapter: 5, slide: i})),
+                      // Chapter 6
+                      ...Array.from({length: 10}, (_, i) => ({chapter: 6, slide: i})),
+                      // Chapter 7
+                      ...Array.from({length: 23}, (_, i) => ({chapter: 7, slide: i})),
+                      // Chapter 8
+                      ...Array.from({length: 24}, (_, i) => ({chapter: 8, slide: i})),
+                      // Chapter 9
+                      ...Array.from({length: 9}, (_, i) => ({chapter: 9, slide: i})),
+                      // Chapter 10
+                      ...Array.from({length: 10}, (_, i) => ({chapter: 10, slide: i}))
+                  ];
+
+                  const currentIndex = slideList.findIndex(item =>
+                      item.chapter === chapter && item.slide === slide
+                  );
+
+                  if (currentIndex !== -1) {
+                      slideNumberElement.textContent = (currentIndex + 1) + ' / ' + slideList.length;
+                  } else {
+                      slideNumberElement.textContent = chapter + '-' + slide;
+                  }
+              }
+          }
+      }
+
       // 로드 애니메이션
       window.addEventListener('load', function() {
           document.body.style.opacity = '0';
@@ -274,12 +407,52 @@ pre {
           setTimeout(() => {
               document.body.style.opacity = '1';
           }, 100);
+
+          // 슬라이드 번호 업데이트
+          updateSlideNumber();
       });
 
             // 코드 복사 기능
-                  function copyCode(button) {
-          
-      }
+            function copyCode(button) {
+                const codeBlock = button.previousElementSibling;
+                const code = codeBlock.textContent;
+
+                // 클립보드에 복사
+                navigator.clipboard.writeText(code).then(function() {
+                    // 복사 성공 시 버튼 텍스트 변경
+                    const originalText = button.textContent;
+                    button.textContent = '복사됨!';
+                    button.style.backgroundColor = '#10b981';
+                    button.style.color = 'white';
+
+                    // 2초 후 원래 텍스트로 복원
+                    setTimeout(function() {
+                        button.textContent = originalText;
+                        button.style.backgroundColor = '';
+                        button.style.color = '';
+                    }, 2000);
+                }).catch(function(err) {
+                    // 복사 실패 시 대체 방법 사용
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+
+                    // 성공 메시지 표시
+                    const originalText = button.textContent;
+                    button.textContent = '복사됨!';
+                    button.style.backgroundColor = '#10b981';
+                    button.style.color = 'white';
+
+                    setTimeout(function() {
+                        button.textContent = originalText;
+                        button.style.backgroundColor = '';
+                        button.style.color = '';
+                    }, 2000);
+                });
+            }
 
       
     </script>

@@ -5,9 +5,9 @@
       <p>{{ error }}</p>
     </div>
     <div v-else-if="slideUrl" class="slide-iframe-container">
-      <iframe 
-        :src="slideUrl" 
-        class="slide-iframe" 
+      <iframe
+        :src="slideUrl"
+        class="slide-iframe"
         @load="onIframeLoad"
         @error="onIframeError"
       ></iframe>
@@ -49,27 +49,30 @@ const onIframeLoad = () => {
 };
 
 const onIframeError = (event: Event) => {
-  error.value = '슬라이드 로딩 중 오류가 발생했습니다.';
-  slideLog.error('슬라이드 로딩 중 오류 발생:', event);
+  error.value = `슬라이드 ${props.slideNumber} 로딩 중 오류가 발생했습니다.`;
+  slideLog.error(`슬라이드 ${props.slideNumber} 로딩 중 오류 발생:`, event);
   isLoading.value = false;
 };
 
-watch(() => props.slideNumber, (newSlideNumber) => {
-  if (newSlideNumber) {
-    isLoading.value = true;
-    error.value = '';
-    slideLog.log(`🔄 iframe URL 변경: ${slideUrl.value}`);
-    
-    // 3초 후에도 로딩이 안 되면 로딩 상태 해제
-    setTimeout(() => {
-      if (isLoading.value) {
-        isLoading.value = false;
-        slideLog.log('⚠️ 슬라이드 로딩 시간 초과');
-      }
-    }, 3000);
-  }
-}, { immediate: true });
+watch(
+  () => props.slideNumber,
+  (newSlideNumber) => {
+    if (newSlideNumber) {
+      isLoading.value = true;
+      error.value = '';
+      slideLog.log(`🔄 iframe URL 변경: ${slideUrl.value}`);
 
+      // 3초 후에도 로딩이 안 되면 로딩 상태 해제
+      setTimeout(() => {
+        if (isLoading.value) {
+          isLoading.value = false;
+          slideLog.log('⚠️ 슬라이드 로딩 시간 초과');
+        }
+      }, 3000);
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style scoped>
