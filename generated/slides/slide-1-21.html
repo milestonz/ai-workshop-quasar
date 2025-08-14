@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>요즘 AI (Claude)</title>
+  <style>
+      
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+          color: #333;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          position: relative;
+      }
+
+      .slide-container {
+          backdrop-filter: blur(15px);
+          border-radius: 25px;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+          padding: 60px;
+          max-width: 1000px;
+          width: 100%;
+          position: relative;
+          z-index: 10;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      /* 기본 텍스트 스타일 */
+      p {
+          font-size: 20px;
+          line-height: 1.6;
+          margin-bottom: 10px;
+      }
+
+      li {
+          font-size: 20px;
+          line-height: 1.6;
+          margin-bottom: 8px;
+      }
+
+      h1, h2, h3, h4 {
+          margin-bottom: 5px;
+      }
+
+      h4 {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 1.4;
+      }
+
+      /* 코드 블록 스타일 */
+      .code-block-wrapper {
+          position: relative;
+          margin: 16px 0;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #1e293b;
+          border: 1px solid #334155;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      pre {
+          background: #1e293b;
+          color: #e2e8f0;
+          padding: 16px;
+          padding-right: 48px; /* 복사 버튼을 위한 여백 */
+          border-radius: 8px;
+          overflow-x: auto;
+          margin: 0;
+          border: none;
+          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          font-size: 14px;
+          line-height: 1.5;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+      }
+
+      .copy-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: #3b82f6;
+          border: none;
+          color: white;
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          z-index: 10;
+      }
+
+      .copy-button:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+      .copy-button:active { background: #1e40af; transform: translateY(0); }
+      .copy-button.copied { background: #10b981; }
+
+      code { font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; font-size: 14px; line-height: 1.5; }
+      p code { background: #f1f5f9; color: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+
+      /* 마크다운 테이블 기본 스타일 */
+      .md-table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; }
+      .md-table th, .md-table td { border: 1px solid #e5e7eb; padding: 10px 12px; font-size: 16px; }
+      .md-table thead th { background: #f8fafc; font-weight: 700; }
+      .md-table tbody tr:nth-child(even) { background: #f9fafb; }
+
+      /* 대화 박스(""" ... """) */
+      .dialog-box {
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        border-left: 6px solid #3b82f6;
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin: 16px 0;
+        box-shadow: 0 6px 18px rgba(0,0,0,.06);
+      }
+      .dialog-box p { margin: 6px 0; line-height: 1.6; }
+
+      /* 이미지 스타일링 */
+      .slide-image { max-width:100%; height:auto; border-radius:12px; box-shadow: 0 8px 25px rgba(0,0,0,.15); margin:20px auto; display:block; transition: transform .3s ease, box-shadow .3s ease; }
+      .slide-image:hover { transform: scale(1.02); box-shadow: 0 12px 35px rgba(0,0,0,.2); }
+
+      .image-slide { text-align:center; }
+      .image-slide h1 { margin-bottom:30px; }
+      .image-slide h2 { margin-bottom:25px; color:#666; }
+
+      /* 투표 옵션 기본(비-poll 템플릿 보완) */
+      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
+      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
+      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+
+      /* URL 링크 스타일 */
+      .url-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white !important;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 8px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        word-break: break-all;
+      }
+      .url-link:hover {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        text-decoration: none;
+        color: white !important;
+      }
+      .url-link:active {
+        transform: translateY(0);
+      }
+
+  
+      
+          body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+          .slide-container { background: rgba(255, 255, 255, 0.95); }
+          h1 { font-size: 3rem; color: #1e40af; margin-bottom: 10px; font-weight: 700; text-align: center; }
+          h2 { font-size: 2.5rem; color: #2563eb; margin-bottom: 25px; font-weight: 600; }
+          h3 { font-size: 1.8rem; color: #3730a3; margin-bottom: 8px; font-weight: 500; }
+      
+
+      /* 반응형 추가 스타일 */
+      @media (max-width: 768px) {
+          h1 { font-size: 2.2rem; }
+          h2 { font-size: 1.8rem; }
+          h3 { font-size: 1.4rem; }
+          .slide-container { padding: 40px 25px; }
+      }
+
+      @media (max-width: 480px) {
+          h1 { font-size: 1.8rem; }
+          h2 { font-size: 1.4rem; }
+          h3 { font-size: 1.2rem; }
+          .slide-container { padding: 30px 20px; }
+      }
+
+      /* 접근성 */
+      .slide-container:focus {
+          outline: 3px solid #3b82f6;
+          outline-offset: 5px;
+      }
+
+      /* 애니메이션 */
+      @keyframes slideIn {
+          from {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      .slide-container > * {
+          animation: slideIn 0.6s ease forwards;
+      }
+
+      /* 슬라이드 번호 스타일 */
+      .slide-number { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,.7); color:#fff; padding:8px 12px; border-radius:20px; font-size:14px; z-index:1000; }
+
+      /* 자유 입력 필드 (poll) */
+      .poll-free { margin: 30px 0; display:flex; gap:10px; justify-content:center; }
+      .poll-free input[type="text"], .poll-free textarea { width: 100%; max-width: 520px; padding: 14px 16px; border-radius: 12px; border: 2px solid #f59e0b; font-size: 1rem; }
+      .poll-free button { padding: 12px 18px; border-radius: 12px; border: 0; background:#f59e0b; color:white; font-weight:700; cursor:pointer; }
+  </style>
+</head>
+<body class="general-slide">
+  <div class="slide-container" tabindex="0">
+      <h1>요즘 AI (Claude)</h1>
+
+<h3>할루시네이션이 상당히 줄어듬</h3>
+
+
+                <div class="code-block-wrapper">
+                  <pre><code>할루시네이션 사례로 요한복음 4장에서 예수님과 니고데모의 대화를 만들어줘.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
+
+
+                <div class="code-block-wrapper">
+                  <pre><code>할루시네이션 사례: AI가 만들어낼 수 있는 잘못된 설명
+⚠️ 주의: 다음은 의도적으로 만든 할루시네이션 사례입니다
+
+AI가 생성할 수 있는 잘못된 설명 예시:
+"요한복음 4장의 예수님과 니고데모 대화 분석"
+
+요한복음 4장 15-25절에서 니고데모는 사마리아 지역을 여행하던 중 야곱의 우물에서 예수님을 다시 만났습니다. 이전 3장에서의 밤 대화와 달리, 이번에는 대낮에 공개적으로 만난 것이 특징입니다.
+
+니고데모가 "선생님, 당신이 말씀하신 거듭남에 대해 더 알고 싶습니다"라고 묻자, 예수님은 우물물을 가리키며 "이 물을 마시는 자마다 다시 목마르거니와 내가 주는 물을 마시는 자는 영원히 목마르지 아니하리니"라고 답하셨습니다.
+
+니고데모는 이 말씀을 듣고 "그런 물을 제게 주소서"라고 간청했고, 예수님은 그의 과거 율법주의적 삶에 대해 지적하시며 참된 예배에 대해 가르치셨습니다...
+
+이 할루시네이션의 문제점 분석
+
+1. 인물 혼동
+   실제: 요한복음 4장은 사마리아 여인과의 대화
+   할루시네이션: 니고데모가 등장한다고 잘못 설명
+
+2. 장소 혼동
+   실제: 니고데모는 밤에 예수님을 찾아왔음 (요 3:2)
+   할루시네이션: 사마리아 우물가에서 만났다고 조작
+
+3. 대화 내용 조합
+   사마리아 여인의 대화("생수를 달라")를 니고데모의 입에 넣음
+   두 개의 다른 사건을 억지로 연결
+
+4. 가짜 성경 구절
+   존재하지 않는 구절 번호 제시 (4장 15-25절)
+   실제 성경 말씀을 변형하여 인용
+   목회자가 이런 할루시네이션을 사용할 때의 위험
+
+5. 설교 준비 시
+   ❌ "요한복음 4장에서 니고데모가 깨달은 영적 갈증..."
+   ✅ "요한복음 4장에서 사마리아 여인이 깨달은 영적 갈증..."
+
+6. 성경공부 인도 시
+   잘못된 인물과 사건 연결로 혼란 야기
+   평신도들의 성경 이해에 장기적 악영향
+
+7. 신학적 해석 시
+   니고데모의 특성(지식인, 바리새인)과 사마리아 여인의 특성(소외계층, 이방인)을 혼동
+   전혀 다른 신학적 메시지 전달
+   교육적 활용 방안
+   이런 할루시네이션 사례를 통해 교육할 수 있는 점들:
+
+성경 기본기의 중요성 - 인물, 장소, 시간의 정확한 구분
+AI 의존의 위험성 - 반드시 성경 원문으로 검증 필요
+비판적 사고력 - AI 답변의 그럴듯함에 속지 않기
+목회자의 책임 - 정확한 말씀 전달에 대한 사명감
+
+이처럼 할루시네이션은 매우 정교하고 그럴듯하게 만들어지기 때문에,
+목회자들은 항상 성경 원문과 신뢰할 수 있는 주석으로 검증하는 습관을 가져야 합니다.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
+
+  </div>
+
+  <div class="slide-number" id="slideNumber"></div>
+
+    <script>
+      // 키보드 네비게이션 → 부모로 전달하여 앱 라우팅과 동기화
+      document.addEventListener('keydown', function(e) {
+          switch(e.key) {
+              case 'ArrowRight':
+              case 'ArrowDown':
+              case 'PageDown':
+              case ' ': // Space
+                  try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
+                  break;
+              case 'ArrowLeft':
+              case 'ArrowUp':
+              case 'PageUp':
+                  try { window.parent && window.parent.postMessage({ type: 'slide-prev' }, '*'); } catch(_) {}
+                  break;
+              case 'Home':
+                  try { window.parent && window.parent.postMessage({ type: 'slide-first' }, '*'); } catch(_) {}
+                  break;
+              case 'End':
+                  try { window.parent && window.parent.postMessage({ type: 'slide-last' }, '*'); } catch(_) {}
+                  break;
+          }
+      });
+
+      // 클릭으로 다음 슬라이드(링크/코드/복사 버튼 제외) → 부모에 위임
+      
+      document.querySelector('.slide-container').addEventListener('click', function(e) {
+          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) return;
+          if (e.target.closest('a')) return; // 링크는 기본 동작 유지
+          try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
+      });
+      
+
+      // 슬라이드 번호 계산 및 표시 (기존 유지)
+      function updateSlideNumber() {
+          const el = document.getElementById('slideNumber');
+          if (!el) return;
+          const currentPath = window.location.pathname;
+          const fileName = currentPath.split('/').pop();
+          const match = fileName && fileName.match(new RegExp('slide-(\d+)-(\d+)\.html'));
+          if (match) {
+              el.textContent = match[1] + '-' + match[2];
+          }
+      }
+      window.addEventListener('load', function() {
+          document.body.style.opacity = '0';
+          document.body.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => {
+              document.body.style.opacity = '1';
+          }, 100);
+
+          // 슬라이드 번호 업데이트
+          updateSlideNumber();
+
+          // 모든 링크를 새 탭으로 열도록 보장
+          try {
+            document.querySelectorAll('a').forEach(function(a){
+              a.setAttribute('target','_blank');
+              a.setAttribute('rel','noopener noreferrer');
+            });
+          } catch (_) {}
+      });
+
+            // 코드 복사 기능
+            function copyCode(button) {
+                const codeBlock = button.previousElementSibling;
+                const code = codeBlock.textContent;
+                navigator.clipboard.writeText(code).then(function() {
+                    const originalText = button.textContent;
+                    button.textContent = '복사됨!';
+                    button.style.backgroundColor = '#10b981';
+                    setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor = ''; }, 2000);
+                }).catch(function(err) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code; document.body.appendChild(textArea); textArea.select(); document.execCommand('copy'); document.body.removeChild(textArea);
+                    const originalText = button.textContent; button.textContent = '복사됨!'; button.style.backgroundColor = '#10b981'; setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor=''; }, 2000);
+                });
+            }
+
+      
+    </script>
+    
+</body>
+</html>

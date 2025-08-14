@@ -1,0 +1,501 @@
+/* ===============================================
+   General Type Slide Template CSS
+   Korean Content Presentation Layout
+   =============================================== */
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Disable animations for body and main containers */
+body,
+.slide-container,
+.header-section,
+.content-section,
+.content-list,
+.content-item {
+  animation: none !important;
+  transition: none !important;
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', '굴림', Arial, sans-serif;
+  background: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 0;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ===============================================
+   Main Container
+   =============================================== */
+
+.slide-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===============================================
+   Header Section with Geometric Design
+   =============================================== */
+
+.header-section {
+  position: relative;
+  height: 220px;
+  background: linear-gradient(135deg, #2d7d6e 0%, #4a9d8e 70%, #7bc4a8 100%);
+  overflow: hidden;
+}
+
+/* Geometric Shape */
+.header-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 220px 150px;
+  border-color: transparent transparent #7bc4a8 transparent;
+}
+
+.header-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 150px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 220px 100px;
+  border-color: transparent transparent #a8d5c8 transparent;
+}
+
+/* Category Badge */
+.category-badge {
+  position: absolute;
+  top: 30px;
+  left: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-size: 0.9em;
+  font-weight: 600;
+  z-index: 10;
+}
+
+/* ===============================================
+   Main Title
+   =============================================== */
+
+.main-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+}
+
+.title-text {
+  font-size: 3.5em;
+  font-weight: 700;
+  color: #1a472a;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+  line-height: 1.2;
+  margin-bottom: 15px;
+}
+
+.title-emoji {
+  font-size: 1.2em;
+  margin-right: 15px;
+}
+
+.subtitle {
+  font-size: 1.3em;
+  color: #2d5f4f;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* ===============================================
+   Content Section
+   =============================================== */
+
+.content-section {
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.content-group {
+  background: #e8e9ea;
+  border-radius: 15px;
+  padding: 45px 55px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.content-group:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.group-title {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #1a472a;
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #7bc4a8;
+  display: inline-block;
+}
+
+.group-subtitle {
+  font-size: 1.1em;
+  color: #2d5f4f;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* ===============================================
+   Content List
+   =============================================== */
+
+.content-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.content-item {
+  margin-bottom: 20px;
+  padding-left: 30px;
+  position: relative;
+  font-size: 1.15em;
+  color: #2d4a3a;
+  line-height: 1.7;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.content-item:last-child {
+  margin-bottom: 0;
+}
+
+.content-item:hover {
+  color: #1a472a;
+  transform: translateX(8px);
+}
+
+/* Bullet Points */
+.content-item::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #2d7d6e;
+  font-size: 1.8em;
+  font-weight: bold;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.content-item:hover::before {
+  color: #1a472a;
+  transform: scale(1.3);
+}
+
+/* ===============================================
+   Content Structure (for generated HTML)
+   =============================================== */
+
+.content {
+  color: #000 !important;
+  font-size: 1.4em !important;
+  line-height: 1.6;
+  font-family: 'Nanum Gothic', '나눔고딕', sans-serif;
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.content p {
+  color: #000 !important;
+  font-size: 1.4em !important;
+  margin-bottom: 1em;
+}
+
+.content ul {
+  color: #000 !important;
+  font-size: 1.4em !important;
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.content li {
+  color: #000 !important;
+  font-size: 1.4em !important;
+  margin-bottom: 0.5em;
+}
+
+.content h3 {
+  color: #000 !important;
+  font-size: 1.6em !important;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+/* h3 바로 다음 목록의 상단 여백 제거 (마진 겹침 방지) */
+.content h3 + ul {
+  margin-top: 0;
+}
+
+.content h4 {
+  color: #000 !important;
+  font-size: 1.4em !important;
+  margin-bottom: 0.8em;
+  font-weight: 600;
+}
+
+/* Special styling for emphasized text */
+.content-item strong {
+  color: #1a472a;
+  font-weight: 700;
+  background: linear-gradient(120deg, rgba(123, 196, 168, 0.3) 0%, rgba(123, 196, 168, 0.1) 100%);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* English text styling */
+.english-text {
+  font-style: italic;
+  color: #4a6b5a;
+  font-size: 0.95em;
+  margin-left: 8px;
+}
+
+/* Question list special styling */
+.question-list .content-item {
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15px 15px 15px 30px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 4px solid #7bc4a8;
+}
+
+.question-list .content-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* ===============================================
+   Animation Effects
+   =============================================== */
+
+.fade-in {
+  animation: none !important;
+}
+
+.slide-up {
+  animation: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sequential Animation Delays - DISABLED */
+.content-group:nth-child(1),
+.content-group:nth-child(2),
+.content-item:nth-child(1),
+.content-item:nth-child(2),
+.content-item:nth-child(3),
+.content-item:nth-child(4),
+.content-item:nth-child(5),
+.content-item:nth-child(6) {
+  animation-delay: 0s !important;
+  animation: none !important;
+}
+
+/* ===============================================
+   Responsive Design
+   =============================================== */
+
+@media (max-width: 1024px) {
+  .content-section {
+    padding: 60px 40px;
+    gap: 40px;
+  }
+
+  .content-group {
+    padding: 35px 45px;
+  }
+
+  .title-text {
+    font-size: 3em;
+  }
+
+  .content-item {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-section {
+    height: 180px;
+  }
+
+  .header-section::before {
+    border-width: 0 0 180px 120px;
+  }
+
+  .header-section::after {
+    right: 120px;
+    border-width: 0 0 180px 80px;
+  }
+
+  .title-text {
+    font-size: 2.5em;
+  }
+
+  .subtitle {
+    font-size: 1.1em;
+  }
+
+  .content-section {
+    padding: 40px 30px;
+    gap: 30px;
+  }
+
+  .content-group {
+    padding: 30px 35px;
+  }
+
+  .content-item {
+    font-size: 1.05em;
+    padding-left: 25px;
+  }
+
+  .category-badge {
+    left: 30px;
+    top: 20px;
+    font-size: 0.8em;
+    padding: 6px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-section {
+    height: 150px;
+  }
+
+  .header-section::before {
+    border-width: 0 0 150px 100px;
+  }
+
+  .header-section::after {
+    right: 100px;
+    border-width: 0 0 150px 60px;
+  }
+
+  .title-text {
+    font-size: 2em;
+  }
+
+  .content-section {
+    padding: 30px 20px;
+  }
+
+  .content-group {
+    padding: 25px 30px;
+  }
+
+  .content-item {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .question-list .content-item {
+    padding: 12px 12px 12px 25px;
+  }
+}
+
+/* ===============================================
+   Print Styles
+   =============================================== */
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .slide-container {
+    box-shadow: none;
+    min-height: auto;
+  }
+
+  .header-section {
+    background: #2d7d6e !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .content-section {
+    padding: 40px 30px;
+  }
+
+  .content-group:hover,
+  .content-item:hover {
+    transform: none;
+  }
+}
+
+/* ===============================================
+   Accessibility
+   =============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===============================================
+   End of General Type Slide Template CSS
+   =============================================== */

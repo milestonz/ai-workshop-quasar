@@ -1,0 +1,811 @@
+/* ===============================================
+   Technique Slide Template CSS
+   Educational & Training Presentation Design
+   =============================================== */
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #3a3a3a !important;
+  color: #333;
+  height: 100vh;
+  padding: 60px 40px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+/* ===============================================
+   Slide Header
+   =============================================== */
+
+.slide-header {
+  background: linear-gradient(135deg, #003366, #005a9c);
+  color: white;
+  padding: 20px;
+  margin: -60px -40px 40px -40px;
+  position: relative;
+  text-align: center;
+}
+
+.slide-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+/* Header Variations */
+.slide-header.theme-blue {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+}
+
+.slide-header.theme-green {
+  background: linear-gradient(135deg, #166534, #22c55e);
+}
+
+.slide-header.theme-purple {
+  background: linear-gradient(135deg, #581c87, #a855f7);
+}
+
+.slide-header.theme-red {
+  background: linear-gradient(135deg, #991b1b, #ef4444);
+}
+
+.slide-header h1,
+.slide-header h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.slide-subtitle {
+  font-size: 1.2em;
+  opacity: 0.9;
+  font-weight: normal;
+}
+
+/* ===============================================
+   Content Area
+   =============================================== */
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.content.wide {
+  max-width: 1200px;
+}
+
+.content.narrow {
+  max-width: 700px;
+}
+
+/* ===============================================
+   Technique Components
+   =============================================== */
+
+/* Technique Number Badge */
+.technique-number {
+  background: #005a9c !important;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 4px 15px rgba(0, 90, 156, 0.3);
+  transition: all 0.3s ease;
+}
+
+.technique-number:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 90, 156, 0.4);
+}
+
+/* Number Badge Variations */
+.technique-number.level-1 {
+  background: #22c55e;
+}
+.technique-number.level-2 {
+  background: #3b82f6;
+}
+.technique-number.level-3 {
+  background: #f59e0b;
+}
+.technique-number.level-4 {
+  background: #ef4444;
+}
+.technique-number.level-5 {
+  background: #8b5cf6;
+}
+
+/* Technique Title */
+.technique-title {
+  font-size: 2em;
+  color: #003366;
+  margin-bottom: 30px;
+  border-bottom: 3px solid #005a9c;
+  padding-bottom: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.technique-title:hover {
+  color: #001a33;
+  border-bottom-color: #003366;
+}
+
+/* Description */
+.description {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  text-align: center;
+  color: #4a5568;
+  padding: 0 20px;
+}
+
+/* ===============================================
+   Example Containers
+   =============================================== */
+
+.example-container {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.example-container.vertical {
+  flex-direction: column;
+}
+
+.example-container.single {
+  justify-content: center;
+}
+
+/* Example Boxes */
+.example-box {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 6px solid;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.example-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Copy Icon */
+.example-box .copy-icon {
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  opacity: 0.8 !important;
+  z-index: 100 !important;
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.example-box .copy-icon:hover {
+  opacity: 1 !important;
+  transform: scale(1.1) !important;
+  background: rgba(255, 255, 255, 1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.example-box .copy-icon img {
+  width: 18px !important;
+  height: 18px !important;
+  transition: all 0.3s ease !important;
+}
+
+.example-box .copy-icon:hover img {
+  transform: scale(1.1) !important;
+}
+
+.example-box .copy-icon.copied {
+  background: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+.example-box .copy-icon.copied img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Bad Example Copy Icon */
+.bad-example .copy-icon {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(198, 40, 40, 0.3) !important;
+}
+
+.bad-example .copy-icon:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(198, 40, 40, 0.5) !important;
+}
+
+/* Good Example Copy Icon */
+.good-example .copy-icon {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(46, 125, 50, 0.3) !important;
+}
+
+.good-example .copy-icon:hover {
+  background: rgba(255, 255, 255, 1) !important;
+  border-color: rgba(46, 125, 50, 0.5) !important;
+}
+
+/* Bad Example */
+.bad-example {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2) !important;
+  border-left-color: #c62828;
+}
+
+.bad-example:hover {
+  background: linear-gradient(135deg, #ffcdd2, #ef9a9a) !important;
+}
+
+/* Good Example */
+.good-example {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9) !important;
+  border-left-color: #2e7d32;
+}
+
+.good-example:hover {
+  background: linear-gradient(135deg, #c8e6c9, #a5d6a7) !important;
+}
+
+/* Neutral Example */
+.neutral-example {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-left-color: #1976d2;
+}
+
+.neutral-example:hover {
+  background: linear-gradient(135deg, #bbdefb, #90caf9);
+}
+
+/* Warning Example */
+.warning-example {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-left-color: #f57c00;
+}
+
+.warning-example:hover {
+  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
+}
+
+/* Example Title */
+.example-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Example Content */
+.example-content {
+  font-size: 1em;
+  line-height: 1.5;
+  color: #2d3748;
+}
+
+.example-content code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* ===============================================
+   Key Point Section
+   =============================================== */
+
+.key-point {
+  background: linear-gradient(135deg, #fffde7, #fff9c4) !important;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #fbc02d;
+  margin: 25px 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.key-point:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(251, 192, 45, 0.2);
+}
+
+.key-point::before {
+  content: '💡';
+  font-size: 1.5em;
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: white;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+/* Key Point Variations */
+.key-point.tip::before {
+  content: '💡';
+}
+.key-point.warning::before {
+  content: '⚠️';
+}
+.key-point.info::before {
+  content: 'ℹ️';
+}
+.key-point.success::before {
+  content: '✅';
+}
+.key-point.error::before {
+  content: '❌';
+}
+
+.key-point.warning {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-color: #f57c00;
+}
+
+.key-point.info {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-color: #1976d2;
+}
+
+.key-point.success {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  border-color: #2e7d32;
+}
+
+.key-point.error {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  border-color: #c62828;
+}
+
+.key-title {
+  font-weight: bold;
+  color: #f57f17;
+  margin-bottom: 10px;
+  margin-left: 25px;
+  font-size: 1.1em;
+}
+
+.key-point.warning .key-title {
+  color: #e65100;
+}
+.key-point.info .key-title {
+  color: #0d47a1;
+}
+.key-point.success .key-title {
+  color: #1b5e20;
+}
+.key-point.error .key-title {
+  color: #b71c1c;
+}
+
+.key-content {
+  margin-left: 25px;
+  line-height: 1.6;
+}
+
+/* ===============================================
+   Additional Components
+   =============================================== */
+
+/* Step by Step Guide */
+.steps-container {
+  margin: 30px 0;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #6c757d;
+  transition: all 0.3s ease;
+}
+
+.step-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.step-number {
+  background: #6c757d;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2d3748;
+}
+
+.step-description {
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+/* Comparison Table */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.comparison-table th {
+  background: #f8f9fa;
+  font-weight: bold;
+  color: #2d3748;
+}
+
+.comparison-table tr:hover {
+  background: #f8f9fa;
+}
+
+/* Quote Section */
+.quote-section {
+  background: linear-gradient(135deg, #f7fafc, #edf2f7);
+  padding: 30px;
+  border-radius: 15px;
+  border-left: 6px solid #4299e1;
+  margin: 30px 0;
+  position: relative;
+}
+
+.quote-section::before {
+  content: '"';
+  font-size: 4em;
+  color: #4299e1;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  opacity: 0.3;
+}
+
+.quote-text {
+  font-size: 1.2em;
+  font-style: italic;
+  margin-left: 40px;
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+.quote-author {
+  text-align: right;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #4a5568;
+}
+
+/* ===============================================
+   Layout Variations
+   =============================================== */
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.three-column {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 30px 0;
+}
+
+/* ===============================================
+   Animation & Effects
+   =============================================== */
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Sequential Animation Delays */
+.example-box:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.example-box:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.example-box:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+/* ===============================================
+   Responsive Design
+   =============================================== */
+
+@media (max-width: 768px) {
+  body {
+    padding: 40px 20px;
+  }
+
+  .slide-header {
+    margin: -40px -20px 30px -20px;
+    padding: 20px 15px;
+  }
+
+  .slide-header h1,
+  .slide-header h2 {
+    font-size: 1.5em;
+  }
+
+  .technique-title {
+    font-size: 1.5em;
+  }
+
+  .example-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .example-box {
+    min-width: unset;
+  }
+
+  .two-column,
+  .three-column {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .step-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .comparison-table {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .slide-header {
+    margin: -20px -10px 20px -10px;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .technique-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+  }
+
+  .description {
+    font-size: 1em;
+    padding: 0 10px;
+  }
+
+  .quote-section {
+    padding: 20px 15px;
+  }
+
+  .quote-text {
+    margin-left: 20px;
+    font-size: 1.1em;
+  }
+}
+
+/* ===============================================
+   Print Styles
+   =============================================== */
+
+@media print {
+  body {
+    background: white;
+    padding: 20px;
+  }
+
+  .slide-header {
+    background: #003366 !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .example-container {
+    break-inside: avoid;
+  }
+
+  .key-point {
+    break-inside: avoid;
+  }
+
+  .example-box:hover,
+  .key-point:hover,
+  .step-item:hover {
+    transform: none;
+  }
+}
+
+/* ===============================================
+   Utility Classes
+   =============================================== */
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.p-1 {
+  padding: 0.5rem;
+}
+.p-2 {
+  padding: 1rem;
+}
+.p-3 {
+  padding: 1.5rem;
+}
+.p-4 {
+  padding: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+.highlight {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+}

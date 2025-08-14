@@ -1,0 +1,561 @@
+/* ===============================================
+   Quiz Choice Layout Template CSS
+   Modern Question & Answer Interface
+   =============================================== */
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #3a3a3a;
+  color: white;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===============================================
+   Main Quiz Container
+   =============================================== */
+
+.quiz-container {
+  max-width: 100vw;
+  width: 100%;
+  padding: 60px 40px;
+  text-align: center;
+  position: relative;
+}
+
+.quiz-container.wide {
+  max-width: 100vw;
+}
+
+.quiz-container.narrow {
+  max-width: 100vw;
+}
+
+/* ===============================================
+   Question Section
+   =============================================== */
+
+.question-section {
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.question-title {
+  font-size: 2.5em;
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.question-title .highlight {
+  color: #c4d626;
+  font-weight: 400;
+}
+
+.question-subtitle {
+  font-size: 3.5em;
+  font-weight: 300;
+  color: #e0e0e0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Decorative Lines */
+.question-section::before,
+.question-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #666, transparent);
+}
+
+.question-section::before {
+  top: -30px;
+}
+
+.question-section::after {
+  bottom: -30px;
+}
+
+/* ===============================================
+   Choices Section
+   =============================================== */
+
+.choices-section {
+  margin-bottom: 60px;
+}
+
+.choices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.choices-grid.two-column {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.choices-grid.four-column {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.choices-grid.single-column {
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 100%;
+  margin: 0 auto 40px auto;
+}
+
+/* ===============================================
+   Choice Buttons
+   =============================================== */
+
+.choice-button {
+  background: #c4d626;
+  color: #2a2a2a;
+  border: none;
+  border-radius: 12px;
+  padding: 24px 20px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(196, 214, 38, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.choice-button:hover {
+  background: #b8c423;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(196, 214, 38, 0.4);
+}
+
+.choice-button:active {
+  transform: translateY(-1px);
+}
+
+.choice-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(196, 214, 38, 0.5);
+}
+
+/* Choice Button Content */
+.choice-letter {
+  display: block;
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.choice-text {
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Ripple Effect */
+.choice-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition:
+    width 0.6s,
+    height 0.6s;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.choice-button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.choice-button .choice-letter,
+.choice-button .choice-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================================
+   Choice Button Variations
+   =============================================== */
+
+/* Selected State */
+.choice-button.selected {
+  background: #ffffff;
+  color: #2a2a2a;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.choice-button.selected:hover {
+  background: #f0f0f0;
+}
+
+/* Correct Answer */
+.choice-button.correct {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+}
+
+.choice-button.correct:hover {
+  background: #059669;
+}
+
+/* Wrong Answer */
+.choice-button.wrong {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+.choice-button.wrong:hover {
+  background: #dc2626;
+}
+
+/* Disabled State */
+.choice-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.choice-button:disabled:hover {
+  background: #c4d626;
+  transform: none;
+  box-shadow: 0 4px 15px rgba(196, 214, 38, 0.3);
+}
+
+/* ===============================================
+   Footer Section
+   =============================================== */
+
+.footer-section {
+  position: relative;
+}
+
+.footer-section::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #666, transparent);
+}
+
+.footer-credit {
+  font-size: 1em;
+  color: #999;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* ===============================================
+   Color Themes
+   =============================================== */
+
+/* Blue Theme */
+.theme-blue {
+  background: #1e293b;
+}
+
+.theme-blue .question-title .highlight {
+  color: #3b82f6;
+}
+
+.theme-blue .choice-button {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.theme-blue .choice-button:hover {
+  background: #2563eb;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+/* Green Theme */
+.theme-green {
+  background: #1f2937;
+}
+
+.theme-green .question-title .highlight {
+  color: #10b981;
+}
+
+.theme-green .choice-button {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.theme-green .choice-button:hover {
+  background: #059669;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+}
+
+/* Purple Theme */
+.theme-purple {
+  background: #2d1b69;
+}
+
+.theme-purple .question-title .highlight {
+  color: #8b5cf6;
+}
+
+.theme-purple .choice-button {
+  background: #8b5cf6;
+  color: white;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.theme-purple .choice-button:hover {
+  background: #7c3aed;
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+/* Orange Theme */
+.theme-orange {
+  background: #431407;
+}
+
+.theme-orange .question-title .highlight {
+  color: #f59e0b;
+}
+
+.theme-orange .choice-button {
+  background: #f59e0b;
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.theme-orange .choice-button:hover {
+  background: #d97706;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+
+/* ===============================================
+   Animation Effects - 깜빡 효과 제거
+   =============================================== */
+
+/* 애니메이션 제거 - 선택지가 즉시 표시됨 */
+
+/* ===============================================
+   Interactive States
+   =============================================== */
+
+/* Shake Animation for Wrong Answer */
+.choice-button.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* ===============================================
+   Responsive Design
+   =============================================== */
+
+@media (max-width: 768px) {
+  .quiz-container {
+    padding: 40px 20px;
+  }
+
+  .question-title,
+  .question-subtitle {
+    font-size: 2.5em;
+  }
+
+  .choices-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .choices-grid.two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .choices-grid.four-column {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .choice-button {
+    padding: 20px 16px;
+    font-size: 1em;
+  }
+
+  .choice-letter {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-container {
+    padding: 30px 15px;
+  }
+
+  .question-title,
+  .question-subtitle {
+    font-size: 2em;
+  }
+
+  .question-section {
+    margin-bottom: 40px;
+  }
+
+  .choices-section {
+    margin-bottom: 40px;
+  }
+
+  .choices-grid.four-column {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-button {
+    padding: 18px 14px;
+    font-size: 0.95em;
+  }
+}
+
+/* ===============================================
+   Accessibility
+   =============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.choice-button:focus-visible {
+  outline: 3px solid #c4d626;
+  outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===============================================
+   Print Styles
+   =============================================== */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .quiz-container {
+    padding: 20px;
+  }
+
+  .choice-button {
+    background: #f0f0f0 !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 2px solid #333 !important;
+  }
+
+  .question-title .highlight {
+    color: #333 !important;
+  }
+}
+
+/* ===============================================
+   Utility Classes
+   =============================================== */
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+.mt-2 {
+  margin-top: 1rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: block;
+}
+
+/* ===============================================
+   End of Quiz Choice Layout Template CSS
+   =============================================== */

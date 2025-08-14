@@ -85,12 +85,41 @@ DB_PASSWORD = root
 2. "Run workflow" 클릭
 3. 브랜치 선택 후 실행
 
+## 🚨 **문제 해결**
+
+### **Quasar 빌드 실패 문제**
+
+Azure에서 `quasar build` 명령어 실행 시 발생하는 문제를 해결했습니다:
+
+#### **해결 방법 1: 로컬 빌드 후 배포 (권장)**
+
+```bash
+# 로컬에서 실행
+npm run build:azure
+
+# 이 명령어는 다음을 수행합니다:
+# 1. 슬라이드 빌드
+# 2. Quasar 앱 빌드
+# 3. Azure 배포 준비 (dist/ 폴더 내용을 루트로 복사)
+```
+
+#### **해결 방법 2: GitHub Actions 자동 배포**
+
+새로운 워크플로우가 자동으로 로컬 빌드와 동일한 과정을 수행합니다.
+
+### **서버 설정 최적화**
+
+- `server.js`가 Azure 환경을 자동으로 감지
+- 정적 파일 서빙 경로가 Azure 배포 구조에 맞게 최적화됨
+
 ## 📁 **배포된 파일 구조**
 
 ```
 /
 ├── server.js              # Node.js 서버 (메인)
-├── dist/                  # Vue.js 빌드 결과
+├── index.html             # Vue.js 메인 페이지
+├── assets/                # Vue.js 빌드 결과물
+├── css/                   # 스타일시트
 ├── public/                # 정적 파일들
 ├── slides/                # 마크다운 슬라이드
 ├── generated/             # 변환된 HTML 슬라이드
@@ -98,28 +127,35 @@ DB_PASSWORD = root
 └── package.json           # Node.js 의존성
 ```
 
-## 🌐 **접속 URL**
+## 🛠️ **배포 스크립트**
 
-- **메인 앱**: https://slide-view-app-new.azurewebsites.net
-- **API 엔드포인트**: https://slide-view-app-new.azurewebsites.net/api/*
-- **Azure Portal**: https://portal.azure.com/#@coachingware.onmicrosoft.com/resource/subscriptions/25c2d56d-15a4-4be5-9164-5486a6e42d5b/resourceGroups/ai-seminar-rg/providers/Microsoft.Web/sites/slide-view-app-new/overview
+### **로컬 배포 준비**
 
-## 🔍 **문제 해결**
+```bash
+# Azure 배포용 빌드
+npm run build:azure
 
-### **배포 실패 시**
+# 또는 단계별 실행
+npm run build-slides      # 슬라이드 빌드
+npm run build            # Quasar 앱 빌드
+npm run prepare-azure    # Azure 배포 준비
+```
+
+### **GitHub Actions 자동 배포**
+
+- `master` 브랜치에 push하면 자동 배포
+- 빌드 실패 시 자동으로 롤백
+- 배포 상태를 GitHub에서 실시간 확인 가능
+
+## 🔍 **배포 상태 확인**
+
+1. **GitHub Actions**: `.github/workflows/deploy-azure.yml` 실행 상태
+2. **Azure Portal**: App Service > Deployment Center
+3. **로그 확인**: App Service > Log stream
+
+## 📞 **문제 발생 시**
 
 1. GitHub Actions 로그 확인
-2. Azure App Service 로그 확인 (Log stream)
-3. 환경변수 설정 확인
-
-### **서버 시작 실패 시**
-
-1. `web.config` 파일 확인
-2. `package.json`의 start 스크립트 확인
-3. Node.js 버전 호환성 확인 (20.x LTS)
-
-## 📊 **모니터링**
-
-- **Azure Portal**: App Service > Monitoring
-- **Application Insights**: 성능 및 오류 추적
-- **Log Analytics**: 상세 로그 분석
+2. Azure App Service 로그 스트림 확인
+3. 환경변수 설정 재확인
+4. 필요시 Azure App Service 재시작

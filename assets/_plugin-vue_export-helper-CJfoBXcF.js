@@ -1,0 +1,1 @@
+import{e6 as s}from"./index-D1vT6N3s.js";const u={dark:{type:Boolean,default:null}};function c(t,r){return s(()=>t.dark===null?r.dark.isActive:t.dark)}const k=(t,r)=>{const a=t.__vccOpts||t;for(const[e,o]of r)a[e]=o;return a};export{k as _,c as a,u};

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IF - 슬라이드 59</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 300px;
+            background: rgba(30, 60, 114, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 2px solid #74b9ff;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            border-bottom: 2px solid #74b9ff;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 1.2em;
+        }
+
+        .sidebar-toggle:hover {
+            background: #1e3c72;
+        }
+
+        .slide-list {
+            padding: 10px;
+        }
+
+        .slide-item {
+            margin-bottom: 5px;
+        }
+
+        .slide-item a {
+            display: block;
+            padding: 12px 15px;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            border-left: 3px solid transparent;
+        }
+
+        .slide-item a:hover {
+            background: rgba(116, 185, 255, 0.2);
+            color: white;
+            border-left-color: #74b9ff;
+        }
+
+        .slide-item.current a {
+            background: rgba(116, 185, 255, 0.3);
+            color: white;
+            border-left-color: #74b9ff;
+            font-weight: bold;
+        }
+
+        .slide-number {
+            font-weight: bold;
+            color: #74b9ff;
+            margin-bottom: 5px;
+        }
+
+        .slide-title {
+            font-size: 0.85em;
+            line-height: 1.3;
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .slide {
+            display: block;
+            padding: 60px 40px;
+            text-align: center;
+            background: white;
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .slide-header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            margin: -60px -40px 40px -40px;
+            position: relative;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .slide-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #3498db, #74b9ff);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: #2a5298;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            font-size: 1.4em;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .intro-slide {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .intro-slide .slide-header {
+            background: transparent;
+            margin: 0;
+        }
+
+        .intro-slide .slide-header::after {
+            display: none;
+        }
+
+        .intro-slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .chapter-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chapter-slide .slide-header {
+            background: transparent;
+            margin: 0;
+        }
+
+        .chapter-slide .slide-header::after {
+            display: none;
+        }
+
+        .chapter-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .poll-slide {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .poll-slide .slide-header {
+            background: transparent;
+            margin: 0;
+        }
+
+        .poll-slide .slide-header::after {
+            display: none;
+        }
+
+        .slide-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(30,60,114,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(42,82,152,0.3);
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42,82,152,0.4);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                height: 100vh;
+            }
+
+            .sidebar.open {
+                transform: translateX(300px);
+            }
+
+            .slide {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                font-size: 1em;
+            }
+
+            .chapter-slide h1 {
+                font-size: 3em;
+            }
+
+            .intro-slide h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        /* 스크롤바 스타일 */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #74b9ff;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #0984e3;
+        }
+    </style>
+</head>
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="main-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>🎬 AI 워크숍</h1>
+                <p>슬라이드 59 / 99</p>
+            </div>
+            <div class="slide-list">
+                
+        <div class="slide-item ">
+            <a href="slide-0-0.html">
+                <div class="slide-number">슬라이드 1</div>
+                <div class="slide-title">목회자를 위한 AI 활용 시나리오</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-1.html">
+                <div class="slide-number">슬라이드 2</div>
+                <div class="slide-title">📋 목차</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-2.html">
+                <div class="slide-number">슬라이드 3</div>
+                <div class="slide-title">강사 소개</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-3.html">
+                <div class="slide-number">슬라이드 4</div>
+                <div class="slide-title">실시간 투표(Quick Poll)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-4.html">
+                <div class="slide-number">슬라이드 5</div>
+                <div class="slide-title">실시간 투표(Quick Poll)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-5.html">
+                <div class="slide-number">슬라이드 6</div>
+                <div class="slide-title">실시간 투표(Quick Poll)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-6.html">
+                <div class="slide-number">슬라이드 7</div>
+                <div class="slide-title">실시간 투표(Quick Poll)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-7.html">
+                <div class="slide-number">슬라이드 8</div>
+                <div class="slide-title">Why?</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-8.html">
+                <div class="slide-number">슬라이드 9</div>
+                <div class="slide-title">💬 감탄의 순간들</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-0-9.html">
+                <div class="slide-number">슬라이드 10</div>
+                <div class="slide-title">목회자의 AI 사용 현황</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-0.html">
+                <div class="slide-number">슬라이드 11</div>
+                <div class="slide-title">AI의 의미</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-1.html">
+                <div class="slide-number">슬라이드 12</div>
+                <div class="slide-title">ChatGPT 기초 사용법</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-2.html">
+                <div class="slide-number">슬라이드 13</div>
+                <div class="slide-title">생성형AI 이론</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-3.html">
+                <div class="slide-number">슬라이드 14</div>
+                <div class="slide-title">1단계: 성경 전체를 읽히기 (데이터 수집)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-4.html">
+                <div class="slide-number">슬라이드 15</div>
+                <div class="slide-title">2단계: 단어 연결 패턴 배우기</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-5.html">
+                <div class="slide-number">슬라이드 16</div>
+                <div class="slide-title">3단계: 다음 단어 맞추기 학습</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-6.html">
+                <div class="slide-number">슬라이드 17</div>
+                <div class="slide-title">4단계: 문맥 이해하기</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-7.html">
+                <div class="slide-number">슬라이드 18</div>
+                <div class="slide-title">5단계: 다양한 번역본으로 학습</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-8.html">
+                <div class="slide-number">슬라이드 19</div>
+                <div class="slide-title">6단계: 질문-답변 패턴 학습</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-1-9.html">
+                <div class="slide-number">슬라이드 20</div>
+                <div class="slide-title">7단계: 실제 적용 예시</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-0.html">
+                <div class="slide-number">슬라이드 21</div>
+                <div class="slide-title">중요한 깨달음</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-1.html">
+                <div class="slide-number">슬라이드 22</div>
+                <div class="slide-title">결론</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-2.html">
+                <div class="slide-number">슬라이드 23</div>
+                <div class="slide-title">WHAT?</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-3.html">
+                <div class="slide-number">슬라이드 24</div>
+                <div class="slide-title">[Part 1] 당신의 질문은 안녕하신가요?</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-4.html">
+                <div class="slide-number">슬라이드 25</div>
+                <div class="slide-title">학습 목표
+
+AI와 효과적으로 소통하여 목회 사역의 질을 높이고, 나은 결과물을 얻기 위한 실용적인 프롬프팅 기술을 습득합니다.
+
+- **1. 명확하고 구체적 질문** - 6하 원칙을 활용한 구체적 질문으로 정확한 답변 얻기
+- **2. 역할 부여** - AI에게 전문가 역할 부여하기
+- **3. 대상과 맥락 설명** - 청중과 상황을 명확히 설정하여 맞춤형 결과물 얻기
+- **4. 열린 질문** - 창의적이고 깊이 있는 답변을 유도하는 질문 기법
+- **5.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-5.html">
+                <div class="slide-number">슬라이드 26</div>
+                <div class="slide-title">① 명확하고 구체적 질문 - 기본 중의 기본</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-6.html">
+                <div class="slide-number">슬라이드 27</div>
+                <div class="slide-title">② 역할 부여</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-7.html">
+                <div class="slide-number">슬라이드 28</div>
+                <div class="slide-title">③ 대상과 맥락 설명</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-8.html">
+                <div class="slide-number">슬라이드 29</div>
+                <div class="slide-title">④ 열린 질문</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-2-9.html">
+                <div class="slide-number">슬라이드 30</div>
+                <div class="slide-title">➄</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-0.html">
+                <div class="slide-number">슬라이드 31</div>
+                <div class="slide-title">⑥ 어조와 스타일
+
+- 목적에 맞는 톤결과물의 목적에 맞게 어조(Tone)와 문체(Style)를 구체적으로 지정하여 원하는 분위기를 연출하는 기법입니다.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-1.html">
+                <div class="slide-number">슬라이드 32</div>
+                <div class="slide-title">⑦ 원칙 또는 제약
+
+- 경계선 설정AI가 따라야 할 특정 원칙이나 제약 조건을 제시하여, 불필요한 내용을 제외하고 원하는 범위 내에서 답변을 생성하도록 통제합니다.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-2.html">
+                <div class="slide-number">슬라이드 33</div>
+                <div class="slide-title">⑧ 시나리오 활용
+
+- 가상 상황 설정가상의 구체적인 상황(시나리오)을 제시하여, AI가 그 상황에 몰입하여 현실적인 해결책이나 아이디어를 제시하도록 하는 기법입니다.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-3.html">
+                <div class="slide-number">슬라이드 34</div>
+                <div class="slide-title">⑨ 구조화된 지시
+
+- 단계별 명령복잡한 요청은 여러 단계로 나누어 순서대로 지시하거나, 원하는 결과물의 구조(목차, 형식)를 명확하게 제시하는 기법입니다.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-4.html">
+                <div class="slide-number">슬라이드 35</div>
+                <div class="slide-title">⑩ 비교하기 - 옵션 분석 요청
+
+두 가지 이상의 옵션을 제시하고, 각 옵션의 장단점을 분석하거나 특정 기준에 따라 비교하도록 요청하여 합리적인 의사결정을 돕게 합니다.</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-5.html">
+                <div class="slide-number">슬라이드 36</div>
+                <div class="slide-title">마무리</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-6.html">
+                <div class="slide-number">슬라이드 37</div>
+                <div class="slide-title">GPT 챗봇 만들기 실습</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-7.html">
+                <div class="slide-number">슬라이드 38</div>
+                <div class="slide-title">새신자/성도 안내 예배/행사 안내 챗봇</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-8.html">
+                <div class="slide-number">슬라이드 39</div>
+                <div class="slide-title">설교 요약+적용 질문</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-3-9.html">
+                <div class="slide-number">슬라이드 40</div>
+                <div class="slide-title">가스펠 작곡</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-0.html">
+                <div class="slide-number">슬라이드 41</div>
+                <div class="slide-title">소그룹 리더 교육교재 제작</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-1.html">
+                <div class="slide-number">슬라이드 42</div>
+                <div class="slide-title">설교 초안 작성하기</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-2.html">
+                <div class="slide-number">슬라이드 43</div>
+                <div class="slide-title">행사/세미나 포스터 제작</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-3.html">
+                <div class="slide-number">슬라이드 44</div>
+                <div class="slide-title">시연#1 : 설교 원고로 교육교재 개발</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-4.html">
+                <div class="slide-number">슬라이드 45</div>
+                <div class="slide-title">시연#2 : 종합 AI 활용 워크플로우</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-5.html">
+                <div class="slide-number">슬라이드 46</div>
+                <div class="slide-title">HOW</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-6.html">
+                <div class="slide-number">슬라이드 47</div>
+                <div class="slide-title">설교 준비 어떻게 하시나요?</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-7.html">
+                <div class="slide-number">슬라이드 48</div>
+                <div class="slide-title">설교 준비 프로세스</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-8.html">
+                <div class="slide-number">슬라이드 49</div>
+                <div class="slide-title">1. 기본 신학적 토대</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-4-9.html">
+                <div class="slide-number">슬라이드 50</div>
+                <div class="slide-title">1.2 3대 교회 원칙</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-0.html">
+                <div class="slide-number">슬라이드 51</div>
+                <div class="slide-title">2. 교회력 중심의 설교 계획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-1.html">
+                <div class="slide-number">슬라이드 52</div>
+                <div class="slide-title">3. 웨슬리안 설교 전통</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-2.html">
+                <div class="slide-number">슬라이드 53</div>
+                <div class="slide-title">4. 구체적 설교준비 단계</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-3.html">
+                <div class="slide-number">슬라이드 54</div>
+                <div class="slide-title">5. 목회자 훈련과 평가</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-4.html">
+                <div class="slide-number">슬라이드 55</div>
+                <div class="slide-title">6. 교단 차원의 지원체계</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-5.html">
+                <div class="slide-number">슬라이드 56</div>
+                <div class="slide-title">7. 실천적 설교 지침</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-6.html">
+                <div class="slide-number">슬라이드 57</div>
+                <div class="slide-title">8. 감리교회 설교의 특징</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-7.html">
+                <div class="slide-number">슬라이드 58</div>
+                <div class="slide-title">9. 현대적 적용과 과제</div>
+            </a>
+        </div>
+      
+        <div class="slide-item current">
+            <a href="slide-5-8.html">
+                <div class="slide-number">슬라이드 59</div>
+                <div class="slide-title">IF</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-5-9.html">
+                <div class="slide-number">슬라이드 60</div>
+                <div class="slide-title">1단계: 비전 수립 (Vision Establishment)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-0.html">
+                <div class="slide-number">슬라이드 61</div>
+                <div class="slide-title">2단계: 현황 분석 및 평가 (Analysis & Evaluation)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-1.html">
+                <div class="slide-number">슬라이드 62</div>
+                <div class="slide-title">3단계: 전략 기획 (Strategic Planning)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-2.html">
+                <div class="slide-number">슬라이드 63</div>
+                <div class="slide-title">4단계: 세부 계획 수립 (Detailed Planning)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-3.html">
+                <div class="slide-number">슬라이드 64</div>
+                <div class="slide-title">5단계: 승인 및 공유 (Approval & Sharing)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-4.html">
+                <div class="slide-number">슬라이드 65</div>
+                <div class="slide-title">📈 실행 및 관리 체계</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-5.html">
+                <div class="slide-number">슬라이드 66</div>
+                <div class="slide-title">실행 환경 조성</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-6.html">
+                <div class="slide-number">슬라이드 67</div>
+                <div class="slide-title">🎯 주요 실행 영역별 가이드라인</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-7.html">
+                <div class="slide-number">슬라이드 68</div>
+                <div class="slide-title">📊 평가 및 개선 체계</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-8.html">
+                <div class="slide-number">슬라이드 69</div>
+                <div class="slide-title">목회 시나리오</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-6-9.html">
+                <div class="slide-number">슬라이드 70</div>
+                <div class="slide-title">시나리오: 주일 설교 준비</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-0.html">
+                <div class="slide-number">슬라이드 71</div>
+                <div class="slide-title">Bad Example: AI에게 모든 것을 떠넘기는 방식
+
+- **프롬프트</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-1.html">
+                <div class="slide-number">슬라이드 72</div>
+                <div class="slide-title">Good Example: 구체적으로 '요청'하는 방식</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-2.html">
+                <div class="slide-number">슬라이드 73</div>
+                <div class="slide-title">Best Example: AI와 '대화'하며 생각을 증폭시키는 방식</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-3.html">
+                <div class="slide-number">슬라이드 74</div>
+                <div class="slide-title">Best Example: 프롬프트</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-4.html">
+                <div class="slide-number">슬라이드 75</div>
+                <div class="slide-title">Best Example: 무엇이 최고인가?</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-5.html">
+                <div class="slide-number">슬라이드 76</div>
+                <div class="slide-title">AI 12가지 활용 시나리오</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-6.html">
+                <div class="slide-number">슬라이드 77</div>
+                <div class="slide-title">LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-7.html">
+                <div class="slide-number">슬라이드 78</div>
+                <div class="slide-title">1. 이준호 목사: 주일설교 주제 선정</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-8.html">
+                <div class="slide-number">슬라이드 79</div>
+                <div class="slide-title">2. 김은혜 목사: 설교문 구조화</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-7-9.html">
+                <div class="slide-number">슬라이드 80</div>
+                <div class="slide-title">3. 김 목사(58세): 기존 설교 리프레시</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-0.html">
+                <div class="slide-number">슬라이드 81</div>
+                <div class="slide-title">LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-1.html">
+                <div class="slide-number">슬라이드 82</div>
+                <div class="slide-title">4. 박성민 목사: 성경공부 교재 제작</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-2.html">
+                <div class="slide-number">슬라이드 83</div>
+                <div class="slide-title">5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-3.html">
+                <div class="slide-number">슬라이드 84</div>
+                <div class="slide-title">6. 류 목사(51세): 성도 위로 메시지 & 기도 배경음악</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-4.html">
+                <div class="slide-number">슬라이드 85</div>
+                <div class="slide-title">7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-5.html">
+                <div class="slide-number">슬라이드 86</div>
+                <div class="slide-title">8. 신혜숙 목사: 상담 준비</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-6.html">
+                <div class="slide-number">슬라이드 87</div>
+                <div class="slide-title">LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-7.html">
+                <div class="slide-number">슬라이드 88</div>
+                <div class="slide-title">9. 정태영 목사: 새신자 환영 시스템 구축</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-8.html">
+                <div class="slide-number">슬라이드 89</div>
+                <div class="slide-title">10. 윤석진 목사: 교회 행사 기획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-8-9.html">
+                <div class="slide-number">슬라이드 90</div>
+                <div class="slide-title">11. 이미영 목사: 어린이 교육 커리큘럼</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-0.html">
+                <div class="slide-number">슬라이드 91</div>
+                <div class="slide-title">12. 김도현 목사: 온라인 목양 & 미래 조망</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-1.html">
+                <div class="slide-number">슬라이드 92</div>
+                <div class="slide-title">8. 실전 AI 복합 활용 시나리오 : 청년 수련회 기획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-2.html">
+                <div class="slide-number">슬라이드 93</div>
+                <div class="slide-title">1. ChatGPT 창의적 기획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-3.html">
+                <div class="slide-number">슬라이드 94</div>
+                <div class="slide-title">2. Perplexity 실시간 정보 수집
+
+**강원도 맛집 리스트**
+**주변 체험활동 정보**
+**날씨 예보 및 준비사항**
+→ 최신 정보 기반 완벽한 계획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-4.html">
+                <div class="slide-number">슬라이드 95</div>
+                <div class="slide-title">3. 멀티미디어 홍보 패키지
+
+**Canva: 인스타그램용 모집 포스터**
+**Suno: 수련회 주제곡 제작**
+**ChatGPT: 재미있는 모집 문구 작성**
+→ SNS 마케팅용 완벽한 콘텐츠</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-5.html">
+                <div class="slide-number">슬라이드 96</div>
+                <div class="slide-title">3. 멀티미디어 홍보 패키지 (계속)
+
+**Suno: 수련회 주제곡 제작**</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-6.html">
+                <div class="slide-number">슬라이드 97</div>
+                <div class="slide-title">4️⃣ 예산 최적화 계획</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-7.html">
+                <div class="slide-number">슬라이드 98</div>
+                <div class="slide-title">8-6. 수련회 예산 계획 결과</div>
+            </a>
+        </div>
+      
+        <div class="slide-item ">
+            <a href="slide-9-8.html">
+                <div class="slide-number">슬라이드 99</div>
+                <div class="slide-title">Share Link</div>
+            </a>
+        </div>
+      
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="slide-info">
+                슬라이드 59 / 99
+            </div>
+
+            <div class="slide-container">
+                <div class="slide ">
+                    <h1>IF</h1>
+<h4>연간 목회계획 프로세스 가이드</h4>
+<h3>목회계획의 목적</h3>
+<p>잘 준비된 목회 계획은 교회의 궁극적 사명과 비전을 실현하고 목회적 목표를 성취하기 위하여 실행해야 할 구체적인 사역과 그 사역의 실천 목표들을 극대화한다.</p>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <a href="slide-5-7.html" class="nav-btn">이전</a>
+                <a href="slide-5-9.html" class="nav-btn">다음</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 사이드바 토글
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // 키보드 네비게이션
+        document.addEventListener('keydown', function(e) {
+            const currentSlide = 58;
+            const totalSlides = 99;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < totalSlides - 1) {
+                    window.location.href = 'slide-5-9.html';
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    window.location.href = 'slide-5-7.html';
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                window.location.href = 'slide-0-0.html';
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                window.location.href = 'slide-9-8.html';
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+        });
+
+        // 모바일에서 사이드바 외부 클릭 시 닫기
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+
+            if (window.innerWidth <= 768 &&
+                !sidebar.contains(e.target) &&
+                !toggleBtn.contains(e.target) &&
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* Index 슬라이드 전용 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #3a3a3a !important;
+  color: #333;
+  height: 100vh;
+  padding: 60px 40px;
+  overflow-y: auto;
+}
+
+/* 슬라이드 헤더 */
+.slide-header {
+  background: linear-gradient(135deg, #003366, #005a9c);
+  color: white;
+  padding: 15px 20px;
+  margin: 0 0 25px 0;
+  position: relative;
+  text-align: center;
+}
+
+.slide-header::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+}
+
+.slide-header h1 {
+  font-size: 2.2em;
+  margin: 0 0 6px 0;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.slide-subtitle {
+  font-size: 1.1em;
+  opacity: 0.9;
+  font-weight: normal;
+}
+
+/* 콘텐츠 영역 */
+.content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 인트로 텍스트 */
+.intro-text {
+  text-align: center;
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  background: transparent;
+  padding: 25px;
+  border-radius: 15px;
+  border: none;
+  position: relative;
+}
+
+.intro-highlight {
+  font-weight: bold;
+  color: #f57f17;
+}
+
+/* 목차 그리드 */
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+
+/* 목차 아이템 */
+.toc-item {
+  color: #2a2a2a;
+  border: none;
+  border-radius: 12px;
+  padding: 24px 20px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 모든 toc-item에 통일된 색상 적용 */
+.toc-item {
+  background: #c4d626;
+  box-shadow: 0 4px 15px rgba(196, 214, 38, 0.3);
+  border: none;
+}
+
+.toc-item:hover {
+  background: #b8c423;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(196, 214, 38, 0.4);
+}
+
+.toc-item:active {
+  transform: translateY(-1px);
+}
+
+.toc-item:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(196, 214, 38, 0.5);
+}
+
+/* Ripple Effect */
+.toc-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition:
+    width 0.6s,
+    height 0.6s;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.toc-item:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* 헤더 컨테이너 */
+.toc-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* 번호 배지 */
+.toc-number {
+  display: inline-block;
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-right: 12px;
+  color: #3a3a3a;
+  position: relative;
+  z-index: 1;
+}
+
+/* toc-number hover 효과 제거 (choice-letter와 동일하게) */
+
+/* 제목 */
+.toc-title {
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #3a3a3a;
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  flex: 1;
+}
+
+.toc-item:hover .toc-title {
+  color: #3a3a3a;
+}
+
+/* 설명 */
+.toc-description {
+  font-size: 0.9em;
+  color: #3a3a3a;
+  line-height: 1.3;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.toc-item:hover .toc-description {
+  color: #3a3a3a;
+}
+
+/* 하이라이트 키워드 */
+.keyword {
+  background: rgba(255, 215, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* 애니메이션 제거 - 깜빡 효과 없음 */
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  body {
+    padding: 40px 20px;
+  }
+
+  .slide-header {
+    margin: 0 0 20px 0;
+    padding: 12px 15px;
+  }
+
+  .slide-header h1 {
+    font-size: 1.8em;
+    margin: 0 0 5px 0;
+    line-height: 1.2;
+  }
+
+  .slide-header .slide-subtitle {
+    font-size: 1em;
+  }
+
+  .toc-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .toc-item {
+    padding: 10px;
+  }
+
+  .toc-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    margin-right: 15px;
+  }
+
+  .toc-title {
+    font-size: 1.15em;
+  }
+
+  .toc-description {
+    font-size: 0.9em;
+  }
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  /* 모든 toc-item에 통일된 색상 적용 */
+  .toc-item {
+    background: #c4d626;
+    border: none;
+  }
+
+  .toc-item:hover {
+    background: #b8c423;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(196, 214, 38, 0.4);
+  }
+
+  .toc-number {
+    color: #3a3a3a;
+  }
+
+  .toc-title {
+    color: #3a3a3a;
+  }
+
+  .toc-description {
+    color: #3a3a3a;
+  }
+
+  .toc-item:hover .toc-number {
+    color: #3a3a3a;
+  }
+
+  .toc-item:hover .toc-title {
+    color: #3a3a3a;
+  }
+
+  .toc-item:hover .toc-description {
+    color: #3a3a3a;
+  }
+}

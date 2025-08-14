@@ -1,0 +1,1 @@
+import{d as s}from"./index-BynyowXf.js";const u={dark:{type:Boolean,default:null}};function c(t,r){return s(()=>t.dark===null?r.dark.isActive:t.dark)}const d=(t,r)=>{const a=t.__vccOpts||t;for(const[o,e]of r)a[o]=e;return a};export{d as _,c as a,u};

@@ -75,10 +75,16 @@ const sendEmail = async (to, subject, htmlContent) => {
 app.use(cors());
 app.use(express.json());
 
-// 정적 파일 서빙 (Quasar SPA 빌드 경로에 맞게 수정)
-const spaPath = path.join(__dirname, 'dist'); // 'spa' 제거
-app.use(express.static(spaPath));
+// 정적 파일 서빙 (Azure 배포용으로 최적화)
+// Azure에서는 dist 폴더가 루트로 복사되므로 직접 접근
+app.use(express.static(__dirname));
 app.use(express.static('public')); // public 폴더도 계속 서빙
+
+// Azure 환경 감지
+const isAzure = process.env.WEBSITE_SITE_NAME || process.env.AZURE_WEBAPP_NAME;
+if (isAzure) {
+  console.log('🚀 Azure 환경에서 실행 중입니다.');
+}
 
 // API 라우트들
 app.post('/api/convert-slides', (req, res) => {

@@ -1,0 +1,1 @@
+import{o as e}from"./index-Bw1AfG2u.js";const s={dark:{type:Boolean,default:null}};function u(o,r){return e(()=>o.dark===null?r.dark.isActive:o.dark)}const d=(o,r)=>{const n=o.__vccOpts||o;for(const[t,c]of r)n[t]=c;return n};export{u as c,d,s as u};
