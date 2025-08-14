@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ master, main ]
 
+# 중복 실행 방지
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   NODE_VERSION: '20'
 
