@@ -76,7 +76,7 @@ app.use(cors());
 app.use(express.json());
 
 // 정적 파일 서빙 (Quasar SPA 빌드 경로에 맞게 수정)
-const spaPath = path.join(__dirname, 'dist', 'spa');
+const spaPath = path.join(__dirname, 'dist'); // 'spa' 제거
 app.use(express.static(spaPath));
 app.use(express.static('public')); // public 폴더도 계속 서빙
 
@@ -488,7 +488,7 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📁 작업 디렉토리: ${process.cwd()}`);
-  const distPath = path.join(__dirname, 'dist', 'spa');
+  const distPath = path.join(__dirname, 'dist'); // 'spa' 제거
   if (fs.existsSync(distPath)) {
     console.log(`✅ Vue.js 빌드 파일 발견: ${distPath}`);
   } else {
