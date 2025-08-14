@@ -75,11 +75,10 @@ const sendEmail = async (to, subject, htmlContent) => {
 app.use(cors());
 app.use(express.json());
 
-// 정적 파일 서빙
-app.use(express.static('public'));
-app.use(express.static('dist'));
-app.use('/css', express.static(path.join(__dirname, 'dist/css')));
-app.use('/slides', express.static(path.join(__dirname, 'dist/slides')));
+// 정적 파일 서빙 (Quasar SPA 빌드 경로에 맞게 수정)
+const spaPath = path.join(__dirname, 'dist', 'spa');
+app.use(express.static(spaPath));
+app.use(express.static('public')); // public 폴더도 계속 서빙
 
 // API 라우트들
 app.post('/api/convert-slides', (req, res) => {
@@ -478,18 +477,18 @@ app.get('/api/survey/statistics', (req, res) => {
 
 // Vue.js SPA를 위한 fallback (가장 마지막에 위치해야 함)
 app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  const indexPath = path.join(spaPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    res.status(404).send('Not Found');
+    res.status(404).send('Not Found: index.html not found in ' + spaPath);
   }
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📁 작업 디렉토리: ${process.cwd()}`);
-  const distPath = path.join(__dirname, 'dist');
+  const distPath = path.join(__dirname, 'dist', 'spa');
   if (fs.existsSync(distPath)) {
     console.log(`✅ Vue.js 빌드 파일 발견: ${distPath}`);
   } else {
