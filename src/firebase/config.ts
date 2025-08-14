@@ -4,16 +4,16 @@ import { getFirestore, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
 import { getDatabase, type Database } from 'firebase/database';
 
-// Firebase 설정
+// Firebase 설정 - 런타임 환경변수 사용
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: process.env.FIREBASE_API_KEY || import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID || import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID || import.meta.env.VITE_FIREBASE_APP_ID,
   // Realtime Database URL 추가
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  databaseURL: process.env.FIREBASE_DATABASE_URL || import.meta.env.VITE_FIREBASE_DATABASE_URL,
 };
 
 // Firebase 설정 검증
@@ -24,7 +24,7 @@ console.log('🔐 Firebase 설정 확인:', {
   storageBucket: firebaseConfig.storageBucket ? '설정됨' : '설정 안됨',
   messagingSenderId: firebaseConfig.messagingSenderId ? '설정됨' : '설정 안됨',
   appId: firebaseConfig.appId ? '설정됨' : '설정 안됨',
-  databaseURL: firebaseConfig.databaseURL ? '설정됨' : '설정 안됨',
+  databaseURL: firebaseConfig.databaseURL ? '설정됨' : '없음',
 });
 
 // 실제 값들도 확인 (보안을 위해 일부만)
