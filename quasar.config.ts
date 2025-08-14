@@ -87,6 +87,12 @@ export default defineConfig((/* ctx */) => {
     devServer: {
       // https: true,
       open: true, // opens browser window automatically
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8090',
+          changeOrigin: true,
+        },
+      },
     },
 
     // Vite 설정 확장 (현재는 사용하지 않음)

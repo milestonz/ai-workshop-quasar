@@ -1,469 +1,491 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2단계: 단어 연결 패턴 배우기</title>
-  <style>
-      
-      * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
-
-      body {
-          font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-          color: #333;
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-          position: relative;
-      }
-
-      .slide-container {
-          backdrop-filter: blur(15px);
-          border-radius: 25px;
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-          padding: 60px;
-          max-width: 1000px;
-          width: 100%;
-          position: relative;
-          z-index: 10;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-      }
-
-      /* 기본 텍스트 스타일 */
-      p {
-          font-size: 20px;
-          line-height: 1.6;
-          margin-bottom: 10px;
-      }
-
-      li {
-          font-size: 20px;
-          line-height: 1.6;
-          margin-bottom: 8px;
-      }
-
-      h1, h2, h3, h4 {
-          margin-bottom: 5px;
-      }
-
-      h4 {
-          font-size: 24px;
-          font-weight: 600;
-          line-height: 1.4;
-      }
-
-      /* 코드 블록 스타일 */
-      .code-block-wrapper {
-          position: relative;
-          margin: 16px 0;
-          border-radius: 8px;
-          overflow: hidden;
-          background: #1e293b;
-          border: 1px solid #334155;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      pre {
-          background: #1e293b;
-          color: #e2e8f0;
-          padding: 16px;
-          padding-right: 48px; /* 복사 버튼을 위한 여백 */
-          border-radius: 8px;
-          overflow-x: auto;
-          margin: 0;
-          border: none;
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
-          white-space: pre-wrap;
-          word-wrap: break-word;
-      }
-
-      .copy-button {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          background: #3b82f6;
-          border: none;
-          color: white;
-          padding: 6px 12px;
-          cursor: pointer;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          z-index: 10;
-      }
-
-      .copy-button:hover {
-          background: #2563eb;
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      .copy-button:active {
-          background: #1e40af;
-          transform: translateY(0);
-      }
-
-      .copy-button.copied {
-          background: #10b981;
-      }
-
-      code {
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
-      }
-
-      p code {
-          background: #f1f5f9;
-          color: #1e293b;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-size: 0.9em;
-      }
-
-      /* 이미지 스타일링 */
-      .slide-image {
-          max-width: 100%;
-          height: auto;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-          margin: 20px 0;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .slide-image:hover {
-          transform: scale(1.02);
-          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-      }
-
-      /* 프로필 이미지 특별 스타일 */
-      .profile-image {
-          max-width: 300px;
-          max-height: 400px;
-          border-radius: 20px;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-          border: 4px solid rgba(255, 255, 255, 0.3);
-      }
-
-      /* 이미지가 포함된 슬라이드의 레이아웃 */
-      .image-slide {
-          text-align: center;
-      }
-
-      .image-slide h1 {
-          margin-bottom: 30px;
-      }
-
-      .image-slide h2 {
-          margin-bottom: 25px;
-          color: #666;
-      }
-
-      /* 투표 옵션 스타일 */
-      .poll-option {
-          font-size: 20px;
-          padding: 15px 20px;
-          margin: 10px 0;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.1);
-          border: 2px solid transparent;
-      }
-
-      .poll-option:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-      }
-
-      .poll-option.selected {
-          background: rgba(59, 130, 246, 0.3);
-          border-color: #3b82f6;
-      }
-
-
-  
-      
-          body {
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          }
-
-          .slide-container {
-              background: rgba(255, 255, 255, 0.95);
-          }
-
-          h1 {
-              font-size: 3rem;
-              color: #1e40af;
-              margin-bottom: 10px;
-              font-weight: 700;
-              text-align: center;
-          }
-
-          h2 {
-              font-size: 2.5rem;
-              color: #2563eb;
-              margin-bottom: 25px;
-              font-weight: 600;
-          }
-
-          h3 {
-              font-size: 1.8rem;
-              color: #3730a3;
-              margin-bottom: 8px;
-              font-weight: 500;
-          }
-
-          /* 이미지 스타일링 */
-          .slide-image {
-              max-width: 100%;
-              height: auto;
-              border-radius: 12px;
-              box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-              margin: 20px 0;
-              display: block;
-              margin-left: auto;
-              margin-right: auto;
-              transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-
-          .slide-image:hover {
-              transform: scale(1.02);
-              box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-          }
-      
-
-      /* 반응형 추가 스타일 */
-      @media (max-width: 768px) {
-          h1 { font-size: 2.2rem; }
-          h2 { font-size: 1.8rem; }
-          h3 { font-size: 1.4rem; }
-          .slide-container { padding: 40px 25px; }
-      }
-
-      @media (max-width: 480px) {
-          h1 { font-size: 1.8rem; }
-          h2 { font-size: 1.4rem; }
-          h3 { font-size: 1.2rem; }
-          .slide-container { padding: 30px 20px; }
-      }
-
-      /* 접근성 */
-      .slide-container:focus {
-          outline: 3px solid #3b82f6;
-          outline-offset: 5px;
-      }
-
-      /* 애니메이션 */
-      @keyframes slideIn {
-          from {
-              opacity: 0;
-              transform: translateY(20px);
-          }
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      .slide-container > * {
-          animation: slideIn 0.6s ease forwards;
-      }
-
-      /* 슬라이드 번호 스타일 */
-      .slide-number {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: rgba(0, 0, 0, 0.7);
-          color: white;
-          padding: 8px 12px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 500;
-          z-index: 1000;
-          backdrop-filter: blur(10px);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      }
-  </style>
-</head>
-<body class="general-slide">
-  <div class="slide-container" tabindex="0">
-      <h1>2단계: 단어 연결 패턴 배우기</h1>
-
-<p>"사랑"이라는 단어 학습</p>
-
-<p>예시: LLM이 성경에서 "사랑"과 함께 나오는 단어들을 학습</p>
-
-<ul>
-<li>요한복음 3:16: "하나님이 세상을 이처럼 사랑하사..."</li>
-<li>고린도전서 13:4: "사랑은 오래 참고 사랑은 온유하며..."</li>
-<li>요한일서 4:8: "하나님은 사랑이시라"</li>
-<li>마태복음 22:37: "네 마음을 다하여... 사랑하라"</li>
-</ul>
-
-<p>LLM은 이런 패턴을 발견해요:</p>
-
-<ul>
-<li>"사랑" 다음에는 "하다", "이다", "온유하다" 등이 자주 나온다</li>
-<li>"하나님"과 "사랑"이 자주 함께 나온다</li>
-<li>"사랑"은 긍정적인 단어들과 연결된다</li>
-</ul>
-
-  </div>
-
-  <div class="slide-number" id="slideNumber"></div>
-
-    <script>
-      // 키보드 네비게이션
-      document.addEventListener('keydown', function(e) {
-          switch(e.key) {
-              case 'ArrowRight':
-              case ' ':
-                  window.location.href = 'slide-2-3.html';
-                  break;
-              case 'ArrowLeft':
-                  window.location.href = 'slide-2-1.html';
-                  break;
-              case 'Home':
-                  window.location.href = 'slide-0-0.html';
-                  break;
-              case 'End':
-                  window.location.href = 'slide-9-7.html';
-                  break;
-          }
-      });
-
-      // 클릭으로 다음 슬라이드 (투표 슬라이드가 아닌 경우)
-      
-      document.querySelector('.slide-container').addEventListener('click', function(e) {
-          // 코드 블록 복사 버튼이나 코드 블록 자체를 클릭한 경우 슬라이드 이동 방지
-          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) {
-              return;
-          }
-          window.location.href = 'slide-2-3.html';
-      });
-      
-
-      // 슬라이드 번호 계산 및 표시
-      function updateSlideNumber() {
-          const slideNumberElement = document.getElementById('slideNumber');
-          if (slideNumberElement) {
-              // 현재 파일명에서 슬라이드 번호 추출
-              const currentPath = window.location.pathname;
-              const fileName = currentPath.split('/').pop();
-              const match = fileName.match(new RegExp('slide-(\\d+)-(\\d+)\\.html'));
-
-              if (match) {
-                  const chapter = parseInt(match[1]);
-                  const slide = parseInt(match[2]);
-
-                  // 전체 슬라이드 목록에서 현재 위치 찾기
-                  const slideList = [
-                      // Chapter 0
-                      ...Array.from({length: 27}, (_, i) => ({chapter: 0, slide: i})),
-                      // Chapter 1
-                      ...Array.from({length: 6}, (_, i) => ({chapter: 1, slide: i})),
-                      // Chapter 2
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 2, slide: i})),
-                      // Chapter 3
-                      ...Array.from({length: 14}, (_, i) => ({chapter: 3, slide: i})),
-                      // Chapter 4
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 4, slide: i})),
-                      // Chapter 5
-                      ...Array.from({length: 53}, (_, i) => ({chapter: 5, slide: i})),
-                      // Chapter 6
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 6, slide: i})),
-                      // Chapter 7
-                      ...Array.from({length: 23}, (_, i) => ({chapter: 7, slide: i})),
-                      // Chapter 8
-                      ...Array.from({length: 24}, (_, i) => ({chapter: 8, slide: i})),
-                      // Chapter 9
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 9, slide: i})),
-                      // Chapter 10
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 10, slide: i}))
-                  ];
-
-                  const currentIndex = slideList.findIndex(item =>
-                      item.chapter === chapter && item.slide === slide
-                  );
-
-                  if (currentIndex !== -1) {
-                      slideNumberElement.textContent = (currentIndex + 1) + ' / ' + slideList.length;
-                  } else {
-                      slideNumberElement.textContent = chapter + '-' + slide;
-                  }
-              }
-          }
-      }
-
-      // 로드 애니메이션
-      window.addEventListener('load', function() {
-          document.body.style.opacity = '0';
-          document.body.style.transition = 'opacity 0.5s ease';
-          setTimeout(() => {
-              document.body.style.opacity = '1';
-          }, 100);
-
-          // 슬라이드 번호 업데이트
-          updateSlideNumber();
-      });
-
-            // 코드 복사 기능
-            function copyCode(button) {
-                const codeBlock = button.previousElementSibling;
-                const code = codeBlock.textContent;
-
-                // 클립보드에 복사
-                navigator.clipboard.writeText(code).then(function() {
-                    // 복사 성공 시 버튼 텍스트 변경
-                    const originalText = button.textContent;
-                    button.textContent = '복사됨!';
-                    button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    // 2초 후 원래 텍스트로 복원
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
-                }).catch(function(err) {
-                    // 복사 실패 시 대체 방법 사용
-                    const textArea = document.createElement('textarea');
-                    textArea.value = code;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-
-                    // 성공 메시지 표시
-                    const originalText = button.textContent;
-                    button.textContent = '복사됨!';
-                    button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
-                });
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT 모델 발전 타임라인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 40px 20px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #3498db, #9b59b6);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin: 30px 0;
+            width: 100%;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: 50%;
+            padding-right: 40px;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 50%;
+            margin-right: 0;
+            padding-left: 40px;
+            text-align: left;
+        }
+        
+        .timeline-content {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid #f8f9fa;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #3498db;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.3);
+            z-index: 10;
+        }
+        
+        .model-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .model-date {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .model-details {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #34495e;
+            min-width: 80px;
+            font-size: 0.95em;
+        }
+        
+        .detail-value {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #2c3e50;
+            flex: 1;
+        }
+        
+        .context-highlight {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .input-highlight {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+        
+        .output-highlight {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
             }
-
-      
-    </script>
+            
+            .timeline-item .timeline-content {
+                margin-left: 60px !important;
+                margin-right: 0 !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                text-align: left !important;
+            }
+            
+            .timeline-dot {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .detail-label {
+                min-width: auto;
+            }
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #34495e;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 GPT 모델 발전사</h1>
+            <p>OpenAI GPT 시리즈의 진화 과정</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">ChatGPT (GPT-3.5)</div>
+                    <div class="model-date">2022년 11월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">(초기) 짧은 컨텍스트</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value">텍스트</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-4</div>
+                    <div class="model-date">2023년 3월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value input-highlight">텍스트, 이미지(멀티모달)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">8k / 32k</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value">텍스트</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">ChatGPT Plugins</div>
+                    <div class="model-date">2023년 3월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트 + 도구 호출</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value">모델과 동일</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트, 외부 API 결과</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">ChatGPT Enterprise</div>
+                    <div class="model-date">2023년 8월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트, 파일</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">32k(대화)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value">텍스트, 분석 결과</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-4 Turbo & API</div>
+                    <div class="model-date">2023년 11월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value input-highlight">텍스트, 이미지(+파일 업로드)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">128k</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트, JSON(업데이트), 도구 결과</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPTs (Custom GPTs)</div>
+                    <div class="model-date">2023년 11월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트, 파일, 도구</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value">모델과 동일</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트(맞춤) 이미지·파일 생성 도구 연동</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-4o (omni)</div>
+                    <div class="model-date">2024년 5월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value input-highlight">텍스트, 이미지, 오디오, 비디오</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">저지연 장문(제한된 상어)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트, 오디오(실시간), 이미지</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-4.1</div>
+                    <div class="model-date">2025년 4월 5일</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트, 이미지</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">롱컨텍스트 안정성 향상</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value">텍스트, JSON</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">ChatGPT (Projects/Study/Voice)</div>
+                    <div class="model-date">2025년 6월 7일</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value input-highlight">텍스트, 음성(Drive/Dropbox 등 연동), 음성</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">장기 메모리 향상 검색</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트, 음성, 퍼스트</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-5 (ChatGPT)</div>
+                    <div class="model-date">2025년 8월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value">텍스트, 이미지, 음성</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">통합 라우팅 기반 초장문</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value">텍스트, 이미지, 음성</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="model-name">GPT-5 (API)</div>
+                    <div class="model-date">2025년 8월</div>
+                    <div class="model-details">
+                        <div class="detail-row">
+                            <span class="detail-label">입력:</span>
+                            <span class="detail-value input-highlight">텍스트, 이미지(+Custom tools)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">컨텍스트:</span>
+                            <span class="detail-value context-highlight">최대 4M 토큰(대폭)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">출력:</span>
+                            <span class="detail-value output-highlight">텍스트, JSON, 향상된 응답</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color context-highlight"></div>
+                <span>컨텍스트 향상</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color input-highlight"></div>
+                <span>입력 다양화</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color output-highlight"></div>
+                <span>출력 확장</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

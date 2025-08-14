@@ -2,6 +2,7 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
+import { getDatabase, type Database } from 'firebase/database';
 
 // Firebase 설정
 const firebaseConfig = {
@@ -11,6 +12,8 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  // Realtime Database URL 추가
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
 };
 
 // Firebase 설정 검증
@@ -21,6 +24,7 @@ console.log('🔐 Firebase 설정 확인:', {
   storageBucket: firebaseConfig.storageBucket ? '설정됨' : '설정 안됨',
   messagingSenderId: firebaseConfig.messagingSenderId ? '설정됨' : '설정 안됨',
   appId: firebaseConfig.appId ? '설정됨' : '설정 안됨',
+  databaseURL: firebaseConfig.databaseURL ? '설정됨' : '설정 안됨',
 });
 
 // 실제 값들도 확인 (보안을 위해 일부만)
@@ -28,6 +32,7 @@ console.log('🔐 Firebase 설정 값 확인:', {
   apiKey: firebaseConfig.apiKey ? `${firebaseConfig.apiKey.substring(0, 10)}...` : '없음',
   authDomain: firebaseConfig.authDomain,
   projectId: firebaseConfig.projectId,
+  databaseURL: firebaseConfig.databaseURL ? '설정됨' : '없음',
 });
 
 // 필수 설정이 없는 경우 경고
@@ -41,6 +46,7 @@ let auth: Auth | null;
 let googleProvider: GoogleAuthProvider | null;
 let db: Firestore | null;
 let storage: FirebaseStorage | null;
+let rtdb: Database | null;
 
 if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId) {
   app = initializeApp(firebaseConfig);
@@ -48,6 +54,8 @@ if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.project
   googleProvider = new GoogleAuthProvider();
   db = getFirestore(app);
   storage = getStorage(app);
+  // RTDB 초기화
+  rtdb = getDatabase(app);
 } else {
   console.warn(
     '⚠️ Firebase가 초기화되지 않았습니다. 일부 기능(인증, 투표 등)이 작동하지 않을 수 있습니다.',
@@ -57,7 +65,8 @@ if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.project
   googleProvider = null;
   db = null;
   storage = null;
+  rtdb = null;
 }
 
-// Auth 인스턴스, Google Auth Provider, Firestore, Storage, app 인스턴스 내보내기
-export { auth, googleProvider, db, storage, app as firebaseApp };
+// Auth 인스턴스, Google Auth Provider, Firestore, Storage, RTDB, app 인스턴스 내보내기
+export { auth, googleProvider, db, storage, rtdb, app as firebaseApp };

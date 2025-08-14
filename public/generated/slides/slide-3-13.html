@@ -1,458 +1,366 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>마무리</title>
-  <style>
-      
-      * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-      }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI와 일하는 방법 프로세스</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-      body {
-          font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-          color: #333;
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-          position: relative;
-      }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            width: 100%;
+        }
 
-      .slide-container {
-          backdrop-filter: blur(15px);
-          border-radius: 25px;
-          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-          padding: 60px;
-          max-width: 1000px;
-          width: 100%;
-          position: relative;
-          z-index: 10;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-      }
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-      /* 기본 텍스트 스타일 */
-      p {
-          font-size: 20px;
-          line-height: 1.6;
-          margin-bottom: 10px;
-      }
+        .workflow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-      li {
-          font-size: 20px;
-          line-height: 1.6;
-          margin-bottom: 8px;
-      }
+        .step-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 30px;
+            position: relative;
+        }
 
-      h1, h2, h3, h4 {
-          margin-bottom: 5px;
-      }
+        .step-container:nth-child(even) {
+            flex-direction: row-reverse;
+        }
 
-      h4 {
-          font-size: 24px;
-          font-weight: 600;
-          line-height: 1.4;
-      }
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 80px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
 
-      /* 코드 블록 스타일 */
-      .code-block-wrapper {
-          position: relative;
-          margin: 16px 0;
-          border-radius: 8px;
-          overflow: hidden;
-          background: #1e293b;
-          border: 1px solid #334155;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
+        .step-description {
+            flex: 1;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 4px solid;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
 
-      pre {
-          background: #1e293b;
-          color: #e2e8f0;
-          padding: 16px;
-          padding-right: 48px; /* 복사 버튼을 위한 여백 */
-          border-radius: 8px;
-          overflow-x: auto;
-          margin: 0;
-          border: none;
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
-          white-space: pre-wrap;
-          word-wrap: break-word;
-      }
+        .step-container:nth-child(even) .step-description {
+            border-left: none;
+            border-right: 4px solid;
+        }
 
-      .copy-button {
-          position: absolute;
-          top: 8px;
-          right: 8px;
-          background: #3b82f6;
-          border: none;
-          color: white;
-          padding: 6px 12px;
-          cursor: pointer;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          z-index: 10;
-      }
+        .step-description h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-      .copy-button:hover {
-          background: #2563eb;
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
+        .step-description p {
+            margin: 0;
+            color: #555;
+        }
 
-      .copy-button:active {
-          background: #1e40af;
-          transform: translateY(0);
-      }
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
 
-      .copy-button.copied {
-          background: #10b981;
-      }
+        .step-1 { background: linear-gradient(45deg, #ff6b6b, #ff8e8e); }
+        .step-2 { background: linear-gradient(45deg, #4ecdc4, #44a08d); }
+        .step-3 { background: linear-gradient(45deg, #ffd93d, #ff9f43); }
+        .step-4 { background: linear-gradient(45deg, #a8edea, #74c69d); }
+        .step-5 { background: linear-gradient(45deg, #c471ed, #f64f59); }
+        .step-6 { background: linear-gradient(45deg, #667eea, #764ba2); }
 
-      code {
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
-      }
+        .desc-1 { border-color: #ff6b6b; }
+        .desc-2 { border-color: #4ecdc4; }
+        .desc-3 { border-color: #ffd93d; }
+        .desc-4 { border-color: #a8edea; }
+        .desc-5 { border-color: #c471ed; }
+        .desc-6 { border-color: #667eea; }
 
-      p code {
-          background: #f1f5f9;
-          color: #1e293b;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-size: 0.9em;
-      }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 20px solid #95a5a6;
+            margin: 20px auto;
+            animation: bounce 2s infinite;
+            align-self: center;
+        }
 
-      /* 이미지 스타일링 */
-      .slide-image {
-          max-width: 100%;
-          height: auto;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-          margin: 20px 0;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
 
-      .slide-image:hover {
-          transform: scale(1.02);
-          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-      }
+        .feedback-loop {
+            position: absolute;
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 200px;
+            border: 3px solid #e74c3c;
+            border-left: none;
+            border-radius: 0 30px 30px 0;
+            opacity: 0.7;
+        }
 
-      /* 프로필 이미지 특별 스타일 */
-      .profile-image {
-          max-width: 300px;
-          max-height: 400px;
-          border-radius: 20px;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-          border: 4px solid rgba(255, 255, 255, 0.3);
-      }
+        .feedback-arrow {
+            position: absolute;
+            top: -10px;
+            right: -5px;
+            width: 0;
+            height: 0;
+            border-bottom: 10px solid #e74c3c;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
 
-      /* 이미지가 포함된 슬라이드의 레이아웃 */
-      .image-slide {
-          text-align: center;
-      }
+        .description {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 5px solid #667eea;
+        }
 
-      .image-slide h1 {
-          margin-bottom: 30px;
-      }
+        .description h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
 
-      .image-slide h2 {
-          margin-bottom: 25px;
-          color: #666;
-      }
+        .description ul {
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+            padding-left: 20px;
+        }
 
-      /* 투표 옵션 스타일 */
-      .poll-option {
-          font-size: 20px;
-          padding: 15px 20px;
-          margin: 10px 0;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.1);
-          border: 2px solid transparent;
-      }
+        .description li {
+            margin-bottom: 8px;
+        }
 
-      .poll-option:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-      }
+        .cycle-indicator {
+            position: absolute;
+            right: -120px;
+            top: 40%;
+            font-size: 14px;
+            color: #e74c3c;
+            font-weight: bold;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
 
-      .poll-option.selected {
-          background: rgba(59, 130, 246, 0.3);
-          border-color: #3b82f6;
-      }
-
-
-  
-      
-          body {
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          }
-
-          .slide-container {
-              background: rgba(255, 255, 255, 0.95);
-          }
-
-          h1 {
-              font-size: 3rem;
-              color: #1e40af;
-              margin-bottom: 10px;
-              font-weight: 700;
-              text-align: center;
-          }
-
-          h2 {
-              font-size: 2.5rem;
-              color: #2563eb;
-              margin-bottom: 25px;
-              font-weight: 600;
-          }
-
-          h3 {
-              font-size: 1.8rem;
-              color: #3730a3;
-              margin-bottom: 8px;
-              font-weight: 500;
-          }
-
-          /* 이미지 스타일링 */
-          .slide-image {
-              max-width: 100%;
-              height: auto;
-              border-radius: 12px;
-              box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-              margin: 20px 0;
-              display: block;
-              margin-left: auto;
-              margin-right: auto;
-              transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-
-          .slide-image:hover {
-              transform: scale(1.02);
-              box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-          }
-      
-
-      /* 반응형 추가 스타일 */
-      @media (max-width: 768px) {
-          h1 { font-size: 2.2rem; }
-          h2 { font-size: 1.8rem; }
-          h3 { font-size: 1.4rem; }
-          .slide-container { padding: 40px 25px; }
-      }
-
-      @media (max-width: 480px) {
-          h1 { font-size: 1.8rem; }
-          h2 { font-size: 1.4rem; }
-          h3 { font-size: 1.2rem; }
-          .slide-container { padding: 30px 20px; }
-      }
-
-      /* 접근성 */
-      .slide-container:focus {
-          outline: 3px solid #3b82f6;
-          outline-offset: 5px;
-      }
-
-      /* 애니메이션 */
-      @keyframes slideIn {
-          from {
-              opacity: 0;
-              transform: translateY(20px);
-          }
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      .slide-container > * {
-          animation: slideIn 0.6s ease forwards;
-      }
-
-      /* 슬라이드 번호 스타일 */
-      .slide-number {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: rgba(0, 0, 0, 0.7);
-          color: white;
-          padding: 8px 12px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 500;
-          z-index: 1000;
-          backdrop-filter: blur(10px);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      }
-  </style>
-</head>
-<body class="general-slide">
-  <div class="slide-container" tabindex="0">
-      <h1>마무리</h1>
-
-<p>"두려움의 대상에서 동역의 대상으로"</p>
-
-<p>AI는 목회의 본질을 대체하는 것이 아니라,</p>
-<p>사역자가 더 중요한 본질에 집중하도록 돕는</p>
-<p>강력한 도구입니다.</p>
-
-<p>Q & A</p>
-
-  </div>
-
-  <div class="slide-number" id="slideNumber"></div>
-
-    <script>
-      // 키보드 네비게이션
-      document.addEventListener('keydown', function(e) {
-          switch(e.key) {
-              case 'ArrowRight':
-              case ' ':
-                  window.location.href = 'slide-3-14.html';
-                  break;
-              case 'ArrowLeft':
-                  window.location.href = 'slide-3-12.html';
-                  break;
-              case 'Home':
-                  window.location.href = 'slide-0-0.html';
-                  break;
-              case 'End':
-                  window.location.href = 'slide-9-7.html';
-                  break;
-          }
-      });
-
-      // 클릭으로 다음 슬라이드 (투표 슬라이드가 아닌 경우)
-      
-      document.querySelector('.slide-container').addEventListener('click', function(e) {
-          // 코드 블록 복사 버튼이나 코드 블록 자체를 클릭한 경우 슬라이드 이동 방지
-          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) {
-              return;
-          }
-          window.location.href = 'slide-3-14.html';
-      });
-      
-
-      // 슬라이드 번호 계산 및 표시
-      function updateSlideNumber() {
-          const slideNumberElement = document.getElementById('slideNumber');
-          if (slideNumberElement) {
-              // 현재 파일명에서 슬라이드 번호 추출
-              const currentPath = window.location.pathname;
-              const fileName = currentPath.split('/').pop();
-              const match = fileName.match(new RegExp('slide-(\\d+)-(\\d+)\\.html'));
-
-              if (match) {
-                  const chapter = parseInt(match[1]);
-                  const slide = parseInt(match[2]);
-
-                  // 전체 슬라이드 목록에서 현재 위치 찾기
-                  const slideList = [
-                      // Chapter 0
-                      ...Array.from({length: 27}, (_, i) => ({chapter: 0, slide: i})),
-                      // Chapter 1
-                      ...Array.from({length: 6}, (_, i) => ({chapter: 1, slide: i})),
-                      // Chapter 2
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 2, slide: i})),
-                      // Chapter 3
-                      ...Array.from({length: 14}, (_, i) => ({chapter: 3, slide: i})),
-                      // Chapter 4
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 4, slide: i})),
-                      // Chapter 5
-                      ...Array.from({length: 53}, (_, i) => ({chapter: 5, slide: i})),
-                      // Chapter 6
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 6, slide: i})),
-                      // Chapter 7
-                      ...Array.from({length: 23}, (_, i) => ({chapter: 7, slide: i})),
-                      // Chapter 8
-                      ...Array.from({length: 24}, (_, i) => ({chapter: 8, slide: i})),
-                      // Chapter 9
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 9, slide: i})),
-                      // Chapter 10
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 10, slide: i}))
-                  ];
-
-                  const currentIndex = slideList.findIndex(item =>
-                      item.chapter === chapter && item.slide === slide
-                  );
-
-                  if (currentIndex !== -1) {
-                      slideNumberElement.textContent = (currentIndex + 1) + ' / ' + slideList.length;
-                  } else {
-                      slideNumberElement.textContent = chapter + '-' + slide;
-                  }
-              }
-          }
-      }
-
-      // 로드 애니메이션
-      window.addEventListener('load', function() {
-          document.body.style.opacity = '0';
-          document.body.style.transition = 'opacity 0.5s ease';
-          setTimeout(() => {
-              document.body.style.opacity = '1';
-          }, 100);
-
-          // 슬라이드 번호 업데이트
-          updateSlideNumber();
-      });
-
-            // 코드 복사 기능
-            function copyCode(button) {
-                const codeBlock = button.previousElementSibling;
-                const code = codeBlock.textContent;
-
-                // 클립보드에 복사
-                navigator.clipboard.writeText(code).then(function() {
-                    // 복사 성공 시 버튼 텍스트 변경
-                    const originalText = button.textContent;
-                    button.textContent = '복사됨!';
-                    button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    // 2초 후 원래 텍스트로 복원
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
-                }).catch(function(err) {
-                    // 복사 실패 시 대체 방법 사용
-                    const textArea = document.createElement('textarea');
-                    textArea.value = code;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-
-                    // 성공 메시지 표시
-                    const originalText = button.textContent;
-                    button.textContent = '복사됨!';
-                    button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
-                });
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
             }
 
-      
+            .step-container {
+                flex-direction: column !important;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .step {
+                width: 160px;
+                height: 70px;
+                font-size: 14px;
+            }
+
+            .step-description {
+                border: 2px solid;
+                border-radius: 10px;
+                padding: 15px;
+                font-size: 13px;
+            }
+
+            .step-container:nth-child(even) .step-description {
+                border-right: none;
+                border: 2px solid;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="title">AI와 일하는 방법 프로세스</div>
+        
+        <div class="workflow">
+            <div class="step-container">
+                <div class="step step-1" data-step="1">
+                    질문
+                </div>
+                <div class="step-description desc-1">
+                    <h4>🤔 명확한 질문 정의</h4>
+                    <p>해결하고자 하는 문제나 달성하고자 하는 목표를 구체적이고 명확하게 정의합니다. 모호한 질문보다는 구체적인 맥락과 조건을 포함한 질문이 더 좋은 결과를 가져옵니다.</p>
+                </div>
+            </div>
+            <div class="arrow"></div>
+            
+            <div class="step-container">
+                <div class="step step-2" data-step="2">
+                    지시 (생성)
+                </div>
+                <div class="step-description desc-2">
+                    <h4>📝 구체적인 작업 지시</h4>
+                    <p>AI에게 원하는 결과물의 형태, 톤앤매너, 길이, 형식 등을 구체적으로 지시합니다. 예시를 제공하거나 단계별 요구사항을 명시하면 더 정확한 결과를 얻을 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="arrow"></div>
+            
+            <div class="step-container">
+                <div class="step step-3" data-step="3">
+                    피드백 (점검)
+                </div>
+                <div class="step-description desc-3">
+                    <h4>✅ 결과물 품질 검토</h4>
+                    <p>생성된 결과물이 요구사항을 충족하는지, 정확성과 완성도는 어떤지 꼼꼼히 검토합니다. 부족한 부분이나 개선이 필요한 영역을 구체적으로 파악합니다.</p>
+                </div>
+            </div>
+            <div class="arrow"></div>
+            
+            <div class="step-container">
+                <div class="step step-4" data-step="4">
+                    메타형<br>(프롬프트 개선)
+                </div>
+                <div class="step-description desc-4">
+                    <h4>🔧 프롬프트 최적화</h4>
+                    <p>피드백을 바탕으로 프롬프트를 개선합니다. 더 명확한 지시어, 구체적인 예시, 제약조건 추가 등을 통해 다음 번에는 더 나은 결과를 얻을 수 있도록 프롬프트를 발전시킵니다.</p>
+                </div>
+            </div>
+            <div class="arrow"></div>
+            
+            <div class="step-container">
+                <div class="step step-5" data-step="5">
+                    목적별 편집
+                </div>
+                <div class="step-description desc-5">
+                    <h4>🎯 목적에 맞는 수정</h4>
+                    <p>최종 사용 목적과 대상 독자를 고려하여 내용을 편집합니다. 발표용, 보고서용, 블로그용 등 각각의 목적에 맞게 톤앤매너, 구조, 세부 내용을 조정합니다.</p>
+                </div>
+            </div>
+            <div class="arrow"></div>
+            
+            <div class="step-container">
+                <div class="step step-6" data-step="6">
+                    글쓰기
+                </div>
+                <div class="step-description desc-6">
+                    <h4>📖 최종 결과물 완성</h4>
+                    <p>모든 과정을 거쳐 완성된 최종 결과물을 실제 업무나 목적에 활용합니다. 이 경험을 통해 다음 AI 협업 시 더 효과적인 프로세스를 구축할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="description">
+            <h3>🔄 AI 협업 프로세스의 핵심 포인트</h3>
+            <ul>
+                <li><strong>순환적 개선:</strong> 각 단계에서 얻은 인사이트를 다음 사이클에 적용하여 지속적으로 품질을 향상시킵니다.</li>
+                <li><strong>구체성의 중요성:</strong> 모호한 지시보다는 구체적이고 명확한 지시가 더 나은 결과를 가져옵니다.</li>
+                <li><strong>반복적 정제:</strong> 한 번에 완벽한 결과를 기대하기보다는 여러 번의 개선을 통해 목표에 접근합니다.</li>
+                <li><strong>목적 중심 접근:</strong> 최종 활용 목적을 항상 염두에 두고 각 단계를 진행합니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 단계별 호버 효과 및 상호작용
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                const stepNumber = this.getAttribute('data-step');
+
+                // 모든 단계 초기화
+                document.querySelectorAll('.step').forEach(s => {
+                    s.style.transform = 'scale(1)';
+                    s.style.opacity = '1';
+                });
+
+                // 클릭된 단계 강조
+                this.style.transform = 'scale(1.1)';
+
+                // 간단한 애니메이션 효과
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+
+        // 화살표 애니메이션 제어
+        let animationPaused = false;
+        document.addEventListener('click', function() {
+            const arrows = document.querySelectorAll('.arrow');
+            if (animationPaused) {
+                arrows.forEach(arrow => {
+                    arrow.style.animationPlayState = 'running';
+                });
+                animationPaused = false;
+            } else {
+                arrows.forEach(arrow => {
+                    arrow.style.animationPlayState = 'paused';
+                });
+                animationPaused = true;
+            }
+        });
     </script>
+
 </body>
 </html>

@@ -1561,7 +1561,9 @@ ${content}
     try {
       if (!courseId || !db) return false;
       const payload = buildLockPayload();
-      await setDoc(doc(db, 'locks', courseId), payload, { merge: true });
+      // 기존 merge:true 사용 시, false로 해제된 키가 slideLocks 맵에서 제거되지 않아
+      // 이전 true 값이 남는 문제가 발생했다. 전체 문서를 덮어써서 일관성 보장.
+      await setDoc(doc(db, 'locks', courseId), payload);
       console.log('✅ Firestore 잠금 상태 저장 완료:', { courseId, ...payload });
       return true;
     } catch (error) {

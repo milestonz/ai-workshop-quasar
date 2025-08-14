@@ -358,6 +358,7 @@
                         size="xs"
                         :icon="isChapterLocked(index) ? 'lock' : 'lock_open'"
                         :color="isChapterLocked(index) ? 'red' : 'grey'"
+                        style="cursor: pointer"
                         class="q-mr-xs"
                         @click.stop="toggleChapterLock(index)"
                         :title="isChapterLocked(index) ? 'Chapter 잠금 해제' : 'Chapter 잠금'"
@@ -412,6 +413,7 @@
                           size="xs"
                           :icon="isSlideLocked(index, slideIndex) ? 'lock' : 'lock_open'"
                           :color="isSlideLocked(index, slideIndex) ? 'red' : 'grey'"
+                          style="cursor: pointer"
                           @click.stop="toggleSlideLock(index, slideIndex)"
                           :title="
                             isSlideLocked(index, slideIndex)
@@ -1192,7 +1194,16 @@ const selectSlide = async (lessonIndex: number, slideIndex: number) => {
     슬라이드제목: lesson?.slideTitles?.[slideIndex],
     현재강의: courseStore.currentLesson,
     현재슬라이드: courseStore.currentSlide,
+    현재라우트: router.currentRoute.value.path,
   });
+
+  // 현재 라우트가 설문결과 페이지인 경우 메인 페이지로 이동
+  if (router.currentRoute.value.path === '/survey-results') {
+    console.log('📊 설문결과 페이지에서 슬라이드 선택 → 메인 페이지로 이동');
+    await router.push('/');
+    // 잠시 기다린 후 슬라이드 선택 로직 실행
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
 
   // 잠긴 슬라이드인지 확인
   if (courseStore.isSlideLocked(lessonIndex, slideIndex)) {
@@ -2033,6 +2044,9 @@ watch(isGuestAuthenticated, (newGuestAuthState) => {
   }
 });
 
+// Firestore 잠금 동기화 초기화 여부
+const locksInitialized = ref(false);
+
 // 컴포넌트 마운트 시 제목 로드 및 자동 저장 시작
 onMounted(async () => {
   console.log('🚀 MainLayout 마운트 시작...');
@@ -2051,7 +2065,35 @@ onMounted(async () => {
   await courseStore.initializeCourseOutline();
   console.log('✅ 강의 목차 초기화 완료, lessons 개수:', lessons.value.length);
 
+  // 잠금 상태: 현재 코스 ID 설정 후 Firestore에서 로드 및 실시간 구독
+  try {
+    courseStore.setCurrentCourseId('ai-workshop');
+    await courseStore.loadLockStatusFromFirestore('ai-workshop');
+    courseStore.subscribeLockStatus('ai-workshop');
+    locksInitialized.value = true;
+    console.log('🔒 Firestore 잠금 초기 로드 및 구독 시작 완료');
+  } catch (e) {
+    console.warn('⚠️ Firestore 잠금 초기화 실패(무시 가능):', e);
+  }
+
+  // MD 기반 제목/데이터 사전 로드
   loadAllSlideTitles();
+
+  // 목차(lessons)가 백그라운드 로드로 교체될 때 한 번 더 Firestore 잠금 재적용
+  watch(
+    () => lessons.value.map((l) => l?.slides).join(','),
+    async () => {
+      if (!isAuthenticated.value && !(isGuestAuthenticated.value && isGuestInfoRegistered.value))
+        return;
+      try {
+        await courseStore.loadLockStatusFromFirestore('ai-workshop');
+        console.log('🔒 lessons 갱신 감지 → Firestore 잠금 재적용 완료');
+      } catch (e) {
+        console.warn('⚠️ Firestore 잠금 재적용 실패(무시 가능):', e);
+      }
+    },
+    { immediate: false },
+  );
 
   // 현재 선택된 Chapter만 펼치기
   const initialLesson = currentLesson.value;
@@ -2164,8 +2206,15 @@ window.addEventListener('beforeunload', (event) => {
 /* 잠긴 Chapter 스타일 */
 .locked-chapter {
   opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none; /* 클릭 이벤트 방지 */
+}
+
+/* 잠금 상태여도 잠금 토글 버튼은 항상 클릭 가능 + 손모양 커서 */
+.locked-chapter .q-btn[icon='lock'],
+.locked-chapter .q-btn[icon='lock_open'],
+.locked-slide .q-btn[icon='lock'],
+.locked-slide .q-btn[icon='lock_open'] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* 강의 제목 스타일 */

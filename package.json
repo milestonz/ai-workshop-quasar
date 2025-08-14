@@ -24,14 +24,17 @@
     "convert-html-to-markdown": "node scripts/convert-html-to-markdown.js",
     "build-slides": "node scripts/build-slides.cjs public/slides public/generated/slides && npm run update-sidebar",
     "build:start": "npm run build-slides && node server.js",
+    "start:results": "PORT=9001 node server.js",
     "build-slides-individual": "npm run convert-slides-individual && echo '✅ 개별 슬라이드 변환 완료!'",
     "watch-slides": "node scripts/slide-converter/watch-slides.js",
     "batch-convert": "node scripts/slide-converter/batch-convert.js"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
+    "@types/dompurify": "^3.0.5",
     "chart.js": "^4.5.0",
     "cors": "^2.8.5",
+    "dompurify": "^3.2.6",
     "dotenv": "^17.2.1",
     "express": "^4.19.2",
     "firebase": "^12.0.0",

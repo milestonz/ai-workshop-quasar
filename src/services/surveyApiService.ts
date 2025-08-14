@@ -1,6 +1,6 @@
 import type { SurveyData } from '../types/survey';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = '/api';
 
 export const surveyApiService = {
   // 설문조사 제출
@@ -19,7 +19,7 @@ export const surveyApiService = {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || '설문조사 제출에 실패했습니다.');
+        throw new Error(result.message || `설문조사 제출 실패 (${response.status})`);
       }
 
       return result;
@@ -44,7 +44,7 @@ export const surveyApiService = {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || '설문 결과 조회에 실패했습니다.');
+        throw new Error(result.message || `설문 결과 조회 실패 (${response.status})`);
       }
 
       return result;
@@ -64,7 +64,7 @@ export const surveyApiService = {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || '설문 통계 조회에 실패했습니다.');
+        throw new Error(result.message || `설문 통계 조회 실패 (${response.status})`);
       }
 
       return result;

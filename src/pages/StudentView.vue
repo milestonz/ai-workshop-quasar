@@ -36,16 +36,7 @@
           <!-- 목차 -->
           <div class="text-subtitle2 text-weight-medium q-mb-sm">📖 강의 목차</div>
 
-          <!-- Lock된 슬라이드 안내 -->
-          <q-banner v-if="hasLockedContent" class="bg-orange-1 text-orange-9 q-mb-md">
-            <template v-slot:avatar>
-              <q-icon name="lock" color="orange" />
-            </template>
-            <div class="text-caption">
-              <strong>잠금된 콘텐츠:</strong><br />
-              일부 Chapter나 슬라이드가 관리자에 의해 잠겨있습니다.
-            </div>
-          </q-banner>
+          <!-- Lock된 슬라이드 안내 제거 -->
           <q-list>
             <q-item
               v-for="(slide, index) in slideList"
@@ -232,6 +223,108 @@
         <div class="slide-container">
           <div v-if="currentSlideUrl" class="slide-viewer-container">
             <iframe :src="currentSlideUrl" class="slide-viewer" @load="onSlideLoad" />
+            <!-- 퀴즈 오버레이 -->
+            <div v-if="quizOverlay.visible" class="quiz-overlay" @click.stop>
+              <div class="quiz-card">
+                <div class="text-subtitle1 q-mb-sm">{{ quizOverlay.question }}</div>
+                <div class="row q-col-gutter-md options-grid">
+                  <div class="col-12 col-sm-6" v-for="(op, i) in quizOverlay.options" :key="i">
+                    <q-btn
+                      outline
+                      rounded
+                      size="lg"
+                      class="full-width text-left option-btn"
+                      :label="i + 1 + '. ' + op"
+                      @click.stop="handleQuizClick(i + 1)"
+                    />
+                  </div>
+                </div>
+                <div
+                  v-if="quizOverlay.revealed && quizOverlay.answerText"
+                  class="q-mt-md q-pa-sm bg-grey-1 rounded-borders"
+                >
+                  <div
+                    class="text-positive text-weight-bold q-mb-xs"
+                    v-if="
+                      quizOverlay.revealed && quizOverlay.correctIndex && quizOverlay.lastChoice
+                    "
+                  >
+                    {{
+                      quizOverlay.lastChoice === quizOverlay.correctIndex
+                        ? '정답입니다! ✅'
+                        : '오답입니다. ❌'
+                    }}
+                  </div>
+                  <div class="text-body2">
+                    <div v-if="!quizOverlay.isOX" class="q-mb-xs">
+                      <b>정답:</b> {{ quizOverlay.correctIndex }}
+                    </div>
+                    <div v-html="quizOverlay.answerText.replace(/\n/g, '<br/>')"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- iFrame 클릭 차단: 오버레이가 열려있을 때만 차단 -->
+            <div
+              v-if="activePoll && isStudent && showPollOverlay"
+              class="iframe-blocker"
+              @click.stop
+            ></div>
+            <!-- 투표 오버레이: 학생은 수동으로 열기(FAB), 관리자 결과는 자동 표시 -->
+            <div v-if="activePoll && isStudent && showPollOverlay" class="poll-overlay" @click.stop>
+              <PollVote :poll-id="activePoll.pollId" />
+            </div>
+            <div
+              v-else-if="activePoll && isAdmin && activePoll.result === 'bar'"
+              class="poll-overlay"
+              @click.stop
+            >
+              <PollResultBar :poll-id="activePoll.pollId" />
+            </div>
+            <div
+              v-else-if="activePoll && isAdmin && activePoll.result === 'word'"
+              class="poll-overlay"
+              @click.stop
+            >
+              <PollResultWord :poll-id="activePoll.pollId" />
+            </div>
+            <!-- 학생용 투표 FAB (오버레이가 닫혀 있을 때만 표시) -->
+            <q-btn
+              v-if="activePoll && isStudent && !showPollOverlay"
+              class="poll-fab"
+              round
+              color="primary"
+              icon="how_to_vote"
+              @click="showPollOverlay = true"
+            >
+              <q-tooltip>투표하기</q-tooltip>
+            </q-btn>
+
+            <!-- 관리자: 결과 보기 버튼 (새 창) -->
+            <q-btn
+              v-if="activePoll && isAdmin"
+              class="poll-fab q-mr-md"
+              round
+              color="secondary"
+              icon="insights"
+              @click="openPollResultWindow(activePoll.pollId)"
+              style="right: 80px"
+            >
+              <q-tooltip>결과 보기</q-tooltip>
+            </q-btn>
+
+            <!-- 관리자: 결과 초기화 버튼 -->
+            <q-btn
+              v-if="activePoll && isAdmin"
+              class="poll-fab q-mr-md"
+              round
+              color="negative"
+              icon="delete"
+              @click="clearPollData(activePoll.pollId)"
+              style="right: 140px"
+            >
+              <q-tooltip>결과 초기화</q-tooltip>
+            </q-btn>
           </div>
 
           <div v-else class="loading-state">
@@ -249,7 +342,7 @@
       v-if="!requireStudentLogin || isAuthenticated || isGuestAuthenticated"
     >
       <div class="fixed-navigation-bar">
-        <div class="row items-center justify-center q-pa-md">
+        <div class="row items-center justify-center q-pa-sm">
           <!-- 이전 버튼 -->
           <div class="col-auto q-mr-lg">
             <q-btn
@@ -267,12 +360,10 @@
           <div class="col-auto q-mx-lg">
             <div class="text-center">
               <div class="text-h6 text-weight-bold">
-                {{ currentSlideIndex + 1 }} / {{ totalSlides }}
+                {{ currentSlideIndex + 1 }}
               </div>
               <div class="text-caption text-grey-7">{{ currentSlideTitle }}</div>
-              <div v-if="hasLockedContent" class="text-caption text-orange-7 q-mt-xs">
-                🔒 일부 콘텐츠가 잠겨있습니다
-              </div>
+              <!-- 하단 네비 잠금 안내 제거 -->
             </div>
           </div>
 
@@ -384,6 +475,19 @@ import { emailApiService } from '../services/emailApiService';
 import { surveyApiService } from '../services/surveyApiService';
 import type { SurveyData } from '../types/survey';
 import { isStudentMode } from 'src/utils/logger';
+// 신규 추가: Poll 컴포넌트들
+import PollVote from 'src/components/PollVote.vue';
+import PollResultBar from 'src/components/PollResultBar.vue';
+import PollResultWord from 'src/components/PollResultWord.vue';
+import {
+  getDatabase,
+  ref as dbRef,
+  set as rtdbSet,
+  get as rtdbGet,
+  remove as rtdbRemove,
+  runTransaction,
+} from 'firebase/database';
+import { firebaseApp } from 'src/firebase/config';
 
 const $q = useQuasar();
 const route = useRoute();
@@ -391,12 +495,16 @@ const router = useRouter();
 const courseStore = useCourseStore();
 const { user, isAuthenticated, displayName, photoURL, logout, initAuth, signInWithGoogle } =
   useAuth();
+// 역할 분기를 위해 userRole 추가
+const { userRole } = useAuth();
 const { guestUser, isGuestAuthenticated, signInAsGuest } = useGuestAuth();
 
 // State
 const leftDrawerOpen = ref(true);
 const currentSlideIndex = ref(0);
 const completedSlides = ref<number[]>([]);
+// 임시 팝업(투표 오버레이) 표시 여부 - 기본 숨김
+const showPollOverlay = ref(false);
 const showLoginDialog = ref(false);
 const showGuestLoginDialog = ref(false);
 const showSurveyDialog = ref(false);
@@ -436,10 +544,17 @@ const slideList = computed(() => {
     }
 
     for (let slideIndex = 0; slideIndex < lesson.slides; slideIndex++) {
-      // 개별 슬라이드가 잠겨있으면 건너뛰기
+      const slideKey = `${lessonIndex}-${slideIndex}`;
+      const isPollSlide = !!pollMap[slideKey];
+
+      // 개별 슬라이드가 잠겨있으면 건너뛰기 (단, poll 슬라이드는 학생/관리자 모두 예외)
       if (courseStore.isSlideLocked(lessonIndex, slideIndex)) {
-        console.log(`🔒 Slide ${lessonIndex}-${slideIndex}가 잠겨있어서 건너뜀`);
-        continue;
+        if (isPollSlide) {
+          console.log(`🔓 Poll 슬라이드(${slideKey})는 잠금 무시하고 표시`);
+        } else {
+          console.log(`🔒 Slide ${slideKey}가 잠겨있어서 건너뜀`);
+          continue;
+        }
       }
 
       const slideTitle = lesson.slideTitles?.[slideIndex] || `슬라이드 ${slides.length + 1}`;
@@ -532,40 +647,6 @@ const onSlideLoad = () => {
           ) {
             return;
           }
-
-          // 슬라이드 전체 영역 클릭 시 다음 슬라이드로 이동
-          if (
-            target.tagName === 'BODY' ||
-            target.classList.contains('slide-content') ||
-            target.classList.contains('slide-viewer')
-          ) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            // 다음 슬라이드로 이동
-            const nextIndex = currentSlideIndex.value + 1;
-            console.log('🔄 슬라이드 클릭 감지:', {
-              currentIndex: currentSlideIndex.value,
-              nextIndex,
-              totalSlides: totalSlides.value,
-              canMove: nextIndex < totalSlides.value,
-            });
-
-            if (nextIndex < totalSlides.value) {
-              console.log('🔄 슬라이드 클릭으로 다음 슬라이드 이동:', nextIndex);
-              currentSlideIndex.value = nextIndex;
-              await nextTick(); // Vue 업데이트 보장
-              updateRoute();
-            } else {
-              // 마지막 슬라이드인 경우 안내 메시지
-              $q.notify({
-                type: 'info',
-                message: '마지막 슬라이드입니다.',
-                position: 'top',
-                timeout: 2000,
-              });
-            }
-          }
         });
 
         console.log('✅ iframe 내부 복사 기능 및 네비게이션 기능 주입 완료');
@@ -574,6 +655,26 @@ const onSlideLoad = () => {
       console.log('⚠️ iframe 내부 기능 주입 실패 (CORS 정책):', error);
     }
   }, 100);
+
+  // 투표 상태 동기화: 학생이면서 현재 슬라이드가 poll이면 RTDB에서 내 투표를 읽어 iFrame에 전달
+  syncMyPollStateToIframe().catch(() => {});
+
+  // 메타 질문 보강: 관리자일 때만 수행
+  if (isAdmin.value) {
+    ensurePollQuestionIfMissing().catch(() => {});
+  }
+
+  // 퀴즈 탐지 및 오버레이 구성
+  setupQuizOverlay().catch(() => {});
+
+  // 학생용: poll 슬라이드는 오버레이를 기본으로 열어 iFrame 클릭 문제 방지
+  try {
+    if (activePoll.value && isStudent.value) {
+      showPollOverlay.value = true;
+    } else {
+      showPollOverlay.value = false;
+    }
+  } catch (_) {}
 };
 
 // 코드 복사 함수
@@ -661,6 +762,64 @@ const hasLockedContent = computed(() => {
     return false;
   });
 });
+
+// 슬라이드별 poll 매핑 (고정 매핑 + 동적 감지 결과를 함께 사용)
+const pollMap: Record<string, { pollId: string; result: 'bar' | 'word' }> = {
+  '1-2': { pollId: 'poll-1-2', result: 'bar' },
+  '1-3': { pollId: 'poll-1-3', result: 'bar' },
+  '1-4': { pollId: 'poll-1-4', result: 'bar' },
+  '1-5': { pollId: 'poll-1-5', result: 'bar' },
+  '1-6': { pollId: 'poll-1-6', result: 'bar' },
+};
+
+// 동적으로 현재 슬라이드의 @poll 여부 탐지
+const detectedPoll = ref<{ pollId: string; result: 'bar' | 'word' } | null>(null);
+
+const isStudent = computed(() => userRole.value === 'student');
+const isAdmin = computed(() => userRole.value === 'admin');
+
+// 현재 슬라이드의 원래 lesson/slide 키 계산
+const currentSlideKeyRaw = computed(() => {
+  const slide = slideList.value[currentSlideIndex.value];
+  if (!slide) return '';
+  return `${slide.lessonIndex}-${slide.slideIndex}`;
+});
+
+const activePoll = computed(() => detectedPoll.value || pollMap[currentSlideKeyRaw.value]);
+
+// 현재 슬라이드 변경 시 MD 읽어서 @poll 감지
+watch(
+  [currentSlideIndex, slideList],
+  async () => {
+    try {
+      const slide = slideList.value[currentSlideIndex.value];
+      if (!slide) {
+        detectedPoll.value = null;
+        return;
+      }
+      const url = `/slides/slide-${slide.lessonIndex}-${slide.slideIndex}.md`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) {
+        detectedPoll.value = null;
+        return;
+      }
+      const text = (await res.text()).toLowerCase();
+      if (text.trim().startsWith('@poll')) {
+        // 간단 규칙: 내용에 'word' 단어가 있으면 워드클라우드, 아니면 막대
+        const isWord = /@word|word\s*cloud|워드/.test(text);
+        detectedPoll.value = {
+          pollId: `poll-${slide.lessonIndex}-${slide.slideIndex}`,
+          result: isWord ? 'word' : 'bar',
+        };
+      } else {
+        detectedPoll.value = null;
+      }
+    } catch (_) {
+      detectedPoll.value = null;
+    }
+  },
+  { immediate: true },
+);
 
 // Methods
 // 직접 로그인 처리 (팝업 없이 바로 로그인)
@@ -1076,6 +1235,67 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 };
 
+// 내 투표 상태를 iFrame에 반영
+const syncMyPollStateToIframe = async () => {
+  try {
+    const poll = activePoll.value;
+    if (!poll) return;
+
+    const db = firebaseApp ? getDatabase(firebaseApp) : null;
+    if (!db) return;
+
+    const { getAuth } = await import('firebase/auth');
+    const uid = getAuth(firebaseApp!).currentUser?.uid;
+    if (!uid) return;
+
+    // 학생은 공식 votes, 관리자는 개인 userVotes 경로 사용
+    const votePath = isStudent.value
+      ? `polls/${poll.pollId}/votes/${uid}`
+      : `polls/${poll.pollId}/userVotes/${uid}`;
+
+    const snap = await rtdbGet(dbRef(db, votePath));
+    if (!snap.exists()) return;
+    const val = snap.val();
+
+    const iframe = document.querySelector('.slide-viewer') as HTMLIFrameElement;
+    if (!iframe || !iframe.contentWindow) return;
+
+    if (typeof val === 'string' && /^\d+$/.test(val)) {
+      iframe.contentWindow.postMessage(
+        { type: 'poll-state', pollId: poll.pollId, optionId: String(val) },
+        '*',
+      );
+    } else if (val) {
+      iframe.contentWindow.postMessage(
+        { type: 'poll-state', pollId: poll.pollId, text: String(val) },
+        '*',
+      );
+    }
+  } catch (e) {
+    console.warn('⚠️ poll 상태 동기화 실패:', e);
+  }
+};
+
+// meta.question이 없으면 현재 슬라이드 제목으로 저장
+const ensurePollQuestionIfMissing = async () => {
+  try {
+    if (!isAdmin.value) return;
+    const poll = activePoll.value;
+    if (!poll) return;
+    const db = firebaseApp ? getDatabase(firebaseApp) : null;
+    if (!db) return;
+    const metaRef = dbRef(db, `polls/${poll.pollId}/meta`);
+    const snap = await rtdbGet(metaRef);
+    const metaVal = (snap.val() as any) || {};
+    if (!metaVal.question || String(metaVal.question).trim() === '') {
+      await rtdbSet(metaRef, { ...metaVal, question: currentSlideTitle.value });
+      console.log('📝 meta.question 보강:', poll.pollId, currentSlideTitle.value);
+    }
+  } catch (e) {
+    console.warn('⚠️ meta.question 보강 실패:', e);
+  }
+};
+
 // Lifecycle
 onMounted(async () => {
   // Firebase 인증 초기화
@@ -1084,6 +1304,61 @@ onMounted(async () => {
   await loadCourse();
   // 키보드 네비게이션 활성화
   document.addEventListener('keydown', handleKeydown);
+
+  // iFrame 내부 투표 이벤트 수신 → RTDB 기록
+  const db = firebaseApp ? getDatabase(firebaseApp) : null;
+  const sanitizeKey = (s: string) => s.replace(/[.#$\[\]/]/g, '_');
+  const onMessage = async (event: MessageEvent) => {
+    try {
+      const data: any = event.data || {};
+
+      // 슬라이드 네비게이션 위임 처리
+      if (data && typeof data.type === 'string') {
+        if (data.type === 'slide-next') {
+          goToSlide(currentSlideIndex.value + 1);
+          return;
+        } else if (data.type === 'slide-prev') {
+          goToSlide(currentSlideIndex.value - 1);
+          return;
+        } else if (data.type === 'slide-first') {
+          goToSlide(0);
+          return;
+        } else if (data.type === 'slide-last') {
+          goToSlide(totalSlides.value - 1);
+          return;
+        }
+      }
+
+      if (!data || data.type !== 'poll-vote') return;
+      if (!db) return;
+      // 학생만 기록
+      if (!(userRole.value === 'student')) return;
+      const { pollId, optionId, text } = data;
+      const uid = (await import('firebase/auth')).getAuth(firebaseApp!).currentUser?.uid;
+      if (!uid || !pollId) return;
+
+      const voteRef = dbRef(db, `polls/${pollId}/votes/${uid}`);
+      const existsSnap = await rtdbGet(voteRef);
+      if (existsSnap.exists()) {
+        // 중복 투표 방지
+        return;
+      }
+
+      // 표기 저장 (votes만)
+      const valueToSave = text || String(optionId);
+      await rtdbSet(voteRef, valueToSave);
+
+      console.log('🗳️ parent saved:', { pollId, value: valueToSave });
+    } catch (e) {
+      console.warn('🗳️ parent save failed:', e);
+    }
+  };
+  window.addEventListener('message', onMessage);
+
+  // 언마운트 시 해제
+  onUnmounted(() => {
+    window.removeEventListener('message', onMessage as any);
+  });
 });
 
 onUnmounted(() => {
@@ -1110,6 +1385,170 @@ watch(
     }
   },
 );
+
+watch(
+  () => courseStore.lessons.map((l) => l?.slides).join(','),
+  async () => {
+    try {
+      const cid = (courseId.value || 'ai-workshop') as string;
+      await courseStore.loadLockStatusFromFirestore(cid);
+      console.log('🔒 StudentView: lessons 갱신 → Firestore 잠금 재적용 완료');
+    } catch (e) {
+      console.warn('⚠️ StudentView: Firestore 잠금 재적용 실패(무시 가능):', e);
+    }
+  },
+  { immediate: false },
+);
+
+const openPollResultWindow = (pollId: string) => {
+  const url = `/#/poll-result?pollId=${encodeURIComponent(pollId)}`;
+  window.open(url, '_blank', 'noopener,noreferrer,width=520,height=420');
+};
+
+// 관리자: 현재 Poll 결과 초기화 (LocalStorage + RTDB)
+const clearPollData = async (pollId: string) => {
+  try {
+    if (!isAdmin.value) return;
+    const confirm = await $q
+      .dialog({
+        title: '결과 초기화',
+        message:
+          '해당 투표의 나의 선택(LocalStorage)과 RTDB의 표기를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.',
+        cancel: true,
+        ok: { label: '초기화', color: 'negative' },
+      })
+      .onOk(() => true)
+      .onCancel(() => false);
+    if (!confirm) return;
+
+    // LocalStorage 정리 (학생/관리자 공통 키 가정 없으므로 폴리시: 이 탭의 로컬 poll 관련 키 전체 제거)
+    try {
+      Object.keys(localStorage)
+        .filter((k) => k.toLowerCase().includes('poll'))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch (_) {}
+
+    const db = firebaseApp ? getDatabase(firebaseApp) : null;
+    if (db) {
+      const { getAuth } = await import('firebase/auth');
+      const uid = getAuth(firebaseApp!).currentUser?.uid;
+      if (uid) {
+        // 관리자 개인 userVotes 제거
+        await rtdbRemove(dbRef(db, `polls/${pollId}/userVotes/${uid}`)).catch(() => {});
+        // 학생 표기 전체를 지우려면 아래 주석 해제 (주의: 전체 데이터 삭제)
+        // await rtdbRemove(dbRef(db, `polls/${pollId}/votes`)).catch(() => {});
+      }
+    }
+
+    $q.notify({ type: 'positive', message: '투표 결과가 초기화되었습니다.', position: 'top' });
+    // iFrame 상태도 초기화 시그널 전송 (선택사항)
+    try {
+      const iframe = document.querySelector('.slide-viewer') as HTMLIFrameElement;
+      iframe?.contentWindow?.postMessage({ type: 'poll-state', pollId, optionId: '' }, '*');
+    } catch (_) {}
+  } catch (e) {
+    $q.notify({ type: 'negative', message: '초기화 중 오류가 발생했습니다.', position: 'top' });
+  }
+};
+
+// 퀴즈 오버레이 상태
+const quizOverlay = ref<{
+  visible: boolean;
+  question: string;
+  options: string[];
+  correctIndex: number | null;
+  answerText: string;
+  lastChoice: number | null;
+  isOX: boolean;
+  revealed: boolean;
+}>({
+  visible: false,
+  question: '',
+  options: [],
+  correctIndex: null,
+  answerText: '',
+  lastChoice: null,
+  isOX: false,
+  revealed: false,
+});
+
+const parseQuizFromIframe = (): {
+  question: string;
+  options: string[];
+  correctIndex: number | null;
+  answerText: string;
+  isOX: boolean;
+} | null => {
+  try {
+    const iframe = document.querySelector('.slide-viewer') as HTMLIFrameElement;
+    if (!iframe || !iframe.contentDocument) return null;
+    const doc = iframe.contentDocument;
+    const isQuiz = doc.body.classList.contains('quiz-slide');
+    if (!isQuiz) return null;
+    const qEl = doc.querySelector('.quiz-question');
+    const question = (qEl?.textContent || '').trim();
+    const options = Array.from(doc.querySelectorAll('.quiz-option')).map((el) =>
+      (el.textContent || '').replace(/^\d+\.\s*/, '').trim(),
+    );
+    const answerRaw = (doc.getElementById('quiz-answer-data')?.textContent || '').trim();
+    // OX 퀴즈 여부 판별: 옵션에 '맞다/아니다'가 포함되거나, 정답 텍스트에 O/X 표기가 있으면 OX
+    const normalizedOptions = options.map((s) => s.replace(/\s+/g, ''));
+    const opt0 = normalizedOptions[0] ?? '';
+    const opt1 = normalizedOptions[1] ?? '';
+    const looksOX =
+      (normalizedOptions.length === 2 &&
+        (/^(맞다|그렇다|O)$/i.test(opt0) || /^(아니다|아니오|그렇지않다|X)$/i.test(opt1))) ||
+      /정답\s*[:\-–]?\s*[OX]/i.test(answerRaw);
+
+    let correctIndex: number | null = null;
+    if (looksOX) {
+      const hasO = /정답\s*[:\-–]?\s*O/i.test(answerRaw);
+      const hasX = /정답\s*[:\-–]?\s*X/i.test(answerRaw);
+      if (hasO) correctIndex = 1;
+      else if (hasX) correctIndex = 2;
+    } else {
+      // 일반 숫자형 정답
+      const m = answerRaw.match(/(^|\D)(\d+)(?=\D|$)/);
+      correctIndex = m ? Number(m[2]) : null;
+    }
+    return { question, options, correctIndex, answerText: answerRaw, isOX: !!looksOX };
+  } catch (e) {
+    return null;
+  }
+};
+
+const setupQuizOverlay = async () => {
+  const data = parseQuizFromIframe();
+  if (!data || !data.question || data.options.length === 0) {
+    quizOverlay.value = {
+      visible: false,
+      question: '',
+      options: [],
+      correctIndex: null,
+      answerText: '',
+      lastChoice: null,
+      isOX: false,
+      revealed: false,
+    };
+    return;
+  }
+  quizOverlay.value = {
+    visible: true,
+    question: data.question,
+    options: data.options,
+    correctIndex: data.correctIndex,
+    answerText: data.answerText,
+    lastChoice: null,
+    isOX: data.isOX,
+    revealed: false,
+  };
+};
+
+const handleQuizClick = (idx: number) => {
+  if (!quizOverlay.value.visible) return;
+  quizOverlay.value.lastChoice = idx;
+  quizOverlay.value.revealed = true;
+};
 </script>
 
 <style scoped>
@@ -1127,6 +1566,7 @@ watch(
   width: 100%;
   height: 100%;
   min-height: 600px;
+  position: relative; /* 오버레이 배치를 위해 추가 */
 }
 
 .slide-viewer {
@@ -1138,6 +1578,44 @@ watch(
 
 .slide-viewer-container {
   position: relative;
+}
+
+.quiz-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* 네비(1000)보다 살짝 낮게 → 하단 버튼 유지 */
+  pointer-events: none; /* 카드만 클릭 허용 */
+  background: transparent; /* 배경 투명 */
+}
+.quiz-overlay .quiz-card {
+  pointer-events: auto;
+  width: 96%;
+  max-width: 980px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 22px 24px;
+  min-height: 60vh; /* 기존 대비 약 2배 높이 확보 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.options-grid {
+  margin-top: 8px;
+}
+
+.option-btn {
+  text-align: left;
+  border-width: 2px;
+  padding: 12px 16px;
+}
+.option-btn:hover {
+  border-color: #3b82f6;
 }
 
 .loading-state {
@@ -1154,6 +1632,42 @@ watch(
   background: #f8f9fa;
   border-radius: 8px;
   padding: 16px;
+}
+
+.poll-overlay {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000; /* 오버레이를 최상단으로 */
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+  max-width: 380px;
+  pointer-events: auto;
+}
+
+/* 학생용 투표 FAB */
+.poll-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1001;
+}
+
+/* iFrame 클릭 차단 레이어 (폴 활성화 시에만, 오버레이 열렸을 때) */
+.iframe-blocker {
+  position: absolute;
+  inset: 0;
+  z-index: 900; /* 오버레이보다 낮게 */
+  background: transparent;
+  pointer-events: auto; /* 아래 iFrame 클릭 차단 */
+}
+
+/* Quasar 버튼 커서 명시 */
+:deep(.poll-overlay .q-btn) {
+  cursor: pointer;
 }
 
 /* 반응형 디자인 */
@@ -1194,10 +1708,10 @@ watch(
 
 /* 고정된 하단 네비게이션 바 스타일 */
 .fixed-navigation-bar {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
   width: 100%;
   z-index: 1000;
 }

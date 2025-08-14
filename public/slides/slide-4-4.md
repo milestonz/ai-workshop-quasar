@@ -1,33 +1,37 @@
 @challenge
 
-# 소그룹 리더 교육교재 제작
+# 설교 원고 기반의 주해와 강해
 
 ## 입력 (Input)
 
-- 교육 목표
-- 대상자 정보
-- 교육 시간
+- 성경 본문
+- 설교 원고
 
-## AI 도구
+## AI 도구 : Claude
 
-#4 Canva
-AI 디자인 및 레이아웃
+설교 내용 주해 작업 및 추가 성찰
 
 ## 출력 (Output)
 
-- 교육 교재 PDF
-- 프레젠테이션
-- 시각 자료
+- 성경 원문 언어적, 문법적, 역사적, 신학적 의미 분석과 해석
+- 설교 준비를 위한 성찰 질문
+- 강해 방향 수립
+
+## 실습
+
+1. 성경 본문 또는 설교 원고를 입력
+   https://www.youtube.com/watch?v=Gln6Lb8o2bs
+
+2. 주해 결과
+   https://claude.ai/public/artifacts/b56b7e83-5835-44fe-8654-fb18fb264adb
+
+3. 강해 결과
+   https://claude.ai/public/artifacts/0c480204-0537-4dd3-a023-dea9ac6e5feb
+
+4. 성찰적 질문
+   https://claude.ai/public/artifacts/04bc9275-ebe6-4e83-a693-6a53f42deaa4
+
+5. 전체 과정
+   https://claude.ai/chat/a44eb2f5-4795-4c0e-9421-eef6cf70b634
 
 ## 적용 아이디어
-
-**AI 교육교재 자동 생성 시스템**
-소그룹 리더 교육을 위한 전문적인 교재와 시각 자료를 AI가 자동으로 제작하여 교육 효과를 극대화합니다.
-
-## 기대 효과
-
-- 전문적인 교재 품질
-- 교육 준비 시간 단축
-- 일관된 교육 내용
-- 시각적 학습 효과
-- 교육 비용 절약

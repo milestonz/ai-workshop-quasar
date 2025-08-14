@@ -16,6 +16,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('pages/LogoutPage.vue'),
   },
 
+  // Poll 결과 전용 페이지
+  {
+    path: '/poll-result',
+    component: () => import('src/pages/PollResultPage.vue'),
+  },
+
   // 수강생용 페이지 (보안 강화)
   {
     path: '/study/:courseId',

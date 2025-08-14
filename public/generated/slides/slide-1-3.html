@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI의 의미</title>
+  <title>목회자를 위한 AI 활용 시나리오</title>
   <style>
       
       * {
@@ -101,148 +101,76 @@
           z-index: 10;
       }
 
-      .copy-button:hover {
-          background: #2563eb;
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      }
+      .copy-button:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,.2); }
+      .copy-button:active { background: #1e40af; transform: translateY(0); }
+      .copy-button.copied { background: #10b981; }
 
-      .copy-button:active {
-          background: #1e40af;
-          transform: translateY(0);
-      }
+      code { font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; font-size: 14px; line-height: 1.5; }
+      p code { background: #f1f5f9; color: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
 
-      .copy-button.copied {
-          background: #10b981;
-      }
+      /* 마크다운 테이블 기본 스타일 */
+      .md-table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #fff; }
+      .md-table th, .md-table td { border: 1px solid #e5e7eb; padding: 10px 12px; font-size: 16px; }
+      .md-table thead th { background: #f8fafc; font-weight: 700; }
+      .md-table tbody tr:nth-child(even) { background: #f9fafb; }
 
-      code {
-          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-          font-size: 14px;
-          line-height: 1.5;
+      /* 대화 박스(""" ... """) */
+      .dialog-box {
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        border-left: 6px solid #3b82f6;
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin: 16px 0;
+        box-shadow: 0 6px 18px rgba(0,0,0,.06);
       }
-
-      p code {
-          background: #f1f5f9;
-          color: #1e293b;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-size: 0.9em;
-      }
+      .dialog-box p { margin: 6px 0; line-height: 1.6; }
 
       /* 이미지 스타일링 */
-      .slide-image {
-          max-width: 100%;
-          height: auto;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-          margin: 20px 0;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
+      .slide-image { max-width:100%; height:auto; border-radius:12px; box-shadow: 0 8px 25px rgba(0,0,0,.15); margin:20px auto; display:block; transition: transform .3s ease, box-shadow .3s ease; }
+      .slide-image:hover { transform: scale(1.02); box-shadow: 0 12px 35px rgba(0,0,0,.2); }
 
-      .slide-image:hover {
-          transform: scale(1.02);
-          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-      }
+      .image-slide { text-align:center; }
+      .image-slide h1 { margin-bottom:30px; }
+      .image-slide h2 { margin-bottom:25px; color:#666; }
 
-      /* 프로필 이미지 특별 스타일 */
-      .profile-image {
-          max-width: 300px;
-          max-height: 400px;
-          border-radius: 20px;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-          border: 4px solid rgba(255, 255, 255, 0.3);
-      }
+      /* 투표 옵션 기본(비-poll 템플릿 보완) */
+      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
+      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
+      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
 
-      /* 이미지가 포함된 슬라이드의 레이아웃 */
-      .image-slide {
-          text-align: center;
+      /* URL 링크 스타일 */
+      .url-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white !important;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 8px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        word-break: break-all;
       }
-
-      .image-slide h1 {
-          margin-bottom: 30px;
+      .url-link:hover {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        text-decoration: none;
+        color: white !important;
       }
-
-      .image-slide h2 {
-          margin-bottom: 25px;
-          color: #666;
+      .url-link:active {
+        transform: translateY(0);
       }
-
-      /* 투표 옵션 스타일 */
-      .poll-option {
-          font-size: 20px;
-          padding: 15px 20px;
-          margin: 10px 0;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.1);
-          border: 2px solid transparent;
-      }
-
-      .poll-option:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-      }
-
-      .poll-option.selected {
-          background: rgba(59, 130, 246, 0.3);
-          border-color: #3b82f6;
-      }
-
 
   
       
-          body {
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          }
-
-          .slide-container {
-              background: rgba(255, 255, 255, 0.95);
-          }
-
-          h1 {
-              font-size: 3rem;
-              color: #1e40af;
-              margin-bottom: 10px;
-              font-weight: 700;
-              text-align: center;
-          }
-
-          h2 {
-              font-size: 2.5rem;
-              color: #2563eb;
-              margin-bottom: 25px;
-              font-weight: 600;
-          }
-
-          h3 {
-              font-size: 1.8rem;
-              color: #3730a3;
-              margin-bottom: 8px;
-              font-weight: 500;
-          }
-
-          /* 이미지 스타일링 */
-          .slide-image {
-              max-width: 100%;
-              height: auto;
-              border-radius: 12px;
-              box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-              margin: 20px 0;
-              display: block;
-              margin-left: auto;
-              margin-right: auto;
-              transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-
-          .slide-image:hover {
-              transform: scale(1.02);
-              box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-          }
+          body { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%); color:#92400e; }
+          .slide-container { background: rgba(255,255,255,.95); text-align:center; }
+          h2 { font-size:2.5rem; color:#b45309; margin-bottom:10px; font-weight:700; }
+          h3 { font-size:1.8rem; color:#d97706; margin-bottom:10px; font-weight:600; line-height:1.4; }
       
 
       /* 반응형 추가 스타일 */
@@ -283,126 +211,90 @@
       }
 
       /* 슬라이드 번호 스타일 */
-      .slide-number {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: rgba(0, 0, 0, 0.7);
-          color: white;
-          padding: 8px 12px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 500;
-          z-index: 1000;
-          backdrop-filter: blur(10px);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      }
+      .slide-number { position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,.7); color:#fff; padding:8px 12px; border-radius:20px; font-size:14px; z-index:1000; }
+
+      /* 자유 입력 필드 (poll) */
+      .poll-free { margin: 30px 0; display:flex; gap:10px; justify-content:center; }
+      .poll-free input[type="text"], .poll-free textarea { width: 100%; max-width: 520px; padding: 14px 16px; border-radius: 12px; border: 2px solid #f59e0b; font-size: 1rem; }
+      .poll-free button { padding: 12px 18px; border-radius: 12px; border: 0; background:#f59e0b; color:white; font-weight:700; cursor:pointer; }
   </style>
 </head>
-<body class="general-slide">
+<body class="poll-slide">
   <div class="slide-container" tabindex="0">
-      <h1>AI의 의미</h1>
+      
+      <div class="poll-icon">🗳️</div>
+    
+      
+      <h2>실시간 투표(Quick Poll)</h2>
 
-<p>📌존 웨슬리(John Wesley)의 신학:</p>
-<p>철저히 실천 중심의 경건과 성화, 그리고 <strong>하나님의 은혜에 이르는 수단(Means of Grace)</strong>에 기반하고 있습니다.이 전통을 바탕으로 할 때, 생성형 AI의 의미는 단순한 기술 이상의 신학적·목회적 역할을 가지게 됩니다.</p>
+<h3>질문 2 — "생성형 AI(ChatGPT, Claude 등)을 목회에 사용해 본 적이 있습니까?"</h3>
 
-<p>📖 웨슬리안 신학 기반의 의미💡</p>
-<p>“생성형 AI는 목회자의 사역을 위한 새로운 ‘은혜의 도구(Means of Grace)’이다.”</p>
 
-<p>🔍 핵심 정의</p>
-<p>생성형 AI는 목회자가 말씀을 연구하고, 성도를 돌보고, 공동체를 섬기며, 하나님의 사명을 실현하는 여정에서 사용하는 실천적 도구로서, 하나님의 은혜에 이르는 새로운 통로이자 동역자이다.</p>
 
-<p>✝️ 목회자에게 생성형 AI란?</p>
-<p>“생성형 AI는 목회자의 사역을 확장하고, 은혜의 통로를 넓히며, 하나님 나라를 실현하는 디지털 동역자이다.”</p>
 
+
+
+
+
+<div class="poll-options">
+        <div class="poll-option" data-vote="1" tabindex="0">
+          <span class="poll-number">1</span>
+          자주 사용한다
+        </div>
+        <div class="poll-option" data-vote="2" tabindex="0">
+          <span class="poll-number">2</span>
+          가끔 사용한다
+        </div>
+        <div class="poll-option" data-vote="3" tabindex="0">
+          <span class="poll-number">3</span>
+          시도해 본 적은 있다
+        </div>
+        <div class="poll-option" data-vote="4" tabindex="0">
+          <span class="poll-number">4</span>
+          전혀 없다
+        </div></div>
   </div>
 
   <div class="slide-number" id="slideNumber"></div>
 
     <script>
-      // 키보드 네비게이션
+      // 키보드 네비게이션 → 부모로 전달하여 앱 라우팅과 동기화
       document.addEventListener('keydown', function(e) {
           switch(e.key) {
               case 'ArrowRight':
-              case ' ':
-                  window.location.href = 'slide-1-4.html';
+              case 'ArrowDown':
+              case 'PageDown':
+              case ' ': // Space
+                  try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
                   break;
               case 'ArrowLeft':
-                  window.location.href = 'slide-1-2.html';
+              case 'ArrowUp':
+              case 'PageUp':
+                  try { window.parent && window.parent.postMessage({ type: 'slide-prev' }, '*'); } catch(_) {}
                   break;
               case 'Home':
-                  window.location.href = 'slide-0-0.html';
+                  try { window.parent && window.parent.postMessage({ type: 'slide-first' }, '*'); } catch(_) {}
                   break;
               case 'End':
-                  window.location.href = 'slide-9-7.html';
+                  try { window.parent && window.parent.postMessage({ type: 'slide-last' }, '*'); } catch(_) {}
                   break;
           }
       });
 
-      // 클릭으로 다음 슬라이드 (투표 슬라이드가 아닌 경우)
-      
-      document.querySelector('.slide-container').addEventListener('click', function(e) {
-          // 코드 블록 복사 버튼이나 코드 블록 자체를 클릭한 경우 슬라이드 이동 방지
-          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) {
-              return;
-          }
-          window.location.href = 'slide-1-4.html';
-      });
+      // 클릭으로 다음 슬라이드(링크/코드/복사 버튼 제외) → 부모에 위임
       
 
-      // 슬라이드 번호 계산 및 표시
+      // 슬라이드 번호 계산 및 표시 (기존 유지)
       function updateSlideNumber() {
-          const slideNumberElement = document.getElementById('slideNumber');
-          if (slideNumberElement) {
-              // 현재 파일명에서 슬라이드 번호 추출
-              const currentPath = window.location.pathname;
-              const fileName = currentPath.split('/').pop();
-              const match = fileName.match(new RegExp('slide-(\\d+)-(\\d+)\\.html'));
-
-              if (match) {
-                  const chapter = parseInt(match[1]);
-                  const slide = parseInt(match[2]);
-
-                  // 전체 슬라이드 목록에서 현재 위치 찾기
-                  const slideList = [
-                      // Chapter 0
-                      ...Array.from({length: 27}, (_, i) => ({chapter: 0, slide: i})),
-                      // Chapter 1
-                      ...Array.from({length: 6}, (_, i) => ({chapter: 1, slide: i})),
-                      // Chapter 2
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 2, slide: i})),
-                      // Chapter 3
-                      ...Array.from({length: 14}, (_, i) => ({chapter: 3, slide: i})),
-                      // Chapter 4
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 4, slide: i})),
-                      // Chapter 5
-                      ...Array.from({length: 53}, (_, i) => ({chapter: 5, slide: i})),
-                      // Chapter 6
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 6, slide: i})),
-                      // Chapter 7
-                      ...Array.from({length: 23}, (_, i) => ({chapter: 7, slide: i})),
-                      // Chapter 8
-                      ...Array.from({length: 24}, (_, i) => ({chapter: 8, slide: i})),
-                      // Chapter 9
-                      ...Array.from({length: 9}, (_, i) => ({chapter: 9, slide: i})),
-                      // Chapter 10
-                      ...Array.from({length: 10}, (_, i) => ({chapter: 10, slide: i}))
-                  ];
-
-                  const currentIndex = slideList.findIndex(item =>
-                      item.chapter === chapter && item.slide === slide
-                  );
-
-                  if (currentIndex !== -1) {
-                      slideNumberElement.textContent = (currentIndex + 1) + ' / ' + slideList.length;
-                  } else {
-                      slideNumberElement.textContent = chapter + '-' + slide;
-                  }
-              }
+          const el = document.getElementById('slideNumber');
+          if (!el) return;
+          const currentPath = window.location.pathname;
+          const fileName = currentPath.split('/').pop();
+          const match = fileName && fileName.match(new RegExp('slide-(\d+)-(\d+)\.html'));
+          if (match) {
+              el.textContent = match[1] + '-' + match[2];
           }
       }
-
-      // 로드 애니메이션
       window.addEventListener('load', function() {
           document.body.style.opacity = '0';
           document.body.style.transition = 'opacity 0.5s ease';
@@ -412,51 +304,87 @@
 
           // 슬라이드 번호 업데이트
           updateSlideNumber();
+
+          // 모든 링크를 새 탭으로 열도록 보장
+          try {
+            document.querySelectorAll('a').forEach(function(a){
+              a.setAttribute('target','_blank');
+              a.setAttribute('rel','noopener noreferrer');
+            });
+          } catch (_) {}
       });
 
             // 코드 복사 기능
             function copyCode(button) {
                 const codeBlock = button.previousElementSibling;
                 const code = codeBlock.textContent;
-
-                // 클립보드에 복사
                 navigator.clipboard.writeText(code).then(function() {
-                    // 복사 성공 시 버튼 텍스트 변경
                     const originalText = button.textContent;
                     button.textContent = '복사됨!';
                     button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    // 2초 후 원래 텍스트로 복원
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
+                    setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor = ''; }, 2000);
                 }).catch(function(err) {
-                    // 복사 실패 시 대체 방법 사용
                     const textArea = document.createElement('textarea');
-                    textArea.value = code;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-
-                    // 성공 메시지 표시
-                    const originalText = button.textContent;
-                    button.textContent = '복사됨!';
-                    button.style.backgroundColor = '#10b981';
-                    button.style.color = 'white';
-
-                    setTimeout(function() {
-                        button.textContent = originalText;
-                        button.style.backgroundColor = '';
-                        button.style.color = '';
-                    }, 2000);
+                    textArea.value = code; document.body.appendChild(textArea); textArea.select(); document.execCommand('copy'); document.body.removeChild(textArea);
+                    const originalText = button.textContent; button.textContent = '복사됨!'; button.style.backgroundColor = '#10b981'; setTimeout(function(){ button.textContent = originalText; button.style.backgroundColor=''; }, 2000);
                 });
             }
 
       
+      // 투표 기능 - 객관식
+      let hasVoted = false;
+      const POLL_ID = 'poll-1-3';
+      document.querySelectorAll('.poll-option').forEach(option => {
+          option.addEventListener('click', function() {
+              if (hasVoted) return;
+              document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
+              this.classList.add('selected','voted');
+              hasVoted = true;
+              const statusElement = document.getElementById('votingStatus');
+              if (statusElement) {
+                statusElement.innerHTML = '✅ 투표 완료!';
+                statusElement.style.background = 'rgba(34, 197, 94, 0.1)';
+                statusElement.style.borderColor = '#22c55e';
+                statusElement.style.color = '#15803d';
+              }
+              try { window.parent && window.parent.postMessage({ type: 'poll-vote', pollId: POLL_ID, optionId: this.getAttribute('data-vote') }, '*'); } catch (e) {}
+          });
+      });
+
+      // 부모로부터 기존 투표 상태 동기화
+      window.addEventListener('message', function(event){
+        try {
+          const data = event.data || {};
+          if (data.type === 'poll-state' && data.pollId === POLL_ID) {
+            const optionId = String(data.optionId || '').trim();
+            if (!optionId) return;
+            document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
+            const el = document.querySelector('.poll-option[data-vote="' + optionId + '"]');
+            if (el) {
+              el.classList.add('selected');
+              hasVoted = true;
+              const statusElement = document.getElementById('votingStatus');
+              if (statusElement) {
+                statusElement.innerHTML = '✅ 투표 완료!';
+                statusElement.style.background = 'rgba(34, 197, 94, 0.1)';
+                statusElement.style.borderColor = '#22c55e';
+                statusElement.style.color = '#15803d';
+              }
+            }
+          }
+        } catch (e) { /* noop */ }
+      });
+
+      // 리스너 준비 신호(레이스 방지)
+      try { window.parent && window.parent.postMessage({ type: 'poll-ready', pollId: POLL_ID }, '*'); } catch (e) {}
+
+      // 주관식 입력 제출 처리
+      
+
+      // 퀴즈 동작은 부모(StudentView) 오버레이에서 처리
+      (function(){ /* noop for quiz slides */ })();
+      
     </script>
+    
 </body>
 </html>

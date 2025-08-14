@@ -89,8 +89,15 @@ class MarkdownToHTMLConverter {
     // 슬라이드 타입 감지
     const slideType = this.detectSlideType(content);
 
-    // 모든 슬라이드 유형은 일반 마크다운 처리 (wrapInSlideStructure 제외)
-    const htmlContent = this.parseMarkdownWithoutStructure(content);
+    // @html 타입인 경우 HTML 내용을 그대로 사용
+    let htmlContent;
+    if (slideType === 'html') {
+      // @html 태그만 제거하고 HTML 내용은 그대로 유지
+      htmlContent = content.replace(/^@html\s*\n?/gm, '').trim();
+    } else {
+      // 다른 슬라이드 유형은 일반 마크다운 처리 (wrapInSlideStructure 제외)
+      htmlContent = this.parseMarkdownWithoutStructure(content);
+    }
 
     // 슬라이드 클래스 결정
     const slideClasses = this.getSlideClasses(slideType, content);
@@ -109,6 +116,9 @@ class MarkdownToHTMLConverter {
   detectSlideType(content) {
     const lowerContent = content.toLowerCase();
 
+    if (lowerContent.includes('@html')) {
+      return 'html';
+    }
     if (lowerContent.includes('@cover') || lowerContent.includes('커버')) {
       return 'cover';
     }
@@ -272,6 +282,12 @@ class MarkdownToHTMLConverter {
    */
   parseMarkdownWithoutStructure(markdown) {
     let html = markdown;
+
+    // @html 타입인 경우 HTML 내용을 그대로 반환
+    if (markdown.trim().startsWith('@html')) {
+      // @html 태그만 제거하고 나머지 HTML 내용은 그대로 유지
+      return markdown.replace(/^@html\s*\n?/gm, '').trim();
+    }
 
     // Marp 헤더 제거 (---로 둘러싸인 YAML)
     html = html.replace(/^---\s*\n[\s\S]*?\n---\s*\n?/gm, '');

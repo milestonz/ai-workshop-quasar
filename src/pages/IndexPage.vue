@@ -15,6 +15,19 @@
           :slide-number="currentSlideNumber"
           :slide-type="currentSlideType"
         />
+
+        <!-- 관리자: poll 슬라이드 결과 초기화 버튼 -->
+        <q-btn
+          v-if="isAdmin && currentSlideType === 'poll'"
+          class="poll-admin-fab"
+          round
+          color="negative"
+          icon="delete"
+          :disable="!currentPollId"
+          @click="clearPollData(currentPollId)"
+        >
+          <q-tooltip>결과 초기화</q-tooltip>
+        </q-btn>
       </div>
 
       <!-- 리사이저 바 (편집기 모드에서만 표시) -->
@@ -120,6 +133,17 @@ import { useGuestAuth } from '../composables/useGuestAuth';
 import { slideLog } from 'src/utils/logger';
 import SimpleSlideViewer from '../components/SimpleSlideViewer.vue';
 import SlideEditorSection from '../components/SlideEditorSection.vue';
+import {
+  getDatabase,
+  ref as dbRef,
+  get as rtdbGet,
+  set as rtdbSet,
+  remove as rtdbRemove,
+} from 'firebase/database';
+import { firebaseApp } from 'src/firebase/config';
+// 관리자 인지 확인 위해 userRole 사용
+const { userRole } = useAuth();
+const isAdmin = computed(() => userRole.value === 'admin');
 
 // Quasar 인스턴스
 const $q = useQuasar();
@@ -173,6 +197,19 @@ watch(
   },
 );
 
+// 슬라이드 변경 감지 및 quiz 이벤트 주입
+watch([() => courseStore.currentLesson, () => courseStore.currentSlide], async () => {
+  // 슬라이드 타입 감지
+  await detectSlideType(courseStore.currentLesson, courseStore.currentSlide);
+
+  if (isQuizSlide.value) {
+    // quiz 슬라이드일 때 약간의 지연 후 이벤트 주입
+    setTimeout(() => {
+      injectQuizEvents();
+    }, 500);
+  }
+});
+
 // 편집기 관련 변수들
 const slideEditorSection = ref();
 const currentSlideContent = ref('');
@@ -186,6 +223,65 @@ const currentSlideInfo = computed(() => ({
 }));
 
 // HTML 변환 관련 변수들은 MainLayout으로 이동됨
+
+// Quiz 슬라이드 감지 및 이벤트 주입
+const isQuizSlide = computed(() => {
+  const slideNum = `${courseStore.currentLesson}-${courseStore.currentSlide}`;
+  return slideNum.startsWith('1-1') && courseStore.currentSlide >= 13;
+});
+
+// Quiz 옵션 클릭 이벤트 주입 함수
+const injectQuizEvents = () => {
+  if (!isQuizSlide.value) return;
+
+  setTimeout(() => {
+    try {
+      const iframe = document.querySelector('.slide-iframe') as HTMLIFrameElement;
+      if (iframe && iframe.contentDocument) {
+        const quizOptions = iframe.contentDocument.querySelectorAll('.quiz-option');
+        quizOptions.forEach((option) => {
+          // 기존 이벤트 리스너 제거 (중복 방지)
+          option.removeEventListener('click', handleQuizOptionClick);
+          option.addEventListener('click', handleQuizOptionClick);
+
+          // 스타일 적용
+          (option as HTMLElement).style.cursor = 'pointer';
+          (option as HTMLElement).style.transition = 'all 0.2s ease';
+        });
+
+        slideLog.log(`✅ Quiz 이벤트 주입 완료: ${quizOptions.length}개 옵션`);
+      }
+    } catch (error) {
+      slideLog.warn('⚠️ Quiz 이벤트 주입 실패:', error);
+    }
+  }, 200);
+};
+
+// Quiz 옵션 클릭 핸들러
+const handleQuizOptionClick = (e: Event) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const target = e.target as HTMLElement;
+  const idx = target.getAttribute('data-idx');
+  const iframe = document.querySelector('.slide-iframe') as HTMLIFrameElement;
+
+  if (iframe && iframe.contentDocument) {
+    const answerData = iframe.contentDocument.getElementById('quiz-answer-data');
+    const quizOptions = iframe.contentDocument.querySelectorAll('.quiz-option');
+
+    // 정답 표시
+    if (answerData) {
+      answerData.style.display = 'block';
+    }
+
+    // 선택된 옵션 스타일 변경
+    quizOptions.forEach((opt) => opt.classList.remove('selected'));
+    target.classList.add('selected');
+
+    slideLog.log(`🎯 Quiz 옵션 클릭: ${idx}번 선택, 정답 표시`);
+  }
+};
 
 // 편집기 이벤트 핸들러들
 const handleSlideContentSave = (content: string) => {
@@ -299,17 +395,116 @@ const currentSlideNumber = computed(() => {
   return `${courseStore.currentLesson}-${courseStore.currentSlide}`;
 });
 
-const currentSlideType = computed(() => {
-  // 슬라이드 번호를 기반으로 타입 추정
-  const slideNum = currentSlideNumber.value;
-  if (slideNum === '0-0') return 'cover';
-  if (slideNum === '0-1') return 'index';
-  if (slideNum === '0-2') return 'profile';
-  if (slideNum.endsWith('-0')) return 'chapter';
-  if (slideNum.startsWith('2-') && slideNum !== '2-0') return 'example';
-  if (slideNum.startsWith('3-') && slideNum !== '3-0') return 'challenge';
-  return 'lecture';
+const currentSlideType = ref('lecture'); // 기본값
+
+// 슬라이드 타입을 동적으로 감지하는 함수
+const detectSlideType = async (lesson: number, slide: number) => {
+  try {
+    const response = await fetch(`/slides/slide-${lesson}-${slide}.md`);
+    if (response.ok) {
+      const content = await response.text();
+      if (content.trim().startsWith('@html')) {
+        currentSlideType.value = 'html';
+      } else if (content.includes('@cover') || content.includes('커버')) {
+        currentSlideType.value = 'cover';
+      } else if (content.includes('@toc') || content.includes('목차')) {
+        currentSlideType.value = 'toc';
+      } else if (content.includes('@poll') || content.includes('투표')) {
+        currentSlideType.value = 'poll';
+      } else if (content.includes('@stats') || content.includes('통계')) {
+        currentSlideType.value = 'stats';
+      } else if (content.includes('@interactive') || content.includes('인터랙티브')) {
+        currentSlideType.value = 'interactive';
+      } else if (content.includes('@example') || content.includes('예시')) {
+        currentSlideType.value = 'example';
+      } else if (content.includes('@challenge') || content.includes('도전')) {
+        currentSlideType.value = 'challenge';
+      } else if (content.includes('@timeline') || content.includes('타임라인')) {
+        currentSlideType.value = 'timeline';
+      } else if (content.includes('@profile') || content.includes('프로필')) {
+        currentSlideType.value = 'profile';
+      } else if (content.includes('@lecture') || content.includes('강의')) {
+        currentSlideType.value = 'lecture';
+      } else if (content.includes('@chapter') || content.includes('챕터')) {
+        currentSlideType.value = 'chapter';
+      } else {
+        // 기본 규칙에 따른 타입 결정
+        const slideNum = `${lesson}-${slide}`;
+        if (slideNum === '0-0') currentSlideType.value = 'cover';
+        else if (slideNum === '0-1') currentSlideType.value = 'index';
+        else if (slideNum === '0-2') currentSlideType.value = 'profile';
+        else if (slideNum.endsWith('-0')) currentSlideType.value = 'chapter';
+        else if (slideNum.startsWith('2-') && slideNum !== '2-0')
+          currentSlideType.value = 'example';
+        else if (slideNum.startsWith('3-') && slideNum !== '3-0')
+          currentSlideType.value = 'challenge';
+        else currentSlideType.value = 'lecture';
+      }
+    }
+  } catch (error) {
+    console.error(`슬라이드 타입 감지 실패: ${lesson}-${slide}`, error);
+    // 기본 규칙에 따른 타입 결정
+    const slideNum = `${lesson}-${slide}`;
+    if (slideNum === '0-0') currentSlideType.value = 'cover';
+    else if (slideNum === '0-1') currentSlideType.value = 'index';
+    else if (slideNum === '0-2') currentSlideType.value = 'profile';
+    else if (slideNum.endsWith('-0')) currentSlideType.value = 'chapter';
+    else if (slideNum.startsWith('2-') && slideNum !== '2-0') currentSlideType.value = 'example';
+    else if (slideNum.startsWith('3-') && slideNum !== '3-0') currentSlideType.value = 'challenge';
+    else currentSlideType.value = 'lecture';
+  }
+};
+
+// 현재 슬라이드가 poll일 때 pollId 계산
+const currentPollId = computed(() => {
+  if (currentSlideType.value !== 'poll') return '';
+  return `poll-${courseStore.currentLesson}-${courseStore.currentSlide}`;
 });
+
+// 관리자: 현재 Poll 결과 초기화 (LocalStorage + RTDB 개인 표기)
+const clearPollData = async (pollId: string) => {
+  try {
+    if (!isAdmin.value || !pollId) return;
+    const confirmed = await $q
+      .dialog({
+        title: '결과 초기화',
+        message:
+          '해당 투표의 나의 선택(LocalStorage)과 RTDB의 표기를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.',
+        cancel: true,
+        ok: { label: '초기화', color: 'negative' },
+      })
+      .onOk(() => true)
+      .onCancel(() => false);
+    if (!confirmed) return;
+
+    // LocalStorage 정리: poll 관련 키 삭제
+    try {
+      Object.keys(localStorage)
+        .filter((k) => k.toLowerCase().includes('poll'))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch (_) {}
+
+    // RTDB 정리: 관리자 개인 userVotes 제거
+    const db = firebaseApp ? getDatabase(firebaseApp) : null;
+    if (db) {
+      const { getAuth } = await import('firebase/auth');
+      const uid = getAuth(firebaseApp!).currentUser?.uid;
+      if (uid) {
+        await rtdbRemove(dbRef(db, `polls/${pollId}/userVotes/${uid}`)).catch(() => {});
+      }
+    }
+
+    // iFrame 동기화: 선택 해제 시グ널 전송
+    try {
+      const iframe = document.querySelector('.slide-iframe') as HTMLIFrameElement;
+      iframe?.contentWindow?.postMessage({ type: 'poll-state', pollId, optionId: '' }, '*');
+    } catch (_) {}
+
+    $q.notify({ type: 'positive', message: '투표 결과가 초기화되었습니다.', position: 'top' });
+  } catch (e) {
+    $q.notify({ type: 'negative', message: '초기화 중 오류가 발생했습니다.', position: 'top' });
+  }
+};
 
 // 첫 번째 슬라이드인지 확인 (첫 번째 Chapter의 첫 번째 슬라이드)
 const isFirstSlide = computed(() => {
@@ -428,10 +623,66 @@ const handleKeydown = (event: KeyboardEvent) => {
 };
 
 // 라이프사이클 훅
-onMounted(() => {
+onMounted(async () => {
+  // 초기 슬라이드 타입 감지
+  await detectSlideType(courseStore.currentLesson, courseStore.currentSlide);
+
   document.addEventListener('keydown', handleKeydown);
   window.addEventListener('mousemove', handleResizing);
   window.addEventListener('mouseup', stopResizing);
+
+  // 관리자 모드: poll iFrame과 통신하여 개인 선택 상태 저장/복원
+  const onMessage = async (event: MessageEvent) => {
+    try {
+      if (userRole.value !== 'admin') return; // 관리자 전용
+      const data: any = event.data || {};
+      // 투표 수신 → 개인 선택(userVotes)에 저장 (집계는 하지 않음)
+      if (data && data.type === 'poll-vote') {
+        const db = firebaseApp ? getDatabase(firebaseApp) : null;
+        if (!db) return;
+        const { pollId, optionId, text } = data;
+        if (!pollId) return;
+        const { getAuth } = await import('firebase/auth');
+        const uid = getAuth(firebaseApp!).currentUser?.uid;
+        if (!uid) return;
+        const valueToSave = text || String(optionId || '');
+        await rtdbSet(dbRef(db, `polls/${pollId}/userVotes/${uid}`), valueToSave);
+        slideLog.log('🗳️ admin saved(userVotes):', { pollId, valueToSave });
+      }
+
+      // 슬라이드 준비 신호 → 기존 선택 동기화
+      if (data && data.type === 'poll-ready') {
+        const db = firebaseApp ? getDatabase(firebaseApp) : null;
+        if (!db) return;
+        const { pollId } = data;
+        if (!pollId) return;
+        const { getAuth } = await import('firebase/auth');
+        const uid = getAuth(firebaseApp!).currentUser?.uid;
+        if (!uid) return;
+        const snap = await rtdbGet(dbRef(db, `polls/${pollId}/userVotes/${uid}`));
+        const iframe = document.querySelector('.slide-iframe') as HTMLIFrameElement;
+        if (!iframe || !iframe.contentWindow) return;
+        if (snap.exists()) {
+          const val = snap.val();
+          if (typeof val === 'string' && /^\d+$/.test(val)) {
+            iframe.contentWindow.postMessage(
+              { type: 'poll-state', pollId, optionId: String(val) },
+              '*',
+            );
+          } else if (val) {
+            iframe.contentWindow.postMessage(
+              { type: 'poll-state', pollId, text: String(val) },
+              '*',
+            );
+          }
+        }
+      }
+    } catch (e) {
+      slideLog.error('🗳️ admin poll sync error:', e);
+    }
+  };
+
+  window.addEventListener('message', onMessage);
 
   // 배경 이미지 로딩 확인
   const bgImage = new Image();
@@ -475,6 +726,8 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown);
   window.removeEventListener('mousemove', handleResizing);
   window.removeEventListener('mouseup', stopResizing);
+  // message 이벤트 리스너는 onMounted 내부에서 정의되므로 여기서 제거할 수 없음
+  // 브라우저가 자동으로 정리함
 });
 </script>
 
@@ -538,7 +791,7 @@ onUnmounted(() => {
 
 .navigation-controls {
   position: fixed;
-  bottom: 20px;
+  bottom: 50px; /* 기존 20px에서 +30px */
   right: 20px; /* 우측 끝으로 이동 */
   display: flex;
   align-items: center;
@@ -625,7 +878,7 @@ onUnmounted(() => {
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .navigation-controls {
-    bottom: 15px;
+    bottom: 45px; /* 기존 15px에서 +30px */
     right: 15px; /* 모바일에서도 우측 끝 */
     gap: 6px; /* 간격 더 줄임 */
   }

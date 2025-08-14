@@ -22,7 +22,7 @@
           </q-btn>
         </div>
       </div>
-      
+
       <!-- 검색 바 -->
       <q-input
         v-model="searchQuery"
@@ -36,18 +36,13 @@
           <q-icon name="search" />
         </template>
       </q-input>
-      
+
       <!-- 진행률 표시 -->
       <div v-if="overallProgress > 0" class="q-mt-md">
         <div class="text-caption text-grey-6 q-mb-xs">
           전체 진행률: {{ Math.round(overallProgress) }}%
         </div>
-        <q-linear-progress
-          :value="overallProgress / 100"
-          color="positive"
-          size="8px"
-          rounded
-        />
+        <q-linear-progress :value="overallProgress / 100" color="positive" size="8px" rounded />
       </div>
     </q-card-section>
 
@@ -127,7 +122,7 @@
                   size="4px"
                   rounded
                   class="q-mt-xs"
-                  style="width: 60px;"
+                  style="width: 60px"
                 />
               </div>
             </div>
@@ -142,7 +137,7 @@
               @click="navigateToSlide(slide.section, slide.slide)"
               :class="{
                 'current-slide': isCurrentSlide(slide.section, slide.slide),
-                'completed-slide': slide.completed
+                'completed-slide': slide.completed,
               }"
               class="slide-item"
             >
@@ -163,7 +158,7 @@
                 <q-item-label
                   :class="{
                     'text-weight-bold': isCurrentSlide(slide.section, slide.slide),
-                    'text-grey-6': slide.completed
+                    'text-grey-6': slide.completed,
                   }"
                 >
                   {{ slide.title }}
@@ -180,6 +175,24 @@
 
               <q-item-section side>
                 <div class="slide-actions">
+                  <!-- 잠금 상태 아이콘 (관리자 모드에만 표시) -->
+                  <q-btn
+                    v-if="isAdmin"
+                    :icon="isLocked(slide.section, slide.slide) ? 'lock' : 'lock_open'"
+                    flat
+                    dense
+                    size="sm"
+                    :color="isLocked(slide.section, slide.slide) ? 'warning' : 'grey'"
+                    @click.stop="toggleLock(slide.section, slide.slide)"
+                  >
+                    <q-tooltip>
+                      {{
+                        isLocked(slide.section, slide.slide)
+                          ? '슬라이드 잠금 해제'
+                          : '슬라이드 잠금'
+                      }}
+                    </q-tooltip>
+                  </q-btn>
                   <q-btn
                     icon="play_arrow"
                     flat
@@ -239,8 +252,11 @@ import {
   type SlideType,
   TOCCacheManager,
   searchTOC,
-  updateSlideProgress
+  updateSlideProgress,
 } from '../utils/smartTOC';
+// 추가: 코스 스토어/권한
+import { useCourseStore } from 'src/stores/course';
+import { useAuth } from 'src/composables/useAuth';
 
 interface Props {
   currentSection: number;
@@ -254,6 +270,11 @@ const emit = defineEmits<{
 }>();
 
 const $q = useQuasar();
+
+// 추가: 스토어/권한
+const courseStore = useCourseStore();
+const { userRole } = useAuth();
+const isAdmin = computed(() => userRole.value === 'admin');
 
 // 상태
 const smartTOC = ref<SmartTOC | null>(null);
@@ -277,7 +298,7 @@ const overallProgress = computed(() => {
   const totalSlides = smartTOC.value.totalSlides;
   const completedSlides = smartTOC.value.sections.reduce(
     (sum, section) => sum + section.completedSlides,
-    0
+    0,
   );
   return totalSlides > 0 ? (completedSlides / totalSlides) * 100 : 0;
 });
@@ -286,51 +307,53 @@ const overallProgress = computed(() => {
 const refreshTOC = async (forceRefresh: boolean = false) => {
   loading.value = true;
   error.value = '';
-  
+
   try {
     console.log('🔄 목차 새로고침 시작...', { forceRefresh });
-    
+
     // 캐시 무효화 (강제 새로고침인 경우)
     if (forceRefresh) {
       tocCache.invalidateCache();
       console.log('🗑️ 캐시 무효화 완료');
     }
-    
+
     smartTOC.value = await tocCache.getTOC(forceRefresh);
     console.log('✅ 목차 업데이트 완료:', {
       sections: smartTOC.value.sections.length,
-      totalSlides: smartTOC.value.totalSlides
+      totalSlides: smartTOC.value.totalSlides,
     });
-    
+
     // 새로 추가된 슬라이드 확인 (slide-8-7 등)
-    const allSlides = smartTOC.value.sections.flatMap(s => s.slides);
-    const slide87 = allSlides.find(s => s.id === '8-7');
+    const allSlides = smartTOC.value.sections.flatMap((s) => s.slides);
+    const slide87 = allSlides.find((s) => s.id === '8-7');
     if (slide87) {
       console.log('✅ slide-8-7 발견됨:', slide87.title);
     }
-    
+
     $q.notify({
       type: 'positive',
       message: `목차가 업데이트되었습니다 (총 ${smartTOC.value.totalSlides}개 슬라이드)`,
       position: 'top',
       timeout: 2000,
-      icon: 'check_circle'
+      icon: 'check_circle',
     });
   } catch (err) {
     error.value = '목차를 불러오는데 실패했습니다';
     console.error('❌ 목차 로드 실패:', err);
-    
+
     $q.notify({
       type: 'negative',
       message: '목차 로드에 실패했습니다. 네트워크를 확인해주세요.',
       position: 'top',
       timeout: 3000,
       icon: 'error',
-      actions: [{
-        label: '다시 시도',
-        color: 'white',
-        handler: () => refreshTOC(true)
-      }]
+      actions: [
+        {
+          label: '다시 시도',
+          color: 'white',
+          handler: () => refreshTOC(true),
+        },
+      ],
     });
   } finally {
     loading.value = false;
@@ -348,7 +371,7 @@ const isCurrentSlide = (section: number, slide: number) => {
     slide,
     propsCurrentSection: props.currentSection,
     propsCurrentSlide: props.currentSlide,
-    isCurrent
+    isCurrent,
   });
   return isCurrent;
 };
@@ -359,34 +382,51 @@ const toggleSection = (sectionId: string, expanded: boolean) => {
       expandedSections.value.push(sectionId);
     }
   } else {
-    expandedSections.value = expandedSections.value.filter(id => id !== sectionId);
+    expandedSections.value = expandedSections.value.filter((id) => id !== sectionId);
   }
 };
 
 const toggleSlideCompletion = (slide: SmartSlide) => {
   slide.completed = !slide.completed;
   updateSlideProgress(slide.id, slide.completed);
-  
+
   // 섹션 완료 슬라이드 수 업데이트
   if (smartTOC.value) {
-    const section = smartTOC.value.sections.find(s => s.id === slide.section.toString());
+    const section = smartTOC.value.sections.find((s) => s.id === slide.section.toString());
     if (section) {
-      section.completedSlides = section.slides.filter(s => s.completed).length;
+      section.completedSlides = section.slides.filter((s) => s.completed).length;
     }
   }
-  
+
   $q.notify({
     type: slide.completed ? 'positive' : 'info',
     message: slide.completed ? '완료 표시했습니다' : '완료를 해제했습니다',
     position: 'top',
     timeout: 1500,
-    icon: slide.completed ? 'check_circle' : 'radio_button_unchecked'
+    icon: slide.completed ? 'check_circle' : 'radio_button_unchecked',
   });
+};
+
+// 추가: 잠금 상태/토글
+const isLocked = (lessonIndex: number, slideIndex: number): boolean => {
+  try {
+    return courseStore.isSlideLocked(lessonIndex, slideIndex);
+  } catch (e) {
+    return false;
+  }
+};
+const toggleLock = (lessonIndex: number, slideIndex: number) => {
+  if (!isAdmin.value) return;
+  try {
+    courseStore.toggleSlideLock(lessonIndex, slideIndex);
+  } catch (e) {
+    console.error('잠금 토글 실패:', e);
+  }
 };
 
 const getSectionTitle = (sectionNum: number): string => {
   if (!smartTOC.value) return `섹션 ${sectionNum}`;
-  const section = smartTOC.value.sections.find(s => s.id === sectionNum.toString());
+  const section = smartTOC.value.sections.find((s) => s.id === sectionNum.toString());
   return section?.title || `섹션 ${sectionNum}`;
 };
 
@@ -398,7 +438,7 @@ const getSlideTypeIcon = (type: SlideType): string => {
     content: 'article',
     interactive: 'quiz',
     stats: 'bar_chart',
-    quote: 'format_quote'
+    quote: 'format_quote',
   };
   return icons[type] || 'article';
 };
@@ -411,7 +451,7 @@ const getSlideTypeColor = (type: SlideType): string => {
     content: 'grey',
     interactive: 'orange',
     stats: 'green',
-    quote: 'pink'
+    quote: 'pink',
   };
   return colors[type] || 'grey';
 };
@@ -424,7 +464,7 @@ watch(
     if (!expandedSections.value.includes(sectionId)) {
       expandedSections.value.push(sectionId);
     }
-  }
+  },
 );
 
 // 컴포넌트 마운트시 목차 로드
@@ -432,7 +472,7 @@ onMounted(() => {
   console.log('🚀 SmartTOC 컴포넌트 마운트됨');
   console.log('🔍 Props 값 확인:', {
     currentSection: props.currentSection,
-    currentSlide: props.currentSlide
+    currentSlide: props.currentSlide,
   });
   refreshTOC(false);
 });
@@ -442,7 +482,7 @@ if (process.env.NODE_ENV === 'development') {
   (window as any).debugTOC = {
     refreshTOC: () => refreshTOC(true),
     getTOCData: () => smartTOC.value,
-    clearCache: () => tocCache.invalidateCache()
+    clearCache: () => tocCache.invalidateCache(),
   };
 }
 </script>
@@ -569,7 +609,7 @@ if (process.env.NODE_ENV === 'development') {
 
 .current-slide .q-item__section .q-item__label,
 .current-slide .q-item__label,
-.current-slide [class*="q-item__label"] {
+.current-slide [class*='q-item__label'] {
   color: #1976d2 !important;
   font-weight: 800 !important;
   text-shadow: none !important;
@@ -582,7 +622,7 @@ if (process.env.NODE_ENV === 'development') {
 
 .current-slide .q-item__section .q-item__label::after,
 .current-slide .q-item__label::after,
-.current-slide [class*="q-item__label"]::after {
+.current-slide [class*='q-item__label']::after {
   content: '' !important;
   position: absolute !important;
   left: 0 !important;
