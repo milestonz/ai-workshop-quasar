@@ -16,7 +16,7 @@
     "dev:live": "npm run watch-slides & quasar dev",
     "build": "quasar build",
     "postinstall": "echo 'Postinstall completed'",
-    "start": "npm run build && npm run build-slides && node server.js",
+    "start": "node server.js",
     "update-files": "node scripts/update-files-json.cjs",
     "update-sidebar": "node scripts/update-sidebar-data.cjs",
     "convert-slides": "node scripts/slide-converter/convert-slides.js",
