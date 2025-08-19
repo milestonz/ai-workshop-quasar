@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎯 주요 실행 영역별 가이드라인</title>
+  <title>연간 목회계획 수립을 위한 7단계 프롬프트</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,39 +253,32 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>🎯 주요 실행 영역별 가이드라인</h1>
+      <h1>연간 목회계획 수립을 위한 7단계 프롬프트</h1>
 
-<h3>예배 사역</h3>
+<p>7단계: 실행 및 모니터링 프롬프트 (연중)</p>
 
-<ul>
-<li><strong>주일 오전예배</strong>: 연간 설교 계획과 절기 반영</li>
-<li><strong>주중 기도회</strong>: 금요기도회, 새벽기도회 활성화</li>
-<li><strong>절기 예배</strong>: 교회력에 따른 특별예배 계획</li>
-</ul>
+<p>🎯 분기별 점검 프롬프트</p>
 
-<h3>교육 사역</h3>
 
-<ul>
-<li><strong>성인 교육</strong>: 성경대학, 교리대학 운영</li>
-<li><strong>청소년 교육</strong>: 연령별 맞춤 교육과정</li>
-<li><strong>어린이 교육</strong>: 주일학교 체계적 운영</li>
-</ul>
+                <div class="code-block-wrapper">
+                  <pre><code>[0]분기 목회계획 실행 점검을 위한 평가를 도와주세요:
 
-<h3>전도 선교 사역</h3>
+<strong>설정 목표 대비 현황:</strong>
+- 새가족 등록: 목표 [00]명 / 실제 [00]명
+- 주요 행사 실행: [완료/진행중/지연]
+- 예산 집행률: [00]%
+- 교인 만족도: [상/중/하]
 
-<ul>
-<li><strong>개인 전도</strong>: 관계전도 중심의 전도 전략</li>
-<li><strong>해외 선교</strong>: 선교지 후원과 단기선교</li>
-<li><strong>지역 전도</strong>: 지역사회 봉사를 통한 전도</li>
-</ul>
+<strong>예상치 못한 변수:</strong>
+- [예: 코로나 재확산, 담임목사 건강 문제 등]
 
-<h3>목양 돌봄 사역</h3>
+<strong>다음 분기 주요 계획:</strong>
+- [다음 분기 핵심 사역 2-3개]
 
-<ul>
-<li><strong>심방 사역</strong>: 체계적인 심방 계획과 실행</li>
-<li><strong>상담 사역</strong>: 전문 상담과 영적 돌봄</li>
-<li><strong>속회 운영</strong>: 감리교 전통의 소그룹 활성화</li>
-</ul>
+현재 진행 상황을 분석하고, 목표 달성을 위한 개선 방안과 다음 분기 조정 계획을 제시해 주세요.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
 
   </div>
 

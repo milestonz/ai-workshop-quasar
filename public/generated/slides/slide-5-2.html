@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>구체적 설교준비 단계</title>
+  <title>목회자를 위한 AI 활용 시나리오</title>
   <style>
       
       * {
@@ -135,43 +135,73 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
       
-          body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-          .slide-container { background: rgba(255, 255, 255, 0.95); }
-          h1 { font-size: 3rem; color: #1e40af; margin-bottom: 10px; font-weight: 700; text-align: center; }
-          h2 { font-size: 2.5rem; color: #2563eb; margin-bottom: 25px; font-weight: 600; }
-          h3 { font-size: 1.8rem; color: #3730a3; margin-bottom: 8px; font-weight: 500; }
+          body { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%); color:#92400e; }
+          .slide-container { background: rgba(255,255,255,.95); text-align:center; }
+          h2 { font-size:2.5rem; color:#b45309; margin-bottom:10px; font-weight:700; }
+          h3 { font-size:1.8rem; color:#d97706; margin-bottom:10px; font-weight:600; line-height:1.4; }
       
 
       /* 반응형 추가 스타일 */
@@ -220,48 +250,34 @@
       .poll-free button { padding: 12px 18px; border-radius: 12px; border: 0; background:#f59e0b; color:white; font-weight:700; cursor:pointer; }
   </style>
 </head>
-<body class="general-slide">
+<body class="poll-slide">
   <div class="slide-container" tabindex="0">
-      <h1>구체적 설교준비 단계</h1>
+      
+      <div class="poll-icon">🗳️</div>
+    
+      
+      <h2>실시간 투표(Quick Poll)</h2>
 
-<h3>1 본문 선택과 기도</h3>
+<h3>질문 2. 설교 준비 과정에서 가장 많은 시간이 소요되는 단계는 무엇입니까?</h3>
 
-<ul>
-<li>교회력, 본문일과, 주제 중심 선택</li>
-<li>성령의 인도하심과 회중을 위한 중보기도</li>
-</ul>
 
-<h3>2 본문 연구 (Exegesis)</h3>
-
-<ul>
-<li>원문(히/헬) 확인, 문맥·배경·장르 분석</li>
-<li>주석서 비교: 웨슬리 주해 포함</li>
-</ul>
-
-<h3>3 신학적 해석</h3>
-
-<ul>
-<li>웨슬리 4중 기준 적용</li>
-<li>구원론 관점에서 본문 해석</li>
-<li>감리교 교리·표준설교와 일치 점검</li>
-</ul>
-
-<h3>4 상황화 (Contextualization)</h3>
-
-<ul>
-<li>한국 역사·문화 속 복음 해석</li>
-<li>사회 현실, 회중 상황 반영</li>
-<li>개인 경건 + 사회 책임 통합</li>
-</ul>
-
-<h3>5 설교문 작성</h3>
-
-<ul>
-<li>서론–본론–결론 구조, 주제 명확화</li>
-<li>회중이 이해하기 쉬운 언어와 예화</li>
-<li>성육신적 메시지 전달</li>
-</ul>
-
+<div class="poll-options">
+        <div class="poll-option" data-vote="1" tabindex="0">
+          <span class="poll-number">1</span>
+          성경 본문 해석 및 주해 작업
+        </div>
+        <div class="poll-option" data-vote="2" tabindex="0">
+          <span class="poll-number">2</span>
+          설교 개요 및 구조 구성
+        </div>
+        <div class="poll-option" data-vote="3" tabindex="0">
+          <span class="poll-number">3</span>
+          적용점 도출 및 예화 수집
+        </div>
+        <div class="poll-option" data-vote="4" tabindex="0">
+          <span class="poll-number">4</span>
+          원고 작성 및 전달 방법 준비
+        </div></div>
   </div>
 
   <div class="slide-number" id="slideNumber"></div>
@@ -291,12 +307,6 @@
       });
 
       // 클릭으로 다음 슬라이드(링크/코드/복사 버튼 제외) → 부모에 위임
-      
-      document.querySelector('.slide-container').addEventListener('click', function(e) {
-          if (e.target.closest('.code-block-wrapper') || e.target.closest('.copy-button')) return;
-          if (e.target.closest('a')) return; // 링크는 기본 동작 유지
-          try { window.parent && window.parent.postMessage({ type: 'slide-next' }, '*'); } catch(_) {}
-      });
       
 
       // 슬라이드 번호 계산 및 표시 (기존 유지)
@@ -345,6 +355,59 @@
                 });
             }
 
+      
+      // 투표 기능 - 객관식
+      let hasVoted = false;
+      const POLL_ID = 'poll-5-2';
+      document.querySelectorAll('.poll-option').forEach(option => {
+          option.addEventListener('click', function() {
+              if (hasVoted) return;
+              document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
+              this.classList.add('selected','voted');
+              hasVoted = true;
+              const statusElement = document.getElementById('votingStatus');
+              if (statusElement) {
+                statusElement.innerHTML = '✅ 투표 완료!';
+                statusElement.style.background = 'rgba(34, 197, 94, 0.1)';
+                statusElement.style.borderColor = '#22c55e';
+                statusElement.style.color = '#15803d';
+              }
+              try { window.parent && window.parent.postMessage({ type: 'poll-vote', pollId: POLL_ID, optionId: this.getAttribute('data-vote') }, '*'); } catch (e) {}
+          });
+      });
+
+      // 부모로부터 기존 투표 상태 동기화
+      window.addEventListener('message', function(event){
+        try {
+          const data = event.data || {};
+          if (data.type === 'poll-state' && data.pollId === POLL_ID) {
+            const optionId = String(data.optionId || '').trim();
+            if (!optionId) return;
+            document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
+            const el = document.querySelector('.poll-option[data-vote="' + optionId + '"]');
+            if (el) {
+              el.classList.add('selected');
+              hasVoted = true;
+              const statusElement = document.getElementById('votingStatus');
+              if (statusElement) {
+                statusElement.innerHTML = '✅ 투표 완료!';
+                statusElement.style.background = 'rgba(34, 197, 94, 0.1)';
+                statusElement.style.borderColor = '#22c55e';
+                statusElement.style.color = '#15803d';
+              }
+            }
+          }
+        } catch (e) { /* noop */ }
+      });
+
+      // 리스너 준비 신호(레이스 방지)
+      try { window.parent && window.parent.postMessage({ type: 'poll-ready', pollId: POLL_ID }, '*'); } catch (e) {}
+
+      // 주관식 입력 제출 처리
+      
+
+      // 퀴즈 동작은 부모(StudentView) 오버레이에서 처리
+      (function(){ /* noop for quiz slides */ })();
       
     </script>
     

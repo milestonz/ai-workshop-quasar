@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>5단계: 승인 및 공유 (Approval & Sharing)</title>
+  <title>연간 목회계획 수립을 위한 4단계 프롬프트</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,26 +253,30 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>5단계: 승인 및 공유 (Approval & Sharing)</h1>
+      <h1>연간 목회계획 수립을 위한 4단계 프롬프트</h1>
 
-<p><strong>시기</strong>: 당해년도 1-2월</p>
+<h2>4단계: 전략 기획 프롬프트 (12월)</h2>
 
-<h4>당회 승인 과정</h4>
+<h3>🎯 기본 프롬프트</h3>
 
-<ul>
-<li>정책당회를 통한 목회계획 제시</li>
-<li>장로진과의 토의 및 조정</li>
-<li>당회 결의를 통한 최종 승인</li>
-</ul>
 
-<h4>교인 공유 및 동참</h4>
+                <div class="code-block-wrapper">
+                  <pre><code>내년도 목회 전략을 수립하고 싶습니다:
 
-<ul>
-<li>비전 공유를 위한 설교와 간증</li>
-<li>평신도 리더들과의 개별 만남</li>
-<li>각 기관별 설명회 개최</li>
-<li>교회 소식지와 홈페이지를 통한 홍보</li>
-</ul>
+<strong>설정된 비전:</strong> [1단계에서 수립한 비전]
+
+<strong>현황 분석 결과:</strong>
+- 강점: [예: 교육 프로그램 우수, 젊은 층 활발]
+- 약점: [예: 고령층 돌봄 부족, 시설 개선 필요]
+- 기회: [예: 신도시 개발, 지역 복지관과 협력 가능]
+- 위협: [예: 인근 대형교회 개척, 인구 감소]
+
+<strong>우선순위 사역:</strong> [집중하고 싶은 2-3개 핵심 사역]
+
+기독교대한감리회의 개인구원과 사회구원의 조화 원칙에 따라, 5대 부서별 구체적인 전략과 월별 실행 계획을 제시해 주세요.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
 
   </div>
 

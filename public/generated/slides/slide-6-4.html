@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4단계: 세부 계획 수립 (Detailed Planning)</title>
+  <title>연간 목회계획 수립을 위한 3단계 프롬프트</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,27 +253,33 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>4단계: 세부 계획 수립 (Detailed Planning)</h1>
+      <h1>연간 목회계획 수립을 위한 3단계 프롬프트</h1>
 
-<p><strong>시기</strong>: 당해년도 1월</p>
+<h2>3단계: 현황 분석 프롬프트 (11월)</h2>
 
-<h4>월별/분기별 세부 계획</h4>
+<h3>🎯 기본 프롬프트</h3>
 
-<ul>
-<li><strong>연간 시간표</strong>: 주요 행사와 절기 일정</li>
-<li><strong>월간 시간표</strong>: 월별 중점 사역과 목표</li>
-<li><strong>주간 시간표</strong>: 주간 사역 스케줄과 담당자</li>
-</ul>
 
-<h4>구체적 실행 계획</h4>
+                <div class="code-block-wrapper">
+                  <pre><code>올해 교회 사역 평가 및 현황 분석을 위한 체크리스트를 만들어 주세요:
 
-<ul>
-<li>각 사역별 구체적 목표 설정</li>
-<li>실행 방법과 절차 명시</li>
-<li>담당자와 협력자 배정</li>
-<li>필요 자원과 예산 배정</li>
-<li>평가 기준과 방법 설정</li>
-</ul>
+<strong>평가 대상 영역:</strong>
+- 예배 및 영성 사역
+- 교육 및 양육 사역
+- 전도 및 선교 사역
+- 친교 및 돌봄 사역
+- 사회봉사 사역
+
+<strong>평가 관점:</strong>
+- 목표 달성도 (정량적)
+- 교인 만족도 (정성적)
+- 지역사회 기여도
+- 재정 효율성
+
+각 영역별로 3-5개의 핵심 평가 질문을 만들고, 개선이 필요한 부분을 파악할 수 있는 분석 방법을 제시해 주세요.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
 
   </div>
 

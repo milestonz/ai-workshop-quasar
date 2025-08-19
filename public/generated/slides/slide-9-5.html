@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>목회자를 위한 AI 활용 시나리오</title>
+  <title>AI 목회의 기회와 가능성</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,69 +253,25 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h2>3. 목회 현장에서 AI 활용 시 주의사항과 실천 방안</h2>
+      <h1>AI 목회의 기회와 가능성</h1>
 
-<h3>4단계 안전한 AI 도입 방식</h3>
+<h2>🌟 긍정적 변화 가능성</h2>
 
-<p><strong>1단계: AI 정보 제공 (AI Informed)</strong></p>
-
-<ul>
-<li>목회자가 AI로부터 정보만 얻고, 직접 상담 진행</li>
-<li>예: 상담 주제 관련 성경 구절이나 신학적 자료 검색</li>
-<li>안전성: 높음 / 목회자 주도권: 완전 유지</li>
-</ul>
-
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>중년 성도의 "소명 찾기" 상담 전 준비</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 활용</strong>: "성경의 소명 관련 인물들(모세, 다윗, 바울 등) 사례 정리"</blockquote>
-<blockquote>- <strong>목회자 역할</strong>: AI 자료를 참고하여 개인에게 맞는 영적 지도 제공</blockquote>
-
-<p><strong>2단계: AI 안내 (AI Guided)</strong></p>
+<h3>목회 효율성 증대</h3>
 
 <ul>
-<li>AI가 상담 방향이나 질문을 제안하되, 목회자가 필터링</li>
-<li>예: 상담 질문 목록 제안, 대화 방향 안내</li>
-<li>안전성: 높음 / 목회자 주도권: 유지</li>
+<li><strong>시간 절약</strong>: 반복적 업무의 자동화</li>
+<li><strong>정보 접근</strong>: 방대한 자료의 빠른 검색과 정리</li>
+<li><strong>개인화 서비스</strong>: 성도별 맞춤형 목회 지원</li>
 </ul>
 
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>부부갈등 상담에서 대화가 막힐 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 제안</strong>: "서로의 사랑언어 확인해보기", "과거 좋았던 추억 나누기" 등 질문 리스트</blockquote>
-<blockquote>- <strong>목회자 판단</strong>: 제안 중에서 이 부부에게 적합한 질문만 선별하여 진행</blockquote>
-
-<p><strong>3단계: AI 직접 제공 - 감독 하 (AI Delivered Supervised)</strong></p>
+<h3>새로운 목회 영역 확장</h3>
 
 <ul>
-<li>AI가 직접 조언하되, 목회자가 실시간 감독</li>
-<li>예: AI 상담 도구 사용 중 목회자가 개입</li>
-<li>안전성: 중간 / 목회자 주도권: 부분 유지</li>
+<li><strong>디지털 목회</strong>: 온라인 공동체 형성</li>
+<li><strong>글로벌 네트워킹</strong>: 세계 교회와의 연결</li>
+<li><strong>데이터 기반 목회</strong>: 성도들의 필요 파악</li>
 </ul>
-
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>청소년의 진로 고민 상담에서 AI 도구 활용</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 직접 대화</strong>: "네 관심사와 성경적 가치관을 연결해서 생각해보자"</blockquote>
-<blockquote>- <strong>목회자 개입</strong>: AI가 세속적 성공만 강조할 때 "하나님 나라의 관점"으로 방향 수정</blockquote>
-
-<p><strong>4단계: AI 직접 제공 - 비감독 (AI Delivered Unsupervised)</strong></p>
-
-<ul>
-<li><strong>목회상담에서는 권장하지 않음</strong></li>
-<li>영적 문제는 반드시 목회자의 직접 개입 필요</li>
-</ul>
-
-<p><strong>현장 위험 예시</strong></p>
-
-<blockquote>만약 우울증을 앓는 성도가 AI와만 상담한다면</blockquote>
-<p>></p>
-<blockquote>- <strong>위험요소</strong>: AI가 자살 징후를 놓칠 수 있음, 영적 어둠의 깊이를 파악 못함</blockquote>
-<blockquote>- <strong>필요한 것</strong>: 목회자의 직접적인 관심과 전문 치료 연계</blockquote>
-
 
   </div>
 

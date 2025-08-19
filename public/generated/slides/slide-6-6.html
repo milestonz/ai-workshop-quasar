@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📈 실행 및 관리 체계</title>
+  <title>연간 목회계획 수립을 위한 5단계 프롬프트</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,37 +253,32 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>📈 실행 및 관리 체계</h1>
+      <h1>연간 목회계획 수립을 위한 5단계 프롬프트</h1>
 
-<h3>분기별 점검 시스템</h3>
+<h2>5단계: 세부 계획 프롬프트 (1월)</h2>
 
-<p><strong>1분기 (3월)</strong>:</p>
+<h3>🎯 기본 프롬프트</h3>
 
-<ul>
-<li>1분기 실행 상황 점검</li>
-<li>필요시 계획 수정 및 보완</li>
-</ul>
 
-<p><strong>2분기 (6월)</strong>:</p>
+                <div class="code-block-wrapper">
+                  <pre><code>내년도 월별/분기별 세부 실행 계획을 작성해 주세요:
 
-<ul>
-<li>상반기 성과 평가</li>
-<li>하반기 계획 재점검</li>
-</ul>
+<strong>기본 정보:</strong>
+- 교회력 주요 절기: 사순절, 부활절, 추수감사절, 대강절, 성탄절
+- 교회 창립일: [월일]
+- 기타 중요 행사: [VBS, 수련회, 선교대회 등]
 
-<p><strong>3분기 (9월)</strong>:</p>
+<strong>부서별 핵심 목표:</strong>
+- 선교부: [예: 새가족 30명 등록]
+- 교육부: [예: 성경학교 활성화]
+- 사회봉사부: [예: 지역 노인정 봉사]
+- 재무부: [예: 목표 헌금 달성]
+- 관리부: [예: 예배실 리모델링]
 
-<ul>
-<li>3분기까지 진행 상황 분석</li>
-<li>4분기 집중 사역 준비</li>
-</ul>
-
-<p><strong>4분기 (12월)</strong>:</p>
-
-<ul>
-<li>연간 사역 종합 평가</li>
-<li>차년도 계획 수립 준비</li>
-</ul>
+월별로 주요 행사와 각 부서별 핵심 업무를 배치하고, 담당자와 예산, 평가 기준을 포함한 실행 계획표를 만들어 주세요.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
 
   </div>
 

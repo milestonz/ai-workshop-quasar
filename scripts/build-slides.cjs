@@ -512,34 +512,65 @@ function generateHTMLTemplate(slideData) {
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   `;
@@ -556,11 +587,11 @@ function generateHTMLTemplate(slideData) {
         h2 { font-size:2.5rem; color:#b45309; margin-bottom:20px; font-weight:700; }
         h3 { font-size:1.8rem; color:#d97706; margin-bottom:40px; font-weight:600; line-height:1.4; }
         .poll-options { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin:40px 0; }
-        .poll-option { background: linear-gradient(135deg,#ffffff 0%,#fef3c7 100%); padding:25px 20px; border-radius:20px; border:3px solid transparent; cursor:pointer; transition: all .4s ease; font-weight:600; font-size:1.1rem; box-shadow: 0 8px 25px rgba(0,0,0,.1); position:relative; overflow:hidden; color:#92400e; }
+        .poll-option { background: linear-gradient(135deg,#ffffff 0%,#fef3c7 100%); padding:25px 20px; border-radius:20px; border:3px solid transparent; cursor: pointer !important; transition: all .4s ease; font-weight:600; font-size:1.1rem; box-shadow: 0 8px 25px rgba(0,0,0,.1); position:relative; overflow:hidden; color:#92400e; }
         .poll-option::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(251,191,36,.3), transparent); transition:left .6s ease; }
-        .poll-option:hover { border-color:#f59e0b; transform: translateY(-8px) scale(1.03); box-shadow: 0 15px 35px rgba(245,158,11,.3); }
+        .poll-option:hover { border-color:#f59e0b; transform: translateY(-8px) scale(1.03); box-shadow: 0 15px 35px rgba(245,158,11,.3); cursor: pointer !important; }
         .poll-option:hover::before { left:100%; }
-        .poll-option.selected { background: linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%); color:white; border-color:#d97706; transform: scale(1.05); box-shadow: 0 15px 35px rgba(245,158,11,.4); }
+        .poll-option.selected { background: linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%); color:white; border-color:#d97706; transform: scale(1.05); box-shadow: 0 15px 35px rgba(245,158,11,.4); cursor: pointer !important; }
         .poll-number { display:inline-block; width:35px; height:35px; background:#f59e0b; color:white; border-radius:50%; line-height:35px; font-weight:bold; margin-right:15px; box-shadow: 0 4px 10px rgba(0,0,0,.2); }
         .poll-option.selected .poll-number { background:white; color:#f59e0b; }
         .poll-footer { margin-top:40px; font-size:1.1rem; color:#b45309; font-style: italic; }

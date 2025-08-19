@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -494,7 +525,7 @@
                 <div class="step-icon">📋</div>
                 <div class="step-title">출력 (Output)</div>
                 <div class="step-content">
-                    • 교육 교재 PDF<br>• 프레젠테이션<br>• 시각 자료
+                    • 교육 교재(워크북)<br>• PDF 변환<br>• marp (마크다운 형식, Mark-down) 슬라이드
                 </div>
             </div>
         </div>
@@ -504,7 +535,7 @@
             <div class="practice-content">
                 <div class="qr-visual">📱</div>
                 <div>
-                    AI 교육교재 자동 생성
+                    <a href="https://claude.ai/chat/83fee2e3-2a87-4120-b008-1fb7526c1ee7" target="_blank" rel="noopener noreferrer" class="url-link">https://claude.ai/chat/83fee2e3-2a87-4120-b008-1fb7526c1ee7</a><br><a href="https://claude.ai/public/artifacts/0cd935b7-f6ff-4c0b-b9ed-55887f9d8493" target="_blank" rel="noopener noreferrer" class="url-link">https://claude.ai/public/artifacts/0cd935b7-f6ff-4c0b-b9ed-55887f9d8493</a><br>marp 형식 변환 <a href="https://claude.ai/public/artifacts/257517f0-12fa-4009-bf0e-115d7ee6d2d8" target="_blank" rel="noopener noreferrer" class="url-link">https://claude.ai/public/artifacts/257517f0-12fa-4009-bf0e-115d7ee6d2d8</a><br>marp editor <a href="https://demo.marpeditor.com/" target="_blank" rel="noopener noreferrer" class="url-link">https://demo.marpeditor.com/</a><br>
                 </div>
             </div>
         </div>

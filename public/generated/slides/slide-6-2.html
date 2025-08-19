@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2단계: 현황 분석 및 평가 (Analysis & Evaluation)</title>
+  <title>연간 목회계획 수립을 위한 1단계 프롬프트</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,25 +253,42 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>2단계: 현황 분석 및 평가 (Analysis & Evaluation)</h1>
+      <h1>연간 목회계획 수립을 위한 1단계 프롬프트</h1>
 
-<p><strong>시기</strong>: 전년도 11월</p>
+<p>⚠️ 주의사항</p>
+<div class="dialog-box"><p>개인정보나 민감한 교회 내부 사정은 제외하고 질문</p>
+<p>AI 답변을 참고용으로 활용하고 최종 판단은 목회자가 결정</p>
+<p>교단의 방침이나 연회 지침과 상충되지 않는지 확인</p></div>
 
-<h4>전년도 사역 평가</h4>
+<h2>1단계: 비전 수립 프롬프트 (9-10월)</h2>
+
+<h3>🎯 기본 프롬프트</h3>
+
+
+                <div class="code-block-wrapper">
+                  <pre><code>우리 교회의 내년도 목회 비전을 수립하고 싶습니다. 다음 정보를 바탕으로 명확하고 실현 가능한 비전을 제시해 주세요:
+
+<strong>교회 기본 정보:</strong>
+- 교회명: [교회명]
+- 교인 수: 약 [00]명
+- 지역 특성: [도시/농촌/주택가/상업지역 등]
+- 교회 연혁: [설립 연도] 설립, [주요 특징]
+
+<strong>현재 상황:</strong>
+- 교회 강점: [예: 젊은 층이 많음, 교육 프로그램이 활발함 등]
+- 지역사회 특성: [예: 고령화, 신도시, 학군지역 등]
+- 주요 과제: [예: 청년층 유출, 시설 노후화 등]
+
+기독교대한감리회의 3대 원칙(진정한 기독교회, 진정한 감리교회, 조선적 교회)을 반영하여 3-5년 장기 비전과 내년도 핵심 목표를 제시해 주세요.</code></pre>
+                  <button class="copy-button" onclick="copyCode(this)">복사</button>
+                </div>
+              
+
+<h3>📝 활용 팁</h3>
 
 <ul>
-<li>원래 목적과 계획 대비 실행 결과 비교 분석</li>
-<li>원래 계획과 차질이 생긴 부분의 원인 분석</li>
-<li>성과와 한계점 객관적 평가</li>
-</ul>
-
-<h4>교회 현황 진단</h4>
-
-<ul>
-<li>교인 현황 및 구성 분석</li>
-<li>조직 및 시설 현황 점검</li>
-<li>재정 상황 분석</li>
-<li>지역사회와의 관계 평가</li>
+<li>교회 현황을 구체적으로 기입할수록 맞춤형 비전을 얻을 수 있습니다</li>
+<li>지역사회 특성을 자세히 설명하면 더 실용적인 제안을 받을 수 있습니다</li>
 </ul>
 
   </div>

@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -233,13 +264,6 @@
 <li>기본적인 상담 기법 안내</li>
 </ul>
 
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>새신자가 "기도를 어떻게 해야 할지 모르겠어요"라고 질문할 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 활용 가능</strong>: "주기도문을 기본으로 감사-고백-간구-헌신 순서로 하시면 됩니다"</blockquote>
-<blockquote>- <strong>도움되는 이유</strong>: 체계적이고 명확한 정보 제공</blockquote>
-
 <p><strong>AI의 한계 영역 (목회자만 가능한 부분)</strong></p>
 
 <ul>
@@ -248,14 +272,6 @@
 <li>깊은 변화를 이끄는 초월적 상담</li>
 <li>개인의 영혼 안에 있는 하나님의 형상 회복</li>
 </ul>
-
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>성도가 "하나님이 저를 사랑하시는지 확신이 안 서요"라고 고백할 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 한계</strong>: 논리적 답변만 가능 ("성경에 하나님의 사랑이 기록되어 있습니다")</blockquote>
-<blockquote>- <strong>목회자 필요성</strong>: 영적 분별로 그 사람만의 상처를 찾아내고, 개인적 기도와 성령의 터치를 통한 치유</blockquote>
-
 
   </div>
 

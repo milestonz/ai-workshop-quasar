@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>목회자를 위한 AI 활용 시나리오</title>
+  <title>AI 목회의 한계와 주의사항</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,55 +253,36 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h3>실천 방안과 권고사항</h3>
+      <h1>AI 목회의 한계와 주의사항</h1>
 
-<p><strong>목회자의 AI 리터러시 향상</strong></p>
+<h2>⚠️ AI의 한계 인식</h2>
 
-<ul>
-<li>AI 도구의 작동 원리와 한계 이해</li>
-<li>신학적 관점에서 AI 평가 능력 개발</li>
-<li>지속적인 학습과 업데이트</li>
-</ul>
-
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>목회자 AI 교육 프로그램 운영</blockquote>
-<p>></p>
-<blockquote>- <strong>월 1회 스터디</strong>: AI 도구 체험 + 신학적 성찰 + 적용 사례 나눔</blockquote>
-<blockquote>- <strong>실습</strong>: "ChatGPT로 설교 개요 잡기" → "신학적 검증하기" → "개인 스타일로 재구성하기"</blockquote>
-
-<p><strong>교회 공동체 차원의 준비</strong></p>
+<h3>기술적 한계</h3>
 
 <ul>
-<li>성도들에게 AI의 한계와 위험성 교육</li>
-<li>목회상담과 AI 상담의 차이점 설명</li>
-<li>영적 문제는 반드시 목회자나 전문 상담사와 상담하도록 안내</li>
+<li><strong>감정적 이해</strong>: 인간의 복잡한 감정 상태 파악 어려움</li>
+<li><strong>맥락 이해</strong>: 문화적, 역사적 맥락의 제한적 이해</li>
+<li><strong>창의성</strong>: 진정한 창의적 사고의 한계</li>
+<li><strong>직관</strong>: 영적 직관과 통찰력의 부재</li>
 </ul>
 
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>주일학교에서 "AI와 신앙" 특별 강의</blockquote>
-<p>></p>
-<blockquote>- <strong>초등부</strong>: "AI 로봇이 기도할 수 있을까?" (AI와 영혼의 차이)</blockquote>
-<blockquote>- <strong>중고등부</strong>: "AI 채팅봇에게 인생상담 받는 것의 위험성"</blockquote>
-<blockquote>- <strong>청년부</strong>: "AI 시대의 그리스도인다운 삶"</blockquote>
-
-<p><strong>안전장치 마련</strong></p>
+<h3>신학적 한계</h3>
 
 <ul>
-<li>AI 사용 시 항상 목회자의 감독 하에 진행</li>
-<li>개인정보 보호와 상담 내용 비밀 보장</li>
-<li>응급 상황 시 즉시 전문가 개입 체계 구축</li>
+<li><strong>은혜의 영역</strong>: 하나님의 은혜를 대체할 수 없음</li>
+<li><strong>영혼의 고유성</strong>: 각 영혼의 독특한 가치 이해 불가</li>
+<li><strong>기도의 능력</strong>: 기도의 영적 차원 이해 부족</li>
+<li><strong>성령의 역사</strong>: 성령의 인도하심 인식 불가</li>
 </ul>
 
-<p><strong>현장 적용 예시</strong></p>
+<h2>🛡️ 주의사항</h2>
 
-<blockquote>교회 AI 사용 가이드라인 제작</blockquote>
-<p>></p>
-<blockquote>- <strong>상담실 내 안내문</strong>: "이곳에서 사용되는 AI 도구는 보조 수단이며, 모든 대화는 목회자가 책임집니다"</blockquote>
-<blockquote>- <strong>응급연락망</strong>: 정신과 전문의, 상담센터, 자살예방 핫라인 번호 비치</blockquote>
-<blockquote>- <strong>개인정보 보호</strong>: AI 도구에 입력되는 개인정보 최소화 원칙</blockquote>
-
+<ul>
+<li><strong>과도한 의존</strong>: AI에 대한 맹신 금지</li>
+<li><strong>인간성 상실</strong>: 기계적 접근으로 인한 온기 상실</li>
+<li><strong>개인정보 노출</strong>: 민감한 정보의 안전성 확보</li>
+<li><strong>편향성</strong>: AI의 편향된 관점에 대한 경계</li>
+</ul>
 
   </div>
 
