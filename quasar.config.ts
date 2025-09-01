@@ -47,6 +47,7 @@ export default defineConfig((/* ctx */) => {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       vueRouterBase: '/', // Azure Static Web Apps base path
       publicPath: '/', // Azure Static Web Apps public path
+      htmlFilename: 'index.html', // HTML 파일명 설정
       // vueDevtools,
       // vueOptionsAPI: false,
 
