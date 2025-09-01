@@ -771,6 +771,17 @@ export const useCourseStore = defineStore('course', () => {
     }
   };
 
+  const setCurrentSlideByLessonAndSlide = (lessonIndex: number, slideIndex: number) => {
+    if (lessonIndex >= 0 && lessonIndex < lessons.value.length) {
+      currentLesson.value = lessonIndex;
+      const lessonData = lessons.value[lessonIndex];
+      if (lessonData && slideIndex >= 0 && slideIndex < lessonData.slides) {
+        currentSlide.value = slideIndex;
+        console.log(`✅ 슬라이드 설정 완료: ${lessonIndex}-${slideIndex}`);
+      }
+    }
+  };
+
   // Chapter에 슬라이드 추가하는 함수
   const addSlideToLesson = async (lessonIndex: number) => {
     try {
@@ -2320,6 +2331,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     // 액션
     setCurrentLesson,
     setCurrentSlide,
+    setCurrentSlideByLessonAndSlide,
     addSlideToLesson,
     nextSlide,
     prevSlide,

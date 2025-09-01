@@ -166,6 +166,23 @@ const showKeyboardHelp = ref(false);
 const currentLesson = computed(() => courseStore.currentLesson);
 const currentSlide = computed(() => courseStore.currentSlide);
 
+// 라우트 파라미터 처리
+watch(
+  () => route.params.id,
+  (slideId) => {
+    if (slideId && typeof slideId === 'string') {
+      console.log('🔗 라우트 파라미터 감지:', slideId);
+      // slideId 형식: "0-1", "1-2" 등
+      const [lesson, slide] = slideId.split('-').map(Number);
+      if (!isNaN(lesson) && !isNaN(slide)) {
+        console.log(`📖 슬라이드 이동: ${lesson}-${slide}`);
+        courseStore.setCurrentSlideByLessonAndSlide(lesson, slide);
+      }
+    }
+  },
+  { immediate: true }
+);
+
 // 편집기 모드 상태
 const isPresentationMode = computed(() => courseStore.isPresentationMode);
 
