@@ -33,7 +33,11 @@
     <LoginDialog v-model="showLogin" />
     <GuestLoginDialog v-model="showGuestLogin" />
     <GuestInfoDialog v-model="showGuestInfo" />
-    <CourseImport v-if="showCourseImport" @cancel="showCourseImport = false" @success="handleCourseImportSuccess" />
+    <CourseImport
+      v-if="showCourseImport"
+      @cancel="showCourseImport = false"
+      @success="handleCourseImportSuccess"
+    />
   </q-layout>
 </template>
 
