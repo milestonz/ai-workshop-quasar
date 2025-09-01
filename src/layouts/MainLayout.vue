@@ -61,19 +61,9 @@ const route = useRoute();
 const courseStore = useCourseStore();
 
 // Auth composables
-const { 
-  user, 
-  isAuthenticated, 
-  userRole, 
-  isFirebaseConfigured, 
-  logout 
-} = useAuth();
+const { user, isAuthenticated, userRole, isFirebaseConfigured, logout } = useAuth();
 
-const { 
-  guestUser, 
-  isGuestAuthenticated, 
-  isGuestInfoRegistered
-} = useGuestAuth();
+const { guestUser, isGuestAuthenticated, isGuestInfoRegistered } = useGuestAuth();
 
 // Slide actions composable
 const {
@@ -96,7 +86,7 @@ const showCourseImport = ref(false);
 
 // Computed
 const currentSlideId = computed(() => {
-  return route.params.id as string || '';
+  return (route.params.id as string) || '';
 });
 
 // Methods
@@ -121,15 +111,16 @@ const handleLogout = async () => {
     if (isAuthenticated.value) {
       await logout();
     } else if (isGuestAuthenticated.value) {
-      await guestLogout();
+      // 게스트 로그아웃은 별도 처리 필요
+      console.log('게스트 로그아웃 처리');
     }
-    
+
     $q.notify({
       type: 'positive',
       message: '로그아웃되었습니다.',
       position: 'top',
     });
-    
+
     router.push('/');
   } catch (error) {
     console.error('로그아웃 오류:', error);
@@ -163,7 +154,7 @@ watch(
     if (leftDrawerOpen.value) {
       leftDrawerOpen.value = false;
     }
-  }
+  },
 );
 </script>
 

@@ -44,43 +44,37 @@
 
           <q-list dense>
             <q-expansion-item
-              v-for="chapter in courseOutline"
-              :key="chapter.id"
+              v-for="(chapter, index) in courseOutline"
+              :key="index"
               :label="chapter.title"
-              :default-opened="chapter.id === 1"
+              :default-opened="index === 0"
               class="chapter-item"
             >
               <template v-slot:header>
                 <q-item-section>
                   <q-item-label class="chapter-title">{{ chapter.title }}</q-item-label>
                   <q-item-label caption class="chapter-description">
-                    {{ chapter.description }}
+                    {{ chapter.slides }}개 슬라이드
                   </q-item-label>
                 </q-item-section>
               </template>
 
-              <q-list dense>
+              <q-list dense v-if="chapter.slideData && chapter.slideData.length > 0">
                 <q-item
-                  v-for="slide in chapter.slides"
-                  :key="slide.id"
+                  v-for="(slide, slideIndex) in chapter.slideData"
+                  :key="slideIndex"
                   clickable
                   v-ripple
-                  @click="navigateToSlide(slide.id)"
-                  :class="{ 'active-slide': currentSlideId === slide.id }"
+                  @click="navigateToSlide(`${index}-${slideIndex}`)"
+                  :class="{ 'active-slide': currentSlideId === `${index}-${slideIndex}` }"
                   class="slide-item"
                 >
                   <q-item-section avatar>
-                    <q-icon
-                      :name="getSlideIcon(slide.type)"
-                      :color="getSlideColor(slide.type)"
-                      size="sm"
-                    />
+                    <q-icon name="description" color="grey-7" size="sm" />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="slide-title">{{ slide.title }}</q-item-label>
-                    <q-item-label caption class="slide-type">
-                      {{ getSlideTypeLabel(slide.type) }}
-                    </q-item-label>
+                    <q-item-label caption class="slide-type"> 일반 </q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
