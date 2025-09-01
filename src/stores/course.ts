@@ -2226,7 +2226,12 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
   const loadCourseOutline = async () => {
     try {
       const response = await fetch('/data/course-outline.json');
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const text = await response.text();
+      console.log('📄 JSON 응답 텍스트:', text.substring(0, 100) + '...');
+      const data = JSON.parse(text);
       lessons.value = data.lessons;
       console.log('✅ 강의 목차 로드 완료:', data.title);
     } catch (error) {
