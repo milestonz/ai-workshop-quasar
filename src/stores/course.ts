@@ -67,6 +67,8 @@ export const useCourseStore = defineStore('course', () => {
               .map(Number)
               .sort((a, b) => a - b);
 
+            console.log('📚 발견된 챕터 번호들:', chapterNumbers);
+
             for (const chapterNum of chapterNumbers) {
               const chapter = sidebarData.chapters[chapterNum.toString()];
               if (!chapter || !chapter.slides) continue;
