@@ -48,16 +48,16 @@ const slideUrl = computed(() => {
   return `/generated/slides/slide-${props.slideNumber}.html`;
 });
 
-// HTML 타입 슬라이드의 경우 원본 마크다운 파일에서 내용을 가져옴
+// HTML 타입 슬라이드의 경우 변환된 HTML 파일에서 내용을 가져옴
 const loadHtmlSlideContent = async () => {
   if (props.slideType === 'html') {
     try {
       isLoading.value = true;
-      const response = await fetch(`/slides/slide-${props.slideNumber}.md`);
+      const response = await fetch(`/generated/slides/slide-${props.slideNumber}.html`);
       if (response.ok) {
         const content = await response.text();
-        // @html 태그 제거하고 HTML 내용만 추출
-        slideContent.value = content.replace(/^@html\s*\n?/gm, '').trim();
+        // HTML 내용을 그대로 사용
+        slideContent.value = content;
         slideLog.log(`✅ HTML 슬라이드 내용 로드 완료: ${props.slideNumber}`);
       } else {
         error.value = `HTML 슬라이드 ${props.slideNumber} 로딩 중 오류가 발생했습니다.`;
@@ -86,17 +86,30 @@ const onIframeError = (event: Event) => {
 const onHtmlLoad = () => {
   isLoading.value = false;
   slideLog.log(`✅ HTML 슬라이드 로드 완료: ${props.slideNumber}`);
+  
+  // HTML 슬라이드가 로드된 후 스타일이 제대로 적용되도록 강제 리렌더링
+  setTimeout(() => {
+    const htmlContent = document.querySelector('.html-slide-content');
+    if (htmlContent) {
+      // 스타일 재적용을 위한 강제 리플로우
+      htmlContent.style.display = 'none';
+      htmlContent.offsetHeight; // 리플로우 강제 실행
+      htmlContent.style.display = 'block';
+    }
+  }, 100);
 };
 
 watch(
   () => props.slideNumber,
-  (newSlideNumber) => {
+  (newSlideNumber, oldSlideNumber) => {
     if (newSlideNumber) {
       isLoading.value = true;
       error.value = '';
+      slideContent.value = ''; // 이전 내용 초기화
 
       if (props.slideType === 'html') {
-        // HTML 타입인 경우 원본 마크다운에서 HTML 내용 로드
+        // HTML 타입인 경우 변환된 HTML 파일에서 내용 로드
+        slideLog.log(`🔄 HTML 슬라이드 변경: ${oldSlideNumber} -> ${newSlideNumber}`);
         loadHtmlSlideContent();
       } else {
         // iframe 슬라이드인 경우
@@ -113,6 +126,23 @@ watch(
     }
   },
   { immediate: true },
+);
+
+// slideType 변경도 감지
+watch(
+  () => props.slideType,
+  (newSlideType, oldSlideType) => {
+    if (newSlideType !== oldSlideType && props.slideNumber) {
+      slideLog.log(`🔄 슬라이드 타입 변경: ${oldSlideType} -> ${newSlideType}`);
+      isLoading.value = true;
+      error.value = '';
+      slideContent.value = ''; // 이전 내용 초기화
+      
+      if (newSlideType === 'html') {
+        loadHtmlSlideContent();
+      }
+    }
+  },
 );
 </script>
 
@@ -144,6 +174,7 @@ watch(
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: white;
 }
 
 .html-slide-content {
@@ -151,6 +182,26 @@ watch(
   height: 100%;
   overflow: auto;
   background: white;
+}
+
+/* HTML 슬라이드의 CSS가 제대로 적용되도록 스타일 격리 해제 */
+.html-slide-content :deep(*) {
+  all: revert;
+  box-sizing: border-box;
+}
+
+.html-slide-content :deep(html),
+.html-slide-content :deep(body) {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* HTML 슬라이드 내부의 모든 스타일이 제대로 적용되도록 */
+.html-slide-content :deep(style) {
+  display: block !important;
 }
 
 .loading-overlay {
