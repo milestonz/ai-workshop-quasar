@@ -45,8 +45,8 @@ export default defineConfig((/* ctx */) => {
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      vueRouterBase: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/', // GitHub Pages base path
-      publicPath: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/', // GitHub Pages public path
+      vueRouterBase: '/', // Azure Static Web Apps base path
+      publicPath: '/', // Azure Static Web Apps public path
       // vueDevtools,
       // vueOptionsAPI: false,
 
