@@ -16,7 +16,7 @@
     "dev:live": "npm run watch-slides & quasar dev",
     "build": "quasar build",
     "build:azure": "npm run build-slides && quasar build && npm run prepare-azure",
-    "prepare-azure": "cp -r dist/* . && rm -rf dist && echo 'Azure 배포 준비 완료! (index.html은 수동으로 수정 필요)'",
+    "prepare-azure": "echo 'Azure 배포 준비 완료! (dist 폴더를 그대로 사용)'",
     "postinstall": "echo 'Postinstall completed'",
     "start": "node server.js",
     "start:azure": "NODE_ENV=production PORT=8080 node server.js",
