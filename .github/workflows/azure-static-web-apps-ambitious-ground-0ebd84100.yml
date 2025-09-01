@@ -32,6 +32,8 @@ jobs:
         run: npm run build
       - name: Prepare for Azure
         run: npm run prepare-azure
+      - name: Remove node_modules to reduce size
+        run: rm -rf node_modules
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
