@@ -1,6 +1,6 @@
 @general
 
-# 2. Perplexity 실시간 정보 수집
+# Perplexity 실시간 정보 수집
 
 **강원도 맛집 리스트**
 **주변 체험활동 정보**
