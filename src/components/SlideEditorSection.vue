@@ -39,7 +39,7 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <!-- 목차 업데이트 버튼 -->
+      <!-- 목차 업데이트 및 슬라이드 변환 버튼 -->
       <div class="row q-gutter-sm q-mb-md">
         <q-btn
           icon="refresh"
@@ -47,6 +47,13 @@
           @click="handleUpdateTOC"
           :loading="updatingTOC"
           color="primary"
+        />
+        <q-btn
+          icon="transform"
+          label="슬라이드 변환"
+          @click="handleConvertSlides"
+          :loading="convertingSlides"
+          color="secondary"
         />
         <q-btn icon="add" label="새 슬라이드" @click="handleAddNewSlide" color="positive" />
       </div>
@@ -117,6 +124,7 @@ const emit = defineEmits<{
 const $q = useQuasar();
 const markdownEditor = ref();
 const updatingTOC = ref(false);
+const convertingSlides = ref(false);
 
 // 슬라이드 내용 저장
 const handleSlideContentSave = (content: string, slideId: string) => {
@@ -170,6 +178,52 @@ const handleUpdateTOC = async () => {
     });
   } finally {
     updatingTOC.value = false;
+  }
+};
+
+// 슬라이드 변환
+const handleConvertSlides = async () => {
+  convertingSlides.value = true;
+  
+  try {
+    // 슬라이드 변환 API 호출
+    const response = await fetch('/api/convert-slides', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sourceDir: './md-slides',
+        outputDir: './public/html'
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      $q.notify({
+        type: 'positive',
+        message: `슬라이드 변환 완료! ${result.convertedCount}개 성공, ${result.failedCount}개 실패`,
+        position: 'top',
+        timeout: 5000,
+        icon: 'transform',
+        actions: [{ label: '확인', color: 'white' }],
+      });
+    } else {
+      throw new Error(result.message || '슬라이드 변환에 실패했습니다.');
+    }
+  } catch (error) {
+    console.error('슬라이드 변환 오류:', error);
+    $q.notify({
+      type: 'negative',
+      message: `슬라이드 변환 실패: ${error.message}`,
+      position: 'top',
+      timeout: 5000,
+      icon: 'error',
+      actions: [{ label: '확인', color: 'white' }],
+    });
+  } finally {
+    convertingSlides.value = false;
   }
 };
 

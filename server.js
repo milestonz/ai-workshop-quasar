@@ -45,6 +45,38 @@ const createTransporter = () => {
   });
 };
 
+// 슬라이드 변환 함수
+const convertSlides = (sourceDir, outputDir) => {
+  return new Promise((resolve, reject) => {
+    const command = `node scripts/build-slides.cjs ${sourceDir} ${outputDir}`;
+    
+    exec(command, { cwd: __dirname }, (error, stdout, stderr) => {
+      if (error) {
+        console.error('슬라이드 변환 오류:', error);
+        reject(error);
+        return;
+      }
+      
+      // stdout에서 변환 결과 파싱
+      const successMatch = stdout.match(/✅ 성공: (\d+)개/);
+      const failedMatch = stdout.match(/❌ 실패: (\d+)개/);
+      const outputMatch = stdout.match(/📍 출력 디렉토리: (.+)/);
+      
+      const result = {
+        success: true,
+        message: '슬라이드 변환이 완료되었습니다.',
+        convertedCount: successMatch ? parseInt(successMatch[1]) : 0,
+        failedCount: failedMatch ? parseInt(failedMatch[1]) : 0,
+        outputDirectory: outputMatch ? outputMatch[1] : outputDir,
+        stdout: stdout,
+        stderr: stderr
+      };
+      
+      resolve(result);
+    });
+  });
+};
+
 // 이메일 전송 함수
 const sendEmail = async (to, subject, htmlContent) => {
   const transporter = createTransporter();
@@ -432,6 +464,66 @@ app.get('/api/survey/results', (req, res) => {
     total: surveys.length,
     message: `${surveys.length}개의 설문 결과를 조회했습니다.`,
   });
+});
+
+// 슬라이드 변환 API
+app.post('/api/convert-slides', async (req, res) => {
+  try {
+    const { sourceDir = './md-slides', outputDir = './public/html' } = req.body;
+    
+    console.log('🔄 슬라이드 변환 시작:', { sourceDir, outputDir });
+    
+    const result = await convertSlides(sourceDir, outputDir);
+    
+    console.log('✅ 슬라이드 변환 완료:', result);
+    
+    res.json(result);
+  } catch (error) {
+    console.error('❌ 슬라이드 변환 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '슬라이드 변환 중 오류가 발생했습니다.',
+      error: error.message
+    });
+  }
+});
+
+// 슬라이드 변환 상태 확인 API
+app.get('/api/slide-conversion-status', (req, res) => {
+  try {
+    const mdSlidesDir = path.join(process.cwd(), 'md-slides');
+    const htmlSlidesDir = path.join(process.cwd(), 'public', 'html');
+    
+    let totalSlides = 0;
+    let convertedSlides = 0;
+    
+    // 마크다운 슬라이드 파일 수 확인
+    if (fs.existsSync(mdSlidesDir)) {
+      const mdFiles = fs.readdirSync(mdSlidesDir).filter(file => file.endsWith('.md'));
+      totalSlides = mdFiles.length;
+    }
+    
+    // HTML 슬라이드 파일 수 확인
+    if (fs.existsSync(htmlSlidesDir)) {
+      const htmlFiles = fs.readdirSync(htmlSlidesDir).filter(file => file.endsWith('.html'));
+      convertedSlides = htmlFiles.length;
+    }
+    
+    res.json({
+      success: true,
+      totalSlides,
+      convertedSlides,
+      lastConversion: null, // TODO: 마지막 변환 시간 저장
+      message: `${convertedSlides}/${totalSlides} 슬라이드가 변환되었습니다.`
+    });
+  } catch (error) {
+    console.error('❌ 슬라이드 변환 상태 확인 실패:', error);
+    res.status(500).json({
+      success: false,
+      message: '슬라이드 변환 상태 확인 중 오류가 발생했습니다.',
+      error: error.message
+    });
+  }
 });
 
 app.get('/api/survey/statistics', (req, res) => {
