@@ -145,7 +145,7 @@
       "chapter": 1,
       "slide": 11,
       "id": "1-11",
-      "title": "AI의 피해자, 이세돌",
+      "title": "AI의 피해자, 이세돌 은퇴 : \"바둑계에서 나의 필요성이 없어졌다고 생각했다.\"\"",
       "path": "/slides/slide-1-11.md",
       "htmlPath": "/generated/slides/slide-1-11.html",
       "type": "general"
@@ -155,7 +155,7 @@
       "chapter": 1,
       "slide": 12,
       "id": "1-12",
-      "title": "신진서 9단, 신공지능",
+      "title": "신진서 9단, '신공지능'",
       "path": "/slides/slide-1-12.md",
       "htmlPath": "/generated/slides/slide-1-12.html",
       "type": "general"
@@ -165,7 +165,7 @@
       "chapter": 1,
       "slide": 13,
       "id": "1-13",
-      "title": "샘 알트만, \"내가 쓸모업다고 느껴지는 감정이 들었다\"",
+      "title": "샘 알트만, \"내가 쓸모없다고 느껴지는 감정이 들었다\"",
       "path": "/slides/slide-1-13.md",
       "htmlPath": "/generated/slides/slide-1-13.html",
       "type": "general"
@@ -185,7 +185,7 @@
       "chapter": 1,
       "slide": 15,
       "id": "1-15",
-      "title": "제목: “요한복음 4장”",
+      "title": "제목: “전도서 7장 30절”",
       "path": "/slides/slide-1-15.md",
       "htmlPath": "/generated/slides/slide-1-15.html",
       "type": "quiz"
@@ -195,7 +195,7 @@
       "chapter": 1,
       "slide": 16,
       "id": "1-16",
-      "title": "1번 – 성경 속 인물",
+      "title": "제목: “전도서 7장 16절”",
       "path": "/slides/slide-1-16.md",
       "htmlPath": "/generated/slides/slide-1-16.html",
       "type": "quiz"
@@ -1667,7 +1667,7 @@
           "chapter": 1,
           "slide": 11,
           "id": "1-11",
-          "title": "AI의 피해자, 이세돌",
+          "title": "AI의 피해자, 이세돌 은퇴 : \"바둑계에서 나의 필요성이 없어졌다고 생각했다.\"\"",
           "path": "/slides/slide-1-11.md",
           "htmlPath": "/generated/slides/slide-1-11.html",
           "type": "general"
@@ -1677,7 +1677,7 @@
           "chapter": 1,
           "slide": 12,
           "id": "1-12",
-          "title": "신진서 9단, 신공지능",
+          "title": "신진서 9단, '신공지능'",
           "path": "/slides/slide-1-12.md",
           "htmlPath": "/generated/slides/slide-1-12.html",
           "type": "general"
@@ -1687,7 +1687,7 @@
           "chapter": 1,
           "slide": 13,
           "id": "1-13",
-          "title": "샘 알트만, \"내가 쓸모업다고 느껴지는 감정이 들었다\"",
+          "title": "샘 알트만, \"내가 쓸모없다고 느껴지는 감정이 들었다\"",
           "path": "/slides/slide-1-13.md",
           "htmlPath": "/generated/slides/slide-1-13.html",
           "type": "general"
@@ -1707,7 +1707,7 @@
           "chapter": 1,
           "slide": 15,
           "id": "1-15",
-          "title": "제목: “요한복음 4장”",
+          "title": "제목: “전도서 7장 30절”",
           "path": "/slides/slide-1-15.md",
           "htmlPath": "/generated/slides/slide-1-15.html",
           "type": "quiz"
@@ -1717,7 +1717,7 @@
           "chapter": 1,
           "slide": 16,
           "id": "1-16",
-          "title": "1번 – 성경 속 인물",
+          "title": "제목: “전도서 7장 16절”",
           "path": "/slides/slide-1-16.md",
           "htmlPath": "/generated/slides/slide-1-16.html",
           "type": "quiz"

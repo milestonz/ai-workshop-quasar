@@ -65,7 +65,7 @@ const loadHtmlSlideContent = async () => {
     try {
       isLoading.value = true;
       slideLog.log(`🔄 HTML 슬라이드 iframe 로드 시작: ${props.slideNumber}`);
-      
+
       // iframe이 로드되면 onHtmlLoad에서 로딩 상태 해제
       // 3초 후에도 로딩이 안 되면 로딩 상태 해제
       setTimeout(() => {
@@ -134,7 +134,7 @@ watch(
       slideLog.log(`🔄 슬라이드 타입 변경: ${oldSlideType} -> ${newSlideType}`);
       isLoading.value = true;
       error.value = '';
-      
+
       if (newSlideType === 'html') {
         loadHtmlSlideContent();
       }
