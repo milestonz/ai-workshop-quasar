@@ -187,12 +187,12 @@ watch(
   { immediate: true },
 );
 
-// 편집기 모드 상태
+// 편집기 모드 상태 - 템플릿에서 사용하기 위한 computed
 const isPresentationMode = computed(() => courseStore.isPresentationMode);
 
 // 편집기 모드 변경 감지
 watch(
-  () => isPresentationMode.value,
+  () => courseStore.isPresentationMode,
   async (newMode) => {
     console.log(`🎭 편집기 모드 변경: ${newMode ? '프레젠테이션' : '편집기'}`);
 

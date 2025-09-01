@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import { slideLog } from 'src/utils/logger';
 import type { SlideData, Lesson, Comment } from '../types/slide';
@@ -958,10 +958,15 @@ export const useCourseStore = defineStore('course', () => {
   const togglePresentationMode = () => {
     const previousMode = isPresentationMode.value;
     isPresentationMode.value = !isPresentationMode.value;
-    console.log('🎭 프레젠테이션 모드 전환:', {
-      이전: previousMode ? '프레젠테이션' : '편집기',
-      현재: isPresentationMode.value ? '프레젠테이션' : '편집기',
-      값: isPresentationMode.value
+    
+    // 반응성 강제 트리거
+    nextTick(() => {
+      console.log('🎭 프레젠테이션 모드 전환:', {
+        이전: previousMode ? '프레젠테이션' : '편집기',
+        현재: isPresentationMode.value ? '프레젠테이션' : '편집기',
+        값: isPresentationMode.value,
+        반응성확인: 'nextTick 후'
+      });
     });
   };
 
