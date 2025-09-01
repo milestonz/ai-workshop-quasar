@@ -20,4 +20,12 @@ AI 디자인 및 시각 자료 생성
 
 ## 실습
 
-AI 홍보 자료 자동 생성 시스템 : 교회 행사나 세미나 정보 > AI가 전문적인 포스터와 홍보 자료를 자동으로 제작
+프롬프트 작성
+https://chatgpt.com/share/689db490-7ad4-800e-b624-82d4f958c293
+
+Canva.com
+https://www.canva.com/ai/thread/b6203ab0-ac74-475a-a816-85a24c778511
+
+```
+A vibrant, energetic Christian youth retreat poster illustration for middle and high school students, featuring teenagers worshiping joyfully, a scenic summer camp setting with tents, bonfire, cross, and mountains in the background. Include visual elements like a Bible, music notes, and group activities. Bright and hopeful atmosphere, warm sunset colors, dynamic composition.
+```

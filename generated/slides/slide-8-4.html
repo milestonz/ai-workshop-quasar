@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3. 멀티미디어 홍보 패키지 (계속)</title>
+  <title>목회자를 위한 AI 활용 시나리오</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,33 +253,31 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>3. 멀티미디어 홍보 패키지 (계속)</h1>
+      <h2>4. 🎞 YouTube 영상 요약으로 연구 정리</h2>
 
-<p><strong>Suno: 수련회 주제곡 제작</strong></p>
+<h4>🔹 사용법</h4>
+
+<ol>
+<li>YouTube 영상 URL을 붙인 Google 문서를 업로드</li>
+<li>영상 요약 요청</li>
+</ol>
+
+<h4>🛠 실습 프롬프트</h4>
 
 
                 <div class="code-block-wrapper">
-                  <pre><code>"주제: 'RESET, 새로운 시작'을 표현한 청년 수련회 주제곡을 만들어줘.
-
-스타일: 힙합 + 어쿠스틱 감성 팝
-느낌: 잔잔한 시작 → 점차 고조되는 희망적인 분위기
-가사 포인트: '다시 시작해', '내 안의 불꽃', '함께라서 가능해'
-대상: 20~30대 청년, 공동체 감성을 자극하는 가사로 부탁해"</code></pre>
+                  <pre><code class="language-text">이 문서의 YouTube 강의 내용을 요약하고,
+핵심 포인트 3개, 인용할 만한 문장 2개, 토론 질문 2개를 제시해주세요.</code></pre>
                   <button class="copy-button" onclick="copyCode(this)">복사</button>
                 </div>
               
 
-<p><strong>ChatGPT: 재미있는 모집 문구 작성</strong></p>
+<h4>💡 적용 팁</h4>
 
-
-                <div class="code-block-wrapper">
-                  <pre><code>"20~30대 청년을 위한 수련회 모집 문구를 작성해줘.
-주제는 'RESET: 새로운 시작'
-컨셉은 힙하고 감성적이며 MZ세대가 공감할 수 있어야 해.
-인스타그램/카카오톡에 쓸 수 있는 <strong>짧고 임팩트 있는 문장</strong>으로 3~5개 버전 작성해줘."</code></pre>
-                  <button class="copy-button" onclick="copyCode(this)">복사</button>
-                </div>
-              
+<ul>
+<li>외부 자료 수집 → 내 자료로 전환</li>
+<li>목회 리더십 교육 영상 요약에 효과적</li>
+</ul>
 
   </div>
 

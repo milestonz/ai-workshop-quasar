@@ -19,6 +19,9 @@ AI 음악 생성 및 편곡
 
 ## 실습
 
+- 음악 듣기
+  https://suno.com/s/f7VXX72Za4AerBeR
+
 - 주제 : 'AI와 함께하는 슬기로운 목회'
   https://chatgpt.com/c/689d7d0c-8e1c-8325-b9e9-78f1aa2929e8
 

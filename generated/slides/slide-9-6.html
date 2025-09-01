@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>목회자를 위한 AI 활용 시나리오</title>
+  <title>AI 목회의 미래 시나리오</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,40 +253,35 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h3>목회 현장 적용 시 윤리적 고려사항</h3>
+      <h1>AI 목회의 미래 시나리오</h1>
 
-<p><strong>반드시 피해야 할 영역</strong></p>
+<h2>🔮 2030년 AI 목회 환경</h2>
 
-<ul>
-<li>트라우마나 정신적 위기 상황</li>
-<li>자살 충동이나 심각한 우울증</li>
-<li>깊은 영적 갈등이나 신앙 위기</li>
-<li>가정 폭력이나 성적 문제</li>
-</ul>
-
-<p><strong>현장 위험 예시</strong></p>
-
-<blockquote>성도가 "목사님, 요즘 죽고 싶다는 생각이 자꾸 들어요"라고 말할 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 사용 금지</strong>: 자살 위험은 즉시 전문가 개입 필요</blockquote>
-<blockquote>- <strong>목회자 대응</strong>: 즉시 전문 상담사/정신과 연계 + 24시간 연락 체계 구축</blockquote>
-
-<p><strong>AI 활용 가능 영역</strong></p>
+<h3>일상적인 AI 활용</h3>
 
 <ul>
-<li>성경 공부 자료 준비</li>
-<li>설교 구상과 자료 정리</li>
-<li>교회 행정 업무 지원</li>
-<li>기초적인 신앙 상담 보조</li>
+<li><strong>AI 목회 비서</strong>: 개인화된 목회 일정 관리</li>
+<li><strong>스마트 설교</strong>: 실시간 청중 반응 분석</li>
+<li><strong>자동화된 상담</strong>: 초기 상담 및 리소스 연결</li>
+<li><strong>개인화 교육</strong>: 성도별 맞춤형 성경공부</li>
 </ul>
 
-<p><strong>현장 활용 예시</strong></p>
+<h3>새로운 목회 모델</h3>
 
-<blockquote>새가족부 성경공부 교재 준비할 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 활용</strong>: "기독교 기초 교리를 12주 과정으로 체계화", "각 주차별 토론 질문 제안"</blockquote>
-<blockquote>- <strong>목회자 역할</strong>: AI 자료를 검토하고 교회 상황에 맞게 수정 보완</blockquote>
+<ul>
+<li><strong>하이브리드 목회</strong>: 온라인과 오프라인 결합</li>
+<li><strong>데이터 기반 목회</strong>: 성도들의 필요 분석</li>
+<li><strong>글로벌 네트워킹</strong>: 세계 교회와의 실시간 연결</li>
+<li><strong>AI 협업 목회</strong>: 인간과 AI의 상호 보완</li>
+</ul>
 
+<h2>🌍 사회적 영향</h2>
+
+<ul>
+<li><strong>목회 접근성</strong>: 소규모 교회도 고품질 목회 가능</li>
+<li><strong>세대 간 소통</strong>: 디지털 네이티브와의 연결</li>
+<li><strong>문화적 적응</strong>: 다양한 문화권에서의 목회</li>
+</ul>
 
   </div>
 

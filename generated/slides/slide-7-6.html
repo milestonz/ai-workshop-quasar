@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4. 박성민 목사: 성경공부 교재 제작</title>
+  <title>6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,17 +253,17 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>4. 박성민 목사: 성경공부 교재 제작</h1>
+      <h1>6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화</h1>
 
-<p><strong>핵심: 텍스트 생성을 넘어 시각 자료로 완성하기</strong></p>
+<p><strong>핵심: 한국형 AI 툴로 시간 확보하기</strong></p>
 
 <p><strong>적용:</strong></p>
 
-<p><strong>ChatGPT/Claude:</strong></p>
-<p>로마서 8장을 주제로 한 토론형 질문과 단계별 학습 내용을 생성합니다.</p>
+<p><strong>클로바노트 / Felo.ai:</strong></p>
+<p>스마트폰으로 회의 내용을 녹음하면, 자동으로 텍스트 변환 및 화자 분리, 핵심 요약까지 해주는 과정을 시연합니다.</p>
 
-<p><strong>Gamma:</strong></p>
-<p>생성된 텍스트를 그대로 Gamma에 붙여넣기만 하면, 이미지와 디자인이 포함된 웹 기반의 인터랙티브 교재가 자동으로 완성되는 과정을 시연합니다.</p>
+<p><strong>ChatGPT:</strong></p>
+<p>요약된 회의록 텍스트를 바탕으로, "이 내용을 바탕으로 각 부서에 전달할 업무 요청 메일 초안을 작성해줘"라고 요청하여 후속 조치까지 자동화합니다.</p>
 
   </div>
 

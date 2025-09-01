@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4. 예산 최적화 계획</title>
+  <title>목회자를 위한 AI 활용 시나리오</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,32 +253,31 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>4. 예산 최적화 계획</h1>
+      <h2>5. 소그룹 리더 훈련자료 정리</h2>
 
-<p><strong>"600만원 예산으로 40명 2박3일 수련회 비용 배분 및 절약 방안 제시"</strong><br></p>
-<p>→ 항목별 상세 예산 + 절약 팁</p>
+<h4>🔹 사용법</h4>
+
+<ol>
+<li>리더 훈련안, 비전문서 업로드</li>
+<li>실용 문서 자동 생성</li>
+</ol>
+
+<h4>🛠 실습 프롬프트</h4>
 
 
                 <div class="code-block-wrapper">
-                  <pre><code class="language-markdown">"총 600만원 예산으로 MZ세대 청년 40명을 위한 2박 3일 수련회를 운영하려고 해.  
-다음 항목을 포함해서 <strong>예산안을 항목별로 제시하고</strong>, <strong>절약 아이디어</strong>도 함께 제안해줘.
-
-1. <strong>항목별 예산 배분표</strong>
-   - 숙박비
-   - 식비
-   - 교통비 (단체 이동 포함)
-   - 프로그램 운영비 (강사비, 재료비 등)
-   - 레크레이션/간식비
-   - 홍보비 (포스터, 영상 등)
-   - 기타비용 (보험, 응급키트 등)
-
-2. <strong>비용 절약 방안</strong>
-   - 예: 단체 예약 할인, 셀프 운영으로 인건비 절감, 인플루언서 협업으로 홍보비 최소화 등
-
-3. <strong>1인당 예상 비용</strong>도 함께 계산해줘."</code></pre>
+                  <pre><code class="language-text">이 문서를 기반으로 소그룹 리더 훈련용 체크리스트를 만들어주세요.
+또한 자주 묻는 질문(FAQ) 3가지도 함께 정리해주세요.</code></pre>
                   <button class="copy-button" onclick="copyCode(this)">복사</button>
                 </div>
               
+
+<h4>💡 적용 팁</h4>
+
+<ul>
+<li>리더 매뉴얼 제작 자동화</li>
+<li>자원봉사자 교육, 리더 발탁시 유용</li>
+</ul>
 
   </div>
 

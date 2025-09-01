@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>목회자를 위한 AI 활용 시나리오</title>
+  <title>AI 목회의 도전과제</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,40 +253,33 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h3>목회상담에서의 적용</h3>
+      <h1>AI 목회의 도전과제</h1>
 
-<p><strong>AI가 도울 수 있는 영역</strong></p>
+<h2>⚠️ 주요 우려사항</h2>
 
-<ul>
-<li>성경 지식 정리 및 제공</li>
-<li>상담 기법과 방법론 안내</li>
-<li>초기 문제 파악과 분류</li>
-<li>참고 자료와 사례 제시</li>
-</ul>
-
-<p><strong>현장 적용 예시</strong></p>
-
-<blockquote>목회자가 "분노조절 문제를 가진 성도 상담 준비"를 할 때</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 활용</strong>: 분노 관련 성경 구절 정리, 기독교 상담 기법 자료, 유사 사례 검색</blockquote>
-<blockquote>- <strong>장점</strong>: 준비 시간 단축, 다양한 관점 제공</blockquote>
-
-<p><strong>반드시 목회자가 해야 할 영역</strong></p>
+<h3>윤리적 문제</h3>
 
 <ul>
-<li>영적 분별과 성령의 인도 구하기</li>
-<li>죄의 문제 다루기와 복음 제시</li>
-<li>깊은 상처와 트라우마 치유</li>
-<li>하나님과의 관계 회복 인도</li>
+<li><strong>개인정보 보호</strong>: 성도들의 민감한 정보 관리</li>
+<li><strong>AI 편향성</strong>: 특정 신학적 관점의 편향 가능성</li>
+<li><strong>의존성 증가</strong>: AI에 대한 과도한 의존 위험</li>
 </ul>
 
-<p><strong>현장 적용 예시</strong></p>
+<h3>신학적 고려사항</h3>
 
-<blockquote>어린 시절 성폭행 피해로 인해 하나님을 원망하는 성도 상담</blockquote>
-<p>></p>
-<blockquote>- <strong>AI 절대 불가</strong>: 트라우마는 전문적 치료 영역, 영적 상처는 성령의 특별한 치유 필요</blockquote>
-<blockquote>- <strong>목회자 역할</strong>: 전문 상담사 연계 + 지속적인 영적 돌봄 + 하나님의 사랑 회복 과정</blockquote>
+<ul>
+<li><strong>영혼의 고유성</strong>: AI가 영혼을 이해할 수 있는가?</li>
+<li><strong>은혜의 영역</strong>: AI가 하나님의 은혜를 대체할 수 있는가?</li>
+<li><strong>목회의 본질</strong>: 기술적 효율성 vs 영적 돌봄</li>
+</ul>
 
+<h2>🤔 해결 방안 모색</h2>
+
+<ul>
+<li><strong>균형잡힌 접근</strong>: AI는 도구, 목회는 사명</li>
+<li><strong>지속적 교육</strong>: AI 윤리와 한계에 대한 이해</li>
+<li><strong>공동체적 판단</strong>: 교회 구성원들과의 소통</li>
+</ul>
 
   </div>
 

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설교준비 단계 시각화</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .flow-container {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        
+        .step {
+            background: white;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .step-header {
+            padding: 25px 30px 20px;
+            border-bottom: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: -5px;
+            top: -5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .step-title {
+            margin: 0 0 15px 0;
+            font-size: 1.8em;
+            color: #2c3e50;
+            padding-left: 70px;
+            font-weight: 600;
+        }
+        
+        .step-subtitle {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            padding-left: 70px;
+            font-style: italic;
+        }
+        
+        .step-content {
+            padding: 25px 30px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .content-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: background 0.3s ease;
+        }
+        
+        .content-item:hover {
+            background: #e3f2fd;
+        }
+        
+        .content-item h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        
+        .content-item p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .arrow {
+            text-align: center;
+            color: #3498db;
+            font-size: 2em;
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .integration-note {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+        }
+        
+        .integration-note h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+        
+        .wesley-highlight {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            color: #2d3436;
+        }
+        
+        .practical-highlight {
+            border-left-color: #27ae60;
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+            color: #2d3436;
+        }
+        
+        .evaluation-section {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 15px;
+        }
+        
+        .evaluation-section h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .checklist-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .checklist-item::before {
+            content: "✓";
+            color: #00b894;
+            font-weight: bold;
+            margin-right: 10px;
+            background: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>설교준비 단계</h1>
+            <div class="subtitle">웨슬리안 전통을 바탕으로 한 체계적 접근법</div>
+        </div>
+        
+        <div class="flow-container">
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h2 class="step-title">영성적 준비와 본문 선택</h2>
+                    <p class="step-subtitle">성령의 인도하심을 구하며 시작하는 단계</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <h4>개인 영성 준비</h4>
+                            <p>말씀을 전하는 자로서의 영적 상태 점검, 개인 기도와 묵상 시간 확보</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>본문 선택 기준</h4>
+                            <p>교회력, 본문일과, 주제별 연속설교, 성령의 감동에 따른 선택</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>회중을 위한 기도</h4>
+                            <p>회중의 영적 필요와 상황을 위한 중보기도, 하나님의 뜻 구하기</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h2 class="step-title">본문 연구 (주석학적 분석)</h2>
+                    <p class="step-subtitle">원문의 정확한 의미를 파악하는 단계</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <h4>원문 분석</h4>
+                            <p>히브리어/그리스어 원문 확인, 핵심 단어의 의미 분석, 문법적 구조 파악</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>문맥 및 배경 연구</h4>
+                            <p>역사적·문화적·문학적 배경, 앞뒤 문맥, 성경 전체에서의 위치</p>
+                        </div>
+                        <div class="content-item wesley-highlight">
+                            <h4>주석서 비교 연구</h4>
+                            <p>웨슬리 주해를 포함한 다양한 주석서 비교, 신학적 전통별 해석 검토</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>문학적 장르 분석</h4>
+                            <p>본문의 문학적 형태(내러티브, 시, 서신 등)에 따른 해석 방법론 적용</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h2 class="step-title">신학적 해석</h2>
+                    <p class="step-subtitle">웨슬리안 전통과 감리교 신학에 기반한 해석</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item wesley-highlight">
+                            <h4>웨슬리 4중 기준 적용</h4>
+                            <p>성경, 전통, 이성, 경험의 조화로운 적용을 통한 본문 해석</p>
+                        </div>
+                        <div class="content-item wesley-highlight">
+                            <h4>구원론적 관점</h4>
+                            <p>선행은총, 칭의, 성화의 관점에서 본문 해석, 하나님의 구원 역사 조명</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>교리적 일치성 점검</h4>
+                            <p>감리교 표준설교, 신조와의 일치성 확인, 신학적 균형 유지</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>성경 전체와의 조화</h4>
+                            <p>구약과 신약의 연결, 구속사적 관점, 그리스도 중심적 해석</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h2 class="step-title">상황화 (현실 적용)</h2>
+                    <p class="step-subtitle">한국 상황과 회중의 삶에 맞는 메시지 구성</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <h4>문화적 상황화</h4>
+                            <p>한국의 역사, 문화, 사회적 특성을 고려한 복음 메시지 해석</p>
+                        </div>
+                        <div class="content-item practical-highlight">
+                            <h4>회중 상황 분석</h4>
+                            <p>회중의 연령층, 사회적 배경, 영적 성숙도, 현재 직면한 문제들 고려</p>
+                        </div>
+                        <div class="content-item practical-highlight">
+                            <h4>사회적 책임 통합</h4>
+                            <p>개인 구원과 사회 변혁의 균형, 정의와 평화의 실천 방안 제시</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>시대적 이슈 반영</h4>
+                            <p>현대 사회의 윤리적, 사회적 이슈들에 대한 성경적 관점 제시</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <h2 class="step-title">설교문 작성</h2>
+                    <p class="step-subtitle">효과적인 전달을 위한 구조화된 메시지 완성</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <h4>구조와 흐름</h4>
+                            <p>명확한 서론-본론-결론 구조, 논리적 전개, 핵심 메시지의 일관성</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>언어와 표현</h4>
+                            <p>회중이 이해하기 쉬운 언어, 적절한 예화와 일러스트레이션 활용</p>
+                        </div>
+                        <div class="content-item practical-highlight">
+                            <h4>성육신적 전달</h4>
+                            <p>추상적 진리를 구체적 삶의 언어로 번역, 실천 가능한 적용점 제시</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>호명적 요소</h4>
+                            <p>하나님의 부르심에 응답하도록 인도하는 권면과 초청</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <h2 class="step-title">전달 준비와 최종 점검</h2>
+                    <p class="step-subtitle">효과적인 설교 전달을 위한 마무리 단계</p>
+                </div>
+                <div class="step-content">
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <h4>전달 연습</h4>
+                            <p>시간 조절, 목소리 톤, 제스처 연습, 핵심 포인트 강조법 점검</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>기술적 준비</h4>
+                            <p>필요시 시청각 자료 준비, 기술 장비 점검, 예배 순서와의 조화</p>
+                        </div>
+                        <div class="content-item">
+                            <h4>영적 최종 준비</h4>
+                            <p>설교 전 기도와 묵상, 하나님께 맡기는 마음, 성령의 역사하심 의존</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="integration-note">
+                <h3>📖 통합적 관점</h3>
+                <p>모든 단계는 상호 연결되어 있으며, 필요에 따라 이전 단계로 돌아가 재검토하는 순환적 과정입니다. 성령의 인도하심을 구하며 지속적으로 기도하는 것이 핵심입니다.</p>
+            </div>
+            
+            <div class="evaluation-section">
+                <h3>✅ 설교 완성도 점검 체크리스트</h3>
+                <div class="checklist">
+                    <div class="checklist-item">성경적 정확성과 신학적 건전성</div>
+                    <div class="checklist-item">웨슬리안 전통과의 일치성</div>
+                    <div class="checklist-item">회중 상황에 맞는 적절성</div>
+                    <div class="checklist-item">실천 가능한 적용점 제시</div>
+                    <div class="checklist-item">복음의 핵심 메시지 포함</div>
+                    <div class="checklist-item">개인 경건과 사회 책임의 균형</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

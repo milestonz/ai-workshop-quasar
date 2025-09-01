@@ -1075,17 +1075,17 @@
       "chapter": 7,
       "slide": 1,
       "id": "7-1",
-      "title": "LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)",
+      "title": "1. 이준호 목사: 주일설교 주제 선정",
       "path": "/slides/slide-7-1.md",
       "htmlPath": "/generated/slides/slide-7-1.html",
-      "type": "chapter"
+      "type": "general"
     },
     {
       "fileName": "slide-7-2.md",
       "chapter": 7,
       "slide": 2,
       "id": "7-2",
-      "title": "1. 이준호 목사: 주일설교 주제 선정",
+      "title": "2. 김은혜 목사: 설교문 구조화",
       "path": "/slides/slide-7-2.md",
       "htmlPath": "/generated/slides/slide-7-2.html",
       "type": "general"
@@ -1095,7 +1095,7 @@
       "chapter": 7,
       "slide": 3,
       "id": "7-3",
-      "title": "2. 김은혜 목사: 설교문 구조화",
+      "title": "3. 김 목사(58세): 기존 설교 리프레시",
       "path": "/slides/slide-7-3.md",
       "htmlPath": "/generated/slides/slide-7-3.html",
       "type": "general"
@@ -1105,7 +1105,7 @@
       "chapter": 7,
       "slide": 4,
       "id": "7-4",
-      "title": "3. 김 목사(58세): 기존 설교 리프레시",
+      "title": "4. 박성민 목사: 성경공부 교재 제작",
       "path": "/slides/slide-7-4.md",
       "htmlPath": "/generated/slides/slide-7-4.html",
       "type": "general"
@@ -1115,7 +1115,7 @@
       "chapter": 7,
       "slide": 5,
       "id": "7-5",
-      "title": "4. 박성민 목사: 성경공부 교재 제작",
+      "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
       "path": "/slides/slide-7-5.md",
       "htmlPath": "/generated/slides/slide-7-5.html",
       "type": "general"
@@ -1125,7 +1125,7 @@
       "chapter": 7,
       "slide": 6,
       "id": "7-6",
-      "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+      "title": "6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
       "path": "/slides/slide-7-6.md",
       "htmlPath": "/generated/slides/slide-7-6.html",
       "type": "general"
@@ -1135,7 +1135,7 @@
       "chapter": 7,
       "slide": 7,
       "id": "7-7",
-      "title": "7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+      "title": "7. 신혜숙 목사: 상담 준비",
       "path": "/slides/slide-7-7.md",
       "htmlPath": "/generated/slides/slide-7-7.html",
       "type": "general"
@@ -1145,7 +1145,7 @@
       "chapter": 7,
       "slide": 8,
       "id": "7-8",
-      "title": "8. 신혜숙 목사: 상담 준비",
+      "title": "8. 윤석진 목사: 교회 행사 기획",
       "path": "/slides/slide-7-8.md",
       "htmlPath": "/generated/slides/slide-7-8.html",
       "type": "general"
@@ -1155,107 +1155,27 @@
       "chapter": 7,
       "slide": 9,
       "id": "7-9",
-      "title": "10. 윤석진 목사: 교회 행사 기획",
+      "title": "9. 김도현 목사: 온라인 목양 & 미래 조망",
       "path": "/slides/slide-7-9.md",
       "htmlPath": "/generated/slides/slide-7-9.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-10.md",
-      "chapter": 7,
-      "slide": 10,
-      "id": "7-10",
-      "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
-      "path": "/slides/slide-7-10.md",
-      "htmlPath": "/generated/slides/slide-7-10.html",
       "type": "example"
-    },
-    {
-      "fileName": "slide-7-11.md",
-      "chapter": 7,
-      "slide": 11,
-      "id": "7-11",
-      "title": "📘 목회자를 위한 Google NotebookLM 사용 워크북",
-      "path": "/slides/slide-7-11.md",
-      "htmlPath": "/generated/slides/slide-7-11.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-12.md",
-      "chapter": 7,
-      "slide": 12,
-      "id": "7-12",
-      "title": "1. 📖 주간 설교 요약하기",
-      "path": "/slides/slide-7-12.md",
-      "htmlPath": "/generated/slides/slide-7-12.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-13.md",
-      "chapter": 7,
-      "slide": 13,
-      "id": "7-13",
-      "title": "2. 🎙 팟캐스트/영상 소개 스크립트 만들기",
-      "path": "/slides/slide-7-13.md",
-      "htmlPath": "/generated/slides/slide-7-13.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-14.md",
-      "chapter": 7,
-      "slide": 14,
-      "id": "7-14",
-      "title": "3. 📚 과거 설교 → 묵상 자료로 확장",
-      "path": "/slides/slide-7-14.md",
-      "htmlPath": "/generated/slides/slide-7-14.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-15.md",
-      "chapter": 7,
-      "slide": 15,
-      "id": "7-15",
-      "title": "4. 🎞 YouTube 영상 요약으로 연구 정리",
-      "path": "/slides/slide-7-15.md",
-      "htmlPath": "/generated/slides/slide-7-15.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-16.md",
-      "chapter": 7,
-      "slide": 16,
-      "id": "7-16",
-      "title": "5. 🧑‍🏫 리더 훈련자료 정리",
-      "path": "/slides/slide-7-16.md",
-      "htmlPath": "/generated/slides/slide-7-16.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-7-17.md",
-      "chapter": 7,
-      "slide": 17,
-      "id": "7-17",
-      "title": "6. 🧩 슬라이드 → 학습 가이드 생성",
-      "path": "/slides/slide-7-17.md",
-      "htmlPath": "/generated/slides/slide-7-17.html",
-      "type": "general"
     },
     {
       "fileName": "slide-8-0.md",
       "chapter": 8,
       "slide": 0,
       "id": "8-0",
-      "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+      "title": "목회자를 위한 Google NotebookLM 사용 워크북",
       "path": "/slides/slide-8-0.md",
       "htmlPath": "/generated/slides/slide-8-0.html",
-      "type": "cover"
+      "type": "general"
     },
     {
       "fileName": "slide-8-1.md",
       "chapter": 8,
       "slide": 1,
       "id": "8-1",
-      "title": "1. ChatGPT 창의적 기획",
+      "title": "1. 📖 주간 설교 요약하기",
       "path": "/slides/slide-8-1.md",
       "htmlPath": "/generated/slides/slide-8-1.html",
       "type": "general"
@@ -1265,7 +1185,7 @@
       "chapter": 8,
       "slide": 2,
       "id": "8-2",
-      "title": "2. Perplexity 실시간 정보 수집",
+      "title": "2. 🎙 팟캐스트/영상 소개 스크립트 만들기",
       "path": "/slides/slide-8-2.md",
       "htmlPath": "/generated/slides/slide-8-2.html",
       "type": "general"
@@ -1275,7 +1195,7 @@
       "chapter": 8,
       "slide": 3,
       "id": "8-3",
-      "title": "3. 멀티미디어 홍보 패키지",
+      "title": "3. 📚 과거 설교 → 묵상 자료로 확장",
       "path": "/slides/slide-8-3.md",
       "htmlPath": "/generated/slides/slide-8-3.html",
       "type": "general"
@@ -1285,7 +1205,7 @@
       "chapter": 8,
       "slide": 4,
       "id": "8-4",
-      "title": "3. 멀티미디어 홍보 패키지 (계속)",
+      "title": "4. 🎞 YouTube 영상 요약으로 연구 정리",
       "path": "/slides/slide-8-4.md",
       "htmlPath": "/generated/slides/slide-8-4.html",
       "type": "general"
@@ -1295,7 +1215,7 @@
       "chapter": 8,
       "slide": 5,
       "id": "8-5",
-      "title": "4. 예산 최적화 계획",
+      "title": "5. 소그룹 리더 훈련자료 정리",
       "path": "/slides/slide-8-5.md",
       "htmlPath": "/generated/slides/slide-8-5.html",
       "type": "general"
@@ -1305,139 +1225,9 @@
       "chapter": 8,
       "slide": 6,
       "id": "8-6",
-      "title": "수련회 예산 계획 결과",
+      "title": "6. 슬라이드 → 학습 가이드 생성",
       "path": "/slides/slide-8-6.md",
       "htmlPath": "/generated/slides/slide-8-6.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-7.md",
-      "chapter": 8,
-      "slide": 7,
-      "id": "8-7",
-      "title": "Share Link",
-      "path": "/slides/slide-8-7.md",
-      "htmlPath": "/generated/slides/slide-8-7.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-11.md",
-      "chapter": 8,
-      "slide": 11,
-      "id": "8-11",
-      "title": "실습: 교육 프로그램 기획에 AI 활용하기",
-      "path": "/slides/slide-8-11.md",
-      "htmlPath": "/generated/slides/slide-8-11.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-12.md",
-      "chapter": 8,
-      "slide": 12,
-      "id": "8-12",
-      "title": "실습: 교회 행정에 AI 활용하기",
-      "path": "/slides/slide-8-12.md",
-      "htmlPath": "/generated/slides/slide-8-12.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-13.md",
-      "chapter": 8,
-      "slide": 13,
-      "id": "8-13",
-      "title": "실습: 소통 및 홍보에 AI 활용하기",
-      "path": "/slides/slide-8-13.md",
-      "htmlPath": "/generated/slides/slide-8-13.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-14.md",
-      "chapter": 8,
-      "slide": 14,
-      "id": "8-14",
-      "title": "실습: 성경공부에 AI 활용하기",
-      "path": "/slides/slide-8-14.md",
-      "htmlPath": "/generated/slides/slide-8-14.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-15.md",
-      "chapter": 8,
-      "slide": 15,
-      "id": "8-15",
-      "title": "실습: 기도문 작성에 AI 활용하기",
-      "path": "/slides/slide-8-15.md",
-      "htmlPath": "/generated/slides/slide-8-15.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-16.md",
-      "chapter": 8,
-      "slide": 16,
-      "id": "8-16",
-      "title": "실습: 찬양 선곡에 AI 활용하기",
-      "path": "/slides/slide-8-16.md",
-      "htmlPath": "/generated/slides/slide-8-16.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-17.md",
-      "chapter": 8,
-      "slide": 17,
-      "id": "8-17",
-      "title": "실습: 심방 메시지 작성에 AI 활용하기",
-      "path": "/slides/slide-8-17.md",
-      "htmlPath": "/generated/slides/slide-8-17.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-18.md",
-      "chapter": 8,
-      "slide": 18,
-      "id": "8-18",
-      "title": "실습: 예배 순서 기획에 AI 활용하기",
-      "path": "/slides/slide-8-18.md",
-      "htmlPath": "/generated/slides/slide-8-18.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-19.md",
-      "chapter": 8,
-      "slide": 19,
-      "id": "8-19",
-      "title": "실습: 교회 소식지 제작에 AI 활용하기",
-      "path": "/slides/slide-8-19.md",
-      "htmlPath": "/generated/slides/slide-8-19.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-20.md",
-      "chapter": 8,
-      "slide": 20,
-      "id": "8-20",
-      "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
-      "path": "/slides/slide-8-20.md",
-      "htmlPath": "/generated/slides/slide-8-20.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-21.md",
-      "chapter": 8,
-      "slide": 21,
-      "id": "8-21",
-      "title": "실습: 설교 시리즈 기획에 AI 활용하기",
-      "path": "/slides/slide-8-21.md",
-      "htmlPath": "/generated/slides/slide-8-21.html",
-      "type": "general"
-    },
-    {
-      "fileName": "slide-8-22.md",
-      "chapter": 8,
-      "slide": 22,
-      "id": "8-22",
-      "title": "실습: 성경공부 교재 제작에 AI 활용하기",
-      "path": "/slides/slide-8-22.md",
-      "htmlPath": "/generated/slides/slide-8-22.html",
       "type": "general"
     },
     {
@@ -1445,7 +1235,7 @@
       "chapter": 9,
       "slide": 0,
       "id": "9-0",
-      "title": "목회자를 위한 AI의 한계",
+      "title": "마무리",
       "path": "/slides/slide-9-0.md",
       "htmlPath": "/generated/slides/slide-9-0.html",
       "type": "cover"
@@ -1518,6 +1308,206 @@
       "title": "AI 목회의 한계와 주의사항",
       "path": "/slides/slide-9-7.md",
       "htmlPath": "/generated/slides/slide-9-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-0.md",
+      "chapter": 10,
+      "slide": 0,
+      "id": "10-0",
+      "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+      "path": "/slides/slide-10-0.md",
+      "htmlPath": "/generated/slides/slide-10-0.html",
+      "type": "cover"
+    },
+    {
+      "fileName": "slide-10-1.md",
+      "chapter": 10,
+      "slide": 1,
+      "id": "10-1",
+      "title": "1. ChatGPT 창의적 기획",
+      "path": "/slides/slide-10-1.md",
+      "htmlPath": "/generated/slides/slide-10-1.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-2.md",
+      "chapter": 10,
+      "slide": 2,
+      "id": "10-2",
+      "title": "2. Perplexity 실시간 정보 수집",
+      "path": "/slides/slide-10-2.md",
+      "htmlPath": "/generated/slides/slide-10-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-3.md",
+      "chapter": 10,
+      "slide": 3,
+      "id": "10-3",
+      "title": "3. 멀티미디어 홍보 패키지",
+      "path": "/slides/slide-10-3.md",
+      "htmlPath": "/generated/slides/slide-10-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-4.md",
+      "chapter": 10,
+      "slide": 4,
+      "id": "10-4",
+      "title": "3. 멀티미디어 홍보 패키지 (계속)",
+      "path": "/slides/slide-10-4.md",
+      "htmlPath": "/generated/slides/slide-10-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-5.md",
+      "chapter": 10,
+      "slide": 5,
+      "id": "10-5",
+      "title": "4. 예산 최적화 계획",
+      "path": "/slides/slide-10-5.md",
+      "htmlPath": "/generated/slides/slide-10-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-6.md",
+      "chapter": 10,
+      "slide": 6,
+      "id": "10-6",
+      "title": "수련회 예산 계획 결과",
+      "path": "/slides/slide-10-6.md",
+      "htmlPath": "/generated/slides/slide-10-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-10-7.md",
+      "chapter": 10,
+      "slide": 7,
+      "id": "10-7",
+      "title": "Share Link",
+      "path": "/slides/slide-10-7.md",
+      "htmlPath": "/generated/slides/slide-10-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-1.md",
+      "chapter": 11,
+      "slide": 1,
+      "id": "11-1",
+      "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+      "path": "/slides/slide-11-1.md",
+      "htmlPath": "/generated/slides/slide-11-1.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-2.md",
+      "chapter": 11,
+      "slide": 2,
+      "id": "11-2",
+      "title": "실습: 교회 행정에 AI 활용하기",
+      "path": "/slides/slide-11-2.md",
+      "htmlPath": "/generated/slides/slide-11-2.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-3.md",
+      "chapter": 11,
+      "slide": 3,
+      "id": "11-3",
+      "title": "실습: 소통 및 홍보에 AI 활용하기",
+      "path": "/slides/slide-11-3.md",
+      "htmlPath": "/generated/slides/slide-11-3.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-4.md",
+      "chapter": 11,
+      "slide": 4,
+      "id": "11-4",
+      "title": "실습: 성경공부에 AI 활용하기",
+      "path": "/slides/slide-11-4.md",
+      "htmlPath": "/generated/slides/slide-11-4.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-5.md",
+      "chapter": 11,
+      "slide": 5,
+      "id": "11-5",
+      "title": "실습: 기도문 작성에 AI 활용하기",
+      "path": "/slides/slide-11-5.md",
+      "htmlPath": "/generated/slides/slide-11-5.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-6.md",
+      "chapter": 11,
+      "slide": 6,
+      "id": "11-6",
+      "title": "실습: 찬양 선곡에 AI 활용하기",
+      "path": "/slides/slide-11-6.md",
+      "htmlPath": "/generated/slides/slide-11-6.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-7.md",
+      "chapter": 11,
+      "slide": 7,
+      "id": "11-7",
+      "title": "실습: 심방 메시지 작성에 AI 활용하기",
+      "path": "/slides/slide-11-7.md",
+      "htmlPath": "/generated/slides/slide-11-7.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-8.md",
+      "chapter": 11,
+      "slide": 8,
+      "id": "11-8",
+      "title": "실습: 예배 순서 기획에 AI 활용하기",
+      "path": "/slides/slide-11-8.md",
+      "htmlPath": "/generated/slides/slide-11-8.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-9.md",
+      "chapter": 11,
+      "slide": 9,
+      "id": "11-9",
+      "title": "실습: 교회 소식지 제작에 AI 활용하기",
+      "path": "/slides/slide-11-9.md",
+      "htmlPath": "/generated/slides/slide-11-9.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-10.md",
+      "chapter": 11,
+      "slide": 10,
+      "id": "11-10",
+      "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+      "path": "/slides/slide-11-10.md",
+      "htmlPath": "/generated/slides/slide-11-10.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-11.md",
+      "chapter": 11,
+      "slide": 11,
+      "id": "11-11",
+      "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+      "path": "/slides/slide-11-11.md",
+      "htmlPath": "/generated/slides/slide-11-11.html",
+      "type": "general"
+    },
+    {
+      "fileName": "slide-11-12.md",
+      "chapter": 11,
+      "slide": 12,
+      "id": "11-12",
+      "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+      "path": "/slides/slide-11-12.md",
+      "htmlPath": "/generated/slides/slide-11-12.html",
       "type": "general"
     }
   ],
@@ -2643,17 +2633,17 @@
           "chapter": 7,
           "slide": 1,
           "id": "7-1",
-          "title": "LEVEL 1: 기본 툴, 핵심 기능 마스터하기 (1~3단계)",
+          "title": "1. 이준호 목사: 주일설교 주제 선정",
           "path": "/slides/slide-7-1.md",
           "htmlPath": "/generated/slides/slide-7-1.html",
-          "type": "chapter"
+          "type": "general"
         },
         {
           "fileName": "slide-7-2.md",
           "chapter": 7,
           "slide": 2,
           "id": "7-2",
-          "title": "1. 이준호 목사: 주일설교 주제 선정",
+          "title": "2. 김은혜 목사: 설교문 구조화",
           "path": "/slides/slide-7-2.md",
           "htmlPath": "/generated/slides/slide-7-2.html",
           "type": "general"
@@ -2663,7 +2653,7 @@
           "chapter": 7,
           "slide": 3,
           "id": "7-3",
-          "title": "2. 김은혜 목사: 설교문 구조화",
+          "title": "3. 김 목사(58세): 기존 설교 리프레시",
           "path": "/slides/slide-7-3.md",
           "htmlPath": "/generated/slides/slide-7-3.html",
           "type": "general"
@@ -2673,7 +2663,7 @@
           "chapter": 7,
           "slide": 4,
           "id": "7-4",
-          "title": "3. 김 목사(58세): 기존 설교 리프레시",
+          "title": "4. 박성민 목사: 성경공부 교재 제작",
           "path": "/slides/slide-7-4.md",
           "htmlPath": "/generated/slides/slide-7-4.html",
           "type": "general"
@@ -2683,7 +2673,7 @@
           "chapter": 7,
           "slide": 5,
           "id": "7-5",
-          "title": "4. 박성민 목사: 성경공부 교재 제작",
+          "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
           "path": "/slides/slide-7-5.md",
           "htmlPath": "/generated/slides/slide-7-5.html",
           "type": "general"
@@ -2693,7 +2683,7 @@
           "chapter": 7,
           "slide": 6,
           "id": "7-6",
-          "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+          "title": "6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
           "path": "/slides/slide-7-6.md",
           "htmlPath": "/generated/slides/slide-7-6.html",
           "type": "general"
@@ -2703,7 +2693,7 @@
           "chapter": 7,
           "slide": 7,
           "id": "7-7",
-          "title": "7. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+          "title": "7. 신혜숙 목사: 상담 준비",
           "path": "/slides/slide-7-7.md",
           "htmlPath": "/generated/slides/slide-7-7.html",
           "type": "general"
@@ -2713,7 +2703,7 @@
           "chapter": 7,
           "slide": 8,
           "id": "7-8",
-          "title": "8. 신혜숙 목사: 상담 준비",
+          "title": "8. 윤석진 목사: 교회 행사 기획",
           "path": "/slides/slide-7-8.md",
           "htmlPath": "/generated/slides/slide-7-8.html",
           "type": "general"
@@ -2723,113 +2713,33 @@
           "chapter": 7,
           "slide": 9,
           "id": "7-9",
-          "title": "10. 윤석진 목사: 교회 행사 기획",
+          "title": "9. 김도현 목사: 온라인 목양 & 미래 조망",
           "path": "/slides/slide-7-9.md",
           "htmlPath": "/generated/slides/slide-7-9.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-10.md",
-          "chapter": 7,
-          "slide": 10,
-          "id": "7-10",
-          "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
-          "path": "/slides/slide-7-10.md",
-          "htmlPath": "/generated/slides/slide-7-10.html",
           "type": "example"
-        },
-        {
-          "fileName": "slide-7-11.md",
-          "chapter": 7,
-          "slide": 11,
-          "id": "7-11",
-          "title": "📘 목회자를 위한 Google NotebookLM 사용 워크북",
-          "path": "/slides/slide-7-11.md",
-          "htmlPath": "/generated/slides/slide-7-11.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-12.md",
-          "chapter": 7,
-          "slide": 12,
-          "id": "7-12",
-          "title": "1. 📖 주간 설교 요약하기",
-          "path": "/slides/slide-7-12.md",
-          "htmlPath": "/generated/slides/slide-7-12.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-13.md",
-          "chapter": 7,
-          "slide": 13,
-          "id": "7-13",
-          "title": "2. 🎙 팟캐스트/영상 소개 스크립트 만들기",
-          "path": "/slides/slide-7-13.md",
-          "htmlPath": "/generated/slides/slide-7-13.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-14.md",
-          "chapter": 7,
-          "slide": 14,
-          "id": "7-14",
-          "title": "3. 📚 과거 설교 → 묵상 자료로 확장",
-          "path": "/slides/slide-7-14.md",
-          "htmlPath": "/generated/slides/slide-7-14.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-15.md",
-          "chapter": 7,
-          "slide": 15,
-          "id": "7-15",
-          "title": "4. 🎞 YouTube 영상 요약으로 연구 정리",
-          "path": "/slides/slide-7-15.md",
-          "htmlPath": "/generated/slides/slide-7-15.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-16.md",
-          "chapter": 7,
-          "slide": 16,
-          "id": "7-16",
-          "title": "5. 🧑‍🏫 리더 훈련자료 정리",
-          "path": "/slides/slide-7-16.md",
-          "htmlPath": "/generated/slides/slide-7-16.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-7-17.md",
-          "chapter": 7,
-          "slide": 17,
-          "id": "7-17",
-          "title": "6. 🧩 슬라이드 → 학습 가이드 생성",
-          "path": "/slides/slide-7-17.md",
-          "htmlPath": "/generated/slides/slide-7-17.html",
-          "type": "general"
         }
       ]
     },
     "8": {
       "id": 8,
-      "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+      "title": "목회자를 위한 Google NotebookLM 사용 워크북",
       "slides": [
         {
           "fileName": "slide-8-0.md",
           "chapter": 8,
           "slide": 0,
           "id": "8-0",
-          "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+          "title": "목회자를 위한 Google NotebookLM 사용 워크북",
           "path": "/slides/slide-8-0.md",
           "htmlPath": "/generated/slides/slide-8-0.html",
-          "type": "cover"
+          "type": "general"
         },
         {
           "fileName": "slide-8-1.md",
           "chapter": 8,
           "slide": 1,
           "id": "8-1",
-          "title": "1. ChatGPT 창의적 기획",
+          "title": "1. 📖 주간 설교 요약하기",
           "path": "/slides/slide-8-1.md",
           "htmlPath": "/generated/slides/slide-8-1.html",
           "type": "general"
@@ -2839,7 +2749,7 @@
           "chapter": 8,
           "slide": 2,
           "id": "8-2",
-          "title": "2. Perplexity 실시간 정보 수집",
+          "title": "2. 🎙 팟캐스트/영상 소개 스크립트 만들기",
           "path": "/slides/slide-8-2.md",
           "htmlPath": "/generated/slides/slide-8-2.html",
           "type": "general"
@@ -2849,7 +2759,7 @@
           "chapter": 8,
           "slide": 3,
           "id": "8-3",
-          "title": "3. 멀티미디어 홍보 패키지",
+          "title": "3. 📚 과거 설교 → 묵상 자료로 확장",
           "path": "/slides/slide-8-3.md",
           "htmlPath": "/generated/slides/slide-8-3.html",
           "type": "general"
@@ -2859,7 +2769,7 @@
           "chapter": 8,
           "slide": 4,
           "id": "8-4",
-          "title": "3. 멀티미디어 홍보 패키지 (계속)",
+          "title": "4. 🎞 YouTube 영상 요약으로 연구 정리",
           "path": "/slides/slide-8-4.md",
           "htmlPath": "/generated/slides/slide-8-4.html",
           "type": "general"
@@ -2869,7 +2779,7 @@
           "chapter": 8,
           "slide": 5,
           "id": "8-5",
-          "title": "4. 예산 최적화 계획",
+          "title": "5. 소그룹 리더 훈련자료 정리",
           "path": "/slides/slide-8-5.md",
           "htmlPath": "/generated/slides/slide-8-5.html",
           "type": "general"
@@ -2879,153 +2789,23 @@
           "chapter": 8,
           "slide": 6,
           "id": "8-6",
-          "title": "수련회 예산 계획 결과",
+          "title": "6. 슬라이드 → 학습 가이드 생성",
           "path": "/slides/slide-8-6.md",
           "htmlPath": "/generated/slides/slide-8-6.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-7.md",
-          "chapter": 8,
-          "slide": 7,
-          "id": "8-7",
-          "title": "Share Link",
-          "path": "/slides/slide-8-7.md",
-          "htmlPath": "/generated/slides/slide-8-7.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-11.md",
-          "chapter": 8,
-          "slide": 11,
-          "id": "8-11",
-          "title": "실습: 교육 프로그램 기획에 AI 활용하기",
-          "path": "/slides/slide-8-11.md",
-          "htmlPath": "/generated/slides/slide-8-11.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-12.md",
-          "chapter": 8,
-          "slide": 12,
-          "id": "8-12",
-          "title": "실습: 교회 행정에 AI 활용하기",
-          "path": "/slides/slide-8-12.md",
-          "htmlPath": "/generated/slides/slide-8-12.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-13.md",
-          "chapter": 8,
-          "slide": 13,
-          "id": "8-13",
-          "title": "실습: 소통 및 홍보에 AI 활용하기",
-          "path": "/slides/slide-8-13.md",
-          "htmlPath": "/generated/slides/slide-8-13.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-14.md",
-          "chapter": 8,
-          "slide": 14,
-          "id": "8-14",
-          "title": "실습: 성경공부에 AI 활용하기",
-          "path": "/slides/slide-8-14.md",
-          "htmlPath": "/generated/slides/slide-8-14.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-15.md",
-          "chapter": 8,
-          "slide": 15,
-          "id": "8-15",
-          "title": "실습: 기도문 작성에 AI 활용하기",
-          "path": "/slides/slide-8-15.md",
-          "htmlPath": "/generated/slides/slide-8-15.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-16.md",
-          "chapter": 8,
-          "slide": 16,
-          "id": "8-16",
-          "title": "실습: 찬양 선곡에 AI 활용하기",
-          "path": "/slides/slide-8-16.md",
-          "htmlPath": "/generated/slides/slide-8-16.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-17.md",
-          "chapter": 8,
-          "slide": 17,
-          "id": "8-17",
-          "title": "실습: 심방 메시지 작성에 AI 활용하기",
-          "path": "/slides/slide-8-17.md",
-          "htmlPath": "/generated/slides/slide-8-17.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-18.md",
-          "chapter": 8,
-          "slide": 18,
-          "id": "8-18",
-          "title": "실습: 예배 순서 기획에 AI 활용하기",
-          "path": "/slides/slide-8-18.md",
-          "htmlPath": "/generated/slides/slide-8-18.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-19.md",
-          "chapter": 8,
-          "slide": 19,
-          "id": "8-19",
-          "title": "실습: 교회 소식지 제작에 AI 활용하기",
-          "path": "/slides/slide-8-19.md",
-          "htmlPath": "/generated/slides/slide-8-19.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-20.md",
-          "chapter": 8,
-          "slide": 20,
-          "id": "8-20",
-          "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
-          "path": "/slides/slide-8-20.md",
-          "htmlPath": "/generated/slides/slide-8-20.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-21.md",
-          "chapter": 8,
-          "slide": 21,
-          "id": "8-21",
-          "title": "실습: 설교 시리즈 기획에 AI 활용하기",
-          "path": "/slides/slide-8-21.md",
-          "htmlPath": "/generated/slides/slide-8-21.html",
-          "type": "general"
-        },
-        {
-          "fileName": "slide-8-22.md",
-          "chapter": 8,
-          "slide": 22,
-          "id": "8-22",
-          "title": "실습: 성경공부 교재 제작에 AI 활용하기",
-          "path": "/slides/slide-8-22.md",
-          "htmlPath": "/generated/slides/slide-8-22.html",
           "type": "general"
         }
       ]
     },
     "9": {
       "id": 9,
-      "title": "목회자를 위한 AI의 한계",
+      "title": "마무리",
       "slides": [
         {
           "fileName": "slide-9-0.md",
           "chapter": 9,
           "slide": 0,
           "id": "9-0",
-          "title": "목회자를 위한 AI의 한계",
+          "title": "마무리",
           "path": "/slides/slide-9-0.md",
           "htmlPath": "/generated/slides/slide-9-0.html",
           "type": "cover"
@@ -3098,6 +2878,218 @@
           "title": "AI 목회의 한계와 주의사항",
           "path": "/slides/slide-9-7.md",
           "htmlPath": "/generated/slides/slide-9-7.html",
+          "type": "general"
+        }
+      ]
+    },
+    "10": {
+      "id": 10,
+      "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+      "slides": [
+        {
+          "fileName": "slide-10-0.md",
+          "chapter": 10,
+          "slide": 0,
+          "id": "10-0",
+          "title": "8. 실전 AI 복합 활용 시나리오 (시연)",
+          "path": "/slides/slide-10-0.md",
+          "htmlPath": "/generated/slides/slide-10-0.html",
+          "type": "cover"
+        },
+        {
+          "fileName": "slide-10-1.md",
+          "chapter": 10,
+          "slide": 1,
+          "id": "10-1",
+          "title": "1. ChatGPT 창의적 기획",
+          "path": "/slides/slide-10-1.md",
+          "htmlPath": "/generated/slides/slide-10-1.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-2.md",
+          "chapter": 10,
+          "slide": 2,
+          "id": "10-2",
+          "title": "2. Perplexity 실시간 정보 수집",
+          "path": "/slides/slide-10-2.md",
+          "htmlPath": "/generated/slides/slide-10-2.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-3.md",
+          "chapter": 10,
+          "slide": 3,
+          "id": "10-3",
+          "title": "3. 멀티미디어 홍보 패키지",
+          "path": "/slides/slide-10-3.md",
+          "htmlPath": "/generated/slides/slide-10-3.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-4.md",
+          "chapter": 10,
+          "slide": 4,
+          "id": "10-4",
+          "title": "3. 멀티미디어 홍보 패키지 (계속)",
+          "path": "/slides/slide-10-4.md",
+          "htmlPath": "/generated/slides/slide-10-4.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-5.md",
+          "chapter": 10,
+          "slide": 5,
+          "id": "10-5",
+          "title": "4. 예산 최적화 계획",
+          "path": "/slides/slide-10-5.md",
+          "htmlPath": "/generated/slides/slide-10-5.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-6.md",
+          "chapter": 10,
+          "slide": 6,
+          "id": "10-6",
+          "title": "수련회 예산 계획 결과",
+          "path": "/slides/slide-10-6.md",
+          "htmlPath": "/generated/slides/slide-10-6.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-10-7.md",
+          "chapter": 10,
+          "slide": 7,
+          "id": "10-7",
+          "title": "Share Link",
+          "path": "/slides/slide-10-7.md",
+          "htmlPath": "/generated/slides/slide-10-7.html",
+          "type": "general"
+        }
+      ]
+    },
+    "11": {
+      "id": 11,
+      "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+      "slides": [
+        {
+          "fileName": "slide-11-1.md",
+          "chapter": 11,
+          "slide": 1,
+          "id": "11-1",
+          "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+          "path": "/slides/slide-11-1.md",
+          "htmlPath": "/generated/slides/slide-11-1.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-2.md",
+          "chapter": 11,
+          "slide": 2,
+          "id": "11-2",
+          "title": "실습: 교회 행정에 AI 활용하기",
+          "path": "/slides/slide-11-2.md",
+          "htmlPath": "/generated/slides/slide-11-2.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-3.md",
+          "chapter": 11,
+          "slide": 3,
+          "id": "11-3",
+          "title": "실습: 소통 및 홍보에 AI 활용하기",
+          "path": "/slides/slide-11-3.md",
+          "htmlPath": "/generated/slides/slide-11-3.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-4.md",
+          "chapter": 11,
+          "slide": 4,
+          "id": "11-4",
+          "title": "실습: 성경공부에 AI 활용하기",
+          "path": "/slides/slide-11-4.md",
+          "htmlPath": "/generated/slides/slide-11-4.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-5.md",
+          "chapter": 11,
+          "slide": 5,
+          "id": "11-5",
+          "title": "실습: 기도문 작성에 AI 활용하기",
+          "path": "/slides/slide-11-5.md",
+          "htmlPath": "/generated/slides/slide-11-5.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-6.md",
+          "chapter": 11,
+          "slide": 6,
+          "id": "11-6",
+          "title": "실습: 찬양 선곡에 AI 활용하기",
+          "path": "/slides/slide-11-6.md",
+          "htmlPath": "/generated/slides/slide-11-6.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-7.md",
+          "chapter": 11,
+          "slide": 7,
+          "id": "11-7",
+          "title": "실습: 심방 메시지 작성에 AI 활용하기",
+          "path": "/slides/slide-11-7.md",
+          "htmlPath": "/generated/slides/slide-11-7.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-8.md",
+          "chapter": 11,
+          "slide": 8,
+          "id": "11-8",
+          "title": "실습: 예배 순서 기획에 AI 활용하기",
+          "path": "/slides/slide-11-8.md",
+          "htmlPath": "/generated/slides/slide-11-8.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-9.md",
+          "chapter": 11,
+          "slide": 9,
+          "id": "11-9",
+          "title": "실습: 교회 소식지 제작에 AI 활용하기",
+          "path": "/slides/slide-11-9.md",
+          "htmlPath": "/generated/slides/slide-11-9.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-10.md",
+          "chapter": 11,
+          "slide": 10,
+          "id": "11-10",
+          "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+          "path": "/slides/slide-11-10.md",
+          "htmlPath": "/generated/slides/slide-11-10.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-11.md",
+          "chapter": 11,
+          "slide": 11,
+          "id": "11-11",
+          "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+          "path": "/slides/slide-11-11.md",
+          "htmlPath": "/generated/slides/slide-11-11.html",
+          "type": "general"
+        },
+        {
+          "fileName": "slide-11-12.md",
+          "chapter": 11,
+          "slide": 12,
+          "id": "11-12",
+          "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+          "path": "/slides/slide-11-12.md",
+          "htmlPath": "/generated/slides/slide-11-12.html",
           "type": "general"
         }
       ]

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)</title>
+  <title>5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)</title>
   <style>
       
       * {
@@ -135,34 +135,65 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
@@ -222,27 +253,20 @@
 </head>
 <body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>LEVEL 2: 여러 툴을 연결하는 워크플로우 만들기 (4~8단계)</h1>
+      <h1>5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)</h1>
 
-<p>이 단계에서는 텍스트, 이미지, 문서, 음성 등 여러 형태의 AI를 연결하여 실제적인 사역 결과물을 만드는 '워크플로우'를 학습합니다.</p>
+<p><strong>핵심: 텍스트를 매력적인 비주얼로 변환하기</strong></p>
 
-<p><strong>핵심 목표:</strong></p>
+<p><strong>적용:</strong></p>
 
-<ul>
-<li>여러 AI 툴의 시너지 효과 활용</li>
-<li>실제 사역 결과물 창출</li>
-<li>효율적인 워크플로우 구축</li>
-</ul>
+<p><strong>ChatGPT:</strong></p>
+<p>"이번 주 설교 핵심 구절을 인스타그램 카드뉴스 3장 분량의 문구로 만들어줘. 첫 장은 질문, 둘째 장은 말씀, 셋째 장은 적용으로."</p>
 
-<p><strong>다룰 시나리오:</strong></p>
+<p><strong>미리캔버스 / Canva AI:</strong></p>
+<p>ChatGPT가 만든 문구를 기반으로, 다양한 템플릿을 활용해 즉시 카드뉴스를 디자인합니다.</p>
 
-<ul>
-<li>박성민 목사: 성경공부 교재 제작</li>
-<li>한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)</li>
-<li>류 목사(51세): 성도 위로 메시지 & 기도 배경음악</li>
-<li>윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화</li>
-<li>신혜숙 목사: 상담 준비</li>
-</ul>
+<p><strong>Ideogram:</strong></p>
+<p>"a crown of thorns in watercolor style" 처럼, 절기나 설교 주제에 맞는 고품질의 이미지를 직접 생성하여 PPT 배경이나 주보 디자인에 활용하는 방법을 실습합니다.</p>
 
   </div>
 

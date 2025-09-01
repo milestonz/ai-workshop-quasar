@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>8. 실전 AI 복합 활용 시나리오 (시연)</title>
+  <title>목회자를 위한 Google NotebookLM 사용 워크북</title>
   <style>
       
       * {
@@ -135,52 +135,74 @@
       .image-slide h2 { margin-bottom:25px; color:#666; }
 
       /* 투표 옵션 기본(비-poll 템플릿 보완) */
-      .poll-option { font-size:20px; padding:15px 20px; margin:10px 0; border-radius:10px; cursor:pointer; transition:all .3s ease; background:rgba(255,255,255,.1); border:2px solid transparent; }
-      .poll-option:hover { background:rgba(255,255,255,.2); transform: translateY(-2px); }
-      .poll-option.selected { background: rgba(59,130,246,.3); border-color:#3b82f6; }
+      .poll-option {
+        font-size:20px;
+        padding:15px 20px;
+        margin:10px 0;
+        border-radius:10px;
+        cursor: pointer !important;
+        transition:all .3s ease;
+        background:rgba(255,255,255,.1);
+        border:2px solid transparent;
+      }
+      .poll-option:hover {
+        background:rgba(255,255,255,.2);
+        transform: translateY(-2px);
+        cursor: pointer !important;
+      }
+      .poll-option.selected {
+        background: rgba(59,130,246,.3);
+        border-color:#3b82f6;
+        cursor: pointer !important;
+      }
 
-      /* URL 링크 스타일 */
+      /* URL 링크 스타일 - 부드러운 화이트-그레이/옐로우 계열 */
       .url-link {
         display: inline-block;
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white !important;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        color: #475569 !important;
         padding: 12px 20px;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 16px;
         margin: 8px 0;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 2px 8px rgba(148, 163, 184, 0.15);
         word-break: break-all;
+        border: 1px solid #e2e8f0;
       }
       .url-link:hover {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
         text-decoration: none;
-        color: white !important;
+        border-color: #fbbf24;
       }
       .url-link:active {
         transform: translateY(0);
+        background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+        color: #374151 !important;
+      }
+
+      /* Poll 옵션 커서 보장 - 모든 상태에서 pointer 유지 */
+      .poll-option,
+      .poll-option:hover,
+      .poll-option:active,
+      .poll-option:focus,
+      .poll-option.selected,
+      .poll-option.voted {
+        cursor: pointer !important;
       }
 
   
       
-          body {
-              background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #1d4ed8 100%);
-              color: white;
-              overflow: hidden;
-              height: 100vh;
-          }
-
-          .slide-container { background: rgba(255, 255, 255, 0.05); text-align: center; }
-
-          h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,.3); animation: fadeInUp 1.2s ease; line-height: 1.2; }
-          h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 10px; color: #dbeafe; animation: fadeInUp 1.2s ease .3s both; }
-          h3 { font-size: 2rem; font-weight: 400; margin-bottom: 10px; color: #bfdbfe; animation: fadeInUp 1.2s ease .6s both; }
-
-          @keyframes fadeInUp { from { opacity:0; transform: translateY(40px);} to { opacity:1; transform: translateY(0);} }
+          body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+          .slide-container { background: rgba(255, 255, 255, 0.95); }
+          h1 { font-size: 3rem; color: #1e40af; margin-bottom: 10px; font-weight: 700; text-align: center; }
+          h2 { font-size: 2.5rem; color: #2563eb; margin-bottom: 25px; font-weight: 600; }
+          h3 { font-size: 1.8rem; color: #3730a3; margin-bottom: 8px; font-weight: 500; }
       
 
       /* 반응형 추가 스타일 */
@@ -229,20 +251,11 @@
       .poll-free button { padding: 12px 18px; border-radius: 12px; border: 0; background:#f59e0b; color:white; font-weight:700; cursor:pointer; }
   </style>
 </head>
-<body class="cover-slide">
+<body class="general-slide">
   <div class="slide-container" tabindex="0">
-      <h1>8. 실전 AI 복합 활용 시나리오 (시연)</h1>
+      <h1>목회자를 위한 Google NotebookLM 사용 워크북</h1>
 
-<ul>
-<li>청년 수련회 기획</li>
-</ul>
-
-<ol>
-<li>기획 : ChatGPT</li>
-<li>실시간 정보 수집 : Perplexity</li>
-<li>멀티미디어 홍보 패키지</li>
-<li>예산 최적화 계획</li>
-</ol>
+<p>이미 가지고 있는 설교, 훈련자료, 문서를 <strong>사역 자산</strong>으로 바꾸는 AI 활용 가이드</p>
 
   </div>
 
