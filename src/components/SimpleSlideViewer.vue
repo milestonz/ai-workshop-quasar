@@ -49,14 +49,14 @@ const slideContent = ref('');
 
 const slideUrl = computed(() => {
   if (!props.slideNumber) return '';
-  // e.g., /generated/slides/slide-0-0.html
-  return `/generated/slides/slide-${props.slideNumber}.html`;
+  // e.g., /src/html/slide-0-0.html
+  return `/src/html/slide-${props.slideNumber}.html`;
 });
 
 const htmlSlideUrl = computed(() => {
   if (!props.slideNumber) return '';
   // HTML 슬라이드용 URL
-  return `/generated/slides/slide-${props.slideNumber}.html`;
+  return `/src/html/slide-${props.slideNumber}.html`;
 });
 
 // HTML 타입 슬라이드의 경우 iframe으로 직접 로드

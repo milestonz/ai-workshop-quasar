@@ -676,7 +676,7 @@
               터미널에서 다음 명령어를 실행하여 모든 슬라이드를 빌드하세요:
             </p>
             <div class="code-block">
-              <code>node scripts/build-slides.cjs public/slides public/generated/slides</code>
+              <code>node scripts/build-slides.cjs public/slides src/html</code>
               <q-btn
                 flat
                 round
@@ -740,7 +740,7 @@
               터미널에서 다음 명령어를 실행하여 수동으로 변환할 수 있습니다:
             </p>
             <div class="code-block">
-              <code>node scripts/build-slides.cjs public/slides public/generated/slides</code>
+              <code>node scripts/build-slides.cjs public/slides src/html</code>
               <q-btn
                 flat
                 round
@@ -1289,7 +1289,7 @@ const saveHTMLFile = async (fileName: string, content: string): Promise<void> =>
     // 사용자에게 안내 메시지 표시
     $q.notify({
       type: 'info',
-      message: `📄 HTML 파일이 다운로드되었습니다.\n\n파일명: ${fileName}\n\n이 파일을 public/generated/slides/ 폴더에 저장하세요.\n\n또는 터미널에서 'npm run convert-slides-individual'을 실행하세요.`,
+      message: `📄 HTML 파일이 다운로드되었습니다.\n\n파일명: ${fileName}\n\n이 파일을 src/html/ 폴더에 저장하세요.\n\n또는 터미널에서 'npm run convert-slides-individual'을 실행하세요.`,
       position: 'top',
       timeout: 8000,
       icon: 'download',
@@ -1703,7 +1703,7 @@ const applySettings = () => {
 // 슬라이드 빌드 명령어 복사 함수
 const copyBuildCommand = async () => {
   try {
-    const command = 'node scripts/build-slides.cjs public/slides public/generated/slides';
+    const command = 'node scripts/build-slides.cjs public/slides src/html';
     await navigator.clipboard.writeText(command);
 
     $q.notify({
@@ -1850,7 +1850,7 @@ const buildAllSlides = async () => {
         },
         body: JSON.stringify({
           inputDir: 'public/slides',
-          outputDir: 'public/generated/slides',
+          outputDir: 'src/html',
         }),
       });
 
@@ -1878,7 +1878,7 @@ const buildAllSlides = async () => {
       $q.notify({
         type: 'info',
         message: `터미널에서 다음 명령어를 실행하세요:
-         node scripts/build-slides.cjs public/slides public/generated/slides`,
+         node scripts/build-slides.cjs public/slides src/html`,
         position: 'top',
         timeout: 8000,
         icon: 'terminal',
@@ -1888,7 +1888,7 @@ const buildAllSlides = async () => {
             color: 'white',
             handler: () => {
               navigator.clipboard.writeText(
-                'node scripts/build-slides.cjs public/slides public/generated/slides',
+                'node scripts/build-slides.cjs public/slides src/html',
               );
               $q.notify({
                 type: 'positive',

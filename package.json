@@ -25,7 +25,7 @@
     "convert-slides": "node scripts/slide-converter/convert-slides.js",
     "convert-slides-individual": "node scripts/slide-converter/convert-slides-individual.js public/slides public/generated/slides",
     "convert-html-to-markdown": "node scripts/convert-html-to-markdown.js",
-    "build-slides": "node scripts/build-slides.cjs public/slides public/generated/slides && npm run update-sidebar",
+    "build-slides": "node scripts/build-slides.cjs public/slides src/html && npm run update-sidebar",
     "build:start": "npm run build-slides && node server.js",
     "start:results": "PORT=9001 node server.js",
     "build-slides-individual": "npm run convert-slides-individual && echo '✅ 개별 슬라이드 변환 완료!'",

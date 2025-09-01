@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// npm run build-slides 을 실행하면 현재 디렉토리에 있는 slides 디렉토리에 있는 모든 마크다운 파일을 HTML로 변환하여 public/generated/slides 디렉토리에 저장한다.
-// npm run server를 실행한 후, http://localhost:3000/generated/slides/index.html 에서 확인할 수 있다.
+// npm run build-slides 을 실행하면 현재 디렉토리에 있는 slides 디렉토리에 있는 모든 마크다운 파일을 HTML로 변환하여 src/html 디렉토리에 저장한다.
+// npm run server를 실행한 후, http://localhost:3000/src/html/index.html 에서 확인할 수 있다.
 //
 
 const fs = require('fs');
@@ -1540,8 +1540,8 @@ const args = process.argv.slice(2);
 
 if (args.length < 2) {
   console.log('사용법: node build-slides.js <입력디렉토리> <출력디렉토리> [특정슬라이드번호]');
-  console.log('예시: node build-slides.js ../public/slides ../public/generated/slides');
-  console.log('예시: node build-slides.js ../public/slides ../public/generated/slides 0-0');
+  console.log('예시: node build-slides.js ../public/slides ../src/html');
+  console.log('예시: node build-slides.js ../public/slides ../src/html 0-0');
   process.exit(1);
 }
 
