@@ -184,7 +184,7 @@ const handleUpdateTOC = async () => {
 // 슬라이드 변환
 const handleConvertSlides = async () => {
   convertingSlides.value = true;
-  
+
   try {
     // 슬라이드 변환 API 호출
     const response = await fetch('/api/convert-slides', {
@@ -194,12 +194,12 @@ const handleConvertSlides = async () => {
       },
       body: JSON.stringify({
         sourceDir: './md-slides',
-        outputDir: './public/html'
-      })
+        outputDir: './public/html',
+      }),
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       $q.notify({
         type: 'positive',
