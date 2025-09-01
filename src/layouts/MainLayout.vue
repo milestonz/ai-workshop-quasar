@@ -33,7 +33,7 @@
     <LoginDialog v-model="showLogin" />
     <GuestLoginDialog v-model="showGuestLogin" />
     <GuestInfoDialog v-model="showGuestInfo" />
-    <CourseImport v-model="showCourseImport" />
+    <CourseImport v-if="showCourseImport" @cancel="showCourseImport = false" @success="handleCourseImportSuccess" />
   </q-layout>
 </template>
 
@@ -83,6 +83,14 @@ const showLogin = ref(false);
 const showGuestLogin = ref(false);
 const showGuestInfo = ref(false);
 const showCourseImport = ref(false);
+
+// 강의 가져오기 성공 핸들러
+const handleCourseImportSuccess = (courseId: string) => {
+  showCourseImport.value = false;
+  console.log('✅ 강의 가져오기 성공:', courseId);
+  // 필요시 강의 목차 새로고침
+  courseStore.loadCourseOutline();
+};
 
 // Computed
 const currentSlideId = computed(() => {
