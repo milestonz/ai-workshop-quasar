@@ -1,5 +1,3 @@
-import { api } from 'boot/axios';
-
 export interface SlideConversionResult {
   success: boolean;
   message: string;
@@ -17,12 +15,23 @@ export class SlideConverterService {
     outputDir: string = './public/html',
   ): Promise<SlideConversionResult> {
     try {
-      const response = await api.post('/api/convert-slides', {
-        sourceDir,
-        outputDir,
+      const response = await fetch('/api/convert-slides', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sourceDir,
+          outputDir,
+        }),
       });
 
-      return response.data;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error('슬라이드 변환 실패:', error);
       throw new Error('슬라이드 변환 중 오류가 발생했습니다.');
@@ -38,8 +47,14 @@ export class SlideConverterService {
     convertedSlides: number;
   }> {
     try {
-      const response = await api.get('/api/slide-conversion-status');
-      return response.data;
+      const response = await fetch('/api/slide-conversion-status');
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error('변환 상태 확인 실패:', error);
       return {

@@ -25,7 +25,7 @@ export const useCourseStore = defineStore('course', () => {
   const progress = ref(15);
   const newComment = ref('');
   const notes = ref('');
-  const isPresentationMode = ref(true); // 기본값을 true로 변경
+  const isPresentationMode = ref(false); // 기본값을 false로 변경 (편집기 모드 활성화)
 
   // 강의 데이터 - MD 파일 기반으로 동적 생성
   const lessons = ref<Lesson[]>([]);

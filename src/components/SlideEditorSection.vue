@@ -216,7 +216,7 @@ const handleConvertSlides = async () => {
     console.error('슬라이드 변환 오류:', error);
     $q.notify({
       type: 'negative',
-      message: `슬라이드 변환 실패: ${error.message}`,
+      message: `슬라이드 변환 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`,
       position: 'top',
       timeout: 5000,
       icon: 'error',
