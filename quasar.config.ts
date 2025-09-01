@@ -45,7 +45,7 @@ export default defineConfig((/* ctx */) => {
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      // vueRouterBase,
+      vueRouterBase: '/ai-workshop-quasar/', // GitHub Pages base path
       // vueDevtools,
       // vueOptionsAPI: false,
 
@@ -234,6 +234,11 @@ export default defineConfig((/* ctx */) => {
        * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
        */
       extraScripts: [],
+    },
+
+    // Vite configuration for GitHub Pages
+    vite: {
+      base: '/ai-workshop-quasar/',
     },
   };
 });
