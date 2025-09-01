@@ -956,8 +956,13 @@ export const useCourseStore = defineStore('course', () => {
   };
 
   const togglePresentationMode = () => {
+    const previousMode = isPresentationMode.value;
     isPresentationMode.value = !isPresentationMode.value;
-    console.log('🎭 프레젠테이션 모드:', isPresentationMode.value ? 'ON' : 'OFF');
+    console.log('🎭 프레젠테이션 모드 전환:', {
+      이전: previousMode ? '프레젠테이션' : '편집기',
+      현재: isPresentationMode.value ? '프레젠테이션' : '편집기',
+      값: isPresentationMode.value
+    });
   };
 
   const toggleComments = () => {
