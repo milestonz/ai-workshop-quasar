@@ -1,9 +1,10 @@
 name: Deploy to GitHub Pages
 
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
+# GitHub Pages 워크플로우 비활성화 - Azure Static Web Apps 사용
+# on:
+#   push:
+#     branches: [ master ]
+#   workflow_dispatch:
 
 permissions:
   contents: read
