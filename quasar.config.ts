@@ -45,8 +45,8 @@ export default defineConfig((/* ctx */) => {
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
-      vueRouterBase: '/ai-workshop-quasar/', // GitHub Pages base path
-      publicPath: '/ai-workshop-quasar/', // GitHub Pages public path
+      vueRouterBase: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/', // GitHub Pages base path
+      publicPath: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/', // GitHub Pages public path
       // vueDevtools,
       // vueOptionsAPI: false,
 
@@ -239,8 +239,8 @@ export default defineConfig((/* ctx */) => {
 
     // Vite configuration for GitHub Pages
     vite: {
-      base: '/ai-workshop-quasar/',
-      publicPath: '/ai-workshop-quasar/',
+      base: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/',
+      publicPath: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/',
     },
   };
 });
