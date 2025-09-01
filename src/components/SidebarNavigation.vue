@@ -1,6 +1,7 @@
 <template>
   <q-drawer
-    v-model="leftDrawerOpen"
+    :model-value="leftDrawerOpen"
+    @update:model-value="$emit('update:leftDrawerOpen', $event)"
     show-if-above
     bordered
     class="bg-grey-1 sidebar-drawer"
@@ -12,7 +13,7 @@
         <div v-if="isAuthenticated" class="user-info-section q-mb-md">
           <div class="text-h6 text-primary q-mb-sm">
             <q-icon name="person" class="q-mr-xs" />
-            {{ user?.name || '사용자' }}
+            {{ user?.displayName || user?.email?.split('@')[0] || '사용자' }}
           </div>
           <div class="text-caption text-grey-7">
             {{ user?.email }}
@@ -23,14 +24,15 @@
         </div>
 
         <!-- 게스트 사용자 정보 섹션 -->
-        <div v-else-if="isGuestAuthenticated && isGuestInfoRegistered" class="user-info-section q-mb-md">
+        <div
+          v-else-if="isGuestAuthenticated && isGuestInfoRegistered"
+          class="user-info-section q-mb-md"
+        >
           <div class="text-h6 text-primary q-mb-sm">
             <q-icon name="person" class="q-mr-xs" />
             {{ guestUser?.name || '게스트' }}
           </div>
-          <div class="text-caption text-grey-7">
-            게스트 모드
-          </div>
+          <div class="text-caption text-grey-7">게스트 모드</div>
         </div>
 
         <!-- 목차 섹션 -->
@@ -39,7 +41,7 @@
             <q-icon name="list" class="q-mr-xs" />
             목차
           </div>
-          
+
           <q-list dense>
             <q-expansion-item
               v-for="chapter in courseOutline"
@@ -68,8 +70,8 @@
                   class="slide-item"
                 >
                   <q-item-section avatar>
-                    <q-icon 
-                      :name="getSlideIcon(slide.type)" 
+                    <q-icon
+                      :name="getSlideIcon(slide.type)"
                       :color="getSlideColor(slide.type)"
                       size="sm"
                     />
@@ -115,7 +117,7 @@ const courseStore = useCourseStore();
 const { user, isAuthenticated, userRole } = useAuth();
 const { guestUser, isGuestAuthenticated, isGuestInfoRegistered } = useGuestAuth();
 
-const courseOutline = computed(() => courseStore.courseOutline);
+const courseOutline = computed(() => courseStore.lessons);
 
 const navigateToSlide = (slideId: string) => {
   emit('navigate-to-slide', slideId);
@@ -133,7 +135,7 @@ const getSlideIcon = (type: string) => {
     challenge: 'emoji_events',
     example: 'lightbulb',
     profile: 'person',
-    timeline: 'schedule'
+    timeline: 'schedule',
   };
   return iconMap[type] || 'description';
 };
@@ -149,7 +151,7 @@ const getSlideColor = (type: string) => {
     challenge: 'amber',
     example: 'teal',
     profile: 'pink',
-    timeline: 'indigo'
+    timeline: 'indigo',
   };
   return colorMap[type] || 'grey-7';
 };
@@ -165,7 +167,7 @@ const getSlideTypeLabel = (type: string) => {
     challenge: '도전',
     example: '예시',
     profile: '프로필',
-    timeline: '타임라인'
+    timeline: '타임라인',
   };
   return labelMap[type] || '일반';
 };

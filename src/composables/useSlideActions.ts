@@ -39,7 +39,7 @@ export function useSlideActions() {
   const handleDownloadSlide = () => {
     const currentRoute = router.currentRoute.value;
     const slideId = currentRoute.params.id as string;
-    
+
     if (!slideId) {
       $q.notify({
         type: 'negative',
@@ -69,7 +69,7 @@ export function useSlideActions() {
   // 수강생과 공유
   const shareWithStudents = () => {
     const currentUrl = window.location.href;
-    
+
     if (navigator.share) {
       navigator.share({
         title: 'AI 워크샵',

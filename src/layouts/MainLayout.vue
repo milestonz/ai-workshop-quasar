@@ -72,8 +72,7 @@ const {
 const { 
   guestUser, 
   isGuestAuthenticated, 
-  isGuestInfoRegistered,
-  logout: guestLogout 
+  isGuestInfoRegistered
 } = useGuestAuth();
 
 // Slide actions composable
