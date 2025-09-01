@@ -34,6 +34,8 @@ jobs:
         run: npm run prepare-azure
       - name: Remove node_modules to reduce size
         run: rm -rf node_modules
+      - name: Remove public/slides from deployment (keep for source only)
+        run: rm -rf public/slides
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
