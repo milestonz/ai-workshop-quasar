@@ -2233,18 +2233,13 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
     }
   };
 
-  // JSON 파일에서 강의 데이터 로드
+  // sidebar-data.json에서 강의 데이터 로드
   const loadCourseOutline = async () => {
     try {
-      const response = await fetch('/data/course-outline.json');
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      const text = await response.text();
-      console.log('📄 JSON 응답 텍스트:', text.substring(0, 100) + '...');
-      const data = JSON.parse(text);
-      lessons.value = data.lessons;
-      console.log('✅ 강의 목차 로드 완료:', data.title);
+      console.log('🔄 sidebar-data.json에서 강의 목차 로드 시작...');
+      const generatedLessons = await generateCourseOutlineFromMD();
+      lessons.value = generatedLessons;
+      console.log('✅ 강의 목차 로드 완료:', generatedLessons.length, '개 챕터');
     } catch (error) {
       console.error('❌ 강의 목차 로드 실패:', error);
       // 기본 데이터로 폴백

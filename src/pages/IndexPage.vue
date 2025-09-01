@@ -173,14 +173,18 @@ watch(
     if (slideId && typeof slideId === 'string') {
       console.log('🔗 라우트 파라미터 감지:', slideId);
       // slideId 형식: "0-1", "1-2" 등
-      const [lesson, slide] = slideId.split('-').map(Number);
-      if (!isNaN(lesson) && !isNaN(slide)) {
-        console.log(`📖 슬라이드 이동: ${lesson}-${slide}`);
-        courseStore.setCurrentSlideByLessonAndSlide(lesson, slide);
+      const parts = slideId.split('-');
+      if (parts.length === 2) {
+        const lesson = Number(parts[0]);
+        const slide = Number(parts[1]);
+        if (!isNaN(lesson) && !isNaN(slide)) {
+          console.log(`📖 슬라이드 이동: ${lesson}-${slide}`);
+          courseStore.setCurrentSlideByLessonAndSlide(lesson, slide);
+        }
       }
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 // 편집기 모드 상태
