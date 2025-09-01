@@ -4,3 +4,75 @@
 
 // 목회 워크숍 커스텀 테마 추가
 // @import './ministry-theme.scss';
+
+/* Azure 배포 환경 대응 - 사이드바 스타일 강화 */
+.sidebar-drawer {
+  background: #f8f9fa !important;
+  border-right: 1px solid #e9ecef !important;
+  transition: all 0.3s ease !important;
+  max-height: 95vh !important;
+  overflow: hidden !important;
+}
+
+.sidebar-drawer .q-scroll-area {
+  background: #f8f9fa !important;
+  max-height: 95vh !important;
+}
+
+.sidebar-drawer .q-expansion-item {
+  margin-bottom: 1px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  overflow: visible !important;
+}
+
+.sidebar-drawer .q-expansion-item:hover {
+  background-color: #e9ecef !important;
+  transform: translateX(2px) !important;
+  border-radius: 8px !important;
+  margin: 2px 4px !important;
+}
+
+.sidebar-drawer .selected-chapter {
+  background-color: #e3f2fd !important;
+  border-left: 3px solid #1976d2 !important;
+  border-radius: 8px !important;
+  margin: 2px 4px !important;
+}
+
+.sidebar-drawer .slide-item {
+  border-radius: 8px !important;
+  margin: 2px 8px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+}
+
+.sidebar-drawer .slide-item:hover {
+  background-color: #e9ecef !important;
+  transform: translateX(4px) !important;
+  border-radius: 8px !important;
+  margin: 2px 12px !important;
+  padding-left: 12px !important;
+}
+
+.sidebar-drawer .slide-item.q-item--active,
+.sidebar-drawer .slide-item-active {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+  font-weight: 600 !important;
+  border-left: 3px solid #1976d2 !important;
+  border-radius: 8px !important;
+  margin: 2px 12px !important;
+  padding-left: 12px !important;
+}
+
+.sidebar-drawer .text-weight-medium {
+  font-weight: 500 !important;
+  color: #212529 !important;
+}
+
+.sidebar-drawer .text-caption {
+  color: #6c757d !important;
+  font-size: 0.75rem !important;
+}

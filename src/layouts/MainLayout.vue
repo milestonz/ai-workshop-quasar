@@ -2367,15 +2367,18 @@ window.addEventListener('beforeunload', (event) => {
   z-index: 1000;
 }
 
-/* YouTube 스타일 사이드바 */
+/* YouTube 스타일 사이드바 - Azure 배포 환경 대응 */
 .sidebar-drawer {
   background: #f8f9fa !important; /* YouTube 스타일 밝은 회색 배경 */
   border-right: 1px solid #e9ecef !important;
   transition: all 0.3s ease !important;
+  max-height: 95vh !important;
+  overflow: hidden !important;
 }
 
 .sidebar-drawer .q-scroll-area {
   background: #f8f9fa !important;
+  max-height: 95vh !important;
 }
 
 /* YouTube 스타일 Chapter 항목 */
@@ -2384,6 +2387,7 @@ window.addEventListener('beforeunload', (event) => {
   border-radius: 8px !important;
   transition: all 0.2s ease !important;
   background: transparent !important;
+  overflow: visible !important;
 }
 
 .sidebar-drawer .q-expansion-item:hover {

@@ -1,7 +1,4 @@
 {
   "extends": "./.quasar/tsconfig.json",
-  "exclude": [
-    "azure-functions/**/*",
-    "node_modules"
-  ]
+  "exclude": ["azure-functions/**/*", "node_modules"]
 }

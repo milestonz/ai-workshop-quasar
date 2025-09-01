@@ -56,7 +56,7 @@ export default defineConfig((/* ctx */) => {
       // env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
-      // minify: false,
+      minify: false, // CSS 최적화 비활성화
       // polyfillModulePreload: true,
       distDir: 'dist',
 
@@ -77,6 +77,10 @@ export default defineConfig((/* ctx */) => {
       // 빌드 설정
       rollupOptions: {
         // 외부 의존성 설정
+        output: {
+          // CSS 청크 분할 비활성화
+          manualChunks: undefined,
+        },
       },
 
       // 공개 폴더 설정
