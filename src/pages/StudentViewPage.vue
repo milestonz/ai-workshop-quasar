@@ -501,19 +501,19 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { debounce } from 'lodash-es';
 import { useRoute, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
-import { useCourseStore } from 'src/stores/course.ts';
-import { useAuth } from 'src/composables/useAuth.ts';
-import { useGuestAuth } from 'src/composables/useGuestAuth.ts';
-import { auth, googleProvider } from 'src/services/firebase/config.ts';
+import { useCourseStore } from '../stores/course';
+import { useAuth } from '../composables/useAuth';
+import { useGuestAuth } from '../composables/useGuestAuth';
+import { auth, googleProvider } from '../services/firebase/config';
 import SimpleSlideViewer from 'src/components/slide/SimpleSlideViewer.vue';
 import LoginDialog from 'src/components/auth/LoginDialog.vue';
 import GuestLoginDialog from 'src/components/auth/GuestLoginDialog.vue';
 
 import SurveyDialog from 'src/components/survey/SurveyDialog.vue';
-import { emailApiService } from 'src/services/api/emailApiService.ts';
-import { surveyApiService } from 'src/services/api/surveyApiService.ts';
-import type { SurveyData } from 'src/types/survey.ts';
-import { isStudentMode } from 'src/utils/logger.ts';
+import { emailApiService } from '../services/api/emailApiService';
+import { surveyApiService } from '../services/api/surveyApiService';
+import type { SurveyData } from '../types/survey';
+import { isStudentMode } from '../utils/logger';
 // 신규 추가: Poll 컴포넌트들
 import PollVote from 'src/components/survey/PollVote.vue';
 import PollResultBar from 'src/components/survey/PollResultBar.vue';
@@ -526,7 +526,7 @@ import {
   remove as rtdbRemove,
   runTransaction,
 } from 'firebase/database';
-import { firebaseApp } from 'src/services/firebase/config.ts';
+import { firebaseApp } from '../services/firebase/config';
 
 const $q = useQuasar();
 const route = useRoute();
