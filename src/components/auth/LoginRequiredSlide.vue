@@ -102,12 +102,16 @@ onUnmounted(() => {
 
 const handleGoogleLogin = () => {
   console.log('🔍 LoginRequiredSlide: Google 로그인 버튼 클릭');
+  console.log('🔍 LoginRequiredSlide: 이벤트 발생 시도...');
   emit('google-login');
+  console.log('🔍 LoginRequiredSlide: 이벤트 발생 완료');
 };
 
 const handleGuestLogin = () => {
   console.log('🔍 LoginRequiredSlide: 게스트 로그인 버튼 클릭');
+  console.log('🔍 LoginRequiredSlide: 이벤트 발생 시도...');
   emit('guest-login');
+  console.log('🔍 LoginRequiredSlide: 이벤트 발생 완료');
 };
 </script>
 

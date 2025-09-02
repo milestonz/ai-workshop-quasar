@@ -66,8 +66,10 @@ const isOpen = computed({
 });
 
 const handleGoogleLogin = async () => {
-  console.log('LoginDialog: handleGoogleLogin - 로그인 버튼 클릭. 이벤트 발생.');
+  console.log('🔍 LoginDialog: handleGoogleLogin - 로그인 버튼 클릭');
+  console.log('🔍 LoginDialog: 이벤트 발생 시도...');
   emit('google-login');
+  console.log('🔍 LoginDialog: 이벤트 발생 완료');
 };
 </script>
 

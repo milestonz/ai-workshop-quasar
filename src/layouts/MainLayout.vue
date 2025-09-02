@@ -166,11 +166,17 @@ const currentSlideId = computed(() => {
 
 // Methods
 const showLoginDialog = () => {
+  console.log('🔍 MainLayout: showLoginDialog 호출됨');
+  console.log('🔍 MainLayout: showLogin.value를 true로 설정');
   showLogin.value = true;
+  console.log('🔍 MainLayout: showLogin.value 설정 완료:', showLogin.value);
 };
 
 const showGuestLoginDialog = () => {
+  console.log('🔍 MainLayout: showGuestLoginDialog 호출됨');
+  console.log('🔍 MainLayout: showGuestLogin.value를 true로 설정');
   showGuestLogin.value = true;
+  console.log('🔍 MainLayout: showGuestLogin.value 설정 완료:', showGuestLogin.value);
 };
 
 const showGuestInfoDialog = () => {
@@ -209,10 +215,12 @@ const handleLogin = () => {
 
 const handleGoogleLoginFromDialog = async () => {
   console.log('🔍 MainLayout: LoginDialog에서 Google 로그인 이벤트 수신');
+  console.log('🔍 MainLayout: signInWithGoogle 함수 호출 시도...');
   try {
     await signInWithGoogle();
     console.log('✅ MainLayout: Google 로그인 완료');
     showLogin.value = false; // 다이얼로그 닫기
+    console.log('🔍 MainLayout: 다이얼로그 닫기 완료');
   } catch (error) {
     console.error('❌ MainLayout: Google 로그인 실패:', error);
   }
