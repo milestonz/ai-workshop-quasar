@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
-import { emailService } from './src/services/api/emailService.js';
+import { emailService } from './src/services/api/emailService';
 import dotenv from 'dotenv';
 
 // .env 파일 로드
