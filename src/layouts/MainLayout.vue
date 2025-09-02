@@ -74,19 +74,19 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRouter, useRoute } from 'vue-router';
 import { useCourseStore } from 'src/stores/course';
-import { useAuth } from '../composables/useAuth';
-import { useGuestAuth } from '../composables/useGuestAuth';
-import { useSlideActions } from '../composables/useSlideActions';
+import { useAuth } from 'src/composables/useAuth';
+import { useGuestAuth } from 'src/composables/useGuestAuth';
+import { useSlideActions } from 'src/composables/useSlideActions';
 
 // 컴포넌트 imports
-import HeaderToolbar from '../components/layout/HeaderToolbar.vue';
-import SidebarNavigation from '../components/layout/SidebarNavigation.vue';
-import SlideViewerContainer from '../components/slide/SlideViewerContainer.vue';
-import LoginRequiredSlide from '../components/auth/LoginRequiredSlide.vue';
-import CourseImport from '../components/ui/CourseImport.vue';
-import LoginDialog from '../components/auth/LoginDialog.vue';
-import GuestLoginDialog from '../components/auth/GuestLoginDialog.vue';
-import GuestInfoDialog from '../components/ui/GuestInfoDialog.vue';
+import HeaderToolbar from 'src/components/layout/HeaderToolbar.vue';
+import SidebarNavigation from 'src/components/layout/SidebarNavigation.vue';
+import SlideViewerContainer from 'src/components/slide/SlideViewerContainer.vue';
+import LoginRequiredSlide from 'src/components/auth/LoginRequiredSlide.vue';
+import CourseImport from 'src/components/ui/CourseImport.vue';
+import LoginDialog from 'src/components/auth/LoginDialog.vue';
+import GuestLoginDialog from 'src/components/auth/GuestLoginDialog.vue';
+import GuestInfoDialog from 'src/components/ui/GuestInfoDialog.vue';
 
 const $q = useQuasar();
 const router = useRouter();

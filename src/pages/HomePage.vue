@@ -128,12 +128,12 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
-import { useCourseStore } from '../stores/course';
-import { useAuth } from '../composables/useAuth';
-import { useGuestAuth } from '../composables/useGuestAuth';
+import { useCourseStore } from 'src/stores/course';
+import { useAuth } from 'src/composables/useAuth';
+import { useGuestAuth } from 'src/composables/useGuestAuth';
 import { slideLog } from 'src/utils/logger';
-import SimpleSlideViewer from '../components/slide/SimpleSlideViewer.vue';
-import SlideEditorSection from '../components/editor/SlideEditorSection.vue';
+import SimpleSlideViewer from 'src/components/slide/SimpleSlideViewer.vue';
+import SlideEditorSection from 'src/components/editor/SlideEditorSection.vue';
 import {
   getDatabase,
   ref as dbRef,

@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { doc, setDoc, getDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../services/firebase/config';
-import { emailApiService } from '../services/api/emailApiService';
+import { db } from 'src/services/firebase/config';
+import { emailApiService } from 'src/services/api/emailApiService';
 
 // 게스트 사용자 인터페이스
 interface GuestUser {

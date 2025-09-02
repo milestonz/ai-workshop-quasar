@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import SlideViewer from '../components/slide/SlideViewer.vue';
+import SlideViewer from 'src/components/slide/SlideViewer.vue';
 
 // Router
 const route = useRoute();
