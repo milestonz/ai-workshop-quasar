@@ -2204,8 +2204,8 @@ body.desktop.no-touch.body--light {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
-/* 전역 body 스타일 강제 적용 */
-:global(body) {
+/* Student View에서만 body 스타일 적용 (LoginRequiredSlide 제외) */
+:global(body:not(.login-required)) {
   height: 100vh !important;
   min-height: 100vh !important;
   max-height: 100vh !important;

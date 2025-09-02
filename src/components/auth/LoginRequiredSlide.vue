@@ -1,5 +1,5 @@
 <template>
-  <div class="login-required-slide">
+  <div class="login-required-slide" @vue:mounted="addBodyClass" @vue:unmounted="removeBodyClass">
     <div class="login-required-container">
       <!-- 로그인 필요 아이콘 -->
       <div class="login-icon-container">
@@ -75,12 +75,30 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue';
+
 interface Emits {
   (e: 'google-login'): void;
   (e: 'guest-login'): void;
 }
 
 const emit = defineEmits<Emits>();
+
+const addBodyClass = () => {
+  document.body.classList.add('login-required');
+};
+
+const removeBodyClass = () => {
+  document.body.classList.remove('login-required');
+};
+
+onMounted(() => {
+  addBodyClass();
+});
+
+onUnmounted(() => {
+  removeBodyClass();
+});
 
 const handleGoogleLogin = () => {
   console.log('🔍 LoginRequiredSlide: Google 로그인 버튼 클릭');
@@ -101,6 +119,9 @@ const handleGuestLogin = () => {
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  position: relative;
+  z-index: 9999 !important;
+  isolation: isolate;
 }
 
 .login-required-container {
@@ -111,6 +132,9 @@ const handleGuestLogin = () => {
   text-align: center;
   max-width: 600px;
   width: 100%;
+  position: relative;
+  z-index: 10000 !important;
+  isolation: isolate;
 }
 
 .login-icon-container {
@@ -118,7 +142,7 @@ const handleGuestLogin = () => {
 }
 
 .login-icon {
-  animation: pulse 2s infinite;
+  animation: gentle-pulse 3s ease-in-out infinite;
 }
 
 .main-message {
@@ -134,6 +158,16 @@ const handleGuestLogin = () => {
   height: 50px;
   font-size: 1.1em;
   font-weight: 600;
+  position: relative;
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
 }
 
 .guest-btn {
@@ -141,6 +175,16 @@ const handleGuestLogin = () => {
   height: 50px;
   font-size: 1.1em;
   font-weight: 600;
+  position: relative;
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.guest-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
 }
 
 .info-section {
@@ -151,16 +195,32 @@ const handleGuestLogin = () => {
   margin-top: 20px;
 }
 
-@keyframes pulse {
+@keyframes gentle-pulse {
   0% {
     transform: scale(1);
+    opacity: 1;
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.02);
+    opacity: 0.8;
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
+}
+
+/* Student Mode CSS 간섭 방지 */
+.login-required-slide * {
+  pointer-events: auto !important;
+  cursor: default !important;
+}
+
+.login-required-slide .q-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10001 !important;
+  position: relative !important;
 }
 
 /* 반응형 디자인 */
