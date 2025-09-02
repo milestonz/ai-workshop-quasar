@@ -5,6 +5,26 @@
       "rewrite": "/index.html"
     },
     {
+      "route": "/viewer/*",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/study/*",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/survey-results",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/poll-result",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/logout",
+      "rewrite": "/index.html"
+    },
+    {
       "route": "/*",
       "rewrite": "/index.html"
     }
@@ -16,8 +36,44 @@
   "globalHeaders": {
     "cache-control": "must-revalidate, max-age=86400"
   },
+  "headers": [
+    {
+      "route": "/sw.js",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "service-worker-allowed": "/"
+      }
+    },
+    {
+      "route": "/data/*.json",
+      "headers": {
+        "cache-control": "public, max-age=3600"
+      }
+    },
+    {
+      "route": "/html/*.html",
+      "headers": {
+        "cache-control": "public, max-age=7200"
+      }
+    },
+    {
+      "route": "/css/*.css",
+      "headers": {
+        "cache-control": "public, max-age=31536000"
+      }
+    },
+    {
+      "route": "/images/*",
+      "headers": {
+        "cache-control": "public, max-age=31536000"
+      }
+    }
+  ],
   "mimeTypes": {
     ".json": "application/json",
-    ".md": "text/markdown"
+    ".md": "text/markdown",
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".html": "text/html"
   }
 }
