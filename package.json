@@ -48,7 +48,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-vue": "^9.18.1",
     "prettier": "^3.1.0",
-    "typescript": "~5.3.0"
+    "typescript": "~5.4.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
