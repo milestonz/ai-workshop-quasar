@@ -5,6 +5,7 @@
   "productName": "AI Workshop",
   "author": "milestonz <jplee@milestonz.com>",
   "private": true,
+  "type": "module",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
