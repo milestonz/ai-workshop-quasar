@@ -511,7 +511,6 @@ import GuestLoginDialog from 'src/components/auth/GuestLoginDialog.vue';
 
 import SurveyDialog from 'src/components/survey/SurveyDialog.vue';
 import { emailApiService } from '../services/api/emailApiService';
-import { surveyApiService } from '../services/api/surveyApiService';
 import type { SurveyData } from '../types/survey';
 import { isStudentMode } from '../utils/logger';
 // 신규 추가: Poll 컴포넌트들
@@ -1411,13 +1410,6 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
   console.log('설문조사 데이터:', surveyData);
 
   try {
-    // 서버에 설문조사 제출
-    const apiResult = await surveyApiService.submitSurvey(surveyData);
-
-    if (!apiResult.success) {
-      throw new Error(apiResult.message);
-    }
-
     // 설문조사 데이터를 LocalStorage에 저장
     const key = `survey-data-${courseId.value}`;
     const surveyWithTimestamp = {
