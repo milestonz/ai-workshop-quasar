@@ -3,8 +3,9 @@
 
 import { defineConfig } from '#q-app/wrappers';
 import type { UserConfig } from 'vite';
+import path from 'path';
 
-export default defineConfig((/* ctx */) => {
+export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -58,9 +59,12 @@ export default defineConfig((/* ctx */) => {
       // env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
-      minify: false, // CSS 최적화 비활성화
+      minify: 'terser', // 프로덕션에서 최적화 활성화
       // polyfillModulePreload: true,
       distDir: 'dist',
+
+      // Add source maps for better debugging but only in development
+      sourcemap: ctx.dev,
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
@@ -76,12 +80,23 @@ export default defineConfig((/* ctx */) => {
         ],
       ],
 
-      // 빌드 설정
+      // Improve chunk splitting to prevent unnecessary re-renders
       rollupOptions: {
-        // 외부 의존성 설정
         output: {
-          // CSS 청크 분할 비활성화
-          manualChunks: undefined,
+          manualChunks: (id: string) => {
+            // Keep Vue Router separate to prevent route-related re-mounts
+            if (id.includes('vue-router')) {
+              return 'router';
+            }
+            // Keep Firebase separate
+            if (id.includes('firebase')) {
+              return 'firebase';
+            }
+            // Default chunking
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
+          },
         },
       },
 
@@ -92,13 +107,14 @@ export default defineConfig((/* ctx */) => {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
       // https: true,
-      open: true, // opens browser window automatically
+      open: false, // Prevent auto-opening browser on every reload
       proxy: {
         '/api': {
           target: 'http://localhost:8090',
           changeOrigin: true,
         },
       },
+      hmr: false, // Completely disable HMR to prevent excessive re-mounts
     },
 
     // Vite 설정 확장 (현재는 사용하지 않음)
@@ -122,7 +138,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog'],
     },
 
     // animations: 'all', // --- includes all animations
@@ -238,10 +254,61 @@ export default defineConfig((/* ctx */) => {
       extraScripts: [],
     },
 
-    // Vite configuration for GitHub Pages
+    // Vite configuration for Azure Static Web Apps
     vite: {
-      base: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/',
-      publicPath: process.env.NODE_ENV === 'production' ? '/ai-workshop-quasar/' : '/',
+      base: '/',
+      publicPath: '/',
+
+      // Disable HMR completely to prevent excessive re-mounts
+      server: {
+        hmr: false, // Completely disable HMR
+        watch: {
+          // Ignore certain files to prevent unnecessary triggers
+          ignored: ['**/node_modules/**', '**/dist/**', '**/.git/**'],
+        },
+      },
+
+      // Optimize dependency pre-bundling
+      optimizeDeps: {
+        include: [
+          'vue',
+          'vue-router',
+          'pinia',
+          'firebase/app',
+          'firebase/auth',
+          'firebase/firestore',
+        ],
+        exclude: ['@firebase/app-check'],
+      },
+
+      // Build optimizations
+      build: {
+        // Enable tree shaking
+        rollupOptions: {
+          output: {
+            // Manual chunk splitting for better caching
+            manualChunks: {
+              'vue-vendor': ['vue', 'vue-router'],
+              'firebase-vendor': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+              'quasar-vendor': ['quasar'],
+            },
+            // Optimize chunk file names
+            chunkFileNames: 'assets/js/[name]-[hash].js',
+            entryFileNames: 'assets/js/[name]-[hash].js',
+            assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+          },
+        },
+        // Enable compression
+        minify: 'terser',
+        terserOptions: {
+          compress: {
+            drop_console: true, // Remove console.log in production
+            drop_debugger: true,
+          },
+        },
+        // Optimize chunk size
+        chunkSizeWarningLimit: 1000,
+      },
     },
   };
 });

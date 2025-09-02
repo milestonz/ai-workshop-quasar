@@ -15,5 +15,47 @@
   "trailingSlash": "auto",
   "globalHeaders": {
     "cache-control": "must-revalidate, max-age=86400"
-  }
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".md": "text/markdown"
+  },
+  "exclude": [
+    "node_modules/**",
+    "src/**",
+    "scripts/**",
+    "tests/**",
+    "test-results/**",
+    "*.md",
+    "*.cjs",
+    "*.js",
+    "*.ts",
+    "*.json",
+    "*.config.*",
+    "*.example",
+    "*.backup",
+    "*.log",
+    "*.tmp",
+    ".env*",
+    ".git/**",
+    ".github/**",
+    ".vscode/**",
+    "playwright.config.*",
+    "postcss.config.*",
+    "tsconfig.json",
+    "vercel.json",
+    "web.config",
+    "package*.json",
+    "quasar.config.*",
+    "server.*",
+    "cors.json",
+    "storage.rules",
+    "firestore.rules",
+    "*.PublishSettings",
+    "실행방법",
+    "이정표프로필.md",
+    "AZURE_DEPLOYMENT.md",
+    "FIREBASE_SETUP.md",
+    "README*.md"
+  ]
 }
