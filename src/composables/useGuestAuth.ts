@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue';
 import { useQuasar } from 'quasar';
-import { doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '../firebase/config';
-import { emailApiService } from '../services/emailApiService';
+import { doc, setDoc, getDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../services/firebase/config';
+import { emailApiService } from '../services/api/emailApiService';
 
 // 게스트 사용자 인터페이스
 interface GuestUser {
@@ -13,6 +13,11 @@ interface GuestUser {
   isGuest: true;
   isInfoRegistered: boolean; // 정보 등록 여부
   createdAt: Date;
+  // 추가 메타데이터
+  userType?: 'guest';
+  registrationMethod?: 'guest';
+  registrationCompleted?: boolean;
+  updatedAt?: Date;
 }
 
 // 게스트 사용자 상태 관리
@@ -45,23 +50,53 @@ export function useGuestAuth() {
       email: email,
       role: 'guest',
       isGuest: true,
-      isInfoRegistered: false, // 정보 등록 필요
+      isInfoRegistered: true, // 정보 등록 완료 상태로 설정
       createdAt: new Date(),
+      // 추가 메타데이터
+      userType: 'guest',
+      registrationMethod: 'guest',
+      registrationCompleted: true, // 등록 완료 상태로 설정
     };
 
     try {
+      console.log('🎭 게스트 로그인 시작 - Firestore 저장 시도');
+      console.log('🎭 DB 상태 확인:', { db: !!db, guestId, name, email });
+
       // Firestore에 게스트 사용자 정보 저장 시도
       if (db) {
+        let guestUsersSaved = false;
+        let usersSaved = false;
+
         try {
+          console.log('🎭 guestUsers 컬렉션에 저장 시작...');
+          // guestUsers 컬렉션에 저장 (게스트 전용)
           const guestDocRef = doc(db, 'guestUsers', guestId);
-          await setDoc(guestDocRef, {
+          const guestData = {
             ...guestUserData,
             createdAt: guestUserData.createdAt.toISOString(), // Date 객체를 문자열로 변환
-          });
-          console.log('🎭 Firestore에 게스트 사용자 정보 저장 성공');
-        } catch (firestoreError) {
-          console.warn('⚠️ Firestore 저장 실패, LocalStorage만 사용:', firestoreError);
-          // Firestore 저장 실패 시 LocalStorage만 사용
+            // 추가 메타데이터
+            userType: 'guest',
+            registrationMethod: 'guest',
+            isInfoRegistered: true,
+            registrationCompleted: true,
+            lastLoginAt: new Date().toISOString(),
+          };
+          await setDoc(guestDocRef, guestData);
+          console.log('✅ Firestore guestUsers에 게스트 사용자 정보 저장 성공:', guestId);
+          guestUsersSaved = true;
+        } catch (guestError) {
+          console.error('❌ guestUsers 컬렉션 저장 실패:', guestError);
+        }
+
+        // users 컬렉션 저장은 권한 문제로 임시 비활성화
+        // TODO: Firebase Auth를 통한 게스트 인증 구현 후 활성화
+        console.log('ℹ️ users 컬렉션 저장은 권한 문제로 임시 비활성화됨');
+        usersSaved = false;
+
+        if (guestUsersSaved) {
+          console.log('✅ Firestore 저장 성공: guestUsers 컬렉션');
+        } else {
+          console.warn('⚠️ Firestore 저장 실패, LocalStorage만 사용');
         }
       } else {
         console.warn('⚠️ Firestore가 초기화되지 않음, LocalStorage만 사용');
@@ -76,9 +111,23 @@ export function useGuestAuth() {
 
       console.log('🎭 게스트 로그인 성공:', guestUser.value);
 
+      // Firestore 저장 확인 (비동기로 실행, 결과는 로그로만 확인)
+      setTimeout(async () => {
+        try {
+          const result = await checkGuestUserInFirestore(guestId);
+          if (result.guestUsers) {
+            console.log('✅ Firestore 저장 확인 완료:', result);
+          } else {
+            console.warn('⚠️ Firestore에 저장되지 않음:', result);
+          }
+        } catch (error) {
+          console.error('❌ Firestore 저장 확인 실패:', error);
+        }
+      }, 1000);
+
       $q.notify({
-        type: 'warning',
-        message: '게스트 모드로 로그인되었습니다. 추가 정보 등록이 필요합니다.',
+        type: 'positive',
+        message: '게스트 모드로 로그인되었습니다!',
         timeout: 3000,
       });
 
@@ -89,10 +138,16 @@ export function useGuestAuth() {
     }
   };
 
-  // 게스트 정보 등록
+  // 게스트 정보 등록 (이미 등록된 경우 바로 반환)
   const registerGuestInfo = async (name: string, email: string) => {
     if (!guestUser.value) {
       throw new Error('게스트 사용자가 로그인되지 않았습니다.');
+    }
+
+    // 이미 정보가 등록된 경우 바로 반환
+    if (guestUser.value.isInfoRegistered) {
+      console.log('🎭 게스트 정보가 이미 등록되어 있습니다.');
+      return guestUser.value;
     }
 
     const updatedGuestUser: GuestUser = {
@@ -100,22 +155,26 @@ export function useGuestAuth() {
       name: name,
       email: email,
       isInfoRegistered: true,
+      registrationCompleted: true,
+      updatedAt: new Date(),
     };
 
     try {
       // Firestore에 업데이트된 게스트 정보 저장 시도
       if (db) {
         try {
+          // guestUsers 컬렉션만 업데이트 (users 컬렉션은 권한 문제로 제외)
           const guestDocRef = doc(db, 'guestUsers', guestUser.value.id);
           await setDoc(
             guestDocRef,
             {
               ...updatedGuestUser,
               createdAt: updatedGuestUser.createdAt.toISOString(),
+              lastLoginAt: new Date().toISOString(),
             },
             { merge: true },
           ); // 기존 데이터와 병합
-          console.log('🎭 게스트 정보 등록 완료 (Firestore 업데이트):', updatedGuestUser);
+          console.log('✅ guestUsers 컬렉션 업데이트 완료:', updatedGuestUser);
         } catch (firestoreError) {
           console.warn('⚠️ Firestore 업데이트 실패, LocalStorage만 사용:', firestoreError);
           // Firestore 업데이트 실패 시 LocalStorage만 사용
@@ -179,9 +238,11 @@ export function useGuestAuth() {
       // Firestore에서 게스트 사용자 정보 삭제
       if (guestUser.value?.id && db) {
         console.log('🔍 useGuestAuth: Firestore에서 게스트 사용자 정보 삭제 시작');
+
+        // guestUsers 컬렉션에서만 삭제 (users 컬렉션은 권한 문제로 제외)
         const guestDocRef = doc(db, 'guestUsers', guestUser.value.id);
         await deleteDoc(guestDocRef);
-        console.log('✅ useGuestAuth: Firestore에서 게스트 사용자 정보 삭제 완료');
+        console.log('✅ useGuestAuth: guestUsers 컬렉션에서 게스트 사용자 정보 삭제 완료');
       } else {
         console.log('🔍 useGuestAuth: Firestore 삭제 건너뜀 (게스트 사용자 ID 또는 DB 없음)');
       }
@@ -252,6 +313,32 @@ export function useGuestAuth() {
     return featurePermissions[feature as keyof typeof featurePermissions] || false;
   };
 
+  // Firestore에 저장된 게스트 사용자 정보 확인
+  const checkGuestUserInFirestore = async (guestId: string) => {
+    if (!db) {
+      console.warn('⚠️ Firestore가 초기화되지 않음');
+      return { guestUsers: false };
+    }
+
+    try {
+      // guestUsers 컬렉션만 확인 (users 컬렉션은 권한 문제로 제외)
+      const guestDocRef = doc(db, 'guestUsers', guestId);
+      const guestDoc = await getDoc(guestDocRef);
+      const guestUsersExists = guestDoc.exists();
+
+      console.log('🔍 Firestore 저장 확인:', {
+        guestId,
+        guestUsers: guestUsersExists,
+        guestData: guestUsersExists ? guestDoc.data() : null,
+      });
+
+      return { guestUsers: guestUsersExists };
+    } catch (error) {
+      console.error('❌ Firestore 확인 실패:', error);
+      return { guestUsers: false };
+    }
+  };
+
   return {
     // 상태
     guestUser: computed(() => guestUser.value),
@@ -267,5 +354,6 @@ export function useGuestAuth() {
     signOutGuest,
     restoreGuestSession,
     canAccessFeature,
+    checkGuestUserInFirestore,
   };
 }

@@ -1,0 +1,1688 @@
+{
+  "title": "AI Workshop 슬라이드 인덱스",
+  "description": "HTML 슬라이드 파일들의 메타데이터",
+  "totalSlides": 210,
+  "lastUpdated": "2025-09-02T12:06:47.149Z",
+  "slides": [
+    {
+      "id": "slide-0-0",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-0-0.html",
+      "chapter": 0,
+      "section": 0,
+      "description": "Chapter 0, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-0-1",
+      "title": "강사 소개",
+      "htmlPath": "/html/slide-0-1.html",
+      "chapter": 0,
+      "section": 1,
+      "description": "Chapter 0, Section 1 슬라이드"
+    },
+    {
+      "id": "slide-0-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-0-2.html",
+      "chapter": 0,
+      "section": 2,
+      "description": "Chapter 0, Section 2 슬라이드"
+    },
+    {
+      "id": "slide-1-0",
+      "title": "1. Why?",
+      "htmlPath": "/html/slide-1-0.html",
+      "chapter": 1,
+      "section": 0,
+      "description": "Chapter 1, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-1-1",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-1.html",
+      "chapter": 1,
+      "section": 1,
+      "description": "https://g.co/gemini/share/bbf0209074c0"
+    },
+    {
+      "id": "slide-1-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-2.html",
+      "chapter": 1,
+      "section": 2,
+      "description": "Chapter 1, Section 2 슬라이드"
+    },
+    {
+      "id": "slide-1-3",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-3.html",
+      "chapter": 1,
+      "section": 3,
+      "description": "Chapter 1, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-1-4",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-4.html",
+      "chapter": 1,
+      "section": 4,
+      "description": "Chapter 1, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-1-5",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-5.html",
+      "chapter": 1,
+      "section": 5,
+      "description": "Chapter 1, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-1-6",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-1-6.html",
+      "chapter": 1,
+      "section": 6,
+      "description": "Chapter 1, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-1-7",
+      "title": "목회자의 AI 사용 현황(1)",
+      "htmlPath": "/html/slide-1-7.html",
+      "chapter": 1,
+      "section": 7,
+      "description": "- 사용 경험: 목회자 47% > 일반인 36%"
+    },
+    {
+      "id": "slide-1-8",
+      "title": "목회자의 AI 사용 현황(2)",
+      "htmlPath": "/html/slide-1-8.html",
+      "chapter": 1,
+      "section": 8,
+      "description": "조사 결과"
+    },
+    {
+      "id": "slide-1-9",
+      "title": "목회자의 AI 사용 현황(3)",
+      "htmlPath": "/html/slide-1-9.html",
+      "chapter": 1,
+      "section": 9,
+      "description": "조사 결과"
+    },
+    {
+      "id": "slide-1-10",
+      "title": "목회자의 AI 사용에 대한 우려",
+      "htmlPath": "/html/slide-1-10.html",
+      "chapter": 1,
+      "section": 10,
+      "description": "---"
+    },
+    {
+      "id": "slide-1-11",
+      "title": "AI의 피해자, 이세돌 은퇴 : \"바둑계에서 나의 필요성이 없어졌다고 생각했다.\"\"",
+      "htmlPath": "/html/slide-1-11.html",
+      "chapter": 1,
+      "section": 11,
+      "description": "“바둑 프로는 길을 제시하는 사람이다."
+    },
+    {
+      "id": "slide-1-12",
+      "title": "신진서 9단, '신공지능'",
+      "htmlPath": "/html/slide-1-12.html",
+      "chapter": 1,
+      "section": 12,
+      "description": "Chapter 1, Section 12 슬라이드"
+    },
+    {
+      "id": "slide-1-13",
+      "title": "샘 알트만, \"내가 쓸모없다고 느껴지는 감정이 들었다\"",
+      "htmlPath": "/html/slide-1-13.html",
+      "chapter": 1,
+      "section": 13,
+      "description": "알트만은 자신이 이해하지 못한 질문을 GPT-5에게 맡긴 일화를 소개하며"
+    },
+    {
+      "id": "slide-1-14",
+      "title": "\"할루시네이션(Hallucination)\"",
+      "htmlPath": "/html/slide-1-14.html",
+      "chapter": 1,
+      "section": 14,
+      "description": "사실처럼 보이도록 그럴듯한 내용을 만들어내는 현상"
+    },
+    {
+      "id": "slide-1-15",
+      "title": "“전도서 7장 30절”",
+      "htmlPath": "/html/slide-1-15.html",
+      "chapter": 1,
+      "section": 15,
+      "description": "“전도서 7장 30절”"
+    },
+    {
+      "id": "slide-1-16",
+      "title": "전도서 7장 16절 해석",
+      "htmlPath": "/html/slide-1-16.html",
+      "chapter": 1,
+      "section": 16,
+      "description": "전도서 7장 16절 해석"
+    },
+    {
+      "id": "slide-1-17",
+      "title": "할루시네이션 = 거짓말?",
+      "htmlPath": "/html/slide-1-17.html",
+      "chapter": 1,
+      "section": 17,
+      "description": "할루시네이션 = 거짓말?"
+    },
+    {
+      "id": "slide-1-18",
+      "title": "할루시네이션 = 사이비?",
+      "htmlPath": "/html/slide-1-18.html",
+      "chapter": 1,
+      "section": 18,
+      "description": "할루시네이션 = 사이비?"
+    },
+    {
+      "id": "slide-1-19",
+      "title": "할루시네이션 = 상상력?",
+      "htmlPath": "/html/slide-1-19.html",
+      "chapter": 1,
+      "section": 19,
+      "description": "할루시네이션 = 상상력?"
+    },
+    {
+      "id": "slide-1-20",
+      "title": "요즘 AI (ChatGPT)",
+      "htmlPath": "/html/slide-1-20.html",
+      "chapter": 1,
+      "section": 20,
+      "description": "Chapter 1, Section 20 슬라이드"
+    },
+    {
+      "id": "slide-1-21",
+      "title": "요즘 AI (Claude)",
+      "htmlPath": "/html/slide-1-21.html",
+      "chapter": 1,
+      "section": 21,
+      "description": "Chapter 1, Section 21 슬라이드"
+    },
+    {
+      "id": "slide-1-22",
+      "title": "할루시네이션이 발생하는 이유",
+      "htmlPath": "/html/slide-1-22.html",
+      "chapter": 1,
+      "section": 22,
+      "description": "AI는 인터넷의 방대한 텍스트로 학습되지만, 모든 정보를 “기억”하는 것이 아니라 패턴을 학습합니다."
+    },
+    {
+      "id": "slide-1-23",
+      "title": "긍정적인 할루시네이션(1)",
+      "htmlPath": "/html/slide-1-23.html",
+      "chapter": 1,
+      "section": 23,
+      "description": "🎯 새로운 관점의 비유나 예화 생성"
+    },
+    {
+      "id": "slide-1-24",
+      "title": "긍정적인 할루시네이션(2)",
+      "htmlPath": "/html/slide-1-24.html",
+      "chapter": 1,
+      "section": 24,
+      "description": "🎯 연령별 맞춤 성경 이야기 각색"
+    },
+    {
+      "id": "slide-1-25",
+      "title": "긍정적인 할루시네이션(3)",
+      "htmlPath": "/html/slide-1-25.html",
+      "chapter": 1,
+      "section": 25,
+      "description": "🎯 가상의 상담 사례 만들기"
+    },
+    {
+      "id": "slide-1-26",
+      "title": "부정적인 할루시네이션(1)",
+      "htmlPath": "/html/slide-1-26.html",
+      "chapter": 1,
+      "section": 26,
+      "description": "⚠️ 존재하지 않는 성경 구절 인용"
+    },
+    {
+      "id": "slide-1-27",
+      "title": "부정적인 할루시네이션(2)",
+      "htmlPath": "/html/slide-1-27.html",
+      "chapter": 1,
+      "section": 27,
+      "description": "⚠️ 가짜 교부나 신학자의 인용문"
+    },
+    {
+      "id": "slide-1-28",
+      "title": "부정적인 할루시네이션(3)",
+      "htmlPath": "/html/slide-1-28.html",
+      "chapter": 1,
+      "section": 28,
+      "description": "⚠️ 부적절한 정신건강 조언"
+    },
+    {
+      "id": "slide-1-29",
+      "title": "🎯 실천 지침 체크리스트",
+      "htmlPath": "/html/slide-1-29.html",
+      "chapter": 1,
+      "section": 29,
+      "description": "✅ 사용 중 주의사항"
+    },
+    {
+      "id": "slide-1-30",
+      "title": "🎯 ChatGPT 할루시네이션 예방 프롬프트",
+      "htmlPath": "/html/slide-1-30.html",
+      "chapter": 1,
+      "section": 30,
+      "description": "아래 내용을 등록하고 사용하면 Hallucination 발생 안 함."
+    },
+    {
+      "id": "slide-1-31",
+      "title": "대책 제언",
+      "htmlPath": "/html/slide-1-31.html",
+      "chapter": 1,
+      "section": 31,
+      "description": "Chapter 1, Section 31 슬라이드"
+    },
+    {
+      "id": "slide-2-0",
+      "title": "2. WHAT-1 : 생성형AI란?",
+      "htmlPath": "/html/slide-2-0.html",
+      "chapter": 2,
+      "section": 0,
+      "description": "Chapter 2, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-2-1",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-1.html",
+      "chapter": 2,
+      "section": 1,
+      "description": "다음 단어의 확률을 예측해 문장을 이어감 → “프롬프트(요청) → 모델 추론 → 응답”"
+    },
+    {
+      "id": "slide-2-2",
+      "title": "🤖 GPT 모델 발전사",
+      "htmlPath": "/html/slide-2-2.html",
+      "chapter": 2,
+      "section": 2,
+      "description": "OpenAI GPT 시리즈의 진화 과정"
+    },
+    {
+      "id": "slide-2-3",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-3.html",
+      "chapter": 2,
+      "section": 3,
+      "description": "상사: \"그 보고서 있잖아… 그냥 빨리 정리해서 보내.\""
+    },
+    {
+      "id": "slide-2-4",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-4.html",
+      "chapter": 2,
+      "section": 4,
+      "description": "학생: \"선생님, 이거 잘 모르겠어요.\""
+    },
+    {
+      "id": "slide-2-5",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-5.html",
+      "chapter": 2,
+      "section": 5,
+      "description": "A: \"난 그냥 그게 별로라고 생각해.\""
+    },
+    {
+      "id": "slide-2-6",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-6.html",
+      "chapter": 2,
+      "section": 6,
+      "description": "상사: \"이거 좀 별로네. 다시 해와.\""
+    },
+    {
+      "id": "slide-2-7",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-7.html",
+      "chapter": 2,
+      "section": 7,
+      "description": "장로A: \"요즘 교회 재정 상황이 좀 안 좋은 것 같습니다.\""
+    },
+    {
+      "id": "slide-2-8",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-2-8.html",
+      "chapter": 2,
+      "section": 8,
+      "description": "Chapter 2, Section 8 슬라이드"
+    },
+    {
+      "id": "slide-3-0",
+      "title": "3. WHAT-2 : 프롬프팅 기법",
+      "htmlPath": "/html/slide-3-0.html",
+      "chapter": 3,
+      "section": 0,
+      "description": "Chapter 3, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-3-1",
+      "title": "프롬프팅 기법 = AI와의 대화 기술",
+      "htmlPath": "/html/slide-3-1.html",
+      "chapter": 3,
+      "section": 1,
+      "description": "Q. 10개 중 &lt;질문&gt;에 해당하는 것은? 나머지는 &lt;지시&gt;"
+    },
+    {
+      "id": "slide-3-2",
+      "title": "① 명확하고 구체적 질문 - 기본 중의 기본",
+      "htmlPath": "/html/slide-3-2.html",
+      "chapter": 3,
+      "section": 2,
+      "description": "AI에게 모호하게 질문하면, 모호한 답변이 돌아옵니다."
+    },
+    {
+      "id": "slide-3-3",
+      "title": "② 역할 부여",
+      "htmlPath": "/html/slide-3-3.html",
+      "chapter": 3,
+      "section": 3,
+      "description": "AI에게 특정 분야의 전문가 역할을 부여하면, 그 관점과 지식 수준에 맞는 깊이 있는 답변을 얻을 수 있습니다."
+    },
+    {
+      "id": "slide-3-4",
+      "title": "② 역할 부여 : 실습",
+      "htmlPath": "/html/slide-3-4.html",
+      "chapter": 3,
+      "section": 4,
+      "description": "Chapter 3, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-3-5",
+      "title": "③ 대상과 맥락 설명",
+      "htmlPath": "/html/slide-3-5.html",
+      "chapter": 3,
+      "section": 5,
+      "description": "결과물이 사용될 대상(청중)과 구체적인 상황(맥락)을 명시하면, 그에 맞는 맞춤형 결과물을 얻을 수 있습니다."
+    },
+    {
+      "id": "slide-3-6",
+      "title": "④ 열린 질문",
+      "htmlPath": "/html/slide-3-6.html",
+      "chapter": 3,
+      "section": 6,
+      "description": "AI가 다양한 가능성을 탐색하고 창의적이며 깊이 있는 답변을 하도록 유도합니다."
+    },
+    {
+      "id": "slide-3-7",
+      "title": "➄ 예시 제공",
+      "htmlPath": "/html/slide-3-7.html",
+      "chapter": 3,
+      "section": 7,
+      "description": "원하는 결과물의 형식이나 스타일을 명확히 전달하기 위해, 한두 가지 좋은 예시(Few-shot)를 함께 제공하는 기법입니다."
+    },
+    {
+      "id": "slide-3-8",
+      "title": "⑥ 어조와 스타일",
+      "htmlPath": "/html/slide-3-8.html",
+      "chapter": 3,
+      "section": 8,
+      "description": "❌ 나쁜 예"
+    },
+    {
+      "id": "slide-3-9",
+      "title": "⑦ 원칙 또는 제약",
+      "htmlPath": "/html/slide-3-9.html",
+      "chapter": 3,
+      "section": 9,
+      "description": "❌ 나쁜 예"
+    },
+    {
+      "id": "slide-3-10",
+      "title": "⑧ 시나리오 활용",
+      "htmlPath": "/html/slide-3-10.html",
+      "chapter": 3,
+      "section": 10,
+      "description": "❌ 나쁜 예"
+    },
+    {
+      "id": "slide-3-11",
+      "title": "⑨ 구조화된 지시",
+      "htmlPath": "/html/slide-3-11.html",
+      "chapter": 3,
+      "section": 11,
+      "description": "❌ 나쁜 예"
+    },
+    {
+      "id": "slide-3-12",
+      "title": "⑩ 비교하기 - 옵션 분석 요청",
+      "htmlPath": "/html/slide-3-12.html",
+      "chapter": 3,
+      "section": 12,
+      "description": "두 가지 이상의 옵션을 제시하고, 각 옵션의 장단점을 분석하거나 특정 기준에 따라 비교하도록 요청하여 합리적인 의사결정을 돕게 합니다."
+    },
+    {
+      "id": "slide-3-13",
+      "title": "AI와 일하는 방법 프로세스",
+      "htmlPath": "/html/slide-3-13.html",
+      "chapter": 3,
+      "section": 13,
+      "description": "해결하고자 하는 문제나 달성하고자 하는 목표를 구체적이고 명확하게 정의합니다. 모호한 질문보다는 구체적인 맥락과 조건을 포함한 질문이 더 좋은 결과를 가져옵니다."
+    },
+    {
+      "id": "slide-3-14",
+      "title": "마무리",
+      "htmlPath": "/html/slide-3-14.html",
+      "chapter": 3,
+      "section": 14,
+      "description": "AI는 목회의 본질을 대체하는 것이 아니라,"
+    },
+    {
+      "id": "slide-4-0",
+      "title": "4. WHAT-3 : GPTs 챗봇 만들기 실습",
+      "htmlPath": "/html/slide-4-0.html",
+      "chapter": 4,
+      "section": 0,
+      "description": "&quot;OpenAI에서 맞춤형 GPT(ChatGPT의 개인화 버전)를 만들 수 있는 기능&quot;"
+    },
+    {
+      "id": "slide-4-1",
+      "title": "GPTs 둘러보기 :",
+      "htmlPath": "/html/slide-4-1.html",
+      "chapter": 4,
+      "section": 1,
+      "description": "https://chatgpt.com/share/689d2ae3-6244-800e-80c2-c13621512939"
+    },
+    {
+      "id": "slide-4-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-4-2.html",
+      "chapter": 4,
+      "section": 2,
+      "description": "Bible Study GPT"
+    },
+    {
+      "id": "slide-4-3",
+      "title": "새신자/성도 안내 예배/행사 안내 챗봇",
+      "htmlPath": "/html/slide-4-3.html",
+      "chapter": 4,
+      "section": 3,
+      "description": "Chapter 4, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-4-4",
+      "title": "설교 원고 기반의 주해와 강해",
+      "htmlPath": "/html/slide-4-4.html",
+      "chapter": 4,
+      "section": 4,
+      "description": "Chapter 4, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-4-5",
+      "title": "가스펠 작곡",
+      "htmlPath": "/html/slide-4-5.html",
+      "chapter": 4,
+      "section": 5,
+      "description": "Chapter 4, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-4-6",
+      "title": "소그룹 리더 교육교재 제작",
+      "htmlPath": "/html/slide-4-6.html",
+      "chapter": 4,
+      "section": 6,
+      "description": "Chapter 4, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-4-7",
+      "title": "행사/세미나 포스터 제작",
+      "htmlPath": "/html/slide-4-7.html",
+      "chapter": 4,
+      "section": 7,
+      "description": "Chapter 4, Section 7 슬라이드"
+    },
+    {
+      "id": "slide-4-8",
+      "title": "시연#1 : 설교 원고로 교육교재 개발",
+      "htmlPath": "/html/slide-4-8.html",
+      "chapter": 4,
+      "section": 8,
+      "description": "Chapter 4, Section 8 슬라이드"
+    },
+    {
+      "id": "slide-5-0",
+      "title": "5. HOW - 설교 준비",
+      "htmlPath": "/html/slide-5-0.html",
+      "chapter": 5,
+      "section": 0,
+      "description": "Chapter 5, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-5-1",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-1.html",
+      "chapter": 5,
+      "section": 1,
+      "description": "Chapter 5, Section 1 슬라이드"
+    },
+    {
+      "id": "slide-5-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-2.html",
+      "chapter": 5,
+      "section": 2,
+      "description": "Chapter 5, Section 2 슬라이드"
+    },
+    {
+      "id": "slide-5-3",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-3.html",
+      "chapter": 5,
+      "section": 3,
+      "description": "Chapter 5, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-5-4",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-4.html",
+      "chapter": 5,
+      "section": 4,
+      "description": "1. 기도와 묵상을 통한 영적 준비: 45%"
+    },
+    {
+      "id": "slide-5-5",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-5.html",
+      "chapter": 5,
+      "section": 5,
+      "description": "1. 성경 본문 해석 및 주해 작업: 40%"
+    },
+    {
+      "id": "slide-5-6",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-6.html",
+      "chapter": 5,
+      "section": 6,
+      "description": "1. 성경 본문의 원어 분석 및 배경 연구: 35%"
+    },
+    {
+      "id": "slide-5-7",
+      "title": "목회자 설교 준비 방식 국가별 비교 분석",
+      "htmlPath": "/html/slide-5-7.html",
+      "chapter": 5,
+      "section": 7,
+      "description": "한국 · 미국 · 유럽 목회자 1000명 대상 설문조사 예측 결과"
+    },
+    {
+      "id": "slide-5-8",
+      "title": "설교준비 단계",
+      "htmlPath": "/html/slide-5-8.html",
+      "chapter": 5,
+      "section": 8,
+      "description": "성령의 인도하심을 구하며 시작하는 단계"
+    },
+    {
+      "id": "slide-5-9",
+      "title": "목회자를 위한 AI 성경주해 방법",
+      "htmlPath": "/html/slide-5-9.html",
+      "chapter": 5,
+      "section": 9,
+      "description": "Chapter 5, Section 9 슬라이드"
+    },
+    {
+      "id": "slide-5-10",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-10.html",
+      "chapter": 5,
+      "section": 10,
+      "description": "Chapter 5, Section 10 슬라이드"
+    },
+    {
+      "id": "slide-5-11",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-11.html",
+      "chapter": 5,
+      "section": 11,
+      "description": "📌 주석서 비교"
+    },
+    {
+      "id": "slide-5-12",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-12.html",
+      "chapter": 5,
+      "section": 12,
+      "description": "Chapter 5, Section 12 슬라이드"
+    },
+    {
+      "id": "slide-5-13",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-13.html",
+      "chapter": 5,
+      "section": 13,
+      "description": "Chapter 5, Section 13 슬라이드"
+    },
+    {
+      "id": "slide-5-14",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-14.html",
+      "chapter": 5,
+      "section": 14,
+      "description": "Chapter 5, Section 14 슬라이드"
+    },
+    {
+      "id": "slide-5-15",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-15.html",
+      "chapter": 5,
+      "section": 15,
+      "description": "Chapter 5, Section 15 슬라이드"
+    },
+    {
+      "id": "slide-5-16",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-16.html",
+      "chapter": 5,
+      "section": 16,
+      "description": "Chapter 5, Section 16 슬라이드"
+    },
+    {
+      "id": "slide-5-17",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-17.html",
+      "chapter": 5,
+      "section": 17,
+      "description": "Chapter 5, Section 17 슬라이드"
+    },
+    {
+      "id": "slide-5-18",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-18.html",
+      "chapter": 5,
+      "section": 18,
+      "description": "Chapter 5, Section 18 슬라이드"
+    },
+    {
+      "id": "slide-5-19",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-19.html",
+      "chapter": 5,
+      "section": 19,
+      "description": "Chapter 5, Section 19 슬라이드"
+    },
+    {
+      "id": "slide-5-20",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-20.html",
+      "chapter": 5,
+      "section": 20,
+      "description": "Chapter 5, Section 20 슬라이드"
+    },
+    {
+      "id": "slide-5-21",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-21.html",
+      "chapter": 5,
+      "section": 21,
+      "description": "📌 개념"
+    },
+    {
+      "id": "slide-5-22",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-22.html",
+      "chapter": 5,
+      "section": 22,
+      "description": "Chapter 5, Section 22 슬라이드"
+    },
+    {
+      "id": "slide-5-23",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-23.html",
+      "chapter": 5,
+      "section": 23,
+      "description": "Chapter 5, Section 23 슬라이드"
+    },
+    {
+      "id": "slide-5-24",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-24.html",
+      "chapter": 5,
+      "section": 24,
+      "description": "Chapter 5, Section 24 슬라이드"
+    },
+    {
+      "id": "slide-5-25",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-25.html",
+      "chapter": 5,
+      "section": 25,
+      "description": "Chapter 5, Section 25 슬라이드"
+    },
+    {
+      "id": "slide-5-26",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-26.html",
+      "chapter": 5,
+      "section": 26,
+      "description": "Chapter 5, Section 26 슬라이드"
+    },
+    {
+      "id": "slide-5-27",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-27.html",
+      "chapter": 5,
+      "section": 27,
+      "description": "Chapter 5, Section 27 슬라이드"
+    },
+    {
+      "id": "slide-5-28",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-28.html",
+      "chapter": 5,
+      "section": 28,
+      "description": "Chapter 5, Section 28 슬라이드"
+    },
+    {
+      "id": "slide-5-29",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-29.html",
+      "chapter": 5,
+      "section": 29,
+      "description": "Chapter 5, Section 29 슬라이드"
+    },
+    {
+      "id": "slide-5-30",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-30.html",
+      "chapter": 5,
+      "section": 30,
+      "description": "AI는 도구일 뿐, 최종 책임은 목회자에게 있습니다."
+    },
+    {
+      "id": "slide-5-31",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-31.html",
+      "chapter": 5,
+      "section": 31,
+      "description": "Chapter 5, Section 31 슬라이드"
+    },
+    {
+      "id": "slide-5-32",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-32.html",
+      "chapter": 5,
+      "section": 32,
+      "description": "Chapter 5, Section 32 슬라이드"
+    },
+    {
+      "id": "slide-5-33",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-33.html",
+      "chapter": 5,
+      "section": 33,
+      "description": "Chapter 5, Section 33 슬라이드"
+    },
+    {
+      "id": "slide-5-34",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-34.html",
+      "chapter": 5,
+      "section": 34,
+      "description": "Chapter 5, Section 34 슬라이드"
+    },
+    {
+      "id": "slide-5-35",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-35.html",
+      "chapter": 5,
+      "section": 35,
+      "description": "Chapter 5, Section 35 슬라이드"
+    },
+    {
+      "id": "slide-5-36",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-36.html",
+      "chapter": 5,
+      "section": 36,
+      "description": "&quot;하나님의 말씀을 더 깊이 이해하고, 더 많은 사람들에게 전하며, 더 실천적으로 살아가기 위한 도구&quot;"
+    },
+    {
+      "id": "slide-5-37",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-37.html",
+      "chapter": 5,
+      "section": 37,
+      "description": "Chapter 5, Section 37 슬라이드"
+    },
+    {
+      "id": "slide-5-38",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-38.html",
+      "chapter": 5,
+      "section": 38,
+      "description": "💡 효과적인 주해-설교 연결 프로세스"
+    },
+    {
+      "id": "slide-5-39",
+      "title": "성경주해를 위한 AI 프롬프트 가이드라인",
+      "htmlPath": "/html/slide-5-39.html",
+      "chapter": 5,
+      "section": 39,
+      "description": "Chapter 5, Section 39 슬라이드"
+    },
+    {
+      "id": "slide-5-40",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-40.html",
+      "chapter": 5,
+      "section": 40,
+      "description": "Chapter 5, Section 40 슬라이드"
+    },
+    {
+      "id": "slide-5-41",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-41.html",
+      "chapter": 5,
+      "section": 41,
+      "description": "Chapter 5, Section 41 슬라이드"
+    },
+    {
+      "id": "slide-5-42",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-42.html",
+      "chapter": 5,
+      "section": 42,
+      "description": "Chapter 5, Section 42 슬라이드"
+    },
+    {
+      "id": "slide-5-43",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-43.html",
+      "chapter": 5,
+      "section": 43,
+      "description": "Chapter 5, Section 43 슬라이드"
+    },
+    {
+      "id": "slide-5-44",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-44.html",
+      "chapter": 5,
+      "section": 44,
+      "description": "Chapter 5, Section 44 슬라이드"
+    },
+    {
+      "id": "slide-5-45",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-45.html",
+      "chapter": 5,
+      "section": 45,
+      "description": "Chapter 5, Section 45 슬라이드"
+    },
+    {
+      "id": "slide-5-46",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-46.html",
+      "chapter": 5,
+      "section": 46,
+      "description": "Chapter 5, Section 46 슬라이드"
+    },
+    {
+      "id": "slide-5-47",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-47.html",
+      "chapter": 5,
+      "section": 47,
+      "description": "Chapter 5, Section 47 슬라이드"
+    },
+    {
+      "id": "slide-5-48",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-48.html",
+      "chapter": 5,
+      "section": 48,
+      "description": "Chapter 5, Section 48 슬라이드"
+    },
+    {
+      "id": "slide-5-49",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-49.html",
+      "chapter": 5,
+      "section": 49,
+      "description": "Chapter 5, Section 49 슬라이드"
+    },
+    {
+      "id": "slide-5-50",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-50.html",
+      "chapter": 5,
+      "section": 50,
+      "description": "Chapter 5, Section 50 슬라이드"
+    },
+    {
+      "id": "slide-5-51",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-51.html",
+      "chapter": 5,
+      "section": 51,
+      "description": "Chapter 5, Section 51 슬라이드"
+    },
+    {
+      "id": "slide-5-52",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-5-52.html",
+      "chapter": 5,
+      "section": 52,
+      "description": "AI는 도구일 뿐, 최종 책임은 목회자에게 있습니다."
+    },
+    {
+      "id": "slide-6-0",
+      "title": "6. IF - 목회 계획",
+      "htmlPath": "/html/slide-6-0.html",
+      "chapter": 6,
+      "section": 0,
+      "description": "Chapter 6, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-6-1",
+      "title": "연간 목회계획 절차",
+      "htmlPath": "/html/slide-6-1.html",
+      "chapter": 6,
+      "section": 1,
+      "description": "체계적이고 포괄적인 목회 계획 수립을 위한 단계별 가이드"
+    },
+    {
+      "id": "slide-6-2",
+      "title": "연간 목회계획 수립을 위한 1단계 프롬프트",
+      "htmlPath": "/html/slide-6-2.html",
+      "chapter": 6,
+      "section": 2,
+      "description": "⚠️ 주의사항"
+    },
+    {
+      "id": "slide-6-3",
+      "title": "연간 목회계획 수립을 위한 2단계 프롬프트",
+      "htmlPath": "/html/slide-6-3.html",
+      "chapter": 6,
+      "section": 3,
+      "description": "Chapter 6, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-6-4",
+      "title": "연간 목회계획 수립을 위한 3단계 프롬프트",
+      "htmlPath": "/html/slide-6-4.html",
+      "chapter": 6,
+      "section": 4,
+      "description": "Chapter 6, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-6-5",
+      "title": "연간 목회계획 수립을 위한 4단계 프롬프트",
+      "htmlPath": "/html/slide-6-5.html",
+      "chapter": 6,
+      "section": 5,
+      "description": "Chapter 6, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-6-6",
+      "title": "연간 목회계획 수립을 위한 5단계 프롬프트",
+      "htmlPath": "/html/slide-6-6.html",
+      "chapter": 6,
+      "section": 6,
+      "description": "Chapter 6, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-6-7",
+      "title": "연간 목회계획 수립을 위한 6단계 프롬프트",
+      "htmlPath": "/html/slide-6-7.html",
+      "chapter": 6,
+      "section": 7,
+      "description": "Chapter 6, Section 7 슬라이드"
+    },
+    {
+      "id": "slide-6-8",
+      "title": "연간 목회계획 수립을 위한 7단계 프롬프트",
+      "htmlPath": "/html/slide-6-8.html",
+      "chapter": 6,
+      "section": 8,
+      "description": "7단계: 실행 및 모니터링 프롬프트 (연중)"
+    },
+    {
+      "id": "slide-6-9",
+      "title": "📊 평가 및 개선 체계",
+      "htmlPath": "/html/slide-6-9.html",
+      "chapter": 6,
+      "section": 9,
+      "description": "---"
+    },
+    {
+      "id": "slide-7-0",
+      "title": "7. AI 12가지 활용 시나리오",
+      "htmlPath": "/html/slide-7-0.html",
+      "chapter": 7,
+      "section": 0,
+      "description": "AI 툴을 실제 목회 현장에서 어떻게 복합적으로 활용할 수 있는지 12가지 구체적인 시나리오를 통해 실습해보겠습니다."
+    },
+    {
+      "id": "slide-7-1",
+      "title": "1. 이준호 목사: 주일설교 주제 선정",
+      "htmlPath": "/html/slide-7-1.html",
+      "chapter": 7,
+      "section": 1,
+      "description": "핵심: 브레인스토밍"
+    },
+    {
+      "id": "slide-7-2",
+      "title": "2. 김은혜 목사: 설교문 구조화",
+      "htmlPath": "/html/slide-7-2.html",
+      "chapter": 7,
+      "section": 2,
+      "description": "핵심: 논리 강화 및 시각화"
+    },
+    {
+      "id": "slide-7-3",
+      "title": "3. 김 목사(58세): 기존 설교 리프레시",
+      "htmlPath": "/html/slide-7-3.html",
+      "chapter": 7,
+      "section": 3,
+      "description": "핵심: 개인 자산의 재활용"
+    },
+    {
+      "id": "slide-7-4",
+      "title": "4. 박성민 목사: 성경공부 교재 제작",
+      "htmlPath": "/html/slide-7-4.html",
+      "chapter": 7,
+      "section": 4,
+      "description": "핵심: 텍스트 생성을 넘어 시각 자료로 완성하기"
+    },
+    {
+      "id": "slide-7-5",
+      "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+      "htmlPath": "/html/slide-7-5.html",
+      "chapter": 7,
+      "section": 5,
+      "description": "핵심: 텍스트를 매력적인 비주얼로 변환하기"
+    },
+    {
+      "id": "slide-7-6",
+      "title": "6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+      "htmlPath": "/html/slide-7-6.html",
+      "chapter": 7,
+      "section": 6,
+      "description": "핵심: 한국형 AI 툴로 시간 확보하기"
+    },
+    {
+      "id": "slide-7-7",
+      "title": "7. 신혜숙 목사: 상담 준비",
+      "htmlPath": "/html/slide-7-7.html",
+      "chapter": 7,
+      "section": 7,
+      "description": "핵심: AI의 개인화 및 안전장치 설정"
+    },
+    {
+      "id": "slide-7-8",
+      "title": "8. 윤석진 목사: 교회 행사 기획",
+      "htmlPath": "/html/slide-7-8.html",
+      "chapter": 7,
+      "section": 8,
+      "description": "핵심: AI를 프로젝트 매니저로 활용하기"
+    },
+    {
+      "id": "slide-7-9",
+      "title": "9. 김도현 목사: 온라인 목양 & 미래 조망",
+      "htmlPath": "/html/slide-7-9.html",
+      "chapter": 7,
+      "section": 9,
+      "description": "핵심: 미래 기술을 통한 목회의 확장"
+    },
+    {
+      "id": "slide-7-10",
+      "title": "8. 신혜숙 목사: 상담 준비",
+      "htmlPath": "/html/slide-7-10.html",
+      "chapter": 7,
+      "section": 10,
+      "description": "핵심: AI의 개인화 및 안전장치 설정"
+    },
+    {
+      "id": "slide-7-11",
+      "title": "LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)",
+      "htmlPath": "/html/slide-7-11.html",
+      "chapter": 7,
+      "section": 11,
+      "description": "이 단계에서는 단순히 AI를 사용하는 것을 넘어, 나만의 AI 챗봇을 만들고, 사역 전체를 기획하며, 미래의 기술까지 조망하는 가장 높은 수준의 활용법을 다룹니다."
+    },
+    {
+      "id": "slide-7-12",
+      "title": "9. 정태영 목사: 새신자 환영 시스템 구축",
+      "htmlPath": "/html/slide-7-12.html",
+      "chapter": 7,
+      "section": 12,
+      "description": "핵심: 나만의 맞춤형 AI 챗봇 만들기"
+    },
+    {
+      "id": "slide-7-13",
+      "title": "10. 윤석진 목사: 교회 행사 기획",
+      "htmlPath": "/html/slide-7-13.html",
+      "chapter": 7,
+      "section": 13,
+      "description": "핵심: AI를 프로젝트 매니저로 활용하기"
+    },
+    {
+      "id": "slide-7-14",
+      "title": "11. 이미영 목사: 어린이 교육 커리큘럼",
+      "htmlPath": "/html/slide-7-14.html",
+      "chapter": 7,
+      "section": 14,
+      "description": "핵심: 다중 감각을 활용한 입체적 교육 콘텐츠"
+    },
+    {
+      "id": "slide-7-15",
+      "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
+      "htmlPath": "/html/slide-7-15.html",
+      "chapter": 7,
+      "section": 15,
+      "description": "핵심: 미래 기술을 통한 목회의 확장"
+    },
+    {
+      "id": "slide-7-16",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-16.html",
+      "chapter": 7,
+      "section": 16,
+      "description": "Chapter 7, Section 16 슬라이드"
+    },
+    {
+      "id": "slide-7-17",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-17.html",
+      "chapter": 7,
+      "section": 17,
+      "description": "Chapter 7, Section 17 슬라이드"
+    },
+    {
+      "id": "slide-7-18",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-18.html",
+      "chapter": 7,
+      "section": 18,
+      "description": "Chapter 7, Section 18 슬라이드"
+    },
+    {
+      "id": "slide-7-19",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-19.html",
+      "chapter": 7,
+      "section": 19,
+      "description": "Chapter 7, Section 19 슬라이드"
+    },
+    {
+      "id": "slide-7-20",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-20.html",
+      "chapter": 7,
+      "section": 20,
+      "description": "Chapter 7, Section 20 슬라이드"
+    },
+    {
+      "id": "slide-7-21",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-21.html",
+      "chapter": 7,
+      "section": 21,
+      "description": "Chapter 7, Section 21 슬라이드"
+    },
+    {
+      "id": "slide-7-22",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-7-22.html",
+      "chapter": 7,
+      "section": 22,
+      "description": "Chapter 7, Section 22 슬라이드"
+    },
+    {
+      "id": "slide-8-0",
+      "title": "8. Google NotebookLM",
+      "htmlPath": "/html/slide-8-0.html",
+      "chapter": 8,
+      "section": 0,
+      "description": "이미 가지고 있는 설교, 훈련자료, 문서를 사역 자산으로 바꾸는 AI 활용 가이드"
+    },
+    {
+      "id": "slide-8-1",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-1.html",
+      "chapter": 8,
+      "section": 1,
+      "description": "Chapter 8, Section 1 슬라이드"
+    },
+    {
+      "id": "slide-8-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-2.html",
+      "chapter": 8,
+      "section": 2,
+      "description": "Chapter 8, Section 2 슬라이드"
+    },
+    {
+      "id": "slide-8-3",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-3.html",
+      "chapter": 8,
+      "section": 3,
+      "description": "Chapter 8, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-8-4",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-4.html",
+      "chapter": 8,
+      "section": 4,
+      "description": "Chapter 8, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-8-5",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-5.html",
+      "chapter": 8,
+      "section": 5,
+      "description": "Chapter 8, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-8-6",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-8-6.html",
+      "chapter": 8,
+      "section": 6,
+      "description": "Chapter 8, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-8-7",
+      "title": "Share Link",
+      "htmlPath": "/html/slide-8-7.html",
+      "chapter": 8,
+      "section": 7,
+      "description": "https://g.co/gemini/share/2ffca3b8be9b"
+    },
+    {
+      "id": "slide-8-8",
+      "title": "실습: AI 목회 도구 활용하기",
+      "htmlPath": "/html/slide-8-8.html",
+      "chapter": 8,
+      "section": 8,
+      "description": "Chapter 8, Section 8 슬라이드"
+    },
+    {
+      "id": "slide-8-9",
+      "title": "실습: 설교 준비에 AI 활용하기",
+      "htmlPath": "/html/slide-8-9.html",
+      "chapter": 8,
+      "section": 9,
+      "description": "Chapter 8, Section 9 슬라이드"
+    },
+    {
+      "id": "slide-8-10",
+      "title": "실습: 상담 사역에 AI 활용하기",
+      "htmlPath": "/html/slide-8-10.html",
+      "chapter": 8,
+      "section": 10,
+      "description": "Chapter 8, Section 10 슬라이드"
+    },
+    {
+      "id": "slide-8-11",
+      "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-8-11.html",
+      "chapter": 8,
+      "section": 11,
+      "description": "Chapter 8, Section 11 슬라이드"
+    },
+    {
+      "id": "slide-8-12",
+      "title": "실습: 교회 행정에 AI 활용하기",
+      "htmlPath": "/html/slide-8-12.html",
+      "chapter": 8,
+      "section": 12,
+      "description": "Chapter 8, Section 12 슬라이드"
+    },
+    {
+      "id": "slide-8-13",
+      "title": "실습: 소통 및 홍보에 AI 활용하기",
+      "htmlPath": "/html/slide-8-13.html",
+      "chapter": 8,
+      "section": 13,
+      "description": "Chapter 8, Section 13 슬라이드"
+    },
+    {
+      "id": "slide-8-14",
+      "title": "실습: 성경공부에 AI 활용하기",
+      "htmlPath": "/html/slide-8-14.html",
+      "chapter": 8,
+      "section": 14,
+      "description": "Chapter 8, Section 14 슬라이드"
+    },
+    {
+      "id": "slide-8-15",
+      "title": "실습: 기도문 작성에 AI 활용하기",
+      "htmlPath": "/html/slide-8-15.html",
+      "chapter": 8,
+      "section": 15,
+      "description": "Chapter 8, Section 15 슬라이드"
+    },
+    {
+      "id": "slide-8-16",
+      "title": "실습: 찬양 선곡에 AI 활용하기",
+      "htmlPath": "/html/slide-8-16.html",
+      "chapter": 8,
+      "section": 16,
+      "description": "Chapter 8, Section 16 슬라이드"
+    },
+    {
+      "id": "slide-8-17",
+      "title": "실습: 심방 메시지 작성에 AI 활용하기",
+      "htmlPath": "/html/slide-8-17.html",
+      "chapter": 8,
+      "section": 17,
+      "description": "Chapter 8, Section 17 슬라이드"
+    },
+    {
+      "id": "slide-8-18",
+      "title": "실습: 예배 순서 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-8-18.html",
+      "chapter": 8,
+      "section": 18,
+      "description": "Chapter 8, Section 18 슬라이드"
+    },
+    {
+      "id": "slide-8-19",
+      "title": "실습: 교회 소식지 제작에 AI 활용하기",
+      "htmlPath": "/html/slide-8-19.html",
+      "chapter": 8,
+      "section": 19,
+      "description": "Chapter 8, Section 19 슬라이드"
+    },
+    {
+      "id": "slide-8-20",
+      "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-8-20.html",
+      "chapter": 8,
+      "section": 20,
+      "description": "Chapter 8, Section 20 슬라이드"
+    },
+    {
+      "id": "slide-8-21",
+      "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-8-21.html",
+      "chapter": 8,
+      "section": 21,
+      "description": "Chapter 8, Section 21 슬라이드"
+    },
+    {
+      "id": "slide-8-22",
+      "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+      "htmlPath": "/html/slide-8-22.html",
+      "chapter": 8,
+      "section": 22,
+      "description": "Chapter 8, Section 22 슬라이드"
+    },
+    {
+      "id": "slide-8-23",
+      "title": "실습: AI 목회 도구 종합 활용",
+      "htmlPath": "/html/slide-8-23.html",
+      "chapter": 8,
+      "section": 23,
+      "description": "Chapter 8, Section 23 슬라이드"
+    },
+    {
+      "id": "slide-9-0",
+      "title": "9. Wrap-up",
+      "htmlPath": "/html/slide-9-0.html",
+      "chapter": 9,
+      "section": 0,
+      "description": "Chapter 9, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-9-1",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-9-1.html",
+      "chapter": 9,
+      "section": 1,
+      "description": "AI의 근본 한계"
+    },
+    {
+      "id": "slide-9-2",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-9-2.html",
+      "chapter": 9,
+      "section": 2,
+      "description": "AI의 강점 영역 (목회에 도움되는 부분)"
+    },
+    {
+      "id": "slide-9-3",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-9-3.html",
+      "chapter": 9,
+      "section": 3,
+      "description": "AI는 목회를 도울 수 있는 유용한 도구이지만, 영혼을 돌보는 목회의 본질을 대체할 수는 없습니다."
+    },
+    {
+      "id": "slide-9-4",
+      "title": "AI 목회의 도전과제",
+      "htmlPath": "/html/slide-9-4.html",
+      "chapter": 9,
+      "section": 4,
+      "description": "Chapter 9, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-9-5",
+      "title": "AI 목회의 기회와 가능성",
+      "htmlPath": "/html/slide-9-5.html",
+      "chapter": 9,
+      "section": 5,
+      "description": "Chapter 9, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-9-6",
+      "title": "AI 목회의 미래 시나리오",
+      "htmlPath": "/html/slide-9-6.html",
+      "chapter": 9,
+      "section": 6,
+      "description": "Chapter 9, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-9-7",
+      "title": "AI 목회의 한계와 주의사항",
+      "htmlPath": "/html/slide-9-7.html",
+      "chapter": 9,
+      "section": 7,
+      "description": "Chapter 9, Section 7 슬라이드"
+    },
+    {
+      "id": "slide-9-8",
+      "title": "목회자를 위한 AI 활용 시나리오",
+      "htmlPath": "/html/slide-9-8.html",
+      "chapter": 9,
+      "section": 8,
+      "description": "AI는 목회를 도울 수 있는 유용한 도구이지만, 영혼을 돌보는 목회의 본질을 대체할 수는 없습니다."
+    },
+    {
+      "id": "slide-10-0",
+      "title": "10. 실전 AI 복합 활용 시나리오 (시연)",
+      "htmlPath": "/html/slide-10-0.html",
+      "chapter": 10,
+      "section": 0,
+      "description": "Chapter 10, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-10-1",
+      "title": "ChatGPT 창의적 기획",
+      "htmlPath": "/html/slide-10-1.html",
+      "chapter": 10,
+      "section": 1,
+      "description": "&quot;&#39;리셋, 새로운 시작&#39; 주제로 MZ세대 청년 40명을 위한 혁신적이고 인상적인 2박3일 수련회 프로그램&quot;&lt;br&gt;"
+    },
+    {
+      "id": "slide-10-2",
+      "title": "Perplexity 실시간 정보 수집",
+      "htmlPath": "/html/slide-10-2.html",
+      "chapter": 10,
+      "section": 2,
+      "description": "강원도 맛집 리스트"
+    },
+    {
+      "id": "slide-10-3",
+      "title": "멀티미디어 홍보 패키지",
+      "htmlPath": "/html/slide-10-3.html",
+      "chapter": 10,
+      "section": 3,
+      "description": "Canva: 인스타그램용 모집 포스터"
+    },
+    {
+      "id": "slide-10-4",
+      "title": "멀티미디어 홍보 패키지 (계속)",
+      "htmlPath": "/html/slide-10-4.html",
+      "chapter": 10,
+      "section": 4,
+      "description": "Suno: 수련회 주제곡 제작"
+    },
+    {
+      "id": "slide-10-5",
+      "title": "예산 최적화 계획",
+      "htmlPath": "/html/slide-10-5.html",
+      "chapter": 10,
+      "section": 5,
+      "description": "&quot;600만원 예산으로 40명 2박3일 수련회 비용 배분 및 절약 방안 제시&quot;&lt;br&gt;"
+    },
+    {
+      "id": "slide-10-6",
+      "title": "수련회 예산 계획 결과",
+      "htmlPath": "/html/slide-10-6.html",
+      "chapter": 10,
+      "section": 6,
+      "description": "Chapter 10, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-10-7",
+      "title": "MZ세대 수련회 최적 예산 플랜",
+      "htmlPath": "/html/slide-10-7.html",
+      "chapter": 10,
+      "section": 7,
+      "description": "https://g.co/gemini/share/2ffca3b8be9b"
+    },
+    {
+      "id": "slide-10-8",
+      "title": "AI 목회의 한계와 주의사항",
+      "htmlPath": "/html/slide-10-8.html",
+      "chapter": 10,
+      "section": 8,
+      "description": "Chapter 10, Section 8 슬라이드"
+    },
+    {
+      "id": "slide-10-9",
+      "title": "결론: 균형잡힌 AI 목회",
+      "htmlPath": "/html/slide-10-9.html",
+      "chapter": 10,
+      "section": 9,
+      "description": "목회자는 AI 기술의 발전 속에서도 변치 않는 복음의 능력을 신뢰하며, 성령의 인도하심을 구하여 지혜롭게 AI를 활용해 나가야 합니다."
+    },
+    {
+      "id": "slide-11-0",
+      "title": "11. 추가 실습 시나리오",
+      "htmlPath": "/html/slide-11-0.html",
+      "chapter": 11,
+      "section": 0,
+      "description": "Chapter 11, Section 0 슬라이드"
+    },
+    {
+      "id": "slide-11-1",
+      "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-11-1.html",
+      "chapter": 11,
+      "section": 1,
+      "description": "Chapter 11, Section 1 슬라이드"
+    },
+    {
+      "id": "slide-11-2",
+      "title": "실습: 교회 행정에 AI 활용하기",
+      "htmlPath": "/html/slide-11-2.html",
+      "chapter": 11,
+      "section": 2,
+      "description": "Chapter 11, Section 2 슬라이드"
+    },
+    {
+      "id": "slide-11-3",
+      "title": "실습: 소통 및 홍보에 AI 활용하기",
+      "htmlPath": "/html/slide-11-3.html",
+      "chapter": 11,
+      "section": 3,
+      "description": "Chapter 11, Section 3 슬라이드"
+    },
+    {
+      "id": "slide-11-4",
+      "title": "실습: 성경공부에 AI 활용하기",
+      "htmlPath": "/html/slide-11-4.html",
+      "chapter": 11,
+      "section": 4,
+      "description": "Chapter 11, Section 4 슬라이드"
+    },
+    {
+      "id": "slide-11-5",
+      "title": "실습: 기도문 작성에 AI 활용하기",
+      "htmlPath": "/html/slide-11-5.html",
+      "chapter": 11,
+      "section": 5,
+      "description": "Chapter 11, Section 5 슬라이드"
+    },
+    {
+      "id": "slide-11-6",
+      "title": "실습: 찬양 선곡에 AI 활용하기",
+      "htmlPath": "/html/slide-11-6.html",
+      "chapter": 11,
+      "section": 6,
+      "description": "Chapter 11, Section 6 슬라이드"
+    },
+    {
+      "id": "slide-11-7",
+      "title": "실습: 심방 메시지 작성에 AI 활용하기",
+      "htmlPath": "/html/slide-11-7.html",
+      "chapter": 11,
+      "section": 7,
+      "description": "Chapter 11, Section 7 슬라이드"
+    },
+    {
+      "id": "slide-11-8",
+      "title": "실습: 예배 순서 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-11-8.html",
+      "chapter": 11,
+      "section": 8,
+      "description": "Chapter 11, Section 8 슬라이드"
+    },
+    {
+      "id": "slide-11-9",
+      "title": "실습: 교회 소식지 제작에 AI 활용하기",
+      "htmlPath": "/html/slide-11-9.html",
+      "chapter": 11,
+      "section": 9,
+      "description": "Chapter 11, Section 9 슬라이드"
+    },
+    {
+      "id": "slide-11-10",
+      "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-11-10.html",
+      "chapter": 11,
+      "section": 10,
+      "description": "Chapter 11, Section 10 슬라이드"
+    },
+    {
+      "id": "slide-11-11",
+      "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+      "htmlPath": "/html/slide-11-11.html",
+      "chapter": 11,
+      "section": 11,
+      "description": "Chapter 11, Section 11 슬라이드"
+    },
+    {
+      "id": "slide-11-12",
+      "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+      "htmlPath": "/html/slide-11-12.html",
+      "chapter": 11,
+      "section": 12,
+      "description": "Chapter 11, Section 12 슬라이드"
+    }
+  ]
+}

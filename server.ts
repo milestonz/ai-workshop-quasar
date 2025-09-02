@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
-import { emailService } from './src/services/emailService';
+import { emailService } from './src/services/api/emailService';
 import dotenv from 'dotenv';
 
 // .env 파일 로드
@@ -432,7 +432,7 @@ const initializeEmailService = () => {
 app.listen(PORT, () => {
   console.log(`🚀 HTML 변환 서버가 포트 ${PORT}에서 실행 중입니다.`);
   console.log(`📁 작업 디렉토리: ${process.cwd()}`);
-  
+
   // dist 폴더 확인
   const distPath = path.join(__dirname, 'dist');
   if (fs.existsSync(distPath)) {

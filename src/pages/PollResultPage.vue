@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import PollResultBar from 'src/components/PollResultBar.vue';
+import PollResultBar from 'src/components/survey/PollResultBar.vue';
 
 const route = useRoute();
 const pollId = computed(() => String(route.query.pollId || ''));

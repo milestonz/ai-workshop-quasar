@@ -1,0 +1,1549 @@
+{
+  "title": "슬라이드 프리로딩 전략",
+  "description": "성능 최적화를 위한 슬라이드 로딩 전략",
+  "lastUpdated": "2025-09-02T12:21:06.830Z",
+  "chapters": [
+    {
+      "chapter": 0,
+      "title": "0. INTRO",
+      "slides": [
+        {
+          "id": "slide-0-0",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-0-0.html",
+          "priority": "high",
+          "preload": true
+        },
+        {
+          "id": "slide-0-1",
+          "title": "강사 소개",
+          "htmlPath": "/html/slide-0-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-0-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-0-2.html",
+          "priority": "low",
+          "preload": true
+        }
+      ]
+    },
+    {
+      "chapter": 1,
+      "title": "1. WHY",
+      "slides": [
+        {
+          "id": "slide-1-0",
+          "title": "1. Why?",
+          "htmlPath": "/html/slide-1-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-1-1",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-1-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-1-3",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-4",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-5",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-6",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-1-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-7",
+          "title": "목회자의 AI 사용 현황(1)",
+          "htmlPath": "/html/slide-1-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-8",
+          "title": "목회자의 AI 사용 현황(2)",
+          "htmlPath": "/html/slide-1-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-9",
+          "title": "목회자의 AI 사용 현황(3)",
+          "htmlPath": "/html/slide-1-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-10",
+          "title": "목회자의 AI 사용에 대한 우려",
+          "htmlPath": "/html/slide-1-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-11",
+          "title": "AI의 피해자, 이세돌 은퇴 : \"바둑계에서 나의 필요성이 없어졌다고 생각했다.\"\"",
+          "htmlPath": "/html/slide-1-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-12",
+          "title": "신진서 9단, '신공지능'",
+          "htmlPath": "/html/slide-1-12.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-13",
+          "title": "샘 알트만, \"내가 쓸모없다고 느껴지는 감정이 들었다\"",
+          "htmlPath": "/html/slide-1-13.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-14",
+          "title": "\"할루시네이션(Hallucination)\"",
+          "htmlPath": "/html/slide-1-14.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-15",
+          "title": "“전도서 7장 30절”",
+          "htmlPath": "/html/slide-1-15.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-16",
+          "title": "전도서 7장 16절 해석",
+          "htmlPath": "/html/slide-1-16.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-17",
+          "title": "할루시네이션 = 거짓말?",
+          "htmlPath": "/html/slide-1-17.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-18",
+          "title": "할루시네이션 = 사이비?",
+          "htmlPath": "/html/slide-1-18.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-19",
+          "title": "할루시네이션 = 상상력?",
+          "htmlPath": "/html/slide-1-19.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-20",
+          "title": "요즘 AI (ChatGPT)",
+          "htmlPath": "/html/slide-1-20.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-21",
+          "title": "요즘 AI (Claude)",
+          "htmlPath": "/html/slide-1-21.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-22",
+          "title": "할루시네이션이 발생하는 이유",
+          "htmlPath": "/html/slide-1-22.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-23",
+          "title": "긍정적인 할루시네이션(1)",
+          "htmlPath": "/html/slide-1-23.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-24",
+          "title": "긍정적인 할루시네이션(2)",
+          "htmlPath": "/html/slide-1-24.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-25",
+          "title": "긍정적인 할루시네이션(3)",
+          "htmlPath": "/html/slide-1-25.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-26",
+          "title": "부정적인 할루시네이션(1)",
+          "htmlPath": "/html/slide-1-26.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-27",
+          "title": "부정적인 할루시네이션(2)",
+          "htmlPath": "/html/slide-1-27.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-28",
+          "title": "부정적인 할루시네이션(3)",
+          "htmlPath": "/html/slide-1-28.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-29",
+          "title": "🎯 실천 지침 체크리스트",
+          "htmlPath": "/html/slide-1-29.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-30",
+          "title": "🎯 ChatGPT 할루시네이션 예방 프롬프트",
+          "htmlPath": "/html/slide-1-30.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-1-31",
+          "title": "대책 제언",
+          "htmlPath": "/html/slide-1-31.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "title": "2. WHAT-1 : 생성형AI란?",
+      "slides": [
+        {
+          "id": "slide-2-0",
+          "title": "2. WHAT-1 : 생성형AI란?",
+          "htmlPath": "/html/slide-2-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-2-1",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-2-2",
+          "title": "🤖 GPT 모델 발전사",
+          "htmlPath": "/html/slide-2-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-2-3",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-2-4",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-2-5",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-2-6",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-2-7",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-2-8",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-2-8.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "title": "3. WHAT-2 : 프롬프팅 기법",
+      "slides": [
+        {
+          "id": "slide-3-0",
+          "title": "3. WHAT-2 : 프롬프팅 기법",
+          "htmlPath": "/html/slide-3-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-3-1",
+          "title": "프롬프팅 기법 = AI와의 대화 기술",
+          "htmlPath": "/html/slide-3-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-3-2",
+          "title": "① 명확하고 구체적 질문 - 기본 중의 기본",
+          "htmlPath": "/html/slide-3-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-3-3",
+          "title": "② 역할 부여",
+          "htmlPath": "/html/slide-3-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-4",
+          "title": "② 역할 부여 : 실습",
+          "htmlPath": "/html/slide-3-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-5",
+          "title": "③ 대상과 맥락 설명",
+          "htmlPath": "/html/slide-3-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-6",
+          "title": "④ 열린 질문",
+          "htmlPath": "/html/slide-3-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-7",
+          "title": "➄ 예시 제공",
+          "htmlPath": "/html/slide-3-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-8",
+          "title": "⑥ 어조와 스타일",
+          "htmlPath": "/html/slide-3-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-9",
+          "title": "⑦ 원칙 또는 제약",
+          "htmlPath": "/html/slide-3-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-10",
+          "title": "⑧ 시나리오 활용",
+          "htmlPath": "/html/slide-3-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-11",
+          "title": "⑨ 구조화된 지시",
+          "htmlPath": "/html/slide-3-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-12",
+          "title": "⑩ 비교하기 - 옵션 분석 요청",
+          "htmlPath": "/html/slide-3-12.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-13",
+          "title": "AI와 일하는 방법 프로세스",
+          "htmlPath": "/html/slide-3-13.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-3-14",
+          "title": "마무리",
+          "htmlPath": "/html/slide-3-14.html",
+          "priority": "low",
+          "preload": true
+        }
+      ]
+    },
+    {
+      "chapter": 4,
+      "title": "4. WHAT-3 : GPTs 챗봇 만들기 실습",
+      "slides": [
+        {
+          "id": "slide-4-0",
+          "title": "4. WHAT-3 : GPTs 챗봇 만들기 실습",
+          "htmlPath": "/html/slide-4-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-4-1",
+          "title": "GPTs 둘러보기 :",
+          "htmlPath": "/html/slide-4-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-4-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-4-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-4-3",
+          "title": "새신자/성도 안내 예배/행사 안내 챗봇",
+          "htmlPath": "/html/slide-4-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-4-4",
+          "title": "설교 원고 기반의 주해와 강해",
+          "htmlPath": "/html/slide-4-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-4-5",
+          "title": "가스펠 작곡",
+          "htmlPath": "/html/slide-4-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-4-6",
+          "title": "소그룹 리더 교육교재 제작",
+          "htmlPath": "/html/slide-4-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-4-7",
+          "title": "행사/세미나 포스터 제작",
+          "htmlPath": "/html/slide-4-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-4-8",
+          "title": "시연#1 : 설교 원고로 교육교재 개발",
+          "htmlPath": "/html/slide-4-8.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "title": "5. HOW - 설교 준비",
+      "slides": [
+        {
+          "id": "slide-5-0",
+          "title": "5. HOW - 설교 준비",
+          "htmlPath": "/html/slide-5-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-5-1",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-5-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-5-3",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-4",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-5",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-6",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-7",
+          "title": "목회자 설교 준비 방식 국가별 비교 분석",
+          "htmlPath": "/html/slide-5-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-8",
+          "title": "설교준비 단계",
+          "htmlPath": "/html/slide-5-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-9",
+          "title": "목회자를 위한 AI 성경주해 방법",
+          "htmlPath": "/html/slide-5-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-10",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-11",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-12",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-12.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-13",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-13.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-14",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-14.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-15",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-15.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-16",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-16.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-17",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-17.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-18",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-18.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-19",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-19.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-20",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-20.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-21",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-21.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-22",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-22.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-23",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-23.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-24",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-24.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-25",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-25.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-26",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-26.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-27",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-27.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-28",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-28.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-29",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-29.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-30",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-30.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-31",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-31.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-32",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-32.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-33",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-33.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-34",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-34.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-35",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-35.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-36",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-36.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-37",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-37.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-38",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-38.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-39",
+          "title": "성경주해를 위한 AI 프롬프트 가이드라인",
+          "htmlPath": "/html/slide-5-39.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-40",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-40.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-41",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-41.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-42",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-42.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-43",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-43.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-44",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-44.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-45",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-45.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-46",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-46.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-47",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-47.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-48",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-48.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-49",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-49.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-50",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-50.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-51",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-51.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-5-52",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-5-52.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 6,
+      "title": "6. IF - 목회 계획",
+      "slides": [
+        {
+          "id": "slide-6-0",
+          "title": "6. IF - 목회 계획",
+          "htmlPath": "/html/slide-6-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-6-1",
+          "title": "연간 목회계획 절차",
+          "htmlPath": "/html/slide-6-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-6-2",
+          "title": "연간 목회계획 수립을 위한 1단계 프롬프트",
+          "htmlPath": "/html/slide-6-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-6-3",
+          "title": "연간 목회계획 수립을 위한 2단계 프롬프트",
+          "htmlPath": "/html/slide-6-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-4",
+          "title": "연간 목회계획 수립을 위한 3단계 프롬프트",
+          "htmlPath": "/html/slide-6-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-5",
+          "title": "연간 목회계획 수립을 위한 4단계 프롬프트",
+          "htmlPath": "/html/slide-6-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-6",
+          "title": "연간 목회계획 수립을 위한 5단계 프롬프트",
+          "htmlPath": "/html/slide-6-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-7",
+          "title": "연간 목회계획 수립을 위한 6단계 프롬프트",
+          "htmlPath": "/html/slide-6-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-8",
+          "title": "연간 목회계획 수립을 위한 7단계 프롬프트",
+          "htmlPath": "/html/slide-6-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-6-9",
+          "title": "📊 평가 및 개선 체계",
+          "htmlPath": "/html/slide-6-9.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 7,
+      "title": "7. AI 12가지 활용 시나리오",
+      "slides": [
+        {
+          "id": "slide-7-0",
+          "title": "7. AI 12가지 활용 시나리오",
+          "htmlPath": "/html/slide-7-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-7-1",
+          "title": "1. 이준호 목사: 주일설교 주제 선정",
+          "htmlPath": "/html/slide-7-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-7-2",
+          "title": "2. 김은혜 목사: 설교문 구조화",
+          "htmlPath": "/html/slide-7-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-7-3",
+          "title": "3. 김 목사(58세): 기존 설교 리프레시",
+          "htmlPath": "/html/slide-7-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-4",
+          "title": "4. 박성민 목사: 성경공부 교재 제작",
+          "htmlPath": "/html/slide-7-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-5",
+          "title": "5. 한소영 목사 (SNS 콘텐츠) & 강민호 목사 (예배 디자인)",
+          "htmlPath": "/html/slide-7-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-6",
+          "title": "6. 윤 목사(41세) & 정다솔 수련목회자: 행정 업무 자동화",
+          "htmlPath": "/html/slide-7-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-7",
+          "title": "7. 신혜숙 목사: 상담 준비",
+          "htmlPath": "/html/slide-7-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-8",
+          "title": "8. 윤석진 목사: 교회 행사 기획",
+          "htmlPath": "/html/slide-7-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-9",
+          "title": "9. 김도현 목사: 온라인 목양 & 미래 조망",
+          "htmlPath": "/html/slide-7-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-10",
+          "title": "8. 신혜숙 목사: 상담 준비",
+          "htmlPath": "/html/slide-7-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-11",
+          "title": "LEVEL 3: AI를 나만의 도구로 만들고 사역을 기획하기 (9~12단계)",
+          "htmlPath": "/html/slide-7-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-12",
+          "title": "9. 정태영 목사: 새신자 환영 시스템 구축",
+          "htmlPath": "/html/slide-7-12.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-13",
+          "title": "10. 윤석진 목사: 교회 행사 기획",
+          "htmlPath": "/html/slide-7-13.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-14",
+          "title": "11. 이미영 목사: 어린이 교육 커리큘럼",
+          "htmlPath": "/html/slide-7-14.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-15",
+          "title": "12. 김도현 목사: 온라인 목양 & 미래 조망",
+          "htmlPath": "/html/slide-7-15.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-16",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-16.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-17",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-17.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-18",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-18.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-19",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-19.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-20",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-20.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-21",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-21.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-7-22",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-7-22.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 8,
+      "title": "8. Google NotebookLM",
+      "slides": [
+        {
+          "id": "slide-8-0",
+          "title": "8. Google NotebookLM",
+          "htmlPath": "/html/slide-8-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-8-1",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-8-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-8-3",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-4",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-5",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-6",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-8-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-7",
+          "title": "Share Link",
+          "htmlPath": "/html/slide-8-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-8",
+          "title": "실습: AI 목회 도구 활용하기",
+          "htmlPath": "/html/slide-8-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-9",
+          "title": "실습: 설교 준비에 AI 활용하기",
+          "htmlPath": "/html/slide-8-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-10",
+          "title": "실습: 상담 사역에 AI 활용하기",
+          "htmlPath": "/html/slide-8-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-11",
+          "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-8-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-12",
+          "title": "실습: 교회 행정에 AI 활용하기",
+          "htmlPath": "/html/slide-8-12.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-13",
+          "title": "실습: 소통 및 홍보에 AI 활용하기",
+          "htmlPath": "/html/slide-8-13.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-14",
+          "title": "실습: 성경공부에 AI 활용하기",
+          "htmlPath": "/html/slide-8-14.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-15",
+          "title": "실습: 기도문 작성에 AI 활용하기",
+          "htmlPath": "/html/slide-8-15.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-16",
+          "title": "실습: 찬양 선곡에 AI 활용하기",
+          "htmlPath": "/html/slide-8-16.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-17",
+          "title": "실습: 심방 메시지 작성에 AI 활용하기",
+          "htmlPath": "/html/slide-8-17.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-18",
+          "title": "실습: 예배 순서 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-8-18.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-19",
+          "title": "실습: 교회 소식지 제작에 AI 활용하기",
+          "htmlPath": "/html/slide-8-19.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-20",
+          "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-8-20.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-21",
+          "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-8-21.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-22",
+          "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+          "htmlPath": "/html/slide-8-22.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-8-23",
+          "title": "실습: AI 목회 도구 종합 활용",
+          "htmlPath": "/html/slide-8-23.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 9,
+      "title": "9. Wrap-up",
+      "slides": [
+        {
+          "id": "slide-9-0",
+          "title": "9. Wrap-up",
+          "htmlPath": "/html/slide-9-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-9-1",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-9-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-9-2",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-9-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-9-3",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-9-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-9-4",
+          "title": "AI 목회의 도전과제",
+          "htmlPath": "/html/slide-9-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-9-5",
+          "title": "AI 목회의 기회와 가능성",
+          "htmlPath": "/html/slide-9-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-9-6",
+          "title": "AI 목회의 미래 시나리오",
+          "htmlPath": "/html/slide-9-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-9-7",
+          "title": "AI 목회의 한계와 주의사항",
+          "htmlPath": "/html/slide-9-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-9-8",
+          "title": "목회자를 위한 AI 활용 시나리오",
+          "htmlPath": "/html/slide-9-8.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    },
+    {
+      "chapter": 10,
+      "title": "10. 실전 AI 복합 활용 시나리오 (시연)",
+      "slides": [
+        {
+          "id": "slide-10-0",
+          "title": "10. 실전 AI 복합 활용 시나리오 (시연)",
+          "htmlPath": "/html/slide-10-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-10-1",
+          "title": "ChatGPT 창의적 기획",
+          "htmlPath": "/html/slide-10-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-10-2",
+          "title": "Perplexity 실시간 정보 수집",
+          "htmlPath": "/html/slide-10-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-10-3",
+          "title": "멀티미디어 홍보 패키지",
+          "htmlPath": "/html/slide-10-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-4",
+          "title": "멀티미디어 홍보 패키지 (계속)",
+          "htmlPath": "/html/slide-10-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-5",
+          "title": "예산 최적화 계획",
+          "htmlPath": "/html/slide-10-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-6",
+          "title": "수련회 예산 계획 결과",
+          "htmlPath": "/html/slide-10-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-7",
+          "title": "MZ세대 수련회 최적 예산 플랜",
+          "htmlPath": "/html/slide-10-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-8",
+          "title": "AI 목회의 한계와 주의사항",
+          "htmlPath": "/html/slide-10-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-10-9",
+          "title": "결론: 균형잡힌 AI 목회",
+          "htmlPath": "/html/slide-10-9.html",
+          "priority": "low",
+          "preload": true
+        }
+      ]
+    },
+    {
+      "chapter": 11,
+      "title": "11. 추가 실습 시나리오",
+      "slides": [
+        {
+          "id": "slide-11-0",
+          "title": "11. 추가 실습 시나리오",
+          "htmlPath": "/html/slide-11-0.html",
+          "priority": "medium",
+          "preload": true
+        },
+        {
+          "id": "slide-11-1",
+          "title": "실습: 교육 프로그램 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-11-1.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-11-2",
+          "title": "실습: 교회 행정에 AI 활용하기",
+          "htmlPath": "/html/slide-11-2.html",
+          "priority": "low",
+          "preload": true
+        },
+        {
+          "id": "slide-11-3",
+          "title": "실습: 소통 및 홍보에 AI 활용하기",
+          "htmlPath": "/html/slide-11-3.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-4",
+          "title": "실습: 성경공부에 AI 활용하기",
+          "htmlPath": "/html/slide-11-4.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-5",
+          "title": "실습: 기도문 작성에 AI 활용하기",
+          "htmlPath": "/html/slide-11-5.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-6",
+          "title": "실습: 찬양 선곡에 AI 활용하기",
+          "htmlPath": "/html/slide-11-6.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-7",
+          "title": "실습: 심방 메시지 작성에 AI 활용하기",
+          "htmlPath": "/html/slide-11-7.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-8",
+          "title": "실습: 예배 순서 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-11-8.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-9",
+          "title": "실습: 교회 소식지 제작에 AI 활용하기",
+          "htmlPath": "/html/slide-11-9.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-10",
+          "title": "실습: 수련회 프로그램 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-11-10.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-11",
+          "title": "실습: 설교 시리즈 기획에 AI 활용하기",
+          "htmlPath": "/html/slide-11-11.html",
+          "priority": "low",
+          "preload": false
+        },
+        {
+          "id": "slide-11-12",
+          "title": "실습: 성경공부 교재 제작에 AI 활용하기",
+          "htmlPath": "/html/slide-11-12.html",
+          "priority": "low",
+          "preload": false
+        }
+      ]
+    }
+  ]
+}

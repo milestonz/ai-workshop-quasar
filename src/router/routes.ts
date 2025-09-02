@@ -5,10 +5,16 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'slide/:id', component: () => import('pages/IndexPage.vue') },
-      { path: 'survey-results', component: () => import('pages/SurveyResults.vue') },
+      { path: '', component: () => import('pages/HomePage.vue') },
+      { path: 'slide/:id', component: () => import('pages/HomePage.vue') },
+      { path: 'survey-results', component: () => import('pages/SurveyResultsPage.vue') },
     ],
+  },
+
+  // 새로운 슬라이드 뷰어 페이지
+  {
+    path: '/viewer/:id?',
+    component: () => import('pages/SlideViewPage.vue'),
   },
 
   // 로그아웃 페이지
@@ -26,7 +32,7 @@ const routes: RouteRecordRaw[] = [
   // 수강생용 페이지 (보안 강화)
   {
     path: '/study/:courseId',
-    component: () => import('pages/StudentView.vue'),
+    component: () => import('pages/StudentViewPage.vue'),
     beforeEnter: (to, from, next) => {
       // 게스트 모드 확인
       const isGuestMode = localStorage.getItem('isGuestMode') === 'true';

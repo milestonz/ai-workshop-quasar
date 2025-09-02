@@ -186,21 +186,21 @@ export const generateSmartTOC = async (): Promise<SmartTOC> => {
     // 2. 통합 사이드바 데이터 가져오기 (우선 시도)
     let sidebarData = null;
     try {
-      const sidebarResponse = await fetch('/slides/sidebar-data.json');
+      const sidebarResponse = await fetch('/data/slideIndex.json');
       if (sidebarResponse.ok) {
         sidebarData = await sidebarResponse.json();
         console.log(
-          `📊 통합 사이드바 데이터 로드 완료: ${sidebarData.slides.length}개 슬라이드, ${Object.keys(sidebarData.chapters).length}개 챕터`,
+          `📊 슬라이드 인덱스 데이터 로드 완료: ${sidebarData.totalSlides}개 슬라이드, ${sidebarData.slides.length}개 슬라이드`,
         );
       }
     } catch (error) {
       console.warn('⚠️ 통합 사이드바 데이터 로드 실패, files.json 사용:', error);
     }
 
-    // 3. 파일 목록 가져오기 (fallback)
-    let mdFiles: string[] = [];
-    if (sidebarData) {
-      mdFiles = sidebarData.slides.map((item: any) => item.fileName);
+    // 3. 파일 목록 가져오기 (새로운 구조)
+    let slideFiles: any[] = [];
+    if (sidebarData && sidebarData.slides) {
+      slideFiles = sidebarData.slides;
     } else {
       const filesResponse = await fetch('/slides/files.json');
       if (!filesResponse.ok) {
@@ -209,83 +209,58 @@ export const generateSmartTOC = async (): Promise<SmartTOC> => {
         );
       }
       const filesData = await filesResponse.json();
-      mdFiles = filesData.files || [];
+      slideFiles = filesData.files || [];
     }
 
-    if (mdFiles.length === 0) {
+    if (slideFiles.length === 0) {
       throw new Error('슬라이드 파일이 없습니다');
     }
 
-    console.log(`📁 발견된 파일: ${mdFiles.length}개`, mdFiles.slice(-3)); // 마지막 3개 파일 표시
+    console.log(`📁 발견된 파일: ${slideFiles.length}개`, slideFiles.slice(-3)); // 마지막 3개 파일 표시
 
-    // 2. 각 파일 분석 (메타데이터 우선, HTML fallback)
-    const slidePromises = mdFiles.map(async (fileName): Promise<SmartSlide | null> => {
+    // 2. 각 파일 분석 (새로운 구조)
+    const slidePromises = slideFiles.map(async (slideData): Promise<SmartSlide | null> => {
       try {
-        const parsed = parseFileName(fileName);
-        if (!parsed) return null;
+        // 새로운 구조에서는 slideData가 이미 파싱된 정보를 포함
+        if (!slideData || !slideData.id) return null;
 
-        // 통합 사이드바 데이터에서 정보 가져오기
-        let slideTitle = `슬라이드 ${parsed.section}-${parsed.slide}`;
-        let slideType: SlideType = 'content';
+        const slideTitle = slideData.title || `슬라이드 ${slideData.chapter}-${slideData.section}`;
+        let slideType: SlideType = 'content'; // 기본값
 
-        if (sidebarData) {
-          const slideInfo = sidebarData.slides.find((item: any) => item.fileName === fileName);
-          if (slideInfo) {
-            slideTitle = slideInfo.title || slideTitle;
-            slideType = mapTypeToSlideType(slideInfo.type);
-          }
-        }
-
-        // HTML 파일에서 추가 정보 가져오기 (fallback)
+        // HTML 파일에서 추가 정보 가져오기
         let duration = 5; // 기본값
         let keywords: string[] = [];
 
         try {
-          const htmlFileName = fileName.replace('.md', '.html');
-          const response = await fetch(`/generated/slides/${htmlFileName}`);
+          const response = await fetch(slideData.htmlPath);
           if (response.ok) {
             const content = await response.text();
-
-            // 통합 사이드바 데이터에 제목이 없으면 HTML에서 추출
-            if (
-              !sidebarData ||
-              !sidebarData.slides.find((item: any) => item.fileName === fileName)?.title
-            ) {
-              slideTitle = extractSlideTitle(content);
-            }
 
             // HTML에서만 추출 가능한 정보
             duration = estimateDuration(content);
             keywords = extractKeywords(content);
-
-            // 통합 사이드바 데이터에 타입이 없으면 HTML에서 감지
-            if (
-              !sidebarData ||
-              !sidebarData.slides.find((item: any) => item.fileName === fileName)?.type
-            ) {
-              slideType = detectSlideType(content);
-            }
+            slideType = detectSlideType(content);
           }
         } catch (error) {
-          console.warn(`⚠️ HTML 파일 분석 실패: ${fileName}`, error);
+          console.warn(`⚠️ HTML 파일 분석 실패: ${slideData.id}`, error);
         }
 
         const slide: SmartSlide = {
-          id: `${parsed.section}-${parsed.slide}`,
+          id: slideData.id,
           title: slideTitle,
           type: slideType,
-          section: parsed.section,
-          slide: parsed.slide,
+          section: slideData.chapter,
+          slide: slideData.section,
           duration: duration,
           keywords: keywords,
-          completed: getSlideProgress(`${parsed.section}-${parsed.slide}`),
-          fileName,
+          completed: getSlideProgress(slideData.id),
+          fileName: slideData.htmlPath,
         };
 
-        console.log(`📄 분석 완료: ${fileName} -> ${slide.title}`);
+        console.log(`📄 분석 완료: ${slideData.id} -> ${slide.title}`);
         return slide;
       } catch (error) {
-        console.warn(`❌ 파일 분석 실패: ${fileName}`, error);
+        console.warn(`❌ 파일 분석 실패: ${slideData.id}`, error);
         return null;
       }
     });

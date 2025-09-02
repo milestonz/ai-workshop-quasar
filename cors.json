@@ -1,8 +1,0 @@
-[
-  {
-    "origin": ["http://localhost:9000", "http://localhost:9003", "https://slide-view-91a09.web.app", "https://slide-view-91a09.firebaseapp.com"],
-    "method": ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
-    "maxAgeSeconds": 3600,
-    "responseHeader": ["Content-Type", "Authorization", "Content-Length", "User-Agent", "x-goog-resumable"]
-  }
-] 

@@ -13,19 +13,13 @@ if (!fs.existsSync(distPath)) {
 }
 
 // Azure Static Web Apps에 불필요한 파일/폴더 제거
-const itemsToRemove = [
-  '.DS_Store',
-  'html',
-  'slides', 
-  'templates',
-  'generated'
-];
+const itemsToRemove = ['.DS_Store', 'html', 'slides', 'templates', 'generated'];
 
 let removedCount = 0;
 
-itemsToRemove.forEach(item => {
+itemsToRemove.forEach((item) => {
   const itemPath = path.join(distPath, item);
-  
+
   if (fs.existsSync(itemPath)) {
     try {
       if (fs.statSync(itemPath).isDirectory()) {
@@ -45,11 +39,11 @@ itemsToRemove.forEach(item => {
 // .DS_Store 파일들을 재귀적으로 제거
 function removeDSStore(dir) {
   const files = fs.readdirSync(dir);
-  
-  files.forEach(file => {
+
+  files.forEach((file) => {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
+
     if (stat.isDirectory()) {
       removeDSStore(filePath);
     } else if (file === '.DS_Store') {

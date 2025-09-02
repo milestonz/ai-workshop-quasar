@@ -10,8 +10,27 @@ import {
   listAll,
 } from 'firebase/storage';
 import { updateDoc, serverTimestamp, collection, getDocs, query, where } from 'firebase/firestore';
-import { storage, firebaseApp, db as appDb } from '../firebase/config';
+import { storage, firebaseApp, db as appDb } from '../services/firebase/config';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+
+// 챕터 번호에 따른 제목 반환 함수
+function getChapterTitle(chapterNumber: number): string {
+  const titles: { [key: number]: string } = {
+    0: '0. INTRO',
+    1: '1. WHY',
+    2: '2. WHAT-1 : 생성형AI란?',
+    3: '3. WHAT-2 : 프롬프팅 기법',
+    4: '4. WHAT-3 : GPTs 챗봇 만들기 실습',
+    5: '5. HOW - 설교 준비',
+    6: '6. IF - 목회 계획',
+    7: '7. AI 12가지 활용 시나리오',
+    8: '8. Google NotebookLM',
+    9: '9. Wrap-up',
+    10: '10. 실전 AI 복합 활용 시나리오 (시연)',
+    11: '11. 추가 실습 시나리오',
+  };
+  return titles[chapterNumber] || `Chapter ${chapterNumber}`;
+}
 
 export const useCourseStore = defineStore('course', () => {
   // 상태
@@ -25,7 +44,7 @@ export const useCourseStore = defineStore('course', () => {
   const progress = ref(15);
   const newComment = ref('');
   const notes = ref('');
-  const isPresentationMode = ref(false); // 기본값을 false로 변경 (편집기 모드 활성화)
+  const isPresentationMode = ref(true); // 기본값을 true로 변경 (프레젠테이션 모드 활성화)
 
   // 강의 데이터 - MD 파일 기반으로 동적 생성
   const lessons = ref<Lesson[]>([]);
@@ -44,53 +63,62 @@ export const useCourseStore = defineStore('course', () => {
         slideLog.warn('⚠️ 캐시 무효화 파일 확인 실패:', error);
       }
 
-      // 2. 통합 사이드바 데이터 가져오기 (우선 시도)
-      let sidebarData = null;
+      // 2. 새로운 slideIndex.json 데이터 가져오기 (우선 시도)
+      let slideIndexData = null;
       try {
-        const sidebarResponse = await fetch('/slides/sidebar-data.json');
-        if (sidebarResponse.ok) {
-          sidebarData = await sidebarResponse.json();
+        const slideIndexResponse = await fetch('/data/slideIndex.json');
+        if (slideIndexResponse.ok) {
+          slideIndexData = await slideIndexResponse.json();
           slideLog.log(
-            '✅ 통합 사이드바 데이터 로드 완료:',
-            sidebarData.slides.length,
+            '✅ 슬라이드 인덱스 데이터 로드 완료:',
+            slideIndexData.totalSlides,
             '개 슬라이드,',
-            Object.keys(sidebarData.chapters).length,
-            '개 챕터',
+            slideIndexData.slides.length,
+            '개 슬라이드',
           );
 
-          // 사이드바 데이터가 있으면 그것을 사용하여 Lesson 배열 생성
-          if (sidebarData.chapters && Object.keys(sidebarData.chapters).length > 0) {
+          // slideIndex 데이터가 있으면 그것을 사용하여 Lesson 배열 생성
+          if (slideIndexData && slideIndexData.slides && slideIndexData.slides.length > 0) {
             const generatedLessons: Lesson[] = [];
 
+            // 챕터별로 슬라이드 그룹화
+            const chapters: { [key: number]: any[] } = {};
+            slideIndexData.slides.forEach((slide: any) => {
+              if (!chapters[slide.chapter]) {
+                chapters[slide.chapter] = [];
+              }
+              chapters[slide.chapter]!.push(slide);
+            });
+
             // Chapter 번호로 정렬
-            const chapterNumbers = Object.keys(sidebarData.chapters)
+            const chapterNumbers = Object.keys(chapters)
               .map(Number)
               .sort((a, b) => a - b);
 
             console.log('📚 발견된 챕터 번호들:', chapterNumbers);
 
             for (const chapterNum of chapterNumbers) {
-              const chapter = sidebarData.chapters[chapterNum.toString()];
-              if (!chapter || !chapter.slides) continue;
+              const chapterSlides = chapters[chapterNum];
+              if (!chapterSlides || chapterSlides.length === 0) continue;
 
               // 슬라이드 제목들 추출
               const slideTitles: string[] = [];
               const slideData: SlideData[] = [];
 
-              for (let i = 0; i < chapter.slides.length; i++) {
-                const slide = chapter.slides[i];
-                const title = slide.title || `슬라이드 ${slide.slide}`;
+              for (let i = 0; i < chapterSlides.length; i++) {
+                const slide = chapterSlides[i];
+                const title = slide.title || `슬라이드 ${slide.chapter}-${slide.section}`;
                 slideTitles.push(title);
 
                 slideData.push({
                   title: title,
-                  videoUrl: slide.videoUrl || null,
-                  hasVideo: slide.videoUrl ? true : false,
+                  videoUrl: null,
+                  hasVideo: false,
                 });
               }
 
               const lesson: Lesson = {
-                title: chapter.title || `Chapter ${chapterNum}`,
+                title: getChapterTitle(chapterNum),
                 slides: slideTitles.length,
                 slideData: slideData,
                 completed: false,
@@ -958,14 +986,14 @@ export const useCourseStore = defineStore('course', () => {
   const togglePresentationMode = () => {
     const previousMode = isPresentationMode.value;
     isPresentationMode.value = !isPresentationMode.value;
-    
+
     // 반응성 강제 트리거
     nextTick(() => {
       console.log('🎭 프레젠테이션 모드 전환:', {
         이전: previousMode ? '프레젠테이션' : '편집기',
         현재: isPresentationMode.value ? '프레젠테이션' : '편집기',
         값: isPresentationMode.value,
-        반응성확인: 'nextTick 후'
+        반응성확인: 'nextTick 후',
       });
     });
   };
@@ -2037,7 +2065,7 @@ ${lesson.slideTitles?.map((title, index) => `${index + 1}. ${title}`).join('\n')
   const loadFromLocalStorage = async () => {
     try {
       // Firebase가 초기화되었는지 확인
-      const { firebaseApp } = await import('../firebase/config');
+      const { firebaseApp } = await import('../services/firebase/config');
       if (!firebaseApp) {
         console.log('⚠️ Firebase가 초기화되지 않아 Azure Blob Storage 로드를 건너뜁니다.');
         return;
