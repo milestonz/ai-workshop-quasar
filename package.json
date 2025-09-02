@@ -15,7 +15,7 @@
     "dev": "quasar dev",
     "dev:live": "npm run watch-slides & quasar dev",
     "build": "quasar build",
-    "build:optimized": "quasar build && node scripts/optimize-images.cjs",
+    "build:optimized": "quasar build && node scripts/optimize-images.cjs && node scripts/cleanup-dist.cjs",
     "build:azure": "npm run build-slides && quasar build && npm run prepare-azure",
     "prepare-azure": "cp -r dist/* . && echo 'Azure 배포 준비 완료! (dist 내용을 루트로 복사)'",
     "postinstall": "echo 'Postinstall completed'",
