@@ -355,8 +355,12 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
-import { surveyApiService } from 'src/services/api/surveyApiService';
-import { SATISFACTION_OPTIONS, RECOMMENDATION_OPTIONS, EDUCATION_OPTIONS } from 'src/types/survey';
+import { surveyApiService } from 'src/services/api/surveyApiService.ts';
+import {
+  SATISFACTION_OPTIONS,
+  RECOMMENDATION_OPTIONS,
+  EDUCATION_OPTIONS,
+} from 'src/types/survey.ts';
 import { getDatabase, ref as dbRef, onValue, get as rtdbGet } from 'firebase/database';
 import { firebaseApp } from 'src/services/firebase/config';
 import PollResultBar from 'src/components/survey/PollResultBar.vue';

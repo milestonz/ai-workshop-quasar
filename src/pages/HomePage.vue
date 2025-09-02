@@ -128,10 +128,10 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
-import { useCourseStore } from 'src/stores/course';
-import { useAuth } from 'src/composables/useAuth';
-import { useGuestAuth } from 'src/composables/useGuestAuth';
-import { slideLog } from 'src/utils/logger';
+import { useCourseStore } from 'src/stores/course.ts';
+import { useAuth } from 'src/composables/useAuth.ts';
+import { useGuestAuth } from 'src/composables/useGuestAuth.ts';
+import { slideLog } from 'src/utils/logger.ts';
 import SimpleSlideViewer from 'src/components/slide/SimpleSlideViewer.vue';
 import SlideEditorSection from 'src/components/editor/SlideEditorSection.vue';
 import {
@@ -141,7 +141,7 @@ import {
   set as rtdbSet,
   remove as rtdbRemove,
 } from 'firebase/database';
-import { firebaseApp } from 'src/services/firebase/config';
+import { firebaseApp } from 'src/services/firebase/config.ts';
 // 관리자 인지 확인 위해 userRole 사용
 const { userRole } = useAuth();
 const isAdmin = computed(() => userRole.value === 'admin');
