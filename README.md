@@ -2,8 +2,6 @@
 
 AI Workshop Facil WebApp
 
-## 🚀 빠른 시작
-
 ### 의존성 설치
 
 ```bash
