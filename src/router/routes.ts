@@ -28,6 +28,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('src/pages/PollResultPage.vue'),
   },
 
+  // 설문조사 결과 페이지
+  {
+    path: '/survey-results',
+    component: () => import('src/pages/SurveyResultsPage.vue'),
+  },
+
   // 수강생용 페이지 (보안 강화)
   {
     path: '/study/:courseId',

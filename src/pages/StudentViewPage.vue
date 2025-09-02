@@ -511,6 +511,7 @@ import GuestLoginDialog from 'src/components/auth/GuestLoginDialog.vue';
 
 import SurveyDialog from 'src/components/survey/SurveyDialog.vue';
 import { emailApiService } from '../services/api/emailApiService';
+import { surveyApiService } from '../services/api/surveyApiService';
 import type { SurveyData } from '../types/survey';
 import { isStudentMode } from '../utils/logger';
 // 신규 추가: Poll 컴포넌트들
@@ -1420,6 +1421,19 @@ const handleSurveySubmit = async (surveyData: SurveyData) => {
       userEmail: user.value?.email,
     };
     localStorage.setItem(key, JSON.stringify(surveyWithTimestamp));
+
+    // API를 통한 설문조사 제출
+    try {
+      const result = await surveyApiService.submitSurvey(surveyData);
+      if (result.success) {
+        console.log('설문조사 API 제출 성공:', result);
+      } else {
+        console.warn('설문조사 API 제출 실패:', result.message);
+      }
+    } catch (apiError) {
+      console.error('설문조사 API 제출 오류:', apiError);
+      // API 오류가 있어도 로컬 저장은 계속 진행
+    }
 
     // 학습 완료 이메일 전송 (설문조사 완료 후)
     const targetEmail = user.value?.email || guestUser.value?.email;
