@@ -69,16 +69,7 @@ export default defineConfig((ctx) => {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
-      vitePlugins: [
-        [
-          'vite-plugin-checker',
-          {
-            vueTsc: true,
-            eslint: false,
-          },
-          { server: false },
-        ],
-      ],
+      vitePlugins: [],
 
       // Improve chunk splitting to prevent unnecessary re-renders
       rollupOptions: {
