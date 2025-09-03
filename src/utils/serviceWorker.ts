@@ -20,11 +20,35 @@ interface SlideMetadata {
 class ServiceWorkerManager {
   private registration: ServiceWorkerRegistration | null = null;
   private isSupported = 'serviceWorker' in navigator;
+  private isAzureEnvironment = this.checkAzureEnvironment();
+
+  /**
+   * Azure 환경인지 확인
+   */
+  private checkAzureEnvironment(): boolean {
+    // Azure Static Web Apps 환경 확인
+    const hostname = window.location.hostname;
+    const isAzure = hostname.includes('azurewebsites.net') || 
+                   hostname.includes('staticwebapps.net') ||
+                   import.meta.env.VITE_DISABLE_SERVICE_WORKER === 'true';
+    
+    if (isAzure) {
+      console.log('🌐 Azure 환경 감지됨 - Service Worker 비활성화');
+    }
+    
+    return isAzure;
+  }
 
   /**
    * Service Worker 등록
    */
   async register(): Promise<boolean> {
+    // Azure 환경에서는 Service Worker 비활성화
+    if (this.isAzureEnvironment) {
+      console.log('🚫 Azure 환경에서 Service Worker 등록 건너뜀');
+      return false;
+    }
+
     if (!this.isSupported) {
       console.warn('⚠️ Service Worker를 지원하지 않는 브라우저입니다.');
       return false;
@@ -63,6 +87,11 @@ class ServiceWorkerManager {
    * Service Worker 활성화 확인
    */
   async waitForActivation(): Promise<boolean> {
+    // Azure 환경에서는 항상 false 반환
+    if (this.isAzureEnvironment) {
+      return false;
+    }
+
     if (!this.registration) {
       return false;
     }
@@ -89,6 +118,12 @@ class ServiceWorkerManager {
    * 슬라이드 프리로딩
    */
   async preloadSlides(slides: SlideMetadata[]): Promise<void> {
+    // Azure 환경에서는 프리로딩 건너뜀
+    if (this.isAzureEnvironment) {
+      console.log('🚫 Azure 환경에서 슬라이드 프리로딩 건너뜀');
+      return;
+    }
+
     if (!this.registration?.active) {
       console.warn('⚠️ Service Worker가 활성화되지 않았습니다.');
       return;
@@ -111,24 +146,28 @@ class ServiceWorkerManager {
   /**
    * 캐시 상태 조회
    */
-  async getCacheStatus(): Promise<CacheStatus | null> {
+  async getCacheStatus(): Promise<CacheStatus> {
+    // Azure 환경에서는 빈 객체 반환
+    if (this.isAzureEnvironment) {
+      return {};
+    }
+
     if (!this.registration?.active) {
-      return null;
+      return {};
     }
 
     return new Promise((resolve) => {
-      const messageChannel = new MessageChannel();
-
-      messageChannel.port1.onmessage = (event) => {
+      const channel = new MessageChannel();
+      channel.port1.onmessage = (event) => {
         if (event.data.type === 'CACHE_STATUS') {
           resolve(event.data.data);
         }
       };
 
-      this.registration!.active!.postMessage({ type: 'GET_CACHE_STATUS' }, [messageChannel.port2]);
-
-      // 타임아웃 설정
-      setTimeout(() => resolve(null), 5000);
+      this.registration!.active!.postMessage(
+        { type: 'GET_CACHE_STATUS' },
+        [channel.port2],
+      );
     });
   }
 
@@ -136,16 +175,20 @@ class ServiceWorkerManager {
    * 슬라이드 캐시 삭제
    */
   async clearSlideCache(): Promise<void> {
+    // Azure 환경에서는 캐시 삭제 건너뜀
+    if (this.isAzureEnvironment) {
+      console.log('🚫 Azure 환경에서 슬라이드 캐시 삭제 건너뜀');
+      return;
+    }
+
     if (!this.registration?.active) {
       console.warn('⚠️ Service Worker가 활성화되지 않았습니다.');
       return;
     }
 
     try {
-      this.registration.active.postMessage({
-        type: 'CLEAR_SLIDE_CACHE',
-      });
-      console.log('🗑️ 슬라이드 캐시 삭제 요청 완료');
+      this.registration.active.postMessage({ type: 'CLEAR_SLIDE_CACHE' });
+      console.log('✅ 슬라이드 캐시 삭제 요청 완료');
     } catch (error) {
       console.error('❌ 슬라이드 캐시 삭제 실패:', error);
     }
@@ -155,42 +198,22 @@ class ServiceWorkerManager {
    * 모든 캐시 삭제
    */
   async clearAllCaches(): Promise<void> {
+    // Azure 환경에서는 캐시 삭제 건너뜀
+    if (this.isAzureEnvironment) {
+      console.log('🚫 Azure 환경에서 모든 캐시 삭제 건너뜀');
+      return;
+    }
+
     if (!this.registration?.active) {
       console.warn('⚠️ Service Worker가 활성화되지 않았습니다.');
       return;
     }
 
     try {
-      this.registration.active.postMessage({
-        type: 'CLEAR_CACHE',
-      });
-      console.log('🗑️ 모든 캐시 삭제 요청 완료');
+      this.registration.active.postMessage({ type: 'CLEAR_CACHE' });
+      console.log('✅ 모든 캐시 삭제 요청 완료');
     } catch (error) {
-      console.error('❌ 캐시 삭제 실패:', error);
-    }
-  }
-
-  /**
-   * 업데이트 알림 표시
-   */
-  private showUpdateNotification(): void {
-    // Quasar의 Notify를 사용하여 업데이트 알림 표시
-    if (typeof window !== 'undefined' && (window as any).$q) {
-      (window as any).$q.notify({
-        type: 'info',
-        message: '새로운 버전이 사용 가능합니다.',
-        caption: '페이지를 새로고침하여 업데이트를 적용하세요.',
-        actions: [
-          {
-            label: '새로고침',
-            color: 'white',
-            handler: () => {
-              window.location.reload();
-            },
-          },
-        ],
-        timeout: 10000,
-      });
+      console.error('❌ 모든 캐시 삭제 실패:', error);
     }
   }
 
@@ -198,21 +221,15 @@ class ServiceWorkerManager {
    * Service Worker 지원 여부 확인
    */
   isServiceWorkerSupported(): boolean {
-    return this.isSupported;
+    return this.isSupported && !this.isAzureEnvironment;
   }
 
   /**
-   * Service Worker 등록 상태 확인
+   * 업데이트 알림 표시
    */
-  isRegistered(): boolean {
-    return this.registration !== null;
-  }
-
-  /**
-   * Service Worker 활성화 상태 확인
-   */
-  isActive(): boolean {
-    return this.registration?.active !== null;
+  private showUpdateNotification(): void {
+    // 간단한 업데이트 알림 (필요시 구현)
+    console.log('🔄 새로운 버전이 사용 가능합니다. 페이지를 새로고침하세요.');
   }
 }
 
@@ -220,86 +237,77 @@ class ServiceWorkerManager {
 export const serviceWorkerManager = new ServiceWorkerManager();
 
 /**
- * Service Worker 초기화 함수
+ * Service Worker 초기화
  */
 export async function initializeServiceWorker(): Promise<boolean> {
-  try {
-    const registered = await serviceWorkerManager.register();
-
-    if (registered) {
-      const activated = await serviceWorkerManager.waitForActivation();
-      if (activated) {
-        console.log('🎯 Service Worker 초기화 완료');
-        return true;
-      }
-    }
-
-    return false;
-  } catch (error) {
-    console.error('❌ Service Worker 초기화 실패:', error);
-    return false;
+  const registered = await serviceWorkerManager.register();
+  if (registered) {
+    const activated = await serviceWorkerManager.waitForActivation();
+    return activated;
   }
+  return false;
 }
 
 /**
- * 슬라이드 프리로딩 헬퍼 함수
+ * 중요 슬라이드 프리로딩
  */
 export async function preloadImportantSlides(): Promise<void> {
   try {
-    // slidePreload.json에서 프리로딩 대상 슬라이드 가져오기
-    const response = await fetch('/data/slidePreload.json');
+    // course-outline.json에서 중요 슬라이드 정보 가져오기
+    const response = await fetch('/data/course-outline.json');
     if (!response.ok) {
-      throw new Error('프리로딩 데이터 로드 실패');
+      console.warn('⚠️ course-outline.json을 로드할 수 없습니다.');
+      return;
     }
 
-    const preloadData = await response.json();
+    const courseData = await response.json();
     const importantSlides: SlideMetadata[] = [];
 
-    // 높은 우선순위 슬라이드들만 추출
-    preloadData.chapters.forEach((chapter: any) => {
-      chapter.slides.forEach((slide: any) => {
-        if (slide.preload && slide.priority === 'high') {
-          importantSlides.push({
-            id: slide.id,
-            title: slide.title,
-            htmlPath: slide.htmlPath,
-            chapter: slide.chapter,
-            section: slide.section,
-            priority: slide.priority,
-            preload: slide.preload,
-          });
-        }
-      });
+    // 첫 번째 슬라이드와 각 챕터의 첫 번째 슬라이드만 프리로딩
+    courseData.chapters?.forEach((chapter: any, chapterIndex: number) => {
+      if (chapter.slides && chapter.slides.length > 0) {
+        const firstSlide = chapter.slides[0];
+        importantSlides.push({
+          id: `${chapterIndex}-0`,
+          title: firstSlide.title || `Chapter ${chapterIndex + 1}`,
+          htmlPath: `/html/slide-${chapterIndex}-0.html`,
+          chapter: chapterIndex,
+          section: 0,
+          priority: 'high',
+        });
+      }
     });
 
     if (importantSlides.length > 0) {
       await serviceWorkerManager.preloadSlides(importantSlides);
     }
   } catch (error) {
-    console.warn('⚠️ 중요 슬라이드 프리로딩 실패:', error);
+    console.error('❌ 중요 슬라이드 프리로딩 실패:', error);
   }
 }
 
 /**
- * 캐시 상태 모니터링
+ * 캐시 상태 조회
  */
-export async function monitorCacheStatus(): Promise<void> {
-  try {
-    const status = await serviceWorkerManager.getCacheStatus();
-    if (status) {
-      console.log('📊 캐시 상태:', status);
+export async function getCacheStatus(): Promise<CacheStatus> {
+  const status = await serviceWorkerManager.getCacheStatus();
+  return status;
+}
 
-      // 캐시 사용량이 너무 크면 정리
-      const totalCached = Object.values(status).reduce((sum, count) => sum + count, 0);
-      if (totalCached > 1000) {
-        // 1000개 이상 캐시된 경우
-        console.log('🧹 캐시 정리 필요:', totalCached, '개 항목');
-        await serviceWorkerManager.clearSlideCache();
-      }
-    }
-  } catch (error) {
-    console.warn('⚠️ 캐시 상태 모니터링 실패:', error);
-  }
+/**
+ * 슬라이드 캐시 삭제
+ */
+export async function clearSlideCache(): Promise<void> {
+  await serviceWorkerManager.clearSlideCache();
+}
+
+/**
+ * 모든 캐시 삭제
+ */
+export async function clearAllCaches(): Promise<void> {
+  await serviceWorkerManager.clearAllCaches();
 }
 
 export default serviceWorkerManager;
+
+

@@ -7,18 +7,16 @@ const CACHE_NAME = 'ai-workshop-v1.0.0';
 const STATIC_CACHE = 'ai-workshop-static-v1.0.0';
 const SLIDE_CACHE = 'ai-workshop-slides-v1.0.0';
 
-// 캐싱할 정적 자산들
+// 캐싱할 정적 자산들 (Azure 환경에 맞게 수정)
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/data/slideIndex.json',
-  '/data/slidePreload.json',
+  '/data/course-outline.json',
   '/css/index-type.css',
   '/css/general-type.css',
   '/css/lecture-type.css',
   '/css/challenge-type.css',
   '/css/poll-type.css',
-  '/css/survey-type.css',
   '/css/timeline-type.css',
   '/css/example-type.css',
   '/css/chapter-type.css',
@@ -42,10 +40,14 @@ self.addEventListener('install', (event) => {
 
   event.waitUntil(
     Promise.all([
-      // 정적 자산 캐싱
+      // 정적 자산 캐싱 (에러 처리 개선)
       caches.open(STATIC_CACHE).then((cache) => {
         console.log('📦 정적 자산 캐싱 중...');
-        return cache.addAll(STATIC_ASSETS);
+        return cache.addAll(STATIC_ASSETS).catch((error) => {
+          console.warn('⚠️ 일부 정적 자산 캐싱 실패:', error);
+          // 캐싱 실패해도 설치 계속 진행
+          return Promise.resolve();
+        });
       }),
 
       // 슬라이드 캐시 초기화
@@ -57,6 +59,10 @@ self.addEventListener('install', (event) => {
       console.log('✅ Service Worker 설치 완료');
       // 즉시 활성화
       return self.skipWaiting();
+    }).catch((error) => {
+      console.error('❌ Service Worker 설치 실패:', error);
+      // 설치 실패해도 앱은 계속 작동
+      return Promise.resolve();
     }),
   );
 });
@@ -89,6 +95,10 @@ self.addEventListener('activate', (event) => {
       self.clients.claim(),
     ]).then(() => {
       console.log('✅ Service Worker 활성화 완료');
+    }).catch((error) => {
+      console.error('❌ Service Worker 활성화 실패:', error);
+      // 활성화 실패해도 앱은 계속 작동
+      return Promise.resolve();
     }),
   );
 });
@@ -128,20 +138,20 @@ self.addEventListener('fetch', (event) => {
  * 슬라이드 HTML 파일 요청 처리
  */
 async function handleSlideRequest(request) {
-  const cache = await caches.open(SLIDE_CACHE);
-  const cachedResponse = await cache.match(request);
-
-  if (cachedResponse) {
-    console.log('📖 캐시에서 슬라이드 로드:', request.url);
-
-    // 백그라운드에서 업데이트 확인
-    updateSlideInBackground(request, cache);
-
-    return cachedResponse;
-  }
-
-  // 캐시에 없으면 네트워크에서 가져오기
   try {
+    const cache = await caches.open(SLIDE_CACHE);
+    const cachedResponse = await cache.match(request);
+
+    if (cachedResponse) {
+      console.log('📖 캐시에서 슬라이드 로드:', request.url);
+
+      // 백그라운드에서 업데이트 확인
+      updateSlideInBackground(request, cache);
+
+      return cachedResponse;
+    }
+
+    // 캐시에 없으면 네트워크에서 가져오기
     console.log('🌐 네트워크에서 슬라이드 로드:', request.url);
     const networkResponse = await fetch(request);
 
@@ -201,14 +211,14 @@ async function handleSlideRequest(request) {
  * 정적 자산 요청 처리
  */
 async function handleStaticRequest(request) {
-  const cache = await caches.open(STATIC_CACHE);
-  const cachedResponse = await cache.match(request);
-
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-
   try {
+    const cache = await caches.open(STATIC_CACHE);
+    const cachedResponse = await cache.match(request);
+
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
@@ -216,7 +226,8 @@ async function handleStaticRequest(request) {
     return networkResponse;
   } catch (error) {
     console.error('❌ 정적 자산 로드 실패:', request.url, error);
-    throw error;
+    // 캐시나 네트워크 모두 실패하면 원본 요청 그대로 진행
+    return fetch(request);
   }
 }
 
@@ -224,27 +235,33 @@ async function handleStaticRequest(request) {
  * JSON 데이터 요청 처리
  */
 async function handleJsonRequest(request) {
-  const cache = await caches.open(STATIC_CACHE);
-  const cachedResponse = await cache.match(request);
-
-  // JSON 데이터는 항상 최신 버전을 우선으로 하되, 오프라인일 때는 캐시 사용
   try {
-    const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      // 네트워크 응답이 있으면 캐시 업데이트
-      cache.put(request, networkResponse.clone());
-      return networkResponse;
+    const cache = await caches.open(STATIC_CACHE);
+    const cachedResponse = await cache.match(request);
+
+    // JSON 데이터는 항상 최신 버전을 우선으로 하되, 오프라인일 때는 캐시 사용
+    try {
+      const networkResponse = await fetch(request);
+      if (networkResponse.ok) {
+        // 네트워크 응답이 있으면 캐시 업데이트
+        cache.put(request, networkResponse.clone());
+        return networkResponse;
+      }
+    } catch (error) {
+      console.warn('⚠️ JSON 네트워크 요청 실패, 캐시 사용:', request.url);
     }
+
+    // 네트워크 실패 시 캐시된 응답 반환
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    throw new Error('JSON 데이터를 로드할 수 없습니다.');
   } catch (error) {
-    console.warn('⚠️ JSON 네트워크 요청 실패, 캐시 사용:', request.url);
+    console.error('❌ JSON 요청 처리 실패:', request.url, error);
+    // 모든 방법이 실패하면 원본 요청 그대로 진행
+    return fetch(request);
   }
-
-  // 네트워크 실패 시 캐시된 응답 반환
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-
-  throw new Error('JSON 데이터를 로드할 수 없습니다.');
 }
 
 /**
@@ -295,35 +312,47 @@ self.addEventListener('message', (event) => {
  * 모든 캐시 삭제
  */
 async function clearAllCaches() {
-  const cacheNames = await caches.keys();
-  await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
-  console.log('🗑️ 모든 캐시 삭제 완료');
+  try {
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+    console.log('🗑️ 모든 캐시 삭제 완료');
+  } catch (error) {
+    console.error('❌ 캐시 삭제 실패:', error);
+  }
 }
 
 /**
  * 슬라이드 캐시만 삭제
  */
 async function clearSlideCache() {
-  await caches.delete(SLIDE_CACHE);
-  console.log('🗑️ 슬라이드 캐시 삭제 완료');
+  try {
+    await caches.delete(SLIDE_CACHE);
+    console.log('🗑️ 슬라이드 캐시 삭제 완료');
+  } catch (error) {
+    console.error('❌ 슬라이드 캐시 삭제 실패:', error);
+  }
 }
 
 /**
  * 슬라이드 프리로딩
  */
 async function preloadSlides(slides) {
-  const cache = await caches.open(SLIDE_CACHE);
+  try {
+    const cache = await caches.open(SLIDE_CACHE);
 
-  for (const slide of slides) {
-    try {
-      const response = await fetch(slide.htmlPath);
-      if (response.ok) {
-        cache.put(slide.htmlPath, response.clone());
-        console.log('🚀 슬라이드 프리로딩 완료:', slide.htmlPath);
+    for (const slide of slides) {
+      try {
+        const response = await fetch(slide.htmlPath);
+        if (response.ok) {
+          cache.put(slide.htmlPath, response.clone());
+          console.log('🚀 슬라이드 프리로딩 완료:', slide.htmlPath);
+        }
+      } catch (error) {
+        console.warn('⚠️ 슬라이드 프리로딩 실패:', slide.htmlPath);
       }
-    } catch (error) {
-      console.warn('⚠️ 슬라이드 프리로딩 실패:', slide.htmlPath);
     }
+  } catch (error) {
+    console.error('❌ 슬라이드 프리로딩 실패:', error);
   }
 }
 
@@ -331,16 +360,21 @@ async function preloadSlides(slides) {
  * 캐시 상태 조회
  */
 async function getCacheStatus() {
-  const cacheNames = await caches.keys();
-  const status = {};
+  try {
+    const cacheNames = await caches.keys();
+    const status = {};
 
-  for (const cacheName of cacheNames) {
-    const cache = await caches.open(cacheName);
-    const keys = await cache.keys();
-    status[cacheName] = keys.length;
+    for (const cacheName of cacheNames) {
+      const cache = await caches.open(cacheName);
+      const keys = await cache.keys();
+      status[cacheName] = keys.length;
+    }
+
+    return status;
+  } catch (error) {
+    console.error('❌ 캐시 상태 조회 실패:', error);
+    return {};
   }
-
-  return status;
 }
 
 console.log('🎯 Service Worker 로드 완료');

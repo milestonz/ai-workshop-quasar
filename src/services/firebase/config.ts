@@ -86,6 +86,18 @@ if (firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.project
   console.log('✅ Firebase Auth 초기화 완료:', !!auth);
 
   googleProvider = new GoogleAuthProvider();
+
+  // Google Auth Provider 추가 설정
+  googleProvider.setCustomParameters({
+    prompt: 'select_account',
+    // User-Agent 문제 해결을 위한 설정
+    auth_type: 'reauthenticate',
+    // 모바일 환경에서의 보안 정책 준수
+    hd: '*',
+    // 웹 클라이언트 ID 추가
+    client_id: '951171862827-k7f7o1eptejtiiid99juq4o9ea73p6kq.apps.googleusercontent.com',
+  });
+
   console.log('✅ Google Auth Provider 초기화 완료:', !!googleProvider);
 
   db = getFirestore(app);
